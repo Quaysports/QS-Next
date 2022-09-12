@@ -1,0 +1,6 @@
+*.env
+*.iml
+/.idea/
+/.next/
+/config/
+/node_modules/

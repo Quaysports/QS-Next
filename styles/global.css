@@ -1,0 +1,161 @@
+* {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    scrollbar-width: thin;
+}
+
+:root{
+    --primary-color: #019972;
+    --secondary-color: #992B08;
+
+    --primary-active-text: #ffffff;
+    --primary-inactive-text: #dfc9c9;
+
+    --primary-table-background:#484848;
+    --primary-table-cell-background:#606060 ;
+
+    --primary-box-shadow: 1px 1px 2px 1px #1c1c1c;
+
+    --traffic-light-red: #992B08;
+    --traffic-light-orange: #E09112;
+    --traffic-light-green: #019972;
+}
+
+body{
+    background: #2d2d2d;
+    color: whitesmoke;
+    box-sizing: border-box;
+    margin: 0;
+    cursor: default;
+}
+
+/*--------------------------------Button default styles--------------------------------------*/
+
+button, .button{
+    background-color: var(--primary-color);
+    color: var(--primary-inactive-text);
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: var(--primary-box-shadow);
+}
+
+button:hover, .button:hover{
+    color: var(--primary-active-text);
+    transform: translate(-1px, -1px);
+}
+
+button:active{
+    transform: translate(0, 0);
+    transition-duration: 0.025s;
+}
+
+/*-------------------------------Input default styles----------------------------------*/
+
+input{
+    text-align: center;
+    background-color: whitesmoke;
+    border: 2px solid var(--primary-table-cell-background);
+    border-radius: 5px;
+}
+
+input:focus-visible{
+    outline: none
+}
+
+input{
+    accent-color: var(--primary-color);
+}
+
+/*-------------------------------Top tab menu bar---------------------------------------------*/
+
+.menu-bar{
+    display: flex;
+    background-color: var(--primary-color);
+    align-items: center;
+}
+
+.menu-bar span {
+    float: left;
+    margin: 5px 10px;
+    color: var(--primary-inactive-text);
+    font-weight: bold;
+}
+
+.menu-bar span:hover{
+    color: var(--primary-active-text);
+    cursor: pointer;
+}
+
+.menu-bar a{
+    color: var(--primary-inactive-text);
+    text-decoration: none;
+}
+
+.menu-bar a:hover{
+    color: var(--primary-active-text);
+}
+
+/*--------------------------------------Apps menu-----------------------------------------*/
+
+#apps-menu{
+    margin: 2px 3px;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 35px);
+    width: 170px;
+    background-color: var(--primary-color);
+    position: absolute;
+    box-shadow: var(--primary-box-shadow);
+    border-radius: 5px;
+}
+
+#apps-menu > span {
+    display: grid;
+    grid-template-columns: 90% 1fr;
+    font-weight: bold;
+    background-color: var(--primary-table-background);
+    height: 25px;
+    padding:5px 10px;
+    margin: 2px;
+    align-content: center;
+    border-radius: 5px;
+}
+
+#apps-menu button {
+    float: right;
+    width: 18px;
+    height: 19px;
+}
+
+#apps-menu div {
+    padding: 10px;
+}
+
+#apps-menu a{
+    text-decoration: none;
+    color: var(--primary-inactive-text)
+}
+
+#apps-menu a:hover{
+    color: var(--primary-active-text);
+}
+
+/*------------------------------------Search Bar------------------------------------------*/
+
+#search-bar-parent{
+    display: flex;
+    margin: 15px 0;
+}
+
+#search-bar-buttons{
+    margin-right:10px
+}
+#search-bar-input{
+    flex:1;
+}
+
+/*-------------------------------------Other default styles-----------------------------------*/
+
+.center-align {
+    text-align: center;
+}
+

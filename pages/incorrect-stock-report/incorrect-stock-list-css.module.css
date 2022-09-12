@@ -1,0 +1,63 @@
+
+#incorrectStockListContainer {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px 0;
+    background-color: var(--primary-table-background);
+    box-shadow: var(--primary-box-shadow);
+}
+
+.stockLists{
+    display:grid;
+    max-width: 910px;
+    margin: 5px auto;
+    grid-template-columns: 20px 150px 500px 80px 120px ;
+    grid-template-rows: 35px;
+    grid-column-gap: 10px;
+    align-items: center;
+    background-color: var(--primary-table-cell-background);
+    font-size: 0.9em;
+}
+
+.stockListsInput{
+    width: 35px;
+    height: 20px;
+    justify-self: center;
+}
+
+.stockListsTitles{
+    display:grid;
+    max-width: 910px;
+    margin: 0 auto;
+    grid-template-columns: 20px 150px 500px 80px 120px ;
+    grid-template-rows: 35px;
+    grid-column-gap: 10px;
+    align-items: center;
+}
+
+.titles {
+    font-weight: bold;
+    width: 910px;
+    margin: 0 auto;
+    height: 25px;
+}
+
+.brandTitles{
+    display: flex;
+    align-items: center;
+    max-width: 910px;
+    margin: 5px auto;
+    background-color: var(--primary-color);
+    height: 25px;
+}
+.brandTitles > div{
+    padding: 0 30px;
+    font-weight: bold;
+}
+#saveButton{
+    float: right;
+}
+.stockCheckedTitles{
+    display:flex;
+    justify-content: center;
+}
