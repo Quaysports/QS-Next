@@ -1,0 +1,38 @@
+
+.login-background {
+    width:100%;
+    height: 100%;
+    background: white;
+}
+
+#login-form {
+    width: 250px;
+    margin: 75px auto;
+}
+
+#login-form input {
+    display: block;
+    margin: 5px auto;
+    width: 200px;
+}
+
+#login-form button {
+    display: block;
+    margin: 5px auto;
+    width: 70px;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+}
+
+#login-form button:hover {
+    background: gray;
+    color: whitesmoke;
+}
+#message{
+    color:#de4639;
+    text-align: center;
+    font-size: 0.8em;
+    height:0;
+    opacity: 0;
+    transition: 0.2s ease-in-out;
+}

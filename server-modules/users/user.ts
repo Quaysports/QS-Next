@@ -1,5 +1,5 @@
-import mongoI = require('../mongo-interface/mongo-interface');
-import Core = require('../core/core')
+import * as mongoI from '../mongo-interface/mongo-interface';
+import * as Core from '../core/core'
 const config = require('../../../config/config.json')
 
 interface sessions {

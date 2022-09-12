@@ -42,7 +42,7 @@ export const dashboardSlice = createSlice({
             [HYDRATE]: (state, action) => {
                 return {
                     ...state,
-                    ...action.payload,
+                    ...action.payload.dashboard,
                 };
             },
         },

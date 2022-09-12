@@ -20,7 +20,7 @@ export const menuSlice = createSlice({
             [HYDRATE]: (state, action) => {
                 return {
                     ...state,
-                    ...action.payload,
+                    ...action.payload.menu,
                 };
             },
         },

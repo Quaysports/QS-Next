@@ -1,16 +1,8 @@
-import React, {useState, useEffect} from 'react';
 import {appWrapper} from "../../store/store";
 import {data} from "./MOCK-PERMISSIONS"
-import {useDispatch} from "react-redux";
 import {setMenuOptions} from "../../store/menu-slice";
 
-export default function Dashboard(props) {
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(setMenuOptions(props.menuOptions))
-    },[])
-
+export default function Dashboard() {
     return (
         <div>
             <div>
@@ -49,9 +41,10 @@ function setupMenu(data){
 
 export const getServerSideProps = appWrapper.getServerSideProps(
     (store) =>
-        async (context) =>{
+        async () =>{
             //TODO insert fetch request here for getting user permissions and set them to the props
             const menuObject = setupMenu(data)
+            store.dispatch(setMenuOptions(menuObject))
         return {
             props: {menuOptions: menuObject}
         }
