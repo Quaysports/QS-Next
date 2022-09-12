@@ -2,13 +2,13 @@ import React, {useState, useEffect} from "react";
 import UpdateIncorrectStock from "./update-incorrect-stock-function"
 import ZeroStockList from "./zero-stock-list-function";
 import IncorrectStockList from "./incorrect-stock-list-function";
-import styles from './incorrect-stock-list-css.module.css'
+import styles from './incorrect-stock-list.module.css'
 import {appWrapper} from "../../store/store";
 import {useDispatch, useSelector} from "react-redux";
 import {getIncorrectStock} from "../../server-modules/shop/shop"
 import {
     selectIncorrectStockState, selectValidData, selectZeroStockState,
-    setIncorrectStockInitialState, setIncorrectStockReportMenuOptions,
+    setIncorrectStockInitialState,
     setValidData,
     setZeroStockInitialState,
 } from "../../store/incorrect-stock-slice";

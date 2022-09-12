@@ -29,9 +29,9 @@ declare namespace sbt {
 
     interface workerData {
         id: string,
-        reqId: string,
-        msg: string,
-        data: object,
+        reqId?: string,
+        msg?: string,
+        data?: any,
         socket?: string,
         type?: string
     }

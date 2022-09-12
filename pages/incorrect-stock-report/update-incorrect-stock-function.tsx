@@ -1,8 +1,5 @@
-import {useDispatch, useSelector} from "react-redux";
 import {
-    selectIncorrectStockState,
-    selectValidData,
-    selectZeroStockState, setIncorrectStockSplice,
+    setIncorrectStockSplice,
     setZeroStockSplice
 } from "../../store/incorrect-stock-slice";
 

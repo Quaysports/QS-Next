@@ -1,0 +1,191 @@
+/*-----------------------------------Shop order default styling---------------------------------------*/
+
+.shop-orders-parent{
+    display: flex;
+    border-radius: 5px;
+    max-width: 1600px;
+    min-width: 1300px;
+    margin: 0 auto;
+}
+
+.shop-orders-table-parent{
+    flex-direction: column;
+    justify-content: flex-end;
+    font-size: 0.9em;
+    flex: 4.5 0 0
+}
+
+.shop-orders-table-containers{
+    box-shadow: var(--primary-box-shadow);
+    background-color: var(--primary-table-background);
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.shop-order-information{
+    height: 22px;
+}
+
+.shop-order-information > span{
+    padding: 0 30px;
+}
+
+.primary-buttons button{
+    padding: 3px 10px;
+    margin: 0 10px;
+    float: right;
+}
+
+.primary-buttons input[type="radio"]{
+    float: right;
+}
+
+.primary-buttons label{
+    float: right;
+    margin-right: 20px;
+}
+
+.table-title-container {
+    height: 30px;
+}
+
+.shop-orders-table {
+    /*grid template sizes controlled in ----Table grid sizes----*/
+    display: grid;
+    grid-column-gap: 10px;
+    padding:2px;
+    margin: 3px;
+}
+
+.shop-orders-table-cells{
+    background-color: var(--primary-table-cell-background);
+    border-radius: 5px;
+    height: 26px;
+}
+
+.shop-orders-table-cells *{
+    align-self: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.shop-orders-table-cells *:hover{
+    align-self: center;
+    overflow: visible;
+}
+
+.shop-orders-table-cells > input{
+    max-width: 30px;
+    justify-self: center;
+}
+
+.shop-orders-table-cells > button{
+    display:flex;
+    align-content: center;
+    justify-content: center;
+    justify-self: center;
+    min-height: 22px;
+    min-width: 22px;
+}
+
+.dead-stock-image-parent{
+    display: grid;
+}
+
+.dead-stock-image-parent > img{
+    max-height: 22px;
+    max-width: 22px;
+    justify-self: center;
+}
+
+/*------------------------------------Table grid sizes----------------------------------------*/
+
+.open-orders-grid{
+    grid-template-columns: 27px 60px 65px 190px 1fr 45px;
+}
+.order-list-grid{
+    grid-template-columns: 27px 40px 40px 190px 1fr 40px 65px 70px;
+}
+.low-stock-list-grid{
+    grid-template-columns: 27px 40px 40px 190px 1fr 40px 65px 70px 40px;
+}
+.dead-stock-list-grid{
+    grid-template-columns: 20px 200px 1fr;
+}
+.completed-orders-list-grid{
+    grid-template-columns: 70px 200px 1fr;
+}
+
+/*------------------------------Sidebar---------------------------------------*/
+
+.shop-orders-sidebar{
+    background-color: var(--primary-table-background);
+    box-shadow: var(--primary-box-shadow);
+    min-height: 85vh;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    flex: 1 0 0
+}
+
+.sidebar-rows{
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    padding: 3px 5px;
+    line-height: 18px;
+    font-size: 0.9em;
+}
+
+#sidebar-title{
+    padding: 0 10px 22px 10px
+}
+
+/*----------------------------------custom component styles----------------------------------------------*/
+
+#order-total{
+    background-color: var(--traffic-light-orange);
+    color: black;
+    border-radius: 5px;
+    width:150px;
+    padding: 3px;
+}
+
+#add-new-item-container{
+    padding: 10px;
+    position: absolute;
+    top: 20vh;
+    left: calc(50vw - (350px/2));
+    width: 350px;
+    opacity: 1;
+    background-color: var(--primary-table-cell-background);
+    border-radius: 5px;
+}
+
+#add-new-item-container > div {
+    margin: 6px 0;
+    width: 100%;
+    display:grid;
+    grid-template-columns: 60px 1fr;
+}
+
+#add-new-item-container input {
+    width: auto;
+    text-align: left;
+}
+
+#add-new-item-container-cancel-button {
+    justify-self: right;
+    width: 60px;
+}
+
+#full-screen-dim{
+    position: absolute;
+    height: 100vw;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    background-color: rgba(45,45,45,0.95);
+}

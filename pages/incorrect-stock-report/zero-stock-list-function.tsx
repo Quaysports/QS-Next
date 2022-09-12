@@ -1,5 +1,5 @@
 import * as React from "react";
-import styles from './incorrect-stock-list-css.module.css'
+import styles from './incorrect-stock-list.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {
     IncorrectStockItem,

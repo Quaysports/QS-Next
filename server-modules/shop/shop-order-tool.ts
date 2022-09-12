@@ -37,15 +37,11 @@ export const shopStockOrder = async (order:shopOrder) => {
     if (order._id !== undefined) delete order._id
     return await mongoI.setData("Shop-Orders", {date: order.date}, order)
 }
-export const getOpenOrders = async () => {
-    return await mongoI.find<shopOrder>("Shop-Orders", {complete: false})
-}
+
 export const getCompleteOrders = async (start:object = {}, end:object = {}, supplier:object = {}) => {
     return await mongoI.find<shopOrder>("Shop-Orders", {$and: [start, end, supplier, {complete: {$eq: true}}]})
 }
-export const deleteOrder = async (order:shopOrder) => {
-    return await mongoI.deleteOne("Shop-Orders", {date: order.date})
-}
+
 export const updateStock = async (skus:string) => {
     return await linn.getLinnQuery<{ItemNumber:string,Quantity:string,MinimumLevel:string}>(
         `SELECT si.ItemNumber,

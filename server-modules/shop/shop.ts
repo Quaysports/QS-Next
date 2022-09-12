@@ -107,7 +107,7 @@ export const getSupplierPriceChanges = async (data: { supplier: string, data: st
 
     return itemChanges
 }
-
+//only used in /pages/incorrect-stock-report
 export const getIncorrectStock = async () => {
     console.dir("Get Incorrect Stock")
     const query = [
@@ -135,19 +135,42 @@ export const getIncorrectStock = async () => {
     ]
     return await mongoI.findAggregate<stockError>('Shop-Stock-Report', query);
 }
-export const incorrectStockAdjustAndMongoCleanUp = async (arr: { SKU:string,QTY:string }[], id: string) => {
-    let stockData = []
-    let mongoCleanUp = []
-    for (let item of arr) {
-        let details = {
-            "SKU": item.SKU,
-            "LocationId": "00000000-0000-0000-0000-000000000000",
-            "Level": item.QTY
+
+export const deadStockReport = async () => {
+    let pastDate = new Date()
+    pastDate.setMonth(pastDate.getMonth() - 6)
+    let items = await mongoI.findAggregate<string[]>("Shop-Reports", [
+        {
+            '$match': {
+                'date': {
+                    '$gt': pastDate.getTime()
+                }
+            }
+        }, {
+            '$project': {
+                'items': {
+                    '$objectToArray': '$items'
+                }
+            }
+        }, {
+            '$unwind': {
+                'path': '$items',
+                'includeArrayIndex': 'string',
+                'preserveNullAndEmptyArrays': false
+            }
+        }, {
+            '$group': {
+                '_id': '',
+                'items': {
+                    '$addToSet': '$items.k'
+                }
+            }
         }
-        stockData.push(details)
-        mongoCleanUp.push(item.SKU)
-    }
-    await linn.adjustStock(stockData, id)
-    return await mongoI.deleteMany("Shop-Stock-Report", mongoCleanUp)
+    ])
+    return await mongoI.find<{SUPPLIER: string, SKU: string, TITLE: string}>("Items", {
+        SKU: {$nin: items},
+        STOCKTOTAL: {$gt: 0},
+        IDBFILTER: "domestic"
+    }, {SUPPLIER: 1, SKU: 1, TITLE: 1})
 }
 
