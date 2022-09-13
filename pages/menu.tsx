@@ -2,6 +2,7 @@ import {useSelector} from "react-redux";
 import Link from "next/link";
 import {useState} from "react";
 import {selectMenuOptions} from "../store/menu-slice";
+import {signOut} from "next-auth/react";
 
 export default function Menu() {
 
@@ -11,6 +12,11 @@ export default function Menu() {
 
     function appsMenuHandler() {
         setShowAppsMenu(!showAppsMenu)
+    }
+
+    async function logoutHandler() {
+        await signOut()
+        window.location.href = "/"
     }
 
     function appsMenu(){
@@ -28,6 +34,7 @@ export default function Menu() {
                     <div onClick={appsMenuHandler}><Link href="/stock-transfer">Stock Transfer</Link></div>
                     <div onClick={appsMenuHandler}><Link href="/stock-take-list">Stock Take List</Link></div>
                     <div onClick={appsMenuHandler}><Link href="/webpages">Webpages</Link></div>
+                    <div onClick={async ()=> logoutHandler()}><a>Logout</a></div>
                 </div>
             )
         }

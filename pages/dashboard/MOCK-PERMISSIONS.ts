@@ -12,27 +12,27 @@ export const data = {
         "label": "Price Updates"
     },
     "shop": {
-        "auth": false,
+        "auth": true,
         "label": "Shop"
     },
     "online": {
-        "auth": false,
+        "auth": true,
         "label": "Online"
     },
     "rotas": {
-        "auth": false,
+        "auth": true,
         "label": "Rotas"
     },
     "newRota": {
-        "auth": false,
+        "auth": true,
         "label": "New Rota"
     },
     "holidays": {
-        "auth": false,
+        "auth": true,
         "label": "Holidays"
     },
     "baitOrdering": {
-        "auth": false,
+        "auth": true,
         "label": "Bait Orders"
     }
 }

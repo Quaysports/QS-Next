@@ -1,6 +1,6 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import * as Core from '../core/core'
-const config = require('../../../config/config.json')
+import * as Config from '../../config/config.json'
 
 interface sessions {
     [key:string]:user
@@ -54,7 +54,7 @@ export const logout = (id: string) => {
 }
 
 export const token = (token: string) => {
-    return config.tokens[token]
+    return Config.tokens[token]
 }
 
 export const login = async (user: string, password: string) => {
@@ -64,13 +64,9 @@ export const login = async (user: string, password: string) => {
         {username: 1, role: 1, rota: 1, permissions: 1})
 
     if (result) {
-        const guidToken: string = Core.guid()
-        sessions[guidToken] = result
-        // 24 hours = 86400000
-        setTimeout(() => { logout(guidToken) }, 86400000)
-        return { auth: true, user: result.username, rota: result.rota, token: guidToken }
+        return { ...result, auth: true }
     } else {
-        return { auth: false, user: "", rota: {}, token: ""}
+        return { auth: false}
     }
 }
 

@@ -1,15 +1,14 @@
 "use strict";
 import * as mongoDB from 'mongodb'
-import {dbURL, dbName} from '../../config/config.json'
 
 export const connect = async () => {
-  return await new mongoDB.MongoClient(dbURL).connect()
+  return await new mongoDB.MongoClient(process.env.DB_URL).connect()
 }
 
 export const ping = async () => {
   const client = await connect()
   try {
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     const newPing = await db.command({ ping: 1 })
     return newPing.ok === 1 ? { status: 'Success' } : { status: 'Failure' }
   } catch (e) {
@@ -22,7 +21,7 @@ export const ping = async () => {
 export const setData = async (collection: string, filter: object, data: object) => {
   const client = await connect()
   try {
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     const result = await db.collection(collection).updateOne(filter, { $set: data }, { upsert: true })
     if(result.modifiedCount > 0) console.log(`${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`);
     return result;
@@ -36,7 +35,7 @@ export const setData = async (collection: string, filter: object, data: object) 
 export const unsetData = async (collection: string, filter: object, data: object) => {
   const client = await connect()
   try {
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     const result = await db.collection(collection).updateOne(filter, { $unset: data })
     console.log(`${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`);
     return result;
@@ -74,7 +73,7 @@ export const bulkUpdateItems = async (merge: Map<string, sbt.Item>, websocket?: 
     let start = new Date();
     console.log("Saving page " + page + "/" + bulkUpdateOps.length);
     try {
-      const db = client.db(dbName);
+      const db = client.db(process.env.DB_NAME);
       let result = await db.collection("Items").bulkWrite(bulk)
       console.log("DB write took " + (((new Date()).getTime() - start.getTime()) / 1000) + "s");
       console.log(`${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`);
@@ -117,7 +116,7 @@ export const bulkUpdateAny = async (collection: string, arr: mongoDB.Document[],
     let start = new Date();
     console.log("Saving page " + page + "/" + bulkUpdateOps.length);
     try {
-      const db = client.db(dbName);
+      const db = client.db(process.env.DB_NAME);
       let result = await db.collection(collection).bulkWrite(bulk)
       console.log("DB write took " + (((new Date()).getTime() - start.getTime()) / 1000) + "s");
       console.log(`${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`);
@@ -135,7 +134,7 @@ export const bulkUpdateAny = async (collection: string, arr: mongoDB.Document[],
 export const find = async <T>(collection: string, filter = {}, projection = {}, sort = {}, limit = 20000) => {
   const client = await connect()
   try {
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     return await db.collection(collection).find<T>(filter, {serializeFunctions:true}).project(projection).limit(limit).sort(sort).toArray() as T[]
   } catch (e) {
     console.error(e)
@@ -147,7 +146,7 @@ export const find = async <T>(collection: string, filter = {}, projection = {}, 
 export const findAggregate = async <T>(collection: string, aggregate: object[]) => {
   const client = await connect()
   try {
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     return await db.collection(collection).aggregate<T>(aggregate, {serializeFunctions:true}).toArray()
   } catch (e) {
     console.error(e)
@@ -159,7 +158,7 @@ export const findAggregate = async <T>(collection: string, aggregate: object[]) 
 export const findOne = async <T>(collection: string, filter = {}, projection = {}, sort = {}, limit = 20000) => {
   const client = await connect()
   try {
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     return await db.collection(collection).findOne<T>(filter, { serializeFunctions:true, projection: projection, sort: sort, limit: limit })
   } catch (e) {
     console.error(e)
@@ -171,7 +170,7 @@ export const findOne = async <T>(collection: string, filter = {}, projection = {
 export const findDistinct = async (collection: string, key: string, filter: object) => {
   const client = await connect()
   try {
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     return await db.collection(collection).distinct(key, filter)
   } catch (e) {
     console.error(e)
@@ -183,7 +182,7 @@ export const findDistinct = async (collection: string, key: string, filter: obje
 export const deleteOne = async (collection: string, filter: object) => {
   const client = await connect()
   try {
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     const result = await db.collection(collection).deleteOne(filter)
     console.log(`${result.acknowledged}, deleted ${result.deletedCount} document(s)`);
   } catch (e) {
@@ -196,7 +195,7 @@ export const deleteOne = async (collection: string, filter: object) => {
 export const deleteMany = async (collection: string, filter: string[]) => {
   const client = await connect()
   try {
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     const result = await db.collection(collection).deleteMany({ SKU: { $in: filter } })
     console.log(`${result.acknowledged}, deleted ${result.deletedCount} document(s)`);
     return result
@@ -206,6 +205,3 @@ export const deleteMany = async (collection: string, filter: string[]) => {
     await client.close()
   }
 }
-
-
-

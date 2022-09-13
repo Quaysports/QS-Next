@@ -1,29 +1,26 @@
 import Image from 'next/image'
+import {useRef} from "react";
+import {signIn} from 'next-auth/react'
 import styles from './login.module.css'
 
 export default function Index() {
+    const user = useRef(null)
+    const password = useRef(null)
 
-    const formHandler = async (e) => {
+    async function handleSubmit(e){
         e.preventDefault()
-        const formData = new FormData(e.target)
-        const opts = {
-            method:"POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(Object.fromEntries(formData))
-        }
-        let res = await fetch('/api/login', opts)
-        console.log(await res.json())
+        const details = {username:user.current.value, password:password.current.value}
+        await signIn('credentials', details)
+        window.location.href = "/"
     }
 
     return (
         <div id="main" className={styles.loginBackground}>
-            <form id={styles["login-form"]} onSubmit={formHandler}>
+            <form id={styles["login-form"]} onSubmit={handleSubmit}>
                 <Image src="/logo.png" width="300px" height="300px" alt="Logo"/>
                 <div id={styles.message}/>
-                <input type="text" id="username" name="username" placeholder="Username..."/>
-                <input type="password" id="password" name="password" placeholder="Password..."/>
+                <input type="text" ref={user} placeholder="Username..."/>
+                <input type="password" ref={password} placeholder="Password..."/>
                 <button type="submit">Login</button>
             </form>
         </div>

@@ -3,15 +3,16 @@ import type {AppProps} from "next/app"
 import {appWrapper} from "../store/store";
 import Menu from "./menu";
 import {useRouter} from 'next/router'
+import {SessionProvider} from "next-auth/react";
 
-function MyApp({Component, pageProps}: AppProps) {
+function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
     const router = useRouter()
     return (
-        <div>
-            {router.pathname !== "/login" ? <Menu/> : null}
-            <Component {...pageProps}/>
-        </div>
+            <SessionProvider session={session}>
+                {router.pathname !== "/login" ? <Menu/> : null}
+                <Component {...pageProps}/>
+            </SessionProvider>
     )
 }
 
-export default appWrapper.withRedux(MyApp)
+export default appWrapper.withRedux(App)
