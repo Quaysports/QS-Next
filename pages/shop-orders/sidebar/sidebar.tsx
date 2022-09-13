@@ -13,7 +13,7 @@ export default function SideBar() {
         let i = 0
         for(const order of Object.keys(sideBarContent.content)){
             elementArray.push(
-                <div className={`${styles["sidebar-rows"]} ${"button"}`} key={i} onClick={() =>  dispatch(setSupplierFilter(order))
+                <div className={`${styles["sidebar-rows"]} ${"button"}`} key={i} onClick={() =>  dispatch(setSupplierFilter(sideBarContent.content[order]))
                 }>
                     <span>{order}</span>
                     <span>({sideBarContent.content[order].toString()})</span>

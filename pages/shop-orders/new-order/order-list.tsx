@@ -59,7 +59,9 @@ export default function OrderList(props: OrderListProps) {
                 tradePack: 0,
                 SKU: "",
                 TITLE: "",
-                newProduct: true
+                newProduct: true,
+                bookedIn: "false",
+                arrived: 0
             }
             let tempArray = [
                 <div id={"full-screen-dim"}>

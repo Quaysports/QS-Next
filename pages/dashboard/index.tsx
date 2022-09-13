@@ -45,7 +45,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(
             //TODO insert fetch request here for getting user permissions and set them to the props
             const menuObject = setupMenu(data)
             store.dispatch(setMenuOptions(menuObject))
-        return {
-            props: {menuOptions: menuObject}
-        }
+        return void{}
+
 })

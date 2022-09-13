@@ -1,24 +1,29 @@
 import * as React from 'react'
-import {OpenOrdersObject} from "./index";
-import {Fragment} from "react";
+import {Fragment, useCallback, useEffect, useState} from "react";
 import styles from "../shop-orders.module.css"
-import {useSelector} from "react-redux";
-import {selectLoadedOrder} from "../../../store/shop-orders-slice";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    selectLoadedOrder,
+    setArrivedHandler,
+    setBookedInState,
+    setEditOrder,
+} from "../../../store/shop-orders-slice";
+import {useRouter} from "next/router";
 
-interface DisplayOnOrderProps {
-    orderID: string;
-    openOrders: Map<string, OpenOrdersObject[]>
-    openOrdersHandler: (x: Map<string, object>) => void
-    editOrder: (x: OpenOrdersObject) => void
-    loadedOrder: OpenOrdersObject
-}
-
-export default function DisplayOnOrder(props: DisplayOnOrderProps) {
+export default function DisplayOnOrder() {
 
     const loadedOrder = useSelector(selectLoadedOrder)
+    const dispatch = useDispatch()
+    const router = useRouter()
+    const [saveOrder, setSaveOrder] = useState<boolean>(false)
 
-    function arrivedHandler(quantity, item) {
-        item.arrived = parseInt(quantity);
+    function arrivedHandler(quantity, item, index) {
+        dispatch(setArrivedHandler({index: index, value: quantity}))
+    }
+
+    function editOrder(order) {
+        dispatch(setEditOrder(order))
+        router.push("/shop-orders/new-order")
     }
 
     function bookedInHandler(order, index) {
@@ -32,25 +37,35 @@ export default function DisplayOnOrder(props: DisplayOnOrderProps) {
         }
 
         if ((order.order[index].qty - order.order[index].arrived) === 0) {
-            order.order[index].bookedIn = "false"
-            order.arrived.push(order.order[index])
-            order.order.splice(index, 1)
-            props.openOrdersHandler(props.openOrders)
+            setSaveOrder(true)
+            dispatch(setBookedInState({bookedIn: "false", index: index}))
             return
         }
 
         if ((order.order[index].qty - order.order[index].arrived) > 0) {
             let conf = window.confirm("Did only part of the order arrive?")
             if (conf === true) {
-                order.order[index].bookedIn = "partial"
-                order.order[index].qty = (order.order[index].qty - order.order[index].arrived)
-                order.arrived.push({...order.order[index]})
-                order.arrived[(order.arrived.length - 1)].qty = order.order[index].arrived
-                order.order[index].arrived = 0
-                props.openOrdersHandler(props.openOrders)
+                setSaveOrder(true)
+                dispatch(setBookedInState({bookIn: "partial", index: index}))
             }
         }
     }
+
+    useEffect(() => {
+        if(saveOrder) {
+            const opts = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+                },
+                body: JSON.stringify(loadedOrder)
+            }
+            fetch("/api/shop-orders/update-order", opts).then()
+            console.count("test")
+            setSaveOrder(false)
+        }
+    }, [loadedOrder])
 
     function backgroundColorCheck(bookedIn: string) {
         if (bookedIn === "partial") {
@@ -62,26 +77,11 @@ export default function DisplayOnOrder(props: DisplayOnOrderProps) {
 
     function onOrderTableCells() {
         let tempArray = []
-        let newProductArray = [<div key={"new-title"}><span/><span/><span/><span>New Products</span><span/><span/></div>]
+        let newProductArray = [<div key={"new-title"}><span/><span/><span/><span>New Products</span><span/><span/>
+        </div>]
         for (let i = 0; i < loadedOrder.order.length; i++) {
-            if(loadedOrder.order[i].newProduct){
+            if (loadedOrder.order[i].newProduct) {
                 newProductArray.push(
-                    <div key={openOrder[0].order[i].SKU}
-                         className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`}
-                         style={backgroundColorCheck(loadedOrder.order[i].bookedIn)}>
-                    <button onClick={() => bookedInHandler(loadedOrder, i)}>⇅</button>
-                    <span className={styles["center-align"]}>{loadedOrder.order[i].qty ??= 0}</span>
-                    <span className={styles["center-align"]}>{loadedOrder.order[i].tradePack ??= 0}</span>
-                    <span>{loadedOrder.order[i].SKU} </span>
-                    <span>{loadedOrder.order[i].TITLE} </span>
-                    <input defaultValue={0}
-                           value={loadedOrder.order[i].arrived}
-                           onChange={(e) => {
-                               arrivedHandler(e.target.value, loadedOrder.order[i])
-                           }}/>
-                </div>)
-            } else {
-                tempArray.push(
                     <div key={loadedOrder.order[i].SKU}
                          className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`}
                          style={backgroundColorCheck(loadedOrder.order[i].bookedIn)}>
@@ -95,20 +95,36 @@ export default function DisplayOnOrder(props: DisplayOnOrderProps) {
                                onChange={(e) => {
                                    arrivedHandler(e.target.value, loadedOrder.order[i])
                                }}/>
+                    </div>)
+            } else {
+                tempArray.push(
+                    <div key={loadedOrder.order[i].SKU}
+                         className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`}
+                         style={backgroundColorCheck(loadedOrder.order[i].bookedIn)}>
+                        <button onClick={() => bookedInHandler(loadedOrder, i)}>⇅</button>
+                        <span className={styles["center-align"]}>{loadedOrder.order[i].qty ??= 0}</span>
+                        <span className={styles["center-align"]}>{loadedOrder.order[i].tradePack ??= 0}</span>
+                        <span>{loadedOrder.order[i].SKU} </span>
+                        <span>{loadedOrder.order[i].TITLE} </span>
+                        <input defaultValue={0}
+                               value={loadedOrder.order[i].arrived}
+                               onChange={(e) => {
+                                   arrivedHandler(e.target.value, loadedOrder, i)
+                               }}/>
                     </div>
                 )
             }
         }
-        if(newProductArray.length === 1) newProductArray.splice(0,1)
+        if (newProductArray.length === 1) newProductArray.splice(0, 1)
         return <Fragment key={1}>{tempArray}{newProductArray}</Fragment>
     }
 
-    if (props.orderID) {
+    if (loadedOrder) {
         return (
             <div className={styles["shop-orders-table-containers"]}>
                 <div className={styles["table-title-container"]}>
                     <span>On Order</span>
-                    <span className={styles["primary-buttons"]}><button onClick={() => props.editOrder(props.loadedOrder)}>Edit Order</button></span>
+                    <span className={styles["primary-buttons"]}><button onClick={() => editOrder(loadedOrder)}>Edit Order</button></span>
                 </div>
                 <div className={`${styles["shop-orders-table"]} ${styles["open-orders-grid"]}`}>
                     <span/>
@@ -121,8 +137,7 @@ export default function DisplayOnOrder(props: DisplayOnOrderProps) {
                 {onOrderTableCells()}
             </div>
         )
-    } else
-    {
+    } else {
         return <></>
     }
 }

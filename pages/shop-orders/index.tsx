@@ -23,11 +23,6 @@ export interface item {
     newProduct: boolean
 }
 
-export interface editOrderInterface {
-    order: item[]
-    orderID: string
-}
-
 export default function ShopOrdersLandingPage(props) {
 
     const router = useRouter()

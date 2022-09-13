@@ -14,21 +14,16 @@ import {
 } from "../../store/incorrect-stock-slice";
 import {setMenuOptions} from "../../store/menu-slice";
 
-export default function IncorrectStockLandingPage(props) {
+export default function IncorrectStockLandingPage() {
 
     const dispatch = useDispatch()
 
     const [refreshData, setRefreshData] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false)
     const incorrectStockState = useSelector(selectIncorrectStockState);
     const zeroStockState = useSelector(selectZeroStockState);
     const validDataState = useSelector(selectValidData)
 
     useEffect(() => {
-        dispatch(setIncorrectStockInitialState(props.incorrectStockState))
-        dispatch(setZeroStockInitialState(props.zeroStockState))
-        dispatch(setMenuOptions({}))
-        setLoading(true)
         //props.titleBar([])
     }, [])
 
@@ -40,46 +35,43 @@ export default function IncorrectStockLandingPage(props) {
         dispatch(setValidData(boolean))
     }
 
-    if (loading) {
-        return (
-            <div id={styles.incorrectStockListContainer}>
-                <div className={styles.titles}>HIGH PRIORITY ITEMS TO CHECK
-                    <button onClick={() => {
-                        UpdateIncorrectStock(pageRerenderHandler, incorrectStockState, zeroStockState, validDataState, dispatch)
-                    }}
-                            id={styles.saveButton}>Save
-                    </button>
-                </div>
-                <div className={styles.stockListsTitles}>
-                    <span/>
-                    <span>SKU</span>
-                    <span>Title</span>
-                    <span className={styles.stockCheckedTitles}>Stock</span>
-                    <span className={styles.stockCheckedTitles}>Checked</span>
-                </div>
-                <div><IncorrectStockList
-                    validDataHandler={(x: boolean) => validDataHandler(x)}
-                /></div>
-                <div
-                    className={styles.titles}>--------------------------------------------------------------------------------------
-                </div>
-                <div className={styles.titles}>LOW PRIORITY ITEMS TO CHECK</div>
-                <div className={styles.stockListsTitles}>
-                    <span/>
-                    <span>SKU</span>
-                    <span>Title</span>
-                    <span className={styles.stockCheckedTitles}>Stock</span>
-                    <span className={styles.stockCheckedTitles}>Checked</span>
-                </div>
-                <div><ZeroStockList
-                    validDataHandler={(x: boolean) => validDataHandler(x)}
-                /></div>
+    return (
+        <div id={styles.incorrectStockListContainer}>
+            <div className={styles.titles}>HIGH PRIORITY ITEMS TO CHECK
+                <button onClick={() => {
+                    UpdateIncorrectStock(pageRerenderHandler, incorrectStockState, zeroStockState, validDataState, dispatch)
+                }}
+                        id={styles.saveButton}>Save
+                </button>
             </div>
-        )
-    } else {
-        return null
-    }
+            <div className={styles.stockListsTitles}>
+                <span/>
+                <span>SKU</span>
+                <span>Title</span>
+                <span className={styles.stockCheckedTitles}>Stock</span>
+                <span className={styles.stockCheckedTitles}>Checked</span>
+            </div>
+            <div><IncorrectStockList
+                validDataHandler={(x: boolean) => validDataHandler(x)}
+            /></div>
+            <div
+                className={styles.titles}>--------------------------------------------------------------------------------------
+            </div>
+            <div className={styles.titles}>LOW PRIORITY ITEMS TO CHECK</div>
+            <div className={styles.stockListsTitles}>
+                <span/>
+                <span>SKU</span>
+                <span>Title</span>
+                <span className={styles.stockCheckedTitles}>Stock</span>
+                <span className={styles.stockCheckedTitles}>Checked</span>
+            </div>
+            <div><ZeroStockList
+                validDataHandler={(x: boolean) => validDataHandler(x)}
+            /></div>
+        </div>
+    )
 }
+
 export const getServerSideProps = appWrapper.getServerSideProps(
     (store) =>
         async (context) => {
@@ -95,9 +87,10 @@ export const getServerSideProps = appWrapper.getServerSideProps(
                     tempObject[data[i].BRAND].push(data[i])
                 }
             }
-            return {
-                props: {incorrectStockState: priorityObject, zeroStockState: tempObject}
-            }
+            store.dispatch(setIncorrectStockInitialState(priorityObject))
+            store.dispatch(setZeroStockInitialState(tempObject))
+            store.dispatch(setMenuOptions({}))
+            return void {}
         }
 )
 

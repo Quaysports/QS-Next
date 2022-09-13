@@ -1,32 +1,47 @@
 import * as React from 'react';
-import {OpenOrdersObject} from "./index";
 import {Fragment} from "react";
 import styles from "../shop-orders.module.css"
+import {useDispatch, useSelector} from "react-redux";
+import {selectLoadedOrder, setLoadedOrder, setSupplierFilter} from "../../../store/shop-orders-slice";
 
-interface OrderInformationProps {
-    orderID: string
-    openOrders: Map<string, OpenOrdersObject[]>
-    deleteOrder: (x:OpenOrdersObject) => void
-}
+export default function OrderInformation() {
 
-export default function OrderInformation(props: OrderInformationProps) {
+    const loadedOrder = useSelector(selectLoadedOrder)
+    const dispatch = useDispatch()
 
-    if (props.orderID) {
-        let order = props.openOrders.get(props.orderID)
+    async function deleteOrder(order){
+        let conf = window.confirm("Are you sure you want to delete "+ order.id + " order?")
+        if(conf) {
+            const opts = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+                },
+                body: JSON.stringify({order: order})
+            }
+            let res = await fetch("/api/shop-orders/delete-order", opts)
+            res.ok ? alert(order.id + " deleted") : alert("Error, please contact IT")
+            dispatch(setLoadedOrder(null))
+            dispatch(setSupplierFilter(null))
+        }
+    }
+
+    if (loadedOrder) {
         let tempArray: JSX.Element[] = []
         tempArray.push(
             <div key={1} className={styles["shop-orders-table-containers"]}>
-                <div className={styles["shop-order-information"]} key={props.orderID}>
-                    <span>ID: {order[0].supplier}({order[0].id})</span>
-                    <span>Cost: £{order[0].price ? order[0].price : 0}</span>
+                <div className={styles["shop-order-information"]} key={loadedOrder.date}>
+                    <span>ID: {loadedOrder.supplier}({loadedOrder.id})</span>
+                    <span>Cost: £{loadedOrder.price ? loadedOrder.price : 0}</span>
                     <span className={styles["primary-buttons"]}>
-                    <button onClick={() => props.deleteOrder(order[0])}>Delete Order</button>
+                    <button onClick={() => deleteOrder(loadedOrder)}>Delete Order</button>
                     <button>Download CSV</button>
                 </span>
                 </div>
             </div>
         )
-        return <Fragment key={order[0].id}>{tempArray}</Fragment>
+        return <Fragment key={loadedOrder.date}>{tempArray}</Fragment>
     } else {
         return null
     }

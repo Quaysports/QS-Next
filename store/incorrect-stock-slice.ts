@@ -35,7 +35,7 @@ export const incorrectStockSlice = createSlice({
             [HYDRATE]: (state, action) => {
                 return {
                     ...state,
-                    ...action.payload,
+                    ...action.payload.incorrectStock,
                 };
             },
         },

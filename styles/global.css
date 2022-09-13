@@ -2,13 +2,14 @@
     font-family: Roboto, Helvetica, Arial, sans-serif;
     scrollbar-width: thin;
 }
-
+/*#019972*/
 :root{
-    --primary-color: #019972;
+
+    --primary-color: #586221;
     --secondary-color: #992B08;
 
     --primary-active-text: #ffffff;
-    --primary-inactive-text: #dfc9c9;
+    --primary-inactive-text: #dcd2ca;
 
     --primary-table-background:#484848;
     --primary-table-cell-background:#606060 ;

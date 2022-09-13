@@ -1,4 +1,4 @@
-import * as mongoI from '../../server-modules/mongo-interface/mongo-interface'
+import * as mongoI from '../../../server-modules/mongo-interface/mongo-interface'
 import shopOrder = sbt.shopOrder;
 
 export default async function handler(req, res) {
@@ -8,5 +8,5 @@ export default async function handler(req, res) {
 }
 
 export const getOpenOrders = async () => {
-    return await mongoI.find<shopOrder>("Shop-Orders", {complete: false})
+    return await mongoI.find<shopOrder>("New-Shop-Orders", {complete: false})
 }

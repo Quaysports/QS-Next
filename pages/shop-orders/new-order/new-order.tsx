@@ -63,6 +63,7 @@ export default function NewOrder(props: newOrderProps) {
                         res[i].newProduct = false
                         res[i].lowStock = false
                         res[i].inOrder = false
+                        res[i].arrived = 0
                         res[i].tradePack = 1
                         res[i].qty = 1
                         if (res[i].STOCKTOTAL < res[i].MINSTOCK) res[i].lowStock = true;
