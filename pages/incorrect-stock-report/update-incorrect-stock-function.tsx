@@ -32,7 +32,7 @@ export default function UpdateIncorrectStock(pageRerenderHandler, incorrectStock
             },
             body: JSON.stringify({QUERY: "StockAdjust - " + date(), DATA: tempArray})
         }
-        fetch("/api/incorrect-stock-adjust-and-mongo-clean-up", opts)
+        fetch("/api/incorrect-stock/incorrect-stock-adjust-and-mongo-clean-up", opts)
             .then(res => res.json())
             .then(res => {
                 window.confirm(`${res.deletedCount} items updated`)
