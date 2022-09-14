@@ -1,5 +1,5 @@
-import * as mongoI from '../../server-modules/mongo-interface/mongo-interface'
-import * as linn from "../../server-modules/linn-api/linn-api"
+import * as mongoI from '../../../server-modules/mongo-interface/mongo-interface'
+import * as linn from "../../../server-modules/linn-api/linn-api"
 
 export default async function handler(req, res) {
     res.status(200).json(

@@ -90,10 +90,9 @@ export default function DisplayOnOrder() {
                         <span className={styles["center-align"]}>{loadedOrder.order[i].tradePack ??= 0}</span>
                         <span>{loadedOrder.order[i].SKU} </span>
                         <span>{loadedOrder.order[i].TITLE} </span>
-                        <input defaultValue={0}
-                               value={loadedOrder.order[i].arrived}
+                        <input value={loadedOrder.order[i].arrived}
                                onChange={(e) => {
-                                   arrivedHandler(e.target.value, loadedOrder.order[i])
+                                   arrivedHandler(e.target.value, loadedOrder, i)
                                }}/>
                     </div>)
             } else {
@@ -106,8 +105,7 @@ export default function DisplayOnOrder() {
                         <span className={styles["center-align"]}>{loadedOrder.order[i].tradePack ??= 0}</span>
                         <span>{loadedOrder.order[i].SKU} </span>
                         <span>{loadedOrder.order[i].TITLE} </span>
-                        <input defaultValue={0}
-                               value={loadedOrder.order[i].arrived}
+                        <input value={loadedOrder.order[i].arrived}
                                onChange={(e) => {
                                    arrivedHandler(e.target.value, loadedOrder, i)
                                }}/>
