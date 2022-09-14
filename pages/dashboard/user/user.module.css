@@ -4,7 +4,7 @@
 
 /*-----------------------------------User tab grid styling---------------------------------------*/
 .user-table{
-    width:900px;
+    width:930px;
     margin: 20px auto;
     padding: 10px;
     background-color: var(--primary-table-background);
@@ -13,7 +13,7 @@
 .user-table-row{
     display: grid;
     grid-column-gap: 10px;
-    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px;
+    grid-template-columns: 20px 100px 100px 100px 100px 100px 100px 100px 100px;
     padding:2px;
     margin: 3px;
     text-align: center;
@@ -25,4 +25,14 @@
 
 .user-table-row select {
     width:100%
+}
+
+/*-----------------------------------User permission popup grid styling---------------------------------------*/
+.permission-table{
+    display:grid;
+    margin:8px;
+}
+
+.permission-table-title{
+    padding-bottom: 4px;
 }

@@ -7,6 +7,7 @@ import {shopOrdersSlice} from "./shop-orders-slice";
 import {popupSlice} from "./popup-slice";
 import {confirmSlice} from "./confirm-slice";
 import {alertSlice} from "./alert-slice";
+import {userSlice} from "./dashboard/user-slice";
 
 const myStore = () =>
     configureStore({
@@ -17,7 +18,8 @@ const myStore = () =>
             [menuSlice.name]: menuSlice.reducer,
             [popupSlice.name]: popupSlice.reducer,
             [confirmSlice.name]: confirmSlice.reducer,
-            [alertSlice.name]: alertSlice.reducer
+            [alertSlice.name]: alertSlice.reducer,
+            [userSlice.name]:userSlice.reducer
         },
         devTools: true,
     });

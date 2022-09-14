@@ -2,28 +2,39 @@ import * as mongoI from '../mongo-interface/mongo-interface';
 import * as Config from '../../config/config.json'
 
 interface sessions {
-    [key:string]:user
+    [key: string]: user
 }
+
 export interface user {
-    _id?:string,
+    _id?: string,
     username: string,
-    pin?:string
-    password?:string
+    pin?: string
+    password?: string
     role: string,
     rota?: string,
-    colour?:string
+    colour?: string
     permissions: Permissions
-    holiday?:string
+    holiday?: string
 }
+
 export interface Permissions {
-    users:{auth:boolean, label:"Users"},
-    orderSearch:{auth:boolean, label:"Order Search"},
-    priceUpdates:{auth:boolean, label:"Price Updates"},
-    shop:{auth:boolean, label:"Shop"},
-    baitOrdering:{auth:boolean, label:"Bait Orders"},
-    online:{auth:boolean, label:"Online"},
-    rotas:{auth:boolean, label:"Rotas"},
-    holidays:{auth:boolean, label:"Holidays"}
+    webpages: { auth: boolean, label: "Webpages" };
+    stockTakeList: { auth: boolean, label: "Stock Take List" };
+    stockTransfer: { auth: boolean, label: "Stock Transfer" };
+    marginCalculator: { auth: boolean, label: "Margin Calculator" };
+    shipments: { auth: boolean, label: "Shipments" };
+    stockForecast: { auth: boolean, label: "Stock Forecast" };
+    itemDatabase: { auth: boolean, label: "Item Database" };
+    incorrectStock: { auth: boolean, label: "Incorrect Stock" };
+    shopOrders: { auth: boolean, label: "Shop Orders" };
+    users: { auth: boolean, label: "Users" };
+    orderSearch: { auth: boolean, label: "Order Search" };
+    priceUpdates: { auth: boolean, label: "Price Updates" };
+    shop: { auth: boolean, label: "Shop" };
+    baitOrdering: { auth: boolean, label: "Bait Orders" };
+    online: { auth: boolean, label: "Online" };
+    rotas: { auth: boolean, label: "Rotas" };
+    holidays: { auth: boolean, label: "Holidays" };
 }
 
 let sessions: sessions = {}
@@ -61,12 +72,12 @@ export const token = (token: string) => {
 export const login = async (user: string, password: string) => {
 
     const result = await mongoI.findOne<user>("Users",
-        { username: { $eq: user }, password: { $eq: password }},
+        {username: {$eq: user}, password: {$eq: password}},
         {username: 1, role: 1, rota: 1, permissions: 1})
     if (result) {
-        return { ...result, auth: true }
+        return {...result, auth: true}
     } else {
-        return { auth: false}
+        return {auth: false}
     }
 }
 
@@ -97,6 +108,6 @@ export const getHolidayCalendar = async (req: { year: number; location: string; 
 }
 
 export const updateHolidayCalendar = async (data: sbt.holidayCalendar) => {
-        if (data._id !== undefined) delete data._id
-        await mongoI.setData("Holiday-Calendar",{$and: [{year: {$eq: data.year}}, {location: {$eq: data.location}}]},data)
+    if (data._id !== undefined) delete data._id
+    await mongoI.setData("Holiday-Calendar", {$and: [{year: {$eq: data.year}}, {location: {$eq: data.location}}]}, data)
 }
