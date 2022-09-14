@@ -64,7 +64,7 @@ import { dashboardTab } from "./src/js/ui/menus/home-menu.js";
 dashboardTab()
     
 import { createHome } from './src/js/ui/dashboard/dashboard-home.js'
-tab.createTab('Home', createHome, true)`
+tab.createTab('home', createHome, true)`
 
 const htmlEnd = `
 </script>

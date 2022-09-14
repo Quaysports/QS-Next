@@ -10,7 +10,7 @@ interface DeadStockProps {
     }>
 }
 
-export default function DeadStock(props: DeadStockProps) {
+export default function DeadStock() {
 
     const [supplier, setSupplier] = useState<string>(null)
     const [sideBarContent, setSideBarContent] = useState<Map<string, object>>(new Map<string, {}>())
@@ -70,7 +70,3 @@ export default function DeadStock(props: DeadStockProps) {
         </div>
     );
 }
-
-
-
-

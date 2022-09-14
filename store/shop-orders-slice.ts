@@ -59,7 +59,7 @@ export const shopOrdersSlice = createSlice({
             [HYDRATE]: (state, action) => {
                 return {
                     ...state,
-                    ...action.payload,
+                    ...action.payload.shopOrders,
                 };
             },
         },

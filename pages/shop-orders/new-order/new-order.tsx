@@ -26,7 +26,7 @@ interface orderAndPriceState {
     totalPrice: number
 }
 
-export default function NewOrder(props: newOrderProps) {
+export default function NewOrder() {
 
     const [supplierAndItems, setSupplierAndItems] = useState<supplierAndItemsState>({
         supplierItems: new Map<string, []>(),

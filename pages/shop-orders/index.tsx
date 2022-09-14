@@ -1,11 +1,13 @@
 import * as React from 'react';
-import {useEffect} from "react";
 import {appWrapper} from "../../store/store";
 import {useRouter} from "next/router";
 import {deadStockReport} from "../../server-modules/shop/shop";
-import {useDispatch} from "react-redux";
 import {setMenuOptions} from "../../store/menu-slice";
 import {setDeadStock} from "../../store/shop-orders-slice";
+import Orders from "./orders";
+import CompletedOrders from "./completed-orders/completed-orders";
+import NewOrder from "./new-order/new-order";
+import DeadStock from "./dead-stock/dead-stock";
 
 export interface item {
     IDBEP: { BRAND: string },
@@ -23,28 +25,28 @@ export interface item {
     newProduct: boolean
 }
 
-export default function ShopOrdersLandingPage(props) {
+export default function ShopOrdersLandingPage() {
 
     const router = useRouter()
-    const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(setMenuOptions(props.menuOptions))
-        dispatch(setDeadStock(props.deadStockList))
-        router.push("/shop-orders/orders")
-    }, [])
-
-    return null;
+    return (
+        <div>
+            {router.query.tab === undefined || router.query.tab === "orders" ? <Orders/> : null}
+            {router.query.tab === "completed-orders" ? <CompletedOrders/> : null}
+            {router.query.tab === "new-order" ? <NewOrder/> : null}
+            {router.query.tab === "dead-stock" ? <DeadStock/> : null}
+        </div>
+    );
 }
 
 //Builds an object to set the top menu. Key is the UI display, value folder location
 function buildMenu() {
     return (
         {
-            "Orders": "/dashboard/orders",
-            "Completed Orders": "/dashboard/completed-orders",
-            "New Order": "/dashboard/new-order",
-            "Dead Stock": "/dashboard/dead-stock",
+            "Orders": "shop-orders?tab=orders",
+            "Completed Orders": "shop-orders?tab=completed-orders",
+            "New Order": "shop-orders?tab=new-order",
+            "Dead Stock": "shop-orders?tab=dead-stock",
         }
     )
 }
@@ -61,8 +63,8 @@ export const getServerSideProps = appWrapper.getServerSideProps(
                 tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
             }
             const menuObject = buildMenu()
-            return {
-                props: {menuOptions: menuObject, deadStockList: tempObject}
-            }
+            await store.dispatch(setMenuOptions(menuObject))
+            await store.dispatch(setDeadStock(tempObject))
+            return void {}
         }
 )
