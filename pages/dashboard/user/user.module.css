@@ -1,0 +1,28 @@
+/*-----------------------------------User tab default styling---------------------------------------*/
+
+
+
+/*-----------------------------------User tab grid styling---------------------------------------*/
+.user-table{
+    width:900px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: var(--primary-table-background);
+    box-shadow: var(--primary-box-shadow);
+}
+.user-table-row{
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px;
+    padding:2px;
+    margin: 3px;
+    text-align: center;
+}
+
+.user-table-row input {
+    width:100%
+}
+
+.user-table-row select {
+    width:100%
+}

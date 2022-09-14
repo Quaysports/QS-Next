@@ -5,13 +5,13 @@ import {useRouter} from "next/router";
 import UserLandingPage from "./user";
 import HomeLandingPage from "./home";
 
-export default function Dashboard() {
+export default function Dashboard({props}) {
     const router = useRouter()
-
+    console.log(props)
     return(
         <div>
             {router.query.tab === undefined || router.query.tab === "home" ?  <HomeLandingPage/>: null}
-            {router.query.tab === "user" ?  <UserLandingPage/>: null}
+            {router.query.tab === "user" ?  <UserLandingPage />: null}
         </div>
     );
 }
@@ -68,6 +68,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(
     (store) =>
         async (context) => {
             const session = await getSession(context) as sessionObject
+            const params = context.params
             if(!session){
                 return {
                     redirect: {
@@ -77,6 +78,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(
                 }
             } else {
                 store.dispatch(setMenuOptions(setupMenu(session.user.permissions)))
-                return void{}
+                return {props:params}
             }
 })

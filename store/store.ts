@@ -4,6 +4,9 @@ import {incorrectStockSlice} from "./incorrect-stock-slice";
 import {dashboardSlice} from "./dashboard-slice";
 import {menuSlice} from "./menu-slice";
 import {shopOrdersSlice} from "./shop-orders-slice";
+import {popupSlice} from "./popup-slice";
+import {confirmSlice} from "./confirm-slice";
+import {alertSlice} from "./alert-slice";
 
 const myStore = () =>
     configureStore({
@@ -11,7 +14,10 @@ const myStore = () =>
             [shopOrdersSlice.name]: shopOrdersSlice.reducer,
             [incorrectStockSlice.name]: incorrectStockSlice.reducer,
             [dashboardSlice.name]: dashboardSlice.reducer,
-            [menuSlice.name]: menuSlice.reducer
+            [menuSlice.name]: menuSlice.reducer,
+            [popupSlice.name]: popupSlice.reducer,
+            [confirmSlice.name]: confirmSlice.reducer,
+            [alertSlice.name]: alertSlice.reducer
         },
         devTools: true,
     });

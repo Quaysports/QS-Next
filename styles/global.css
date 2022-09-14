@@ -1,6 +1,7 @@
 * {
     font-family: Roboto, Helvetica, Arial, sans-serif;
     scrollbar-width: thin;
+    box-sizing: border-box;
 }
 /*#019972*/
 :root{
@@ -13,6 +14,7 @@
 
     --primary-table-background:#484848;
     --primary-table-cell-background:#606060 ;
+    --primary-background: #2d2d2d;
 
     --primary-box-shadow: 1px 1px 2px 1px #1c1c1c;
 
@@ -22,9 +24,8 @@
 }
 
 body{
-    background: #2d2d2d;
+    background: var(--primary-background);
     color: whitesmoke;
-    box-sizing: border-box;
     margin: 0;
     cursor: default;
 }
@@ -66,7 +67,22 @@ input:focus-visible{
 input{
     accent-color: var(--primary-color);
 }
+/*-------------------------------Select default styles----------------------------------*/
 
+select{
+    text-align: center;
+    background-color: whitesmoke;
+    border: 2px solid var(--primary-table-cell-background);
+    border-radius: 5px;
+}
+
+select:focus-visible{
+    outline: none
+}
+
+select{
+    accent-color: var(--primary-color);
+}
 /*-------------------------------Top tab menu bar---------------------------------------------*/
 
 .menu-bar{
@@ -159,4 +175,3 @@ input{
 .center-align {
     text-align: center;
 }
-

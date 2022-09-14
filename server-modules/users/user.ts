@@ -1,11 +1,10 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
-import * as Core from '../core/core'
 import * as Config from '../../config/config.json'
 
 interface sessions {
     [key:string]:user
 }
-interface user {
+export interface user {
     _id?:string,
     username: string,
     pin?:string
@@ -57,12 +56,13 @@ export const token = (token: string) => {
     return Config.tokens[token]
 }
 
+
+//used in session auth
 export const login = async (user: string, password: string) => {
 
     const result = await mongoI.findOne<user>("Users",
         { username: { $eq: user }, password: { $eq: password }},
         {username: 1, role: 1, rota: 1, permissions: 1})
-
     if (result) {
         return { ...result, auth: true }
     } else {
@@ -70,8 +70,8 @@ export const login = async (user: string, password: string) => {
     }
 }
 
-export const getUsers = async (query: object) => {
-    return await mongoI.find<any>("Users", query)
+export const getUsers = async (query?: object) => {
+    return await mongoI.find<user>("Users", query)
 }
 
 export const getUsersHoliday = async (query: object) => {
