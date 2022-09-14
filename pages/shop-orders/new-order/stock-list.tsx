@@ -1,123 +1,65 @@
 import * as React from 'react';
-import {item} from "../landing-page/landing-page";
+import {item} from "../index";
 import {Fragment, useEffect, useState} from "react";
-import SearchBar from "../../search-bar/search-bar";
+import SearchBar from "../../../components/search-bar/index";
+import Image from "next/image";
+import {
+    orderObject, selectLowStockArray,
+    selectRadioButtons, selectRenderedArray,
+    selectSupplierFilter, selectSupplierItems,
+    selectThreshold, setChangeOrderArray, setInputChange, setLowStockArray, setRadioButtons, setRenderedArray,
+    setThreshold
+} from "../../../store/shop-orders-slice";
+import {useDispatch, useSelector} from "react-redux";
 
-interface LowStockListProps {
-    addToOrderArray: (item: item, index: number) => void;
-    supplier: string;
-    loadList: string;
-    supplierItems: Map<string, item[]>
-}
+export default function StockList() {
 
-interface radioButtonState {
-    lowStock: boolean,
-    allItems: boolean
-}
-
-interface thresholdAndArrayState {
-    supplier: string;
-    threshold: number;
-    renderedArray: item[];
-    lowStockArray: item[];
-    fullArray: item[];
-}
-
-export default function StockList(props: LowStockListProps) {
-
-    const [radioButtons, setRadioButtons] = useState<radioButtonState>({
-        lowStock: true,
-        allItems: false
-    })
-    const [thresholdAndArray, setThresholdAndArray] = useState<thresholdAndArrayState>({
-        supplier: props.supplier,
-        threshold: 50,
-        renderedArray: [],
-        lowStockArray: [],
-        fullArray: []
-    })
+    const dispatch = useDispatch()
+    const threshold = useSelector(selectThreshold)
+    const radioButtons = useSelector(selectRadioButtons)
+    const supplier = useSelector(selectSupplierFilter)
+    const supplierItems = useSelector(selectSupplierItems)
+    const lowStockArray = useSelector(selectLowStockArray)
+    const renderedArray = useSelector(selectRenderedArray)
 
     function thresholdHandler() {
-        setThresholdAndArray({
-            supplier: props.supplier,
-            threshold: thresholdAndArray.threshold + 50,
-            renderedArray: thresholdAndArray.renderedArray,
-            lowStockArray: thresholdAndArray.lowStockArray,
-            fullArray: thresholdAndArray.fullArray
-        })
+        dispatch(setThreshold((threshold + 50)))
     }
 
     useEffect(() => {
-        if (props.supplier) {
+        if (supplier) {
             let tempArray = []
-            props.supplierItems.get(props.supplier).forEach((value) => {
+            supplierItems[supplier].forEach((value) => {
                 if (value.lowStock) tempArray.push(value)
             })
-            setThresholdAndArray({
-                supplier: props.supplier,
-                threshold: 50,
-                renderedArray: tempArray,
-                lowStockArray: tempArray,
-                fullArray: props.supplierItems.get(props.supplier)
-            })
+            dispatch(setLowStockArray(tempArray))
+            dispatch(setRenderedArray(tempArray))
         }
-    }, [props.supplier, props.supplierItems])
+    }, [supplier, supplierItems])
 
     function radioButtonsHandler(checked: boolean, box: string) {
         if (box === "lowStock" && checked) {
-            setRadioButtons({lowStock: true, allItems: false})
-            setThresholdAndArray({
-                supplier: props.supplier,
-                threshold: 50,
-                renderedArray: thresholdAndArray.lowStockArray,
-                lowStockArray: thresholdAndArray.lowStockArray,
-                fullArray: thresholdAndArray.fullArray
-            })
+            dispatch(setRadioButtons({lowStock: true, allItems: false}))
+            dispatch(setRenderedArray(lowStockArray))
+            dispatch(setThreshold(50))
         }
         if (box === "allItems" && checked) {
             setRadioButtons({lowStock: false, allItems: true})
-            setThresholdAndArray({
-                supplier: props.supplier,
-                threshold: 50,
-                renderedArray: thresholdAndArray.fullArray,
-                lowStockArray: thresholdAndArray.lowStockArray,
-                fullArray: thresholdAndArray.fullArray
-            })
+            dispatch(setRadioButtons({lowStock: true, allItems: false}))
+            dispatch(setRenderedArray(supplierItems))
+            dispatch(setThreshold(50))
         }
     }
 
     function inputChangeHandler(value, key, index) {
-        let tempArray
-        if (radioButtons.lowStock) {
-            tempArray = thresholdAndArray.lowStockArray
-            if (key === "qty") tempArray[index].qty = Number(value);
-            if (key === "tradePack") tempArray[index].tradePack = Number(value);
-            setThresholdAndArray({
-                supplier: thresholdAndArray.supplier,
-                threshold: thresholdAndArray.threshold,
-                renderedArray: thresholdAndArray.renderedArray,
-                lowStockArray: tempArray,
-                fullArray: thresholdAndArray.fullArray
-            })
-        }
-        if (radioButtons.allItems) {
-            tempArray = thresholdAndArray.renderedArray
-            if (key === "qty") tempArray[index].qty = Number(value);
-            if (key === "tradePack") tempArray[index].tradePack = Number(value);
-            setThresholdAndArray({
-                supplier: thresholdAndArray.supplier,
-                threshold: thresholdAndArray.threshold,
-                renderedArray: tempArray,
-                lowStockArray: thresholdAndArray.lowStockArray,
-                fullArray: thresholdAndArray.fullArray
-            })
-        }
+        dispatch(setInputChange({key: key, index:index, value:value}))
+
     }
 
     function addToOrderHandler(SKU: string, index:number) {
-        let lowStockIndex = thresholdAndArray.lowStockArray.findIndex(item => item.SKU === SKU)
-        let fullStockIndex = thresholdAndArray.fullArray.findIndex(item => item.SKU === SKU)
-        props.addToOrderArray(thresholdAndArray.renderedArray[index], fullStockIndex)
+        let lowStockIndex = lowStockArray.findIndex(item => item.SKU === SKU)
+        let fullStockIndex = supplierItems.findIndex(item => item.SKU === SKU)
+        dispatch(setChangeOrderArray({item:renderedArray[index], type: "add", index:fullStockIndex}))
         if(lowStockIndex >= 0) thresholdAndArray.lowStockArray.splice(lowStockIndex, 1)
     }
 
@@ -134,15 +76,15 @@ export default function StockList(props: LowStockListProps) {
                 <span className={"center-align"}>{item.MINSTOCK} </span>
                 <span>{item.SKU} </span>
                 <span>{item.TITLE} </span>
-                <input value={thresholdAndArray.renderedArray[index].qty} onChange={(e) => {
+                <input value={renderedArray[index].qty} onChange={(e) => {
                     inputChangeHandler(e.target.value, "qty", index)
                 }}/>
-                <input value={thresholdAndArray.renderedArray[index].tradePack} onChange={(e) => {
+                <input value={renderedArray[index].tradePack} onChange={(e) => {
                     inputChangeHandler(e.target.value, "tradePack", index)
                 }}/>
                 <span className={"center-align"}>£{item.PURCHASEPRICE.toFixed(2)}</span>
                 <span className={"dead-stock-image-parent"}>{item.deadStock ?
-                    <img key={item.SKU + 9} src={require("../../images/dead-stock-icon.webp")}
+                    <Image key={item.SKU + 9} src="../../../public/dead-stock-icon.webp"
                          alt={"dead-stock-icon"}/> : ""}</span>
             </div>
         )
@@ -156,7 +98,7 @@ export default function StockList(props: LowStockListProps) {
 
     function buildList() {
         let tempArray = []
-        for (let i = 0; i < thresholdAndArray.renderedArray.length; i++) {
+        for (let i = 0; i < renderedArray.length; i++) {
             let allItems = false
             if (i === thresholdAndArray.threshold && i < thresholdAndArray.renderedArray.length) allItems = true
             tempArray.push(buildListRow(thresholdAndArray.renderedArray[i], i, allItems))

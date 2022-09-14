@@ -11,12 +11,12 @@ export default function SideBar() {
     function buildSideBar(){
         let elementArray = []
         let i = 0
-        for(const order of Object.keys(sideBarContent.content)){
+        for(const key of Object.keys(sideBarContent.content)){
             elementArray.push(
-                <div className={`${styles["sidebar-rows"]} ${"button"}`} key={i} onClick={() =>  dispatch(setSupplierFilter(sideBarContent.content[order]))
+                <div className={`${styles["sidebar-rows"]} ${"button"}`} key={i} onClick={() =>  dispatch(setSupplierFilter(key))
                 }>
-                    <span>{order}</span>
-                    <span>({sideBarContent.content[order].toString()})</span>
+                    <span>{key}</span>
+                    <span>({sideBarContent.content[key].toString()})</span>
                 </div>
             )
             i++

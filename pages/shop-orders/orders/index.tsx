@@ -48,7 +48,7 @@ export default function Orders() {
                 let tempObject = {}
                 let i = 0
                 for (const order of openOrders) {
-                    tempObject[order.id] = order
+                    tempObject[(i + 1).toString() + " - " + openOrders[i].supplier] = order
                     i++
                 }
                 dispatch(setOpenOrders(tempObject))

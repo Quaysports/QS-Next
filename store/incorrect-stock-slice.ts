@@ -1,4 +1,4 @@
-import {combineReducers, createSlice, current} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 
 export interface IncorrectStockItem {

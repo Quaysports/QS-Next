@@ -6,7 +6,7 @@ import {setMenuOptions} from "../../store/menu-slice";
 import {setDeadStock} from "../../store/shop-orders-slice";
 import Orders from "./orders";
 import CompletedOrders from "./completed-orders/completed-orders";
-import NewOrder from "./new-order/new-order";
+import NewOrder from "./new-order/index";
 import DeadStock from "./dead-stock/dead-stock";
 
 export interface item {
