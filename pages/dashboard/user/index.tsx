@@ -4,7 +4,7 @@ import style from './user.module.css'
 import Popup from "../../../components/popup";
 import {setShowPopup} from "../../../store/popup-slice";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUsers, setAllUserData, setUserData} from "../../../store/dashboard/user-slice";
+import {deleteUser, selectUsers, setAllUserData, setUserData} from "../../../store/dashboard/user-slice";
 import PermissionsPopup from "./permissions-popup";
 import {setShowConfirm} from "../../../store/confirm-slice";
 import Confirm from "../../../components/confirm";
@@ -65,15 +65,12 @@ export default function UserLandingPage() {
 
         for (const [index, user] of Object.entries(userInfo)) {
 
-            function deleteUser(){
-                console.log("deleting "+index)
-            }
 
             const userPermissionsPopup = <PermissionsPopup index={index}/>
 
             userArray.push(<div key={index} className={style["user-table-row"]}>
                 <span><button onClick={() => {
-                    setConfirmOptions({title:"Delete User", text:"Are you sure you wish to delete this user?", fn:deleteUser})
+                    setConfirmOptions({title:"Delete User", text:"Are you sure you wish to delete this user?", fn:()=> dispatch(deleteUser({index:index}))})
                     dispatch(setShowConfirm(true))
                 }
                 }>X</button></span>
@@ -102,7 +99,7 @@ export default function UserLandingPage() {
     return (
         <div>
             {Confirm(confirmOptions)}
-            {Popup('User Permissions', popupContent)}
+            {Popup({title:'User Permissions', content:popupContent})}
             <div className={style["user-table"]}>
                 {createTable()}
             </div>

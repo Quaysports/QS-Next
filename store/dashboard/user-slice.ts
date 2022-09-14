@@ -34,12 +34,16 @@ export const userSlice = createSlice({
                 state.usersArray[action.payload.index].permissions[action.payload.key] = action.payload.data
                 const opt = {method:'POST', body: JSON.stringify(state.usersArray[action.payload.index])}
                 fetch('/api/user/update-user', opt)
+            },
+            deleteUser:(state, action:PayloadAction<{index:string}>)=>{
+                const opt = {method:'POST', body: JSON.stringify(state.usersArray[action.payload.index])}
+                fetch('/api/user/delete-user', opt).then(()=>window.location.reload())
             }
         },
     })
 ;
 
-export const {setUserData, setAllUserData, setUserPermissions} = userSlice.actions
+export const {setUserData, setAllUserData, setUserPermissions, deleteUser} = userSlice.actions
 
 export const selectUsers = (state:userWrapper) => state.users.usersArray
 

@@ -99,6 +99,10 @@ export const updateUser = async (data: user) => {
     return await mongoI.setData("Users", {username: {$eq: data.username}}, data)
 }
 
+export const deleteUser = async (data: user) => {
+    return await mongoI.deleteOne("Users", {username: {$eq: data.username}})
+}
+
 export const getAllExistingCalendars = async (req: { location: string; }) => {
     return await mongoI.find<any>("Holiday-Calendar", {location: req.location}, {year: 1})
 }
