@@ -20,10 +20,8 @@ export default NextAuth({
                 },
                 password: { label: 'Password', type: 'password' }
             },
-            async authorize(credentials, req) {
-                console.log(credentials)
+            async authorize(credentials) {
                 const user = await login(credentials.username, credentials.password)
-                console.log(user)
                 if (!user.auth) {
                     throw new Error(user.exception);
                 } else {
@@ -45,6 +43,7 @@ export default NextAuth({
                     permissions:user.permissions,
                     role:user.role,
                     rota:user.rota,
+                    theme:user.theme,
                     accessToken: user.token,
                     refreshToken: user.refreshToken,
                 };
@@ -53,11 +52,12 @@ export default NextAuth({
             return token;
         },
 
-        async session({ session, user, token }) {
+        async session({ session, token }) {
             session.user.username = token.username;
             session.user.permissions = token.permissions;
             session.user.role = token.role;
             session.user.rota = token.rota;
+            session.user.theme = token.theme;
             session.user.accessToken = token.accessToken;
             session.user.refreshToken = token.refreshToken;
             session.user.accessTokenExpires = token.accessTokenExpires;

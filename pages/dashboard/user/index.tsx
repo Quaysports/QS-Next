@@ -57,7 +57,7 @@ export default function UserLandingPage() {
 
         const selectOptions = (values) => {
             const options = []
-            for (const value of values) options.push(<option value={value}>{value}</option>)
+            for (const value of values) options.push(<option key={options.length} value={value}>{value}</option>)
             return options
         }
 

@@ -5,9 +5,9 @@ import {useRouter} from "next/router";
 import UserLandingPage from "./user";
 import HomeLandingPage from "./home";
 
-export default function Dashboard({props}) {
+export default function Dashboard() {
     const router = useRouter()
-    console.log(props)
+
     return(
         <div>
             {router.query.tab === undefined || router.query.tab === "home" ?  <HomeLandingPage/>: null}
@@ -58,6 +58,7 @@ interface sessionObject {
         image?: string;
         username?: string
         permissions?: { [key: string]: { auth: boolean, label: string } }
+        theme?:{[key:string]:string}
         role?: string,
         rota?: string
     }
@@ -68,7 +69,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(
     (store) =>
         async (context) => {
             const session = await getSession(context) as sessionObject
-            const params = context.params
+
             if(!session){
                 return {
                     redirect: {
@@ -78,6 +79,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(
                 }
             } else {
                 store.dispatch(setMenuOptions(setupMenu(session.user.permissions)))
-                return {props:params}
+                return void {}
             }
 })

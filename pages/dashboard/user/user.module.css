@@ -9,7 +9,9 @@
     padding: 10px;
     background-color: var(--primary-table-background);
     box-shadow: var(--primary-box-shadow);
+    border-radius: 5px;
 }
+
 .user-table-row{
     display: grid;
     grid-column-gap: 10px;
