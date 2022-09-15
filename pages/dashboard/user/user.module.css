@@ -29,6 +29,13 @@
     width:100%
 }
 
+.add-user-button{
+    position: relative;
+    top: -5px;
+    left: -28px;
+    width: 124px;
+}
+
 /*-----------------------------------User permission popup grid styling---------------------------------------*/
 .permission-table{
     display:grid;

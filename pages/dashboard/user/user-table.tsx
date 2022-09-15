@@ -33,22 +33,24 @@ export default function UserTable({userInfo, confirmContentHandler, popupContent
     }
 
     const userArray = [<div key="title" className={style["user-table-row"]}>
-        <div></div>
-        <button onClick={() => {
+        <span></span>
+        <span><button
+            className={style["add-user-button"]}
+            onClick={() => {
             popupContentHandler({
                 title: "Create User",
                 content: <CreateUser />
             })
             dispatch(setShowPopup(true))
         }}>Add User
-        </button>
-        <div>Username</div>
-        <div>Role</div>
-        <div>Rota</div>
-        <div>Holiday</div>
-        <div>Password</div>
-        <div>Pin</div>
-        <div>User Colour</div>
+        </button></span>
+        <span>Username</span>
+        <span>Role</span>
+        <span>Rota</span>
+        <span>Holiday</span>
+        <span>Password</span>
+        <span>Pin</span>
+        <span>User Colour</span>
     </div>]
 
     const selectOptions = (values) => {
@@ -63,7 +65,7 @@ export default function UserTable({userInfo, confirmContentHandler, popupContent
         console.log(user)
         userArray.push(
             <div key={index} className={style["user-table-row"]}>
-                <button onClick={() => {
+                <span><button onClick={() => {
                     confirmContentHandler({
                         title: "Delete User",
                         text: "Are you sure you wish to delete this user?",
@@ -71,31 +73,31 @@ export default function UserTable({userInfo, confirmContentHandler, popupContent
                     })
                     dispatch(setShowConfirm(true))
                 }}>X
-                </button>
+                </button></span>
 
-                <button onClick={() => {
+                <span><button onClick={() => {
                     popupContentHandler({
                         title: "User Permissions",
                         content: <PermissionsPopup index={index}/>
                     })
                     dispatch(setShowPopup(true))
                 }}>Permissions
-                </button>
+                </button></span>
 
-                <input type="text" defaultValue={user.username} onBlur={(e) => updateUserData(index, "username", e.target.value)}/>
+                <span><input type="text" defaultValue={user.username} onBlur={(e) => updateUserData(index, "username", e.target.value)}/></span>
 
-                <select defaultValue={user.role} onChange={(e) => updateUserData(index, "role", e.target.value)}>
+                <span><select defaultValue={user.role} onChange={(e) => updateUserData(index, "role", e.target.value)}>
                     {selectOptions(['admin', 'senior', 'user'])}
-                </select>
+                </select></span>
 
-                <select defaultValue={user.rota} onChange={(e) => updateUserData(index, "rota", e.target.value)}>
+                <span><select defaultValue={user.rota} onChange={(e) => updateUserData(index, "rota", e.target.value)}>
                     {selectOptions(['online', 'shop'])}
-                </select>
+                </select></span>
 
-                <input type="number" defaultValue={user.holiday} onBlur={(e) => updateUserData(index, "holiday", e.target.value)}/>
-                <input type="text" defaultValue={user.password} onBlur={(e) => updateUserData(index, "password", e.target.value)}/>
-                <input defaultValue={user.pin} pattern="^[0-9]{4}$" onBlur={(e) => verifyPin(index, "pin", e)}/>
-                <input type="color" defaultValue={user.colour} onBlur={(e) => updateUserData(index, "colour", e.target.value)}/>
+                <span><input type="number" defaultValue={user.holiday} onBlur={(e) => updateUserData(index, "holiday", e.target.value)}/></span>
+                <span><input type="text" defaultValue={user.password} onBlur={(e) => updateUserData(index, "password", e.target.value)}/></span>
+                <span><input defaultValue={user.pin} pattern="^[0-9]{4}$" onBlur={(e) => verifyPin(index, "pin", e)}/></span>
+                <span><input type="color" defaultValue={user.colour} onBlur={(e) => updateUserData(index, "colour", e.target.value)}/></span>
             </div>
         )
     }
