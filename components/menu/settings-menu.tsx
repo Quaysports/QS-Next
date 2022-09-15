@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {setShowPopup} from "../../store/popup-slice";
+import {setShowPopup} from "../../store/components/popup-slice";
 import CustomisationPopup from "./customisation-popup";
 
 export default function SettingsMenu({showSettingsMenu, settingsMenuHandler, popupContent}) {
