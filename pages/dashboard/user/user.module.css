@@ -38,3 +38,10 @@
 .permission-table-title{
     padding-bottom: 4px;
 }
+
+/*-----------------------------------Create user popup grid styling---------------------------------------*/
+.create-user-grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 10px;
+}

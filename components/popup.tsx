@@ -5,7 +5,7 @@ import {selectShowPopup, setShowPopup} from "../store/popup-slice";
 export default function Popup(options:{title:string, content:JSX.Element | JSX.Element[]}){
     const show = useSelector(selectShowPopup)
     const dispatch = useDispatch()
-    if(show){
+    if(show && options){
         return(
             <div className={style['fullscreen-dim']}>
                 <div className={style['popup-frame']}>

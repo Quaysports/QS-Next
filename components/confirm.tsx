@@ -12,7 +12,7 @@ export default function Confirm(options:{title:string,text:string,fn:Function}){
                     <div className={style['confirm-title']}>{options.title}</div>
                     <div className={style['confirm-text']}>{options.text}</div>
                     <div className={style['confirm-buttons']}>
-                        <button onClick={()=>{options.fn();dispatch(setShowConfirm(false))}}>Yes</button>
+                        <button onClick={()=>{options.fn(); dispatch(setShowConfirm(false))}}>Yes</button>
                         <button onClick={()=> dispatch(setShowConfirm(false))}>No</button>
                     </div>
                 </div>
