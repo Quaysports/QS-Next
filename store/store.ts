@@ -4,10 +4,11 @@ import {incorrectStockSlice} from "./incorrect-stock-slice";
 import {dashboardSlice} from "./dashboard-slice";
 import {menuSlice} from "./menu-slice";
 import {shopOrdersSlice} from "./shop-orders-slice";
-import {popupSlice} from "./popup-slice";
-import {confirmSlice} from "./confirm-slice";
-import {alertSlice} from "./alert-slice";
+import {popupSlice} from "./components/popup-slice";
+import {confirmSlice} from "./components/confirm-slice";
+import {alertSlice} from "./components/alert-slice";
 import {userSlice} from "./dashboard/user-slice";
+import {searchBarSlice} from "./components/search-bar-slice";
 
 const myStore = () =>
     configureStore({
@@ -19,7 +20,8 @@ const myStore = () =>
             [popupSlice.name]: popupSlice.reducer,
             [confirmSlice.name]: confirmSlice.reducer,
             [alertSlice.name]: alertSlice.reducer,
-            [userSlice.name]:userSlice.reducer
+            [userSlice.name]:userSlice.reducer,
+            [searchBarSlice.name]: searchBarSlice.reducer
         },
         devTools: true,
     });

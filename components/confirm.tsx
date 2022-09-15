@@ -1,6 +1,6 @@
 import style from '../styles/confirm-component.module.css'
 import {useDispatch, useSelector} from "react-redux";
-import {selectShowConfirm, setShowConfirm} from "../store/confirm-slice";
+import {selectShowConfirm, setShowConfirm} from "../store/components/confirm-slice";
 
 export default function Confirm(options:{title:string,text:string,fn:Function}){
     const show = useSelector(selectShowConfirm)

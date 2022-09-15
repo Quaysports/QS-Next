@@ -92,12 +92,7 @@
 
 .dead-stock-image-parent{
     display: grid;
-}
-
-.dead-stock-image-parent > img{
-    max-height: 22px;
-    max-width: 22px;
-    justify-self: center;
+    justify-items: center;
 }
 
 /*------------------------------------Table grid sizes----------------------------------------*/
@@ -151,17 +146,12 @@
     border-radius: 5px;
     width:150px;
     padding: 3px;
+    float: right;
+    margin-right: 7px
 }
 
 #add-new-item-container{
-    padding: 10px;
-    position: absolute;
-    top: 20vh;
-    left: calc(50vw - (350px/2));
     width: 350px;
-    opacity: 1;
-    background-color: var(--primary-table-cell-background);
-    border-radius: 5px;
 }
 
 #add-new-item-container > div {

@@ -10,9 +10,9 @@ export default function Menu() {
 
     const menuOptions = useSelector(selectMenuOptions)
 
-    const [popupContent, setPopupContent] = useState(null)
+    const [popupContent, setPopupContent] = useState({title:"", content:null, show:false})
     function popupContentHandler({title, content}) {
-        setPopupContent({title:title, content:content})
+        setPopupContent({title:title, content:content, show:true})
     }
 
     const [showAppsMenu, setShowAppsMenu] = useState<boolean>(false)
