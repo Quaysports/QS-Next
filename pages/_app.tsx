@@ -4,13 +4,13 @@ import {appWrapper} from "../store/store";
 import Menu from "../components/menu/menu";
 import {useRouter} from 'next/router'
 import {SessionProvider} from "next-auth/react";
-import Theme from './theme'
+import UserSetup from './user-setup'
 
 function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
     const router = useRouter()
     return (
             <SessionProvider session={session}>
-                <Theme {...pageProps}/>
+                <UserSetup {...pageProps}/>
                 {router.pathname !== "/login" ? <Menu/> : null}
                 <Component {...pageProps}></Component>
             </SessionProvider>

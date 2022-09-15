@@ -51,24 +51,10 @@ function setupMenu(data) {
     return menuObject
 }
 
-interface sessionObject {
-    user: {
-        name?: string;
-        email?: string;
-        image?: string;
-        username?: string
-        permissions?: { [key: string]: { auth: boolean, label: string } }
-        theme?:{[key:string]:string}
-        role?: string,
-        rota?: string
-    }
-    expires: string
-}
-
 export const getServerSideProps = appWrapper.getServerSideProps(
     (store) =>
         async (context) => {
-            const session = await getSession(context) as sessionObject
+            const session = await getSession(context) as server.sessionObject
 
             if(!session){
                 return {

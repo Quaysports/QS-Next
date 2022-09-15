@@ -1,27 +1,26 @@
 import {useEffect, useState} from "react";
-import {signOut, useSession} from "next-auth/react";
+import {signOut} from "next-auth/react";
 import style from './customisation-popup.module.css'
+import {useSelector} from "react-redux";
+import {activeUser} from "../../store/dashboard/user-slice";
 
 export default function CustomisationPopup() {
-    const {data: session, status} = useSession()
+
+    const user = useSelector(activeUser)
     const [primaryColor, setPrimaryColor] = useState("#586221")
-    const [sessionData, setSessionData] = useState(null)
 
     useEffect(() => {
-        if (status !== "authenticated") return
-        setSessionData(session)
-        if (sessionData === null || !sessionData.user.theme) return
-        if (sessionData.user.theme['--primary-color']) setPrimaryColor(sessionData.user.theme['--primary-color'])
+        if (user?.theme?.['--primary-color']) setPrimaryColor(user.theme['--primary-color'])
     })
 
     async function handleColorChange(key, e) {
-        const data = {...{username: sessionData.user.username}, ...{theme: {[key]: e.target.value}}}
+        const data = {...{username: user.username}, ...{theme: {[key]: e.target.value}}}
         const opts = {method: "POST", body: JSON.stringify(data)}
         await fetch('/api/user/update-user', opts)
     }
 
     async function resetTheme() {
-        const data = {...{username: sessionData.user.username}, ...{theme: {}}}
+        const data = {...{username: user.username}, ...{theme: {}}}
         const opts = {method: "POST", body: JSON.stringify(data)}
         await fetch('/api/user/update-user', opts)
     }
