@@ -5,7 +5,6 @@ export default function Home() {return null};
 export async function getServerSideProps(context) {
     const session = await getSession(context)
     if(session) {
-        console.log(session)
         return {
             redirect: {
                 destination: '/dashboard',

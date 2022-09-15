@@ -85,6 +85,13 @@ select{
 }
 /*-------------------------------Top tab menu bar---------------------------------------------*/
 
+.menu-bar-wrapper{
+    display: grid;
+    grid-template-columns: 38px 1fr 38px;
+    background-color: var(--primary-color);
+    align-items: center;
+}
+
 .menu-bar{
     display: flex;
     background-color: var(--primary-color);
@@ -114,6 +121,19 @@ select{
 
 /*--------------------------------------Apps menu-----------------------------------------*/
 
+#apps-button{
+    padding-left: 10px;
+    color: var(--primary-inactive-text);
+    font-weight: bold;
+    font-size: 26px;
+    border-right: 1px solid var(--primary-inactive-text)
+}
+
+#apps-button:hover{
+    color: var(--primary-active-text);
+    cursor: pointer;
+}
+
 #apps-menu{
     margin: 2px 3px;
     display: grid;
@@ -121,6 +141,7 @@ select{
     width: 170px;
     background-color: var(--primary-color);
     position: absolute;
+    top:30px;
     box-shadow: var(--primary-box-shadow);
     border-radius: 5px;
 }
@@ -147,12 +168,82 @@ select{
     padding: 10px;
 }
 
+#apps-menu div:hover{
+    border-radius: 5px;
+    background:var(--primary-table-background)
+}
+
+
 #apps-menu a{
     text-decoration: none;
     color: var(--primary-inactive-text)
 }
 
 #apps-menu a:hover{
+    background:var(--primary-table-cell-background);
+    color: var(--primary-active-text);
+}
+
+/*--------------------------------------Settings menu-----------------------------------------*/
+
+#settings-button{
+    padding-left: 10px;
+    color: var(--primary-inactive-text);
+    font-weight: bold;
+    font-size: 20px;
+    border-left: 1px solid var(--primary-inactive-text)
+}
+
+#settings-button:hover{
+    color: var(--primary-active-text);
+    cursor: pointer;
+}
+
+#settings-menu{
+    margin: 2px 3px;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 35px);
+    width: 170px;
+    background-color: var(--primary-color);
+    position: absolute;
+    top:30px;
+    right:0;
+    box-shadow: var(--primary-box-shadow);
+    border-radius: 5px;
+}
+
+#settings-menu > span {
+    display: grid;
+    grid-template-columns: 90% 1fr;
+    font-weight: bold;
+    background-color: var(--primary-table-background);
+    height: 25px;
+    padding:5px 10px;
+    margin: 2px;
+    align-content: center;
+    border-radius: 5px;
+}
+
+#settings-menu button {
+    float: right;
+    width: 18px;
+    height: 19px;
+}
+
+#settings-menu div {
+    padding: 10px;
+}
+#settings-menu div:hover{
+    border-radius: 5px;
+    background:var(--primary-table-background)
+}
+
+#settings-menu a{
+    text-decoration: none;
+    color: var(--primary-inactive-text)
+}
+
+#settings-menu a:hover{
     color: var(--primary-active-text);
 }
 

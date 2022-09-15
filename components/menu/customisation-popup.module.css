@@ -1,0 +1,12 @@
+.colours-table{
+    display:grid;
+    grid-template-columns: 60px 1fr;
+    align-items: center;
+}
+.buttons {
+    display: grid;
+    grid-column-gap: 100px;
+    justify-content: center;
+    grid-template-columns: 100px 100px;
+    padding-top:10px;
+}

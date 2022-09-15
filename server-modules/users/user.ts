@@ -73,7 +73,7 @@ export const login = async (user: string, password: string) => {
 
     const result = await mongoI.findOne<user>("Users",
         {username: {$eq: user}, password: {$eq: password}},
-        {username: 1, role: 1, rota: 1, permissions: 1})
+        {username: 1, role: 1, rota: 1, permissions: 1, theme:1})
     if (result) {
         return {...result, auth: true}
     } else {
