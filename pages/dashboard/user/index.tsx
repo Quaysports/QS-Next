@@ -2,11 +2,11 @@ import {useEffect, useState, FocusEvent} from "react";
 import {user} from "../../../server-modules/users/user";
 import style from './user.module.css'
 import Popup from "../../../components/popup";
-import {setShowPopup} from "../../../store/popup-slice";
+import {selectShowPopup, setShowPopup} from "../../../store/components/popup-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteUser, selectUsers, setAllUserData, setUserData} from "../../../store/dashboard/user-slice";
 import PermissionsPopup from "./permissions-popup";
-import {setShowConfirm} from "../../../store/confirm-slice";
+import {setShowConfirm} from "../../../store/components/confirm-slice";
 import Confirm from "../../../components/confirm";
 
 export default function UserLandingPage() {
@@ -15,6 +15,7 @@ export default function UserLandingPage() {
     const [confirmOptions, setConfirmOptions] = useState({title:"",text:"",fn:()=>{}})
     const userInfo = useSelector(selectUsers)
     const dispatch = useDispatch()
+    const show = useSelector(selectShowPopup)
 
     useEffect(() => {
         fetch('/api/user/get-user')
@@ -99,7 +100,7 @@ export default function UserLandingPage() {
     return (
         <div>
             {Confirm(confirmOptions)}
-            {Popup({title:'User Permissions', content:popupContent})}
+            {Popup({title:'User Permissions', content:popupContent, show:show})}
             <div className={style["user-table"]}>
                 {createTable()}
             </div>

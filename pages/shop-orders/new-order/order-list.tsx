@@ -1,21 +1,24 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Popup from "../../../components/popup";
 import {
     orderObject, selectEditOrder,
     selectNewOrderArray,
-    selectSupplierFilter,
+    selectSupplierFilter, selectSupplierItems,
     selectTotalPrice,
-    setChangeOrderArray, setEditOrder, setNewOrderArray, setTotalPrice
+    setChangeOrderArray, setChangeOrderQty, setEditOrder, setNewOrderArray, setTotalPrice
 } from "../../../store/shop-orders-slice";
-import {setShowPopup} from "../../../store/popup-slice";
+import {selectShowPopup, setShowPopup} from "../../../store/components/popup-slice";
+import styles from "../shop-orders.module.css"
 
 export default function OrderList() {
 
+    const show = useSelector(selectShowPopup)
     const newOrderArray = useSelector(selectNewOrderArray)
     const totalPrice = useSelector(selectTotalPrice)
     const supplier = useSelector(selectSupplierFilter)
     const editOrder = useSelector(selectEditOrder)
+    const supplierItems = useSelector(selectSupplierItems)
     const dispatch = useDispatch()
 
     function saveOrder() {
@@ -64,7 +67,7 @@ export default function OrderList() {
         return (<Fragment>
                 {newOrderArray.map((item, index) => {
                     return (
-                        <div key={item.SKU} className="shop-orders-table shop-orders-table-cells order-list-grid">
+                        <div key={item.SKU} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["order-list-grid"]}`}>
                             <button onClick={() => {
                                 dispatch(setChangeOrderArray({item: item, type: "remove", index: index}))
                             }}>⇅
@@ -89,9 +92,7 @@ export default function OrderList() {
     }
 
     function changeInputAmountHandler(item: orderObject, index: number, value: string, type: string) {
-        if (type === "qty") item.qty = parseFloat(value)
-        if (type === "tradePack") item.tradePack = parseFloat(value)
-        dispatch(setChangeOrderArray({item: item, type: "add", index: index, qtyChange: true}))
+        dispatch(setChangeOrderQty({item: item,  index: index, value: value, type: type}))
     }
 
     let newProduct: orderObject = {
@@ -111,33 +112,36 @@ export default function OrderList() {
         arrived: 0
     }
     let tempArray = [
-        <div id={"add-new-item-container"}>
+        <div id={styles["add-new-item-container"]}>
             <div>SKU:<input onChange={(e) => newProduct.SKU = e.target.value}/></div>
             <div>Title:<input onChange={(e) => newProduct.TITLE = e.target.value}/></div>
             <div>
                 <button
                     onClick={() => {dispatch(setChangeOrderArray({item: newProduct, type: "add", index: null})); dispatch(setShowPopup(false))}}>Submit
                 </button>
-                <button id={"add-new-item-container-cancel-button"} onClick={() => dispatch(setShowPopup(false))}>Cancel</button>
+                <button id={styles["add-new-item-container-cancel-button"]} onClick={() => dispatch(setShowPopup(false))}>Cancel</button>
             </div>
         </div>
     ]
 
-    if (supplier) {
+    function popUpHandler(){
+        dispatch(setShowPopup(true))
+    }
+
         return (
-            <div className="shop-orders-table-containers">
-                <div className="table-title-container">
+            <div className={styles["shop-orders-table-containers"]}>
+                <div className={styles["table-title-container"]}>
                     <span>Order List</span>
-                    <span className={"primary-buttons"}>
+                    <span className={styles["primary-buttons"]}>
                             <button onClick={() => saveOrder()}>Save</button>
                         </span>
-                    <span className={"primary-buttons"}>
-                            <button onClick={() => dispatch(setShowPopup(true))}>Add New Item</button>
+                    <span className={styles["primary-buttons"]}>
+                            <button onClick={popUpHandler}>Add New Item</button>
                         </span>
-                    <span id={"order-total"}
-                          style={{float: "right"}}>Total Order: £{totalPrice.toFixed(2)}</span>
+                    <span id={styles["order-total"]}
+                          >Total Order: £{totalPrice.toFixed(2)}</span>
                 </div>
-                <div className="shop-orders-table order-list-grid">
+                <div className={`${styles["shop-orders-table"]} ${styles["order-list-grid"]}`}>
                     <span/>
                     <span className={"center-align"}>Stock</span>
                     <span className={"center-align"}>Min</span>
@@ -149,8 +153,8 @@ export default function OrderList() {
                     <span/>
                 </div>
                 {currentOrderList()}
-                {Popup({title: "New Item", content: tempArray})}
+                {Popup({title: "New Item", content: tempArray, show:show})}
             </div>
         )
-    }
+
 }

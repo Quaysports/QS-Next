@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 
 export interface OpenOrdersObject {
@@ -27,6 +27,7 @@ export interface orderObject {
     PURCHASEPRICE: number
     deadStock?: boolean
     newProduct?: boolean
+    lowStock?: boolean
 }
 
 interface ShopOrdersState {
@@ -63,10 +64,10 @@ const initialState: ShopOrdersState = {
     editOrder: null,
     newOrderArray: [],
     totalPrice: 0,
-    supplierItems: null,
+    supplierItems: [],
     radioButtons: {
-        lowStock: false,
-        allItems: true
+        lowStock: true,
+        allItems: false
     },
     renderedArray: [],
     lowStockArray: [],
@@ -95,6 +96,7 @@ export const shopOrdersSlice = createSlice({
             },
             setSupplierFilter: (state, action) => {
                 state.supplierFilter = action.payload
+                console.log(current(state))
             },
             setLoadedOrder: (state, action) => {
                 state.loadedOrder = action.payload
@@ -130,23 +132,21 @@ export const shopOrdersSlice = createSlice({
             setSupplierItems: (state, action) => {
                 state.supplierItems = action.payload
             },
-            setChangeOrderArray: (state, action: PayloadAction<{ item: orderObject, type: string, index: number, qtyChange?: boolean }>) => {
-                let quantity = (action.payload.item.qty ? action.payload.item.qty : action.payload.item.qty = 1) * (action.payload.item.tradePack ? action.payload.item.tradePack : action.payload.item.qty = 1)
-                let price = quantity * action.payload.item.PURCHASEPRICE
+            setChangeOrderQty:(state, action:PayloadAction<{item: orderObject, type:string, index:number, value:string}>) => {
+                if (action.payload.type === "qty") state.newOrderArray[action.payload.index].qty = parseFloat(action.payload.value)
+                if (action.payload.type === "tradePack") state.newOrderArray[action.payload.index].tradePack = parseFloat(action.payload.value)
+                state.totalPrice = totalPriceCalc(state.newOrderArray)
+            },
+            setChangeOrderArray: (state, action: PayloadAction<{ item: orderObject, type: string, index: number}>) => {
                 if (action.payload.type === "remove") {
                     state.newOrderArray.splice(action.payload.index, 1)
-                    state.totalPrice = parseFloat((state.totalPrice - price).toFixed(2))
                     state.supplierItems.push(action.payload.item)
                 }
                 if (action.payload.type === "add") {
-                    if (action.payload.qtyChange) {
-                        state.newOrderArray.splice(action.payload.index, 1, action.payload.item)
-                    } else {
-                        state.newOrderArray.push(action.payload.item)
-                        if (action.payload.index >= 0) state.supplierItems.splice(action.payload.index, 1)
-                    }
-                    state.totalPrice = parseFloat((state.totalPrice + price).toFixed(2))
+                    state.newOrderArray.push(action.payload.item)
+                    if (action.payload.index >= 0) state.supplierItems.splice(action.payload.index, 1)
                 }
+                state.totalPrice = totalPriceCalc(state.newOrderArray)
             },
             setRadioButtons: (state, action: PayloadAction<{ lowStock: boolean, allItems: boolean }>) => {
                 state.radioButtons.lowStock = action.payload.lowStock
@@ -163,17 +163,30 @@ export const shopOrdersSlice = createSlice({
             },
             setInputChange: (state, action: PayloadAction<{ key: string, index: number, value: string }>) => {
                 if (state.radioButtons.lowStock) {
+                    console.log("lowStock")
                     if (action.payload.key === "qty") state.lowStockArray[action.payload.index].qty = Number(action.payload.value)
                     if (action.payload.key === "tradePack") state.lowStockArray[action.payload.index].tradePack = Number(action.payload.value)
                 }
                 if (state.radioButtons.allItems) {
+                    console.log("allItems")
                     if (action.payload.key === "qty") state.renderedArray[action.payload.index].qty = Number(action.payload.value)
                     if (action.payload.key === "tradePack") state.renderedArray[action.payload.index].tradePack = Number(action.payload.value)
                 }
-            }
+                console.log(action.payload.key)
+            },
+            setChangeLowStockArray: (state, action) => {state.lowStockArray.splice(action.payload, 1)}
         },
     })
 ;
+
+function totalPriceCalc(array){
+    let totalPrice = 0
+    for(let i = 0; i < array.length; i ++){
+        let price = array[i].PURCHASEPRICE * (array[i].qty * array[i].tradePack)
+        totalPrice += price
+    }
+    return parseFloat(totalPrice.toFixed(2))
+}
 
 export const {
     setDeadStock,
@@ -192,7 +205,9 @@ export const {
     setThreshold,
     setLowStockArray,
     setRenderedArray,
-    setInputChange
+    setInputChange,
+    setChangeLowStockArray,
+    setChangeOrderQty
 } = shopOrdersSlice.actions
 
 

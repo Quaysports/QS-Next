@@ -1,6 +1,6 @@
 import style from '../styles/alert-component.module.css'
 import {useDispatch, useSelector} from "react-redux";
-import {selectShowAlert, setShowAlert} from "../store/alert-slice";
+import {selectShowAlert, setShowAlert} from "../store/components/alert-slice";
 
 export default function Alert(options:{title:string, text:string}){
     const show = useSelector(selectShowAlert)

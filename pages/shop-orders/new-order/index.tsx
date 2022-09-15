@@ -2,7 +2,6 @@ import React, {useEffect, useCallback} from 'react';
 import SideBar from "../sidebar/sidebar";
 import StockList from "./stock-list";
 import OrderList from "./order-list";
-import {item} from "../index";
 import {
     selectDeadStock,
     selectEditOrder, selectNewOrderArray,
@@ -11,6 +10,7 @@ import {
     setSupplierItems, setTotalPrice
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
+import styles from "../shop-orders.module.css"
 
 export default function NewOrder() {
 
@@ -22,7 +22,7 @@ export default function NewOrder() {
     const totalPrice = useSelector(selectTotalPrice)
     const deadStockList = useSelector(selectDeadStock)
 
-    const newOrderHandler = useCallback((freshOrder?) => {
+    const newOrderHandler = (freshOrder?) => {
         if(supplier) {
             const opts = {
                 method: "POST",
@@ -32,7 +32,7 @@ export default function NewOrder() {
                     'Content-Type': 'application/json'
                 }
             }
-            fetch("https://localhost/Shop/GetSupplierItems", opts)
+            fetch("/api/shop-orders/get-supplier-items", opts)
                 .then(res => res.json())
                 .then(res => {
                     let itemsTempObject = {}
@@ -47,7 +47,7 @@ export default function NewOrder() {
                         res[i].tradePack = 1
                         res[i].qty = 1
                         if (res[i].STOCKTOTAL < res[i].MINSTOCK) res[i].lowStock = true;
-                        deadStockList[supplier].find(res[i].SKU) ? res[i].deadStock = true : res[i].deadStock = false;
+                        deadStockList[supplier].find((element) => element.SKU === res[i].SKU) ? res[i].deadStock = true : res[i].deadStock = false;
                         itemsTempObject[supplier].push(res[i]);
                     }
                     if (freshOrder) {
@@ -65,13 +65,13 @@ export default function NewOrder() {
                         }
                         dispatch(setTotalPrice(totalPrice))
                     }
-                    dispatch(setSupplierItems(itemsTempObject))
+                    console.log(itemsTempObject)
+                    dispatch(setSupplierItems(itemsTempObject[supplier]))
                 })
         }
-    }, [editOrder])
+    }
 
     useEffect(() => {
-        if(editOrder) {
             const opts = {
                 method: "POST",
                 headers: {
@@ -79,15 +79,13 @@ export default function NewOrder() {
                     'Content-Type': 'application/json'
                 }
             }
-            fetch("https://localhost/Shop/GetSuppliersAndLowStock", opts)
+            fetch("/api/shop-orders/get-suppliers-and-low-stock", opts)
                 .then(res => res.json())
                 .then(res => {
-                    console.log(res)
                     transformLowStockDataForSidebar(res)
                 })
 
             newOrderHandler()
-        }
 
         function transformLowStockDataForSidebar(data) {
             let sortedData = data.sort((a, b) => {
@@ -99,16 +97,16 @@ export default function NewOrder() {
             for (let i = 0; i < sortedData.length; i++) {
                 tempObject[sortedData[i].SUPPLIER] = sortedData[i].LOWSTOCKCOUNT
             }
-            setSideBarContent({content:tempObject, title: "Suppliers"})
+            dispatch(setSideBarContent({content:tempObject, title: "Suppliers"}))
         }
-    }, [newOrderHandler,newOrderArray, editOrder])
+    }, [supplier])
 
     return (
-        <div className="shop-orders-parent">
+        <div className={styles["shop-orders-parent"]}>
             <SideBar/>
-            <div className="shop-orders-table-parent">
-                <OrderList/>
-                <StockList/>
+            <div className={styles["shop-orders-table-parent"]}>
+                {supplier ? <OrderList/> : null}
+                {supplier ? <StockList/> : null}
             </div>
         </div>
     );
