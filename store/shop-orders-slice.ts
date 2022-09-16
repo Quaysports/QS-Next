@@ -48,6 +48,8 @@ interface ShopOrdersState {
     renderedArray: orderObject[]
     lowStockArray: orderObject[]
     threshold: number
+    completedOrders: {[key:string]:OpenOrdersObject[]}
+    orderContents: OpenOrdersObject
 }
 
 export interface ShopOrdersWrapper {
@@ -71,7 +73,9 @@ const initialState: ShopOrdersState = {
     },
     renderedArray: [],
     lowStockArray: [],
-    threshold: 50
+    threshold: 50,
+    completedOrders: null,
+    orderContents: null
 
 };
 
@@ -174,7 +178,9 @@ export const shopOrdersSlice = createSlice({
                 }
                 console.log(action.payload.key)
             },
-            setChangeLowStockArray: (state, action) => {state.lowStockArray.splice(action.payload, 1)}
+            setChangeLowStockArray: (state, action) => {state.lowStockArray.splice(action.payload, 1)},
+            setCompletedOrders: (state, action) => {state.completedOrders = action.payload},
+            setOrderContents: (state, action) => {state.orderContents = action.payload}
         },
     })
 ;
@@ -207,7 +213,9 @@ export const {
     setRenderedArray,
     setInputChange,
     setChangeLowStockArray,
-    setChangeOrderQty
+    setChangeOrderQty,
+    setCompletedOrders,
+    setOrderContents
 } = shopOrdersSlice.actions
 
 
@@ -226,6 +234,8 @@ export const selectRadioButtons = (state: ShopOrdersWrapper) => state.shopOrders
 export const selectThreshold = (state: ShopOrdersWrapper) => state.shopOrders.threshold
 export const selectLowStockArray = (state: ShopOrdersWrapper) => state.shopOrders.lowStockArray
 export const selectRenderedArray = (state: ShopOrdersWrapper) => state.shopOrders.renderedArray
+export const selectCompletedOrders = (state: ShopOrdersWrapper) => state.shopOrders.completedOrders
+export const selectOrderContents = (state: ShopOrdersWrapper) => state.shopOrders.orderContents
 
 
 export default shopOrdersSlice.reducer;

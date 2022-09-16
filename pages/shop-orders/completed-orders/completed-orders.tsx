@@ -1,31 +1,22 @@
 import * as React from 'react';
 import SideBar from "../sidebar/sidebar";
-import {useEffect, useState} from "react";
-
-interface CompletedOrdersObject {
-    _id: string
-    arrived: {
-        MINSTOCK: number
-        SKU: string
-        STOCKTOTAL: string
-        TITLE: string
-        _id: string
-        bookedIn: boolean
-        qty: number
-    }[]
-    complete: boolean
-    date: number
-    id: string
-    order: []
-    supplier: string
-}
+import {useEffect} from "react";
+import {
+    selectCompletedOrders, selectOrderContents,
+    selectSupplierFilter,
+    setCompletedOrders, setOrderContents,
+    setSideBarContent
+} from "../../../store/shop-orders-slice";
+import {useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import styles from '../shop-orders.module.css'
 
 export default function CompletedOrders() {
 
-    const [completedOrders, setCompletedOrders] = useState<Map<string, CompletedOrdersObject[]>>(new Map<string, []>())
-    const [sideBarContent, setSideBarContent] = useState<Map<string, {}>>(new Map<string, {}>())
-    const [supplierFilter, setSupplierFilter] = useState<string>(null)
-    const [orderContents, setOrderContents] = useState<CompletedOrdersObject | null>(null)
+    const dispatch = useDispatch()
+    const completedOrders = useSelector(selectCompletedOrders)
+    const orderContents = useSelector(selectOrderContents)
+    const supplier = useSelector(selectSupplierFilter)
 
     useEffect(() => {
         const today = new Date()
@@ -45,52 +36,43 @@ export default function CompletedOrders() {
             body: JSON.stringify(searchParams)
         }
 
-        fetch('https://localhost/Shop/GetCompleteOrders', opts)
+        fetch('/api/shop-orders/get-complete-orders', opts)
             .then(res => res.json())
             .then(res => {
 
-                transformCompletedOrdersForSideBar(res)
-                let tempMap = new Map()
+                let tempObject = {}
                 for (let i = 0; i < res.length; i++) {
-                    tempMap.has(res[i].supplier) ?
-                        tempMap.get(res[i].supplier).push(res[i]) :
-                        tempMap.set(res[i].supplier, [res[i]])
+                    tempObject[res[i].supplier] ?
+                        tempObject[res[i].supplier].push(res[i]) :
+                        tempObject[res[i].supplier] = [res[i]]
                 }
-                setCompletedOrders(new Map(tempMap))
+                console.log(tempObject)
+                dispatch(setCompletedOrders(tempObject))
 
                 function transformCompletedOrdersForSideBar(completedOrders) {
                     let sortedData = completedOrders.sort((a,b)=>{return a.supplier === b.supplier ? 0 : a.supplier > b.supplier ? 1: -1})
-                    let tempMap = new Map()
+                    let tempObject = {}
                     for (let i = 0; i < sortedData.length; i++) {
-                        tempMap.set(sortedData[i].supplier, tempMap.get(sortedData[i].supplier) + 1 || 1)
+                        tempObject[sortedData[i].supplier] ? tempObject[sortedData[i].supplier] ++ : tempObject[sortedData[i].supplier] = 1
                     }
-                    setSideBarContent(new Map(tempMap))
+                    dispatch(setSideBarContent({content:tempObject, title:"Completed Orders"}))
                 }
+                transformCompletedOrdersForSideBar(res)
             })
     }, [])
 
-    function completedOrdersSupplierFilter(x) {
-        setSupplierFilter(x)
-        setOrderContents(null)
-    }
-
-    function orderContentsHandler(order) {
-        setOrderContents(order)
-    }
-
     function completedOrdersList() {
-        if (supplierFilter) {
-            let tempArray = [<option onClick={() => orderContentsHandler({})} key={0}>Select Order</option>]
+        if (supplier) {
+            let tempArray = [<option onClick={() => dispatch(setOrderContents(null))} key={0}>Select Order</option>]
             let i = 0
-            completedOrders.get(supplierFilter).slice().reverse().forEach((value) => {
-                console.log(value.id)
+            completedOrders[supplier].slice().reverse().forEach((value) => {
                 tempArray.push(
-                    <option onClick={() => orderContentsHandler(value)} key={value.id + i}>{value.id}</option>
+                    <option onClick={() => dispatch(setOrderContents(value))} key={value.id + i}>{value.id}</option>
                 )
                 i++
             })
             return (
-                <div className="shop-orders-table-containers">
+                <div className={styles["shop-orders-table-containers"]}>
                     Completed Order: <select>{tempArray}</select>
                 </div>
             )
@@ -104,7 +86,7 @@ export default function CompletedOrders() {
             let tempArray = []
             orderContents.arrived.forEach((item, index) => {
                     tempArray.push(
-                        <div key={index} className="shop-orders-table shop-orders-table-cells completed-orders-list-grid">
+                        <div key={index} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["completed-orders-list-grid"]}`}>
                             <span className={"center-align"}>{item.qty}</span>
                             <span>{item.SKU}</span>
                             <span>{item.TITLE}</span>
@@ -113,8 +95,8 @@ export default function CompletedOrders() {
                 }
             )
             return (
-                <div className="shop-orders-table-containers">
-                    <div className="shop-orders-table completed-orders-list-grid">
+                <div className={styles["shop-orders-table-containers"]}>
+                    <div className={`${styles["shop-orders-table"]} ${styles["completed-orders-list-grid"]}`}>
                         <span className={"center-align"}>Amount</span>
                         <span>SKU</span>
                         <span>Title</span>
@@ -128,15 +110,9 @@ export default function CompletedOrders() {
     }
 
     return (
-        <div className="shop-orders-parent">
-            <SideBar
-                loadContent={sideBarContent}
-                supplierFilter={(x) => {
-                    completedOrdersSupplierFilter(x)
-                }}
-                title={"Orders"}
-            />
-            <div className="shop-orders-table-parent">
+        <div className={styles["shop-orders-parent"]}>
+            <SideBar/>
+            <div className={styles["shop-orders-table-parent"]}>
                     {completedOrdersList()}
                     {showOrderContents()}
             </div>
