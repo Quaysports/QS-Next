@@ -1,20 +1,16 @@
 import style from "./user.module.css";
 import PermissionsPopup from "./permissions-popup";
 import {deleteUser, setUserData} from "../../../store/dashboard/user-slice";
-import {setShowConfirm} from "../../../store/components/confirm-slice";
-import {setShowPopup} from "../../../store/components/popup-slice";
 import {FocusEvent} from "react";
 import {useDispatch} from "react-redux";
 import {user} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";
 
 interface propTypes {
-    userInfo: user[],
-    confirmContentHandler: Function,
-    popupContentHandler: Function
+    userInfo: user[]
 }
 
-export default function UserTable({userInfo, confirmContentHandler, popupContentHandler}: propTypes) {
+export default function UserTable({userInfo}: propTypes) {
     const dispatch = useDispatch()
 
     function updateUserData(index: string, key: string, data: string) {
@@ -37,11 +33,14 @@ export default function UserTable({userInfo, confirmContentHandler, popupContent
         <span><button
             className={style["add-user-button"]}
             onClick={() => {
-            popupContentHandler({
-                title: "Create User",
-                content: <CreateUser />
-            })
-            dispatch(setShowPopup(true))
+                const event = new CustomEvent('notification', {
+                    detail: {
+                        type: "popup",
+                        title: 'User Permissions',
+                        content: <CreateUser/>
+                    }
+                });
+                window.dispatchEvent(event)
         }}>Add User
         </button></span>
         <span>Username</span>
@@ -66,21 +65,27 @@ export default function UserTable({userInfo, confirmContentHandler, popupContent
         userArray.push(
             <div key={index} className={style["user-table-row"]}>
                 <span><button onClick={() => {
-                    confirmContentHandler({
-                        title: "Delete User",
-                        text: "Are you sure you wish to delete this user?",
-                        fn: () => dispatch(deleteUser({index: index}))
-                    })
-                    dispatch(setShowConfirm(true))
+                    const event = new CustomEvent('notification', {
+                        detail: {
+                            type: "confirm",
+                            title: 'Delete User',
+                            content: "Are you sure you wish to delete this user?",
+                            fn: () => dispatch(deleteUser({index: index}))
+                        }
+                    });
+                    window.dispatchEvent(event)
                 }}>X
                 </button></span>
 
                 <span><button onClick={() => {
-                    popupContentHandler({
-                        title: "User Permissions",
-                        content: <PermissionsPopup index={index}/>
-                    })
-                    dispatch(setShowPopup(true))
+                    const event = new CustomEvent('notification', {
+                        detail: {
+                            type: "popup",
+                            title: 'User Permissions',
+                            content: <PermissionsPopup index={index}/>
+                        }
+                    });
+                    window.dispatchEvent(event)
                 }}>Permissions
                 </button></span>
 

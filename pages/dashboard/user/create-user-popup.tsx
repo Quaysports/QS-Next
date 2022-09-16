@@ -9,7 +9,9 @@ export default function CreateUser(){
         "pin": "",
         "role": "user",
         "rota": "online",
-        "holiday": ""
+        "holiday": "",
+        "permissions":{},
+        "theme":{}
     }
 
     return (

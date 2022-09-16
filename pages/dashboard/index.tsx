@@ -5,19 +5,15 @@ import {useRouter} from "next/router";
 import UserLandingPage from "./user";
 import HomeLandingPage from "./home";
 import Menu from "../../components/menu/menu";
-import {useState} from "react";
 
 export default function Dashboard() {
     const router = useRouter()
 
-    const [notificationOpts, setNotificationOpts] = useState({})
-    function updateNotification(opts){ setNotificationOpts(opts) }
-
     return(
         <div>
-            <Menu notificationOpts={notificationOpts}/>
+            <Menu />
             {router.query.tab === undefined || router.query.tab === "home" ?  <HomeLandingPage/>: null}
-            {router.query.tab === "user" ?  <UserLandingPage updateNotification={updateNotification}  />: null}
+            {router.query.tab === "user" ?  <UserLandingPage />: null}
         </div>
     );
 }
