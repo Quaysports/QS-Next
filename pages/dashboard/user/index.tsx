@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {deleteUser, selectUsers, setAllUserData, setUserData} from "../../../store/dashboard/user-slice";
 import PermissionsPopup from "./permissions-popup";
 import CreateUser from "./create-user-popup";
+import CustomisationPopup from "../../../components/menu/customisation-popup";
 
 export default function UserLandingPage({updateNotification}) {
 
@@ -19,11 +20,11 @@ export default function UserLandingPage({updateNotification}) {
             })
     }, [])
 
-    function updateUserData(index:string,key:string,data:string){
-        dispatch(setUserData({index:index,key:key,data:data}))
+    function updateUserData(index: string, key: string, data: string) {
+        dispatch(setUserData({index: index, key: key, data: data}))
     }
 
-    function verifyPin(index:string,key:string,e:FocusEvent<HTMLInputElement>){
+    function verifyPin(index: string, key: string, e: FocusEvent<HTMLInputElement>) {
         if (e.target.validity.patternMismatch) {
             e.target.style.borderColor = "var(--secondary-color)"
             e.target.setCustomValidity("Pin must contain only numbers and be exactly four digits long.")
@@ -40,11 +41,16 @@ export default function UserLandingPage({updateNotification}) {
             <span></span>
             <span><button
                 className={style["add-user-button"]}
-                onClick={()=> updateNotification({
-                    type:"popup",
-                    title:'User Permissions',
-                    content:<CreateUser />
-                })}
+                onClick={() => {
+                    const event = new CustomEvent('notification', {
+                        detail: {
+                            type: "popup",
+                            title: 'User Permissions',
+                            content: <CreateUser/>
+                        }
+                    });
+                    window.dispatchEvent(event)
+                }}
             >Add User</button></span>
             <span>Username</span>
             <span>Role</span>
@@ -61,40 +67,46 @@ export default function UserLandingPage({updateNotification}) {
             return options
         }
 
-        if(userInfo.length === 0) return
+        if (userInfo.length === 0) return
 
         for (const [index, user] of Object.entries(userInfo)) {
 
             userArray.push(<div key={index} className={style["user-table-row"]}>
                 <span><button onClick={() => {
-                    updateNotification({
-                        type:"confirm",
-                        title:'Delete User',
-                        content:"Are you sure you wish to delete this user?",
-                        fn:()=> dispatch(deleteUser({index:index}))
-                    })
+                    const event = new CustomEvent('notification', {
+                        detail: {
+                            type: "confirm",
+                            title: 'Delete User',
+                            content: "Are you sure you wish to delete this user?",
+                            fn: () => dispatch(deleteUser({index: index}))
+                        }
+                    });
+                    window.dispatchEvent(event)
                 }
                 }>X</button></span>
                 <span><button onClick={() => {
-                    updateNotification({
-                        type:"popup",
-                        title:'User Permissions',
-                        content:<PermissionsPopup index={index}/>
-                    })
+                    const event = new CustomEvent('notification', {
+                        detail: {
+                            type: "popup",
+                            title: 'User Permissions',
+                            content: <PermissionsPopup index={index}/>
+                        }
+                    });
+                    window.dispatchEvent(event)
                 }}>Permissions</button></span>
-                <span><input type="text" defaultValue={user.username} onBlur={(e)=> updateUserData(index,"username",e.target.value)}/></span>
-                <span><select defaultValue={user.role} onChange={(e)=> updateUserData(index,"role",e.target.value)}>
+                <span><input type="text" defaultValue={user.username} onBlur={(e) => updateUserData(index, "username", e.target.value)}/></span>
+                <span><select defaultValue={user.role} onChange={(e) => updateUserData(index, "role", e.target.value)}>
                         {selectOptions(['admin', 'senior', 'user'])}
                     </select></span>
                 <span>
-                    <select defaultValue={user.rota} onChange={(e)=> updateUserData(index,"rota",e.target.value)}>
+                    <select defaultValue={user.rota} onChange={(e) => updateUserData(index, "rota", e.target.value)}>
                         {selectOptions(['online', 'shop'])}
                     </select>
                 </span>
-                <span><input type="number" defaultValue={user.holiday} onBlur={(e)=> updateUserData(index,"holiday",e.target.value)}/></span>
-                <span><input type="text" defaultValue={user.password} onBlur={(e)=> updateUserData(index,"password",e.target.value)}/></span>
-                <span><input defaultValue={user.pin} pattern="^[0-9]{4}$" onBlur={(e)=> verifyPin(index,"pin",e)}/></span>
-                <span><input type="color" defaultValue={user.colour} onBlur={(e)=> updateUserData(index,"colour",e.target.value)}/></span>
+                <span><input type="number" defaultValue={user.holiday} onBlur={(e) => updateUserData(index, "holiday", e.target.value)}/></span>
+                <span><input type="text" defaultValue={user.password} onBlur={(e) => updateUserData(index, "password", e.target.value)}/></span>
+                <span><input defaultValue={user.pin} pattern="^[0-9]{4}$" onBlur={(e) => verifyPin(index, "pin", e)}/></span>
+                <span><input type="color" defaultValue={user.colour} onBlur={(e) => updateUserData(index, "colour", e.target.value)}/></span>
             </div>)
         }
         return userArray

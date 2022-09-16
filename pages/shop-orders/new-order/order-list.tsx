@@ -9,7 +9,7 @@ import {
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
 
-export default function OrderList({updateNotification}) {
+export default function OrderList() {
 
     const newOrderArray = useSelector(selectNewOrderArray)
     const totalPrice = useSelector(selectTotalPrice)
@@ -116,10 +116,15 @@ export default function OrderList({updateNotification}) {
                 <button
                     onClick={() => {
                         dispatch(setChangeOrderArray({item: newProduct, type: "add", index: null}));
-                        updateNotification({type:null})
+                        const event = new CustomEvent('notification', {detail: {type: null}});
+                        window.dispatchEvent(event)
                     }}>Submit
                 </button>
-                <button id={styles["add-new-item-container-cancel-button"]} onClick={() => updateNotification({type:null})}>Cancel</button>
+                <button id={styles["add-new-item-container-cancel-button"]} onClick={() => {
+                    const event = new CustomEvent('notification', {detail: {type: null}});
+                    window.dispatchEvent(event)
+                }}>Cancel
+                </button>
             </div>
         </div>
     ]
@@ -132,11 +137,17 @@ export default function OrderList({updateNotification}) {
                             <button onClick={() => saveOrder()}>Save</button>
                         </span>
                 <span className={styles["primary-buttons"]}>
-                            <button onClick={()=>updateNotification({
-                                type: "popup",
-                                title: "New Item",
-                                content: tempArray,
-                            })}>Add New Item</button>
+                            <button onClick={() => {
+                                const event = new CustomEvent('notification',
+                                    {
+                                        detail: {
+                                            type: "popup",
+                                            title: "New Item",
+                                            content: tempArray,
+                                        }
+                                    });
+                                window.dispatchEvent(event)
+                            }}>Add New Item</button>
                         </span>
                 <span id={styles["order-total"]}
                 >Total Order: £{totalPrice.toFixed(2)}</span>
