@@ -99,8 +99,8 @@ export const shopOrdersSlice = createSlice({
                 state.sideBarTitle = action.payload.title
             },
             setSupplierFilter: (state, action) => {
+                state.newOrderArray = []
                 state.supplierFilter = action.payload
-                console.log(current(state))
             },
             setLoadedOrder: (state, action) => {
                 state.loadedOrder = action.payload
@@ -108,8 +108,10 @@ export const shopOrdersSlice = createSlice({
             setOpenOrders: (state, action) => {
                 state.openOrders = action.payload
             },
-            setEditOrder: (state, action) => {
+            setEditOrder: (state, action:PayloadAction<OpenOrdersObject>) => {
                 state.editOrder = action.payload
+                state.newOrderArray = action.payload.order
+                state.supplierFilter = action.payload.supplier
             },
             setArrivedHandler: (state, action) => {
                 state.loadedOrder.order[action.payload.index].arrived = action.payload.value
@@ -170,6 +172,7 @@ export const shopOrdersSlice = createSlice({
                     console.log("lowStock")
                     if (action.payload.key === "qty") state.lowStockArray[action.payload.index].qty = Number(action.payload.value)
                     if (action.payload.key === "tradePack") state.lowStockArray[action.payload.index].tradePack = Number(action.payload.value)
+                    console.log(current(state))
                 }
                 if (state.radioButtons.allItems) {
                     console.log("allItems")
@@ -180,7 +183,12 @@ export const shopOrdersSlice = createSlice({
             },
             setChangeLowStockArray: (state, action) => {state.lowStockArray.splice(action.payload, 1)},
             setCompletedOrders: (state, action) => {state.completedOrders = action.payload},
-            setOrderContents: (state, action) => {state.orderContents = action.payload}
+            setOrderContents: (state, action) => {state.orderContents = action.payload},
+            setOrderInfoReset:(state, action) => {
+                state.editOrder = null
+                state.totalPrice = 0
+                state.supplierFilter= ""
+            }
         },
     })
 ;
@@ -215,7 +223,8 @@ export const {
     setChangeLowStockArray,
     setChangeOrderQty,
     setCompletedOrders,
-    setOrderContents
+    setOrderContents,
+    setOrderInfoReset
 } = shopOrdersSlice.actions
 
 

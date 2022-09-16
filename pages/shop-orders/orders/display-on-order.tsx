@@ -22,6 +22,7 @@ export default function DisplayOnOrder() {
     }
 
     function editOrder(order) {
+        console.log(order)
         dispatch(setEditOrder(order))
         router.push("/shop-orders/new-order")
     }
@@ -113,11 +114,13 @@ export default function DisplayOnOrder() {
                 )
             }
         }
+
         if (newProductArray.length === 1) newProductArray.splice(0, 1)
         return <Fragment key={1}>{tempArray}{newProductArray}</Fragment>
     }
 
     if (loadedOrder) {
+        console.log(loadedOrder)
         return (
             <div className={styles["shop-orders-table-containers"]}>
                 <div className={styles["table-title-container"]}>

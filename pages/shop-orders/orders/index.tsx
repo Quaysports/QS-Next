@@ -11,7 +11,7 @@ import {
     setSideBarContent,
     setOpenOrders,
     selectSupplierFilter,
-    selectOpenOrders, selectLoadedOrder
+    selectOpenOrders
 } from "../../../store/shop-orders-slice";
 
 export default function Orders() {
@@ -21,7 +21,7 @@ export default function Orders() {
     const openOrders = useSelector(selectOpenOrders)
 
     useEffect(() => {
-        if(!supplierFilter) {
+        if (!supplierFilter) {
             const opts = {
                 method: 'POST',
                 headers: {
@@ -33,7 +33,9 @@ export default function Orders() {
                 .then(res => res.json())
                 .then((res) => {
                     transformOrdersDataForSideBar(res)
-                    transformOrdersDataToMap(res)
+                    transformOrdersDataToObject(res)
+                    console.log(res)
+
                 })
 
             function transformOrdersDataForSideBar(openOrders) {
@@ -44,7 +46,7 @@ export default function Orders() {
                 dispatch(setSideBarContent({content: tempObject, title: "Orders"}))
             }
 
-            function transformOrdersDataToMap(openOrders) {
+            function transformOrdersDataToObject(openOrders) {
                 let tempObject = {}
                 let i = 0
                 for (const order of openOrders) {
@@ -54,11 +56,12 @@ export default function Orders() {
                 dispatch(setOpenOrders(tempObject))
             }
         }
-        if(supplierFilter){
+        if (supplierFilter) {
             let loadedOrder = openOrders[supplierFilter]
             dispatch(setLoadedOrder(loadedOrder))
         }
     }, [supplierFilter])
+
 
     return (
         <div className={styles["shop-orders-parent"]}>

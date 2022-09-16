@@ -5,7 +5,7 @@ import OrderList from "./order-list";
 import {
     selectDeadStock,
     selectEditOrder, selectNewOrderArray,
-    selectSupplierFilter, selectSupplierItems, selectTotalPrice, setEditOrder, setNewOrderArray,
+    selectSupplierFilter, setEditOrder, setNewOrderArray,
     setSideBarContent,
     setSupplierItems, setTotalPrice
 } from "../../../store/shop-orders-slice";
@@ -15,15 +15,14 @@ import styles from "../shop-orders.module.css"
 export default function NewOrder() {
 
     const dispatch = useDispatch()
-    const supplierItems = useSelector(selectSupplierItems)
     const supplier = useSelector(selectSupplierFilter)
     const editOrder = useSelector(selectEditOrder)
     const newOrderArray = useSelector(selectNewOrderArray)
-    const totalPrice = useSelector(selectTotalPrice)
     const deadStockList = useSelector(selectDeadStock)
 
     const newOrderHandler = (freshOrder?) => {
-        if(supplier) {
+
+        if (supplier) {
             const opts = {
                 method: "POST",
                 body: JSON.stringify({supplier: supplier}),
@@ -53,12 +52,12 @@ export default function NewOrder() {
                     if (freshOrder) {
                         dispatch(setNewOrderArray([]))
                         dispatch(setTotalPrice(0))
-                        dispatch(setEditOrder([]))
+                        dispatch(setEditOrder(null))
                     } else {
                         let totalPrice = 0
                         for (let i = 0; i < newOrderArray.length; i++) {
                             totalPrice += (newOrderArray[i].PURCHASEPRICE * newOrderArray[i].tradePack * newOrderArray[i].qty)
-                            if(editOrder) {
+                            if (editOrder) {
                                 let index = itemsTempObject[supplier].findIndex(item => item.SKU === newOrderArray[i].SKU)
                                 itemsTempObject[supplier].splice(index, 1)
                             }
@@ -72,20 +71,20 @@ export default function NewOrder() {
     }
 
     useEffect(() => {
-            const opts = {
-                method: "POST",
-                headers: {
-                    'token': "9b9983e5-30ae-4581-bdc1-3050f8ae91cc",
-                    'Content-Type': 'application/json'
-                }
+        const opts = {
+            method: "POST",
+            headers: {
+                'token': "9b9983e5-30ae-4581-bdc1-3050f8ae91cc",
+                'Content-Type': 'application/json'
             }
-            fetch("/api/shop-orders/get-suppliers-and-low-stock", opts)
-                .then(res => res.json())
-                .then(res => {
-                    transformLowStockDataForSidebar(res)
-                })
+        }
+        fetch("/api/shop-orders/get-suppliers-and-low-stock", opts)
+            .then(res => res.json())
+            .then(res => {
+                transformLowStockDataForSidebar(res)
+            })
 
-            newOrderHandler()
+        newOrderHandler()
 
         function transformLowStockDataForSidebar(data) {
             let sortedData = data.sort((a, b) => {
@@ -97,7 +96,7 @@ export default function NewOrder() {
             for (let i = 0; i < sortedData.length; i++) {
                 tempObject[sortedData[i].SUPPLIER] = sortedData[i].LOWSTOCKCOUNT
             }
-            dispatch(setSideBarContent({content:tempObject, title: "Suppliers"}))
+            dispatch(setSideBarContent({content: tempObject, title: "Suppliers"}))
         }
     }, [supplier])
 
@@ -105,7 +104,7 @@ export default function NewOrder() {
         <div className={styles["shop-orders-parent"]}>
             <SideBar/>
             <div className={styles["shop-orders-table-parent"]}>
-                {supplier ? <OrderList /> : null}
+                {supplier ? <OrderList/> : null}
                 {supplier ? <StockList/> : null}
             </div>
         </div>

@@ -15,7 +15,7 @@ const myStore = () =>
             [dashboardSlice.name]: dashboardSlice.reducer,
             [menuSlice.name]: menuSlice.reducer,
             [userSlice.name]:userSlice.reducer,
-            [searchBarSlice.name]: searchBarSlice.reducer
+            [searchBarSlice.name]: searchBarSlice.reducer,
         },
         devTools: true,
     });

@@ -66,8 +66,12 @@ export default function StockList() {
         dispatch(setInputChange({key: key, index: index, value: value}))
     }
 
+    //TODO change which array the item is being manipulated in when multiple inputs are changed
+    //TODO research if router.query.tab is causing a server side render hence the lag in page loading
+
     function addToOrderHandler(item: orderObject, index: number) {
-            let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
+        console.log(index)
+        let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
         if (radioButtons.allItems) {
             dispatch(setChangeOrderArray({item: renderedArray[index], type: "add", index: fullStockIndex}))
         }
@@ -93,7 +97,7 @@ export default function StockList() {
                 <input defaultValue={renderedArray[index].qty} onChange={(e) => {
                     inputChangeHandler(e.target.value, "qty", index)
                 }}/>
-                <input value={renderedArray[index].tradePack} onChange={(e) => {
+                <input defaultValue={renderedArray[index].tradePack} onChange={(e) => {
                     inputChangeHandler(e.target.value, "tradePack", index)
                 }}/>
                 <span className={"center-align"}>£{item.PURCHASEPRICE.toFixed(2)}</span>

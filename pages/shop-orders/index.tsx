@@ -11,6 +11,7 @@ import DeadStock from "./dead-stock/dead-stock";
 import Menu from "../../components/menu/menu";
 import {useState} from "react";
 
+
 export interface item {
     IDBEP: { BRAND: string },
     MINSTOCK: number,
@@ -31,14 +32,17 @@ export default function ShopOrdersLandingPage() {
 
     const router = useRouter()
     const [notificationOpts, setNotificationOpts] = useState({})
-    function updateNotification(opts){ setNotificationOpts(opts) }
+
+    function updateNotification(opts) {
+        setNotificationOpts(opts)
+    }
 
     return (
         <div>
-            <Menu />
+            <Menu/>
             {router.query.tab === undefined || router.query.tab === "orders" ? <Orders/> : null}
             {router.query.tab === "completed-orders" ? <CompletedOrders/> : null}
-            {router.query.tab === "new-order" ? <NewOrder /> : null}
+            {router.query.tab === "new-order" ? <NewOrder/> : null}
             {router.query.tab === "dead-stock" ? <DeadStock/> : null}
         </div>
     );

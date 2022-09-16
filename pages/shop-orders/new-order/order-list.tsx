@@ -1,11 +1,19 @@
 import React, {Fragment} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    orderObject, selectEditOrder,
+    orderObject,
+    selectEditOrder,
     selectNewOrderArray,
-    selectSupplierFilter, selectSupplierItems,
+    selectSupplierFilter,
+    selectSupplierItems,
     selectTotalPrice,
-    setChangeOrderArray, setChangeOrderQty, setEditOrder, setNewOrderArray, setTotalPrice
+    setChangeOrderArray,
+    setChangeOrderQty,
+    setEditOrder,
+    setNewOrderArray,
+    setOrderInfoReset,
+    setSupplierFilter,
+    setTotalPrice
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
 import {dispatchNotification} from "../../../components/notification/notification-wrapper";
@@ -16,7 +24,6 @@ export default function OrderList() {
     const totalPrice = useSelector(selectTotalPrice)
     const supplier = useSelector(selectSupplierFilter)
     const editOrder = useSelector(selectEditOrder)
-    const supplierItems = useSelector(selectSupplierItems)
     const dispatch = useDispatch()
 
     function saveOrder() {
@@ -42,15 +49,13 @@ export default function OrderList() {
                 }
             }
 
-            fetch("api/shop-orders/update-order", options)
+            fetch("/api/shop-orders/update-order", options)
                 .then((res) => {
                     res.json()
                         .then((res) => {
                             if (res.acknowledged) {
                                 alert("New order created")
-                                dispatch(setEditOrder(null))
-                                dispatch(setNewOrderArray([]))
-                                dispatch(setTotalPrice(0))
+                                dispatch(setOrderInfoReset({}))
                             } else {
                                 alert("Order failed, please try again")
                             }
