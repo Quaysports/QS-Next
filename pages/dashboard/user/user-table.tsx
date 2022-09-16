@@ -5,6 +5,7 @@ import {FocusEvent} from "react";
 import {useDispatch} from "react-redux";
 import {user} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";
+import {dispatchNotification} from "../../../components/notification/notification-wrapper";
 
 interface propTypes {
     userInfo: user[]
@@ -33,14 +34,7 @@ export default function UserTable({userInfo}: propTypes) {
         <span><button
             className={style["add-user-button"]}
             onClick={() => {
-                const event = new CustomEvent('notification', {
-                    detail: {
-                        type: "popup",
-                        title: 'User Permissions',
-                        content: <CreateUser/>
-                    }
-                });
-                window.dispatchEvent(event)
+                dispatchNotification({type: "popup", title: 'User Permissions', content: <CreateUser/>});
         }}>Add User
         </button></span>
         <span>Username</span>
@@ -65,29 +59,21 @@ export default function UserTable({userInfo}: propTypes) {
         userArray.push(
             <div key={index} className={style["user-table-row"]}>
                 <span><button onClick={() => {
-                    const event = new CustomEvent('notification', {
-                        detail: {
-                            type: "confirm",
-                            title: 'Delete User',
-                            content: "Are you sure you wish to delete this user?",
-                            fn: () => dispatch(deleteUser({index: index}))
-                        }
+                    dispatchNotification({
+                        type: "confirm",
+                        title: 'Delete User',
+                        content: "Are you sure you wish to delete this user?",
+                        fn: () => dispatch(deleteUser({index: index}))
                     });
-                    window.dispatchEvent(event)
-                }}>X
-                </button></span>
+                }}>X</button></span>
 
                 <span><button onClick={() => {
-                    const event = new CustomEvent('notification', {
-                        detail: {
-                            type: "popup",
-                            title: 'User Permissions',
-                            content: <PermissionsPopup index={index}/>
-                        }
+                    dispatchNotification({
+                        type: "popup",
+                        title: 'User Permissions',
+                        content: <PermissionsPopup index={index}/>
                     });
-                    window.dispatchEvent(event)
-                }}>Permissions
-                </button></span>
+                }}>Permissions</button></span>
 
                 <span><input type="text" defaultValue={user.username} onBlur={(e) => updateUserData(index, "username", e.target.value)}/></span>
 

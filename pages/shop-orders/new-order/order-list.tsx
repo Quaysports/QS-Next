@@ -8,6 +8,7 @@ import {
     setChangeOrderArray, setChangeOrderQty, setEditOrder, setNewOrderArray, setTotalPrice
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
+import {dispatchNotification} from "../../../components/notification/notification-wrapper";
 
 export default function OrderList() {
 
@@ -116,13 +117,11 @@ export default function OrderList() {
                 <button
                     onClick={() => {
                         dispatch(setChangeOrderArray({item: newProduct, type: "add", index: null}));
-                        const event = new CustomEvent('notification', {detail: {type: null}});
-                        window.dispatchEvent(event)
+                        dispatchNotification({type: null});
                     }}>Submit
                 </button>
                 <button id={styles["add-new-item-container-cancel-button"]} onClick={() => {
-                    const event = new CustomEvent('notification', {detail: {type: null}});
-                    window.dispatchEvent(event)
+                    dispatchNotification({type: null});
                 }}>Cancel
                 </button>
             </div>
@@ -137,17 +136,7 @@ export default function OrderList() {
                             <button onClick={() => saveOrder()}>Save</button>
                         </span>
                 <span className={styles["primary-buttons"]}>
-                            <button onClick={() => {
-                                const event = new CustomEvent('notification',
-                                    {
-                                        detail: {
-                                            type: "popup",
-                                            title: "New Item",
-                                            content: tempArray,
-                                        }
-                                    });
-                                window.dispatchEvent(event)
-                            }}>Add New Item</button>
+                            <button onClick={() => dispatchNotification({type: "popup", title: "New Item", content: tempArray,})}>Add New Item</button>
                         </span>
                 <span id={styles["order-total"]}
                 >Total Order: £{totalPrice.toFixed(2)}</span>
