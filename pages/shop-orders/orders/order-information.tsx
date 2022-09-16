@@ -10,6 +10,7 @@ export default function OrderInformation() {
     const dispatch = useDispatch()
 
     async function deleteOrder(order){
+        console.log(order)
         let conf = window.confirm("Are you sure you want to delete "+ order.id + " order?")
         if(conf) {
             const opts = {
@@ -20,10 +21,12 @@ export default function OrderInformation() {
                 },
                 body: JSON.stringify({order: order})
             }
-            let res = await fetch("/api/shop-orders/delete-order", opts)
-            res.ok ? alert(order.id + " deleted") : alert("Error, please contact IT")
-            dispatch(setLoadedOrder(null))
-            dispatch(setSupplierFilter(null))
+            fetch("/api/shop-orders/delete-order", opts)
+                .then(res => {
+                    res.ok ? alert(order.id + " deleted") : alert("Error, please contact IT")
+                    dispatch(setLoadedOrder(null))
+                    dispatch(setSupplierFilter(null))
+                })
         }
     }
 

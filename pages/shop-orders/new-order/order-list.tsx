@@ -26,7 +26,7 @@ export default function OrderList() {
             let newOrder = {
                 id: `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
                 supplier: supplier,
-                date: editOrder.date ? editOrder.date : date.getTime(),
+                date: editOrder ? editOrder.date : date.getTime(),
                 complete: false,
                 arrived: [],
                 order: newOrderArray,
@@ -41,13 +41,13 @@ export default function OrderList() {
                 }
             }
 
-            fetch("https://localhost/Shop/ShopStockOrder", options)
+            fetch("api/shop-orders/update-order", options)
                 .then((res) => {
                     res.json()
                         .then((res) => {
                             if (res.acknowledged) {
                                 alert("New order created")
-                                dispatch(setEditOrder([]))
+                                dispatch(setEditOrder(null))
                                 dispatch(setNewOrderArray([]))
                                 dispatch(setTotalPrice(0))
                             } else {

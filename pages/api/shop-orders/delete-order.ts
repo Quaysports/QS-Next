@@ -27,11 +27,13 @@ interface orderItem {
 }
 
 export default async function handler(req, res) {
+    console.log(req.body)
     res.status(200).json(
         await deleteOrder(req.body)
     )
 }
 
 export const deleteOrder = async (order:shopOrder) => {
+    console.log(order)
     return await mongoI.deleteOne("New-Shop-Orders", {date: order.date})
 }
