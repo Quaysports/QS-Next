@@ -1,71 +1,66 @@
 import * as React from 'react';
 import SideBar from "../sidebar/sidebar";
 import {useEffect, useState} from "react";
-
-interface DeadStockProps {
-    deadStockList: Map<string, {
-        SKU: string,
-        SUPPLIER: string,
-        TITLE: string
-    }>
-}
+import {useDispatch, useSelector} from "react-redux";
+import styles from '../shop-orders.module.css'
+import {
+    selectDeadStock,
+    selectSupplierFilter,
+    setSideBarContent,
+    setSupplierFilter
+} from "../../../store/shop-orders-slice";
 
 export default function DeadStock() {
 
-    const [supplier, setSupplier] = useState<string>(null)
-    const [sideBarContent, setSideBarContent] = useState<Map<string, object>>(new Map<string, {}>())
+    const deadStockList = useSelector(selectDeadStock)
+    const supplier = useSelector(selectSupplierFilter)
+    const dispatch = useDispatch()
 
 
     useEffect(() => {
 
-        function transformDeadStockDataForSidebar(deadStockList){
-            let tempMap = new Map()
-            deadStockList.forEach((value, key) => {
-                tempMap.set(deadStockList.get(key).SUPPLIER, tempMap.get(deadStockList.get(key).SUPPLIER) + 1 || 1)
-            })
-            setSideBarContent(new Map(tempMap))
-        }
+        function transformDeadStockDataForSidebar(deadStockList) {
 
-        transformDeadStockDataForSidebar(props.deadStockList)
-    }, [props.deadStockList])
+                let tempObject = {}
+                for (const key in deadStockList) {
+                    tempObject[key] = deadStockList[key].length
+                }
+                dispatch(setSideBarContent({content: tempObject, title: "Dead Stock"}))
+            }
 
+        transformDeadStockDataForSidebar(deadStockList)
+    }, [deadStockList])
 
-    function deadStockListHandler(supplier) {
-        setSupplier(supplier)
-    }
-
-    function deadStockList() {
+    function buildDeadStockList() {
         let tempArray = []
         if (supplier) {
-            props.deadStockList.forEach((value, key) => {
-                if (value.SUPPLIER === supplier)
-                    tempArray.push(<div key={key} className="shop-orders-table shop-orders-table-cells dead-stock-list-grid">
+            tempArray.push(
+                <div className={`${styles["shop-orders-table"]} ${styles["dead-stock-list-grid"]}`}>
+                    <span/>
+                    <span>SKU</span>
+                    <span>Title</span>
+                </div>
+            )
+            deadStockList[supplier].forEach((value, key) => {
+                    tempArray.push(<div key={key} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["dead-stock-list-grid"]}`}>
                         <span/>
                         <span>{value.SKU}</span>
                         <span>{value.TITLE}</span>
                     </div>)
             })
             return (
-                <div className="shop-orders-table-containers">{tempArray}</div>
+                <div className={styles["shop-orders-table-containers"]}>{tempArray}</div>
             )
         } else {
             return <></>
         }
-
     }
 
-    //TODO CSS below into flex/grid
     return (
-        <div className="shop-orders-parent">
-            <SideBar
-                loadContent={sideBarContent}
-                supplierFilter={(x: string) => {
-                    deadStockListHandler(x)
-                }}
-                title={"Suppliers"}
-            />
-            <div className="shop-orders-table-parent">
-                {deadStockList()}
+        <div className={styles["shop-orders-parent"]}>
+            <SideBar/>
+            <div className={styles["shop-orders-table-parent"]}>
+                {buildDeadStockList()}
             </div>
         </div>
     );
