@@ -8,6 +8,7 @@ import Orders from "./orders";
 import CompletedOrders from "./completed-orders/completed-orders";
 import NewOrder from "./new-order/index";
 import DeadStock from "./dead-stock/dead-stock";
+import Menu from "../../components/menu/menu";
 
 export interface item {
     IDBEP: { BRAND: string },
@@ -31,6 +32,7 @@ export default function ShopOrdersLandingPage() {
 
     return (
         <div>
+            <Menu />
             {router.query.tab === undefined || router.query.tab === "orders" ? <Orders/> : null}
             {router.query.tab === "completed-orders" ? <CompletedOrders/> : null}
             {router.query.tab === "new-order" ? <NewOrder/> : null}

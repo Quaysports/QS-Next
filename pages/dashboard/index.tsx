@@ -4,12 +4,14 @@ import {getSession} from "next-auth/react";
 import {useRouter} from "next/router";
 import UserLandingPage from "./user";
 import HomeLandingPage from "./home";
+import Menu from "../../components/menu/menu";
 
 export default function Dashboard() {
     const router = useRouter()
 
     return(
         <div>
+            <Menu />
             {router.query.tab === undefined || router.query.tab === "home" ?  <HomeLandingPage/>: null}
             {router.query.tab === "user" ?  <UserLandingPage />: null}
         </div>

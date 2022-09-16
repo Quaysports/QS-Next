@@ -1,3 +1,9 @@
+import Menu from "../../components/menu/menu";
+
 export default function stockTakeLandingPage(){
-    return null
+    return (
+        <div>
+            <Menu/>
+        </div>
+    )
 }
