@@ -180,7 +180,6 @@ select{
 }
 
 #apps-menu a:hover{
-    background:var(--primary-table-cell-background);
     color: var(--primary-active-text);
 }
 

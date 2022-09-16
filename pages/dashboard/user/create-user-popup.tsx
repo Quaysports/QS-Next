@@ -1,10 +1,6 @@
 import style from './user.module.css'
-import {useDispatch} from "react-redux";
-import {setShowPopup} from "../../../store/popup-slice";
 
 export default function CreateUser(){
-
-    const dispatch = useDispatch()
 
     let userTemplate = {
         "username": "",
@@ -23,7 +19,6 @@ export default function CreateUser(){
                 console.log(userTemplate)
                 const opt = {method:'POST', body: JSON.stringify(userTemplate)}
                 await fetch('/api/user/update-user', opt).then(res=>console.log(res))
-                dispatch(setShowPopup(false))
                 window.location.reload()
             }}>Submit</button>
         </div>

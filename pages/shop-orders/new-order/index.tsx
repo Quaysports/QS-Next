@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect} from 'react';
 import SideBar from "../sidebar/sidebar";
 import StockList from "./stock-list";
 import OrderList from "./order-list";
@@ -12,7 +12,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import styles from "../shop-orders.module.css"
 
-export default function NewOrder() {
+export default function NewOrder({updateNotification}) {
 
     const dispatch = useDispatch()
     const supplierItems = useSelector(selectSupplierItems)
@@ -105,7 +105,7 @@ export default function NewOrder() {
         <div className={styles["shop-orders-parent"]}>
             <SideBar/>
             <div className={styles["shop-orders-table-parent"]}>
-                {supplier ? <OrderList/> : null}
+                {supplier ? <OrderList updateNotification={updateNotification}/> : null}
                 {supplier ? <StockList/> : null}
             </div>
         </div>

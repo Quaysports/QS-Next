@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import Popup from "../../../components/popup";
 import {
     orderObject, selectEditOrder,
     selectNewOrderArray,
@@ -8,12 +7,10 @@ import {
     selectTotalPrice,
     setChangeOrderArray, setChangeOrderQty, setEditOrder, setNewOrderArray, setTotalPrice
 } from "../../../store/shop-orders-slice";
-import {selectShowPopup, setShowPopup} from "../../../store/components/popup-slice";
 import styles from "../shop-orders.module.css"
 
-export default function OrderList() {
+export default function OrderList({updateNotification}) {
 
-    const show = useSelector(selectShowPopup)
     const newOrderArray = useSelector(selectNewOrderArray)
     const totalPrice = useSelector(selectTotalPrice)
     const supplier = useSelector(selectSupplierFilter)
@@ -29,7 +26,7 @@ export default function OrderList() {
             let newOrder = {
                 id: `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
                 supplier: supplier,
-                date: editOrder.date ? editOrder.date: date.getTime(),
+                date: editOrder.date ? editOrder.date : date.getTime(),
                 complete: false,
                 arrived: [],
                 order: newOrderArray,
@@ -92,7 +89,7 @@ export default function OrderList() {
     }
 
     function changeInputAmountHandler(item: orderObject, index: number, value: string, type: string) {
-        dispatch(setChangeOrderQty({item: item,  index: index, value: value, type: type}))
+        dispatch(setChangeOrderQty({item: item, index: index, value: value, type: type}))
     }
 
     let newProduct: orderObject = {
@@ -117,44 +114,46 @@ export default function OrderList() {
             <div>Title:<input onChange={(e) => newProduct.TITLE = e.target.value}/></div>
             <div>
                 <button
-                    onClick={() => {dispatch(setChangeOrderArray({item: newProduct, type: "add", index: null})); dispatch(setShowPopup(false))}}>Submit
+                    onClick={() => {
+                        dispatch(setChangeOrderArray({item: newProduct, type: "add", index: null}));
+                        updateNotification({type:null})
+                    }}>Submit
                 </button>
-                <button id={styles["add-new-item-container-cancel-button"]} onClick={() => dispatch(setShowPopup(false))}>Cancel</button>
+                <button id={styles["add-new-item-container-cancel-button"]} onClick={() => updateNotification({type:null})}>Cancel</button>
             </div>
         </div>
     ]
 
-    function popUpHandler(){
-        dispatch(setShowPopup(true))
-    }
-
-        return (
-            <div className={styles["shop-orders-table-containers"]}>
-                <div className={styles["table-title-container"]}>
-                    <span>Order List</span>
-                    <span className={styles["primary-buttons"]}>
+    return (
+        <div className={styles["shop-orders-table-containers"]}>
+            <div className={styles["table-title-container"]}>
+                <span>Order List</span>
+                <span className={styles["primary-buttons"]}>
                             <button onClick={() => saveOrder()}>Save</button>
                         </span>
-                    <span className={styles["primary-buttons"]}>
-                            <button onClick={popUpHandler}>Add New Item</button>
+                <span className={styles["primary-buttons"]}>
+                            <button onClick={()=>updateNotification({
+                                type: "popup",
+                                title: "New Item",
+                                content: tempArray,
+                            })}>Add New Item</button>
                         </span>
-                    <span id={styles["order-total"]}
-                          >Total Order: £{totalPrice.toFixed(2)}</span>
-                </div>
-                <div className={`${styles["shop-orders-table"]} ${styles["order-list-grid"]}`}>
-                    <span/>
-                    <span className={"center-align"}>Stock</span>
-                    <span className={"center-align"}>Min</span>
-                    <span>SKU</span>
-                    <span>Title</span>
-                    <span>Order</span>
-                    <span className={"center-align"}>T/P Size</span>
-                    <span className={"center-align"}>P/Price</span>
-                    <span/>
-                </div>
-                {currentOrderList()}
-                {Popup({title: "New Item", content: tempArray, show:show})}
+                <span id={styles["order-total"]}
+                >Total Order: £{totalPrice.toFixed(2)}</span>
             </div>
-        )
+            <div className={`${styles["shop-orders-table"]} ${styles["order-list-grid"]}`}>
+                <span/>
+                <span className={"center-align"}>Stock</span>
+                <span className={"center-align"}>Min</span>
+                <span>SKU</span>
+                <span>Title</span>
+                <span>Order</span>
+                <span className={"center-align"}>T/P Size</span>
+                <span className={"center-align"}>P/Price</span>
+                <span/>
+            </div>
+            {currentOrderList()}
+        </div>
+    )
 
 }

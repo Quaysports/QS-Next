@@ -1,9 +1,4 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
-import * as Config from '../../config/config.json'
-
-interface sessions {
-    [key: string]: user
-}
 
 export interface user {
     theme: { [key:string]: string };
@@ -38,36 +33,9 @@ export interface Permissions {
     holidays: { auth: boolean, label: "Holidays" };
 }
 
-let sessions: sessions = {}
-
 export const auth = async (code: string) => {
     return await mongoI.findOne<user>("Users", {pin: {$eq: code}})
 }
-
-export const admin = (id: string) => {
-    return sessions[id].role === 'admin';
-}
-
-export const permissions = (id: string) => {
-    return sessions[id].permissions
-}
-
-export const rota = (id: string) => {
-    return sessions[id].rota;
-}
-
-export const check = (id: string) => {
-    return sessions[id] !== undefined
-}
-
-export const logout = (id: string) => {
-    delete sessions[id]
-}
-
-export const token = (token: string) => {
-    return Config.tokens[token]
-}
-
 
 //used in session auth
 export const login = async (user: string, password: string) => {
@@ -84,15 +52,6 @@ export const login = async (user: string, password: string) => {
 
 export const getUsers = async (query?: object) => {
     return await mongoI.find<user>("Users", query)
-}
-
-export const getUsersHoliday = async (query: object) => {
-    return await mongoI.find<any>("Users", query, {
-        username: 1,
-        holiday: 1,
-        colour: 1,
-        rota: 1
-    })
 }
 
 export const updateUser = async (data: user) => {

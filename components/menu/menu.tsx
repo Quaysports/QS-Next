@@ -1,18 +1,23 @@
 import {useSelector} from "react-redux";
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {selectMenuOptions} from "../../store/menu-slice";
 import AppsMenu from "./apps-menu";
 import SettingsMenu from "./settings-menu";
-import Popup from "../popup";
+import Notification from "../notification/notification";
 
-export default function Menu() {
+export default function Menu({notificationOpts}) {
 
     const menuOptions = useSelector(selectMenuOptions)
 
-    const [popupContent, setPopupContent] = useState({title:"", content:null, show:false})
-    function popupContentHandler({title, content}) {
-        setPopupContent({title:title, content:content, show:true})
+    const [notificationContent, setNotificationContent] = useState(undefined)
+
+    useEffect(()=>{
+        if(notificationContent !== notificationOpts) setNotificationContent(notificationOpts)
+    },[notificationOpts])
+
+    function notificationHandler({type, title, content}) {
+        setNotificationContent({type:type, title:title, content:content})
     }
 
     const [showAppsMenu, setShowAppsMenu] = useState<boolean>(false)
@@ -41,8 +46,8 @@ export default function Menu() {
             <div className="menu-bar"> {buildMenu()} </div>
             <div onClick={settingsMenuHandler} id="settings-button" key={"settings-span"}>&#9965;</div>
             {showAppsMenu ? <AppsMenu showAppsMenu={showAppsMenu} appsMenuHandler={appsMenuHandler} /> : null}
-            {showSettingsMenu ? <SettingsMenu showSettingsMenu={showSettingsMenu} settingsMenuHandler={settingsMenuHandler} popupContent={popupContentHandler}/> : null}
-            {Popup(popupContent)}
+            {showSettingsMenu ? <SettingsMenu showSettingsMenu={showSettingsMenu} settingsMenuHandler={settingsMenuHandler} notificationContent={notificationHandler}/> : null}
+            <Notification options={notificationContent} close={()=>setNotificationContent({type:"", title:"", content:""})}/>
         </div>
     )
 }
