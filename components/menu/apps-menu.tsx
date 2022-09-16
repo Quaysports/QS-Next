@@ -1,11 +1,14 @@
 import Link from "next/link";
-import {signOut} from "next-auth/react";
-import {useSelector} from "react-redux";
-import {activeUserPermissions} from "../../store/dashboard/user-slice";
+import {getSession, signOut} from "next-auth/react";
+import {useEffect, useState} from "react";
 
 export default function AppsMenu({showAppsMenu, appsMenuHandler}) {
 
-    const permissions = useSelector(activeUserPermissions)
+    const [permissions, setPermissions] = useState(null)
+
+    useEffect(()=>{
+        if(permissions === null) getSession().then(session=>setPermissions(session.user.permissions))
+    })
 
     async function logoutHandler() {
         await signOut()

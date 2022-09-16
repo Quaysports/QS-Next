@@ -1,15 +1,15 @@
 import {useEffect, useState} from "react";
-import {signOut} from "next-auth/react";
+import {getSession, signOut} from "next-auth/react";
 import style from './customisation-popup.module.css'
-import {useSelector} from "react-redux";
-import {activeUser} from "../../store/dashboard/user-slice";
+
 
 export default function CustomisationPopup() {
 
-    const user = useSelector(activeUser)
+    const [user,setUser] = useState(null)
     const [primaryColor, setPrimaryColor] = useState("#586221")
 
     useEffect(() => {
+        if(user === null) getSession().then(session=>setUser(session.user))
         if (user?.theme?.['--primary-color']) setPrimaryColor(user.theme['--primary-color'])
     })
 

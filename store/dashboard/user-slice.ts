@@ -7,12 +7,10 @@ export interface userWrapper {
 }
 
 export interface userState {
-    activeUser:user | null
     usersArray: user[]
 }
 
 const initialState:userState = {
-    activeUser:null,
     usersArray:[]
 }
 
@@ -21,11 +19,13 @@ export const userSlice = createSlice({
         initialState,
         extraReducers: {
             [HYDRATE]: (state, action) => {
-                state.usersArray = action.payload.users.usersArray
+                return{
+                    ...state,
+                    ...action.payload.users
+                }
             },
         },
         reducers:{
-            setActiveUser:(state, action)=> {state.activeUser = action.payload},
             setAllUserData:(state,action) => {state.usersArray = action.payload},
             setUserData:(state,action:PayloadAction<{index:string, key:string, data:string}>) => {
                 state.usersArray[action.payload.index][action.payload.key] = action.payload.data
@@ -45,10 +45,8 @@ export const userSlice = createSlice({
     })
 ;
 
-export const {setActiveUser, setUserData, setAllUserData, setUserPermissions, deleteUser} = userSlice.actions
+export const {setUserData, setAllUserData, setUserPermissions, deleteUser} = userSlice.actions
 
 export const selectUsers = (state:userWrapper) => state.users.usersArray
-export const activeUser = (state:userWrapper) => state.users.activeUser
-export const activeUserPermissions = (state:userWrapper) => state.users.activeUser.permissions
 
 export default userSlice.reducer;

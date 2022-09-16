@@ -566,17 +566,7 @@ declare namespace linn {
 
 declare namespace server{
     export interface sessionObject {
-        user: {
-            name?: string;
-            email?: string;
-            image?: string;
-            username?: string
-            permissions?: { [key: string]: { auth: boolean, label: string } }
-            theme?:{[key:string]:string}
-            role?: string,
-            rota?: string
-        }
-        expires: string
+
     }
 
 }

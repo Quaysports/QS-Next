@@ -6,15 +6,16 @@ interface sessions {
 }
 
 export interface user {
-    _id?: string,
-    username: string,
-    pin?: string
-    password?: string
-    role: string,
-    rota?: string,
-    colour?: string
-    permissions: Permissions
-    holiday?: string
+    theme: { [key:string]: string };
+    _id?: string;
+    username: string;
+    pin?: string;
+    password?: string;
+    role: string;
+    rota?: string;
+    colour?: string;
+    permissions: Permissions;
+    holiday?: string;
 }
 
 export interface Permissions {

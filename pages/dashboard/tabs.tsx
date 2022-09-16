@@ -1,9 +1,14 @@
 import Link from "next/link";
-import {useSelector} from "react-redux";
-import {activeUserPermissions} from "../../store/dashboard/user-slice";
+import {useEffect, useState} from "react";
+import {getSession} from "next-auth/react";
 
 export default function DashboardTabs() {
-    const permissions = useSelector(activeUserPermissions)
+
+    const [permissions, setPermissions] = useState(null)
+
+    useEffect(()=>{
+        if(permissions === null) getSession().then(session=>setPermissions(session.user.permissions))
+    })
 
     return (
         <div key={23} id="apps-menu">

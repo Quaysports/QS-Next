@@ -1,10 +1,11 @@
 import style from '../styles/popup-component.module.css'
 import {useDispatch, useSelector} from "react-redux";
-import {setShowPopup} from "../store/components/popup-slice";
+import {selectShowPopup, setShowPopup} from "../store/components/popup-slice";
 
 export default function Popup(options:{title:string, content:JSX.Element | JSX.Element[], show:boolean}){
     const dispatch = useDispatch()
-    if(options.show){
+    const show = useSelector(selectShowPopup)
+    if(show){
         return(
             <div className={style['fullscreen-dim']}>
                 <div className={style['popup-frame']}>

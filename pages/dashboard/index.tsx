@@ -54,7 +54,7 @@ function setupMenu(data) {
 export const getServerSideProps = appWrapper.getServerSideProps(
     (store) =>
         async (context) => {
-            const session = await getSession(context) as server.sessionObject
+            const session = await getSession(context)
 
             if(!session){
                 return {

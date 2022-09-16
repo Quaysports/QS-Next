@@ -1,8 +1,8 @@
 import style from "./user.module.css";
 import PermissionsPopup from "./permissions-popup";
 import {deleteUser, setUserData} from "../../../store/dashboard/user-slice";
-import {setShowConfirm} from "../../../store/confirm-slice";
-import {setShowPopup} from "../../../store/popup-slice";
+import {setShowConfirm} from "../../../store/components/confirm-slice";
+import {setShowPopup} from "../../../store/components/popup-slice";
 import {FocusEvent} from "react";
 import {useDispatch} from "react-redux";
 import {user} from "../../../server-modules/users/user";
