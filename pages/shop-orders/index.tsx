@@ -35,10 +35,10 @@ export default function ShopOrdersLandingPage() {
 
     return (
         <div>
-            <Menu notificationOpts={notificationOpts}/>
+            <Menu />
             {router.query.tab === undefined || router.query.tab === "orders" ? <Orders/> : null}
             {router.query.tab === "completed-orders" ? <CompletedOrders/> : null}
-            {router.query.tab === "new-order" ? <NewOrder updateNotification={updateNotification}/> : null}
+            {router.query.tab === "new-order" ? <NewOrder /> : null}
             {router.query.tab === "dead-stock" ? <DeadStock/> : null}
         </div>
     );

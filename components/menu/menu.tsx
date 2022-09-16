@@ -6,18 +6,21 @@ import AppsMenu from "./apps-menu";
 import SettingsMenu from "./settings-menu";
 import Notification from "../notification/notification";
 
-export default function Menu({notificationOpts}) {
+export default function Menu() {
 
     const menuOptions = useSelector(selectMenuOptions)
 
     const [notificationContent, setNotificationContent] = useState(undefined)
 
     useEffect(()=>{
-        if(notificationContent !== notificationOpts) setNotificationContent(notificationOpts)
-    },[notificationOpts])
+        window.addEventListener('notification', notificationEventHandler);
+        return () => {
+            window.removeEventListener('notification', notificationEventHandler);
+        };
+    },[])
 
-    function notificationHandler({type, title, content}) {
-        setNotificationContent({type:type, title:title, content:content})
+    function notificationEventHandler(e){
+        setNotificationContent(e.detail)
     }
 
     const [showAppsMenu, setShowAppsMenu] = useState<boolean>(false)
@@ -46,7 +49,7 @@ export default function Menu({notificationOpts}) {
             <div className="menu-bar"> {buildMenu()} </div>
             <div onClick={settingsMenuHandler} id="settings-button" key={"settings-span"}>&#9965;</div>
             {showAppsMenu ? <AppsMenu showAppsMenu={showAppsMenu} appsMenuHandler={appsMenuHandler} /> : null}
-            {showSettingsMenu ? <SettingsMenu showSettingsMenu={showSettingsMenu} settingsMenuHandler={settingsMenuHandler} notificationContent={notificationHandler}/> : null}
+            {showSettingsMenu ? <SettingsMenu showSettingsMenu={showSettingsMenu} settingsMenuHandler={settingsMenuHandler}/> : null}
             <Notification options={notificationContent} close={()=>setNotificationContent({type:"", title:"", content:""})}/>
         </div>
     )
