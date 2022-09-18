@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import {login} from '../../../server-modules/users/user'
 
-export default NextAuth({
+export const authOptions = {
     providers: [
         CredentialsProvider({
             id: 'credentials',
@@ -62,4 +62,6 @@ export default NextAuth({
 
     },
     debug: process.env.NODE_ENV === 'development',
-});
+}
+
+export default NextAuth(authOptions);

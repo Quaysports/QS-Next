@@ -2,14 +2,13 @@ import * as React from 'react';
 import {appWrapper} from "../../store/store";
 import {useRouter} from "next/router";
 import {deadStockReport} from "../../server-modules/shop/shop";
-import {setMenuOptions} from "../../store/menu-slice";
 import {setDeadStock} from "../../store/shop-orders-slice";
 import Orders from "./orders";
 import CompletedOrders from "./completed-orders/completed-orders";
 import NewOrder from "./new-order/index";
 import DeadStock from "./dead-stock/dead-stock";
 import Menu from "../../components/menu/menu";
-import {useState} from "react";
+import ShopOrdersTabs from "./tabs";
 
 
 export interface item {
@@ -31,33 +30,16 @@ export interface item {
 export default function ShopOrdersLandingPage() {
 
     const router = useRouter()
-    const [notificationOpts, setNotificationOpts] = useState({})
-
-    function updateNotification(opts) {
-        setNotificationOpts(opts)
-    }
 
     return (
         <div>
-            <Menu/>
+            <Menu tabs={<ShopOrdersTabs/>}/>
             {router.query.tab === undefined || router.query.tab === "orders" ? <Orders/> : null}
             {router.query.tab === "completed-orders" ? <CompletedOrders/> : null}
             {router.query.tab === "new-order" ? <NewOrder/> : null}
             {router.query.tab === "dead-stock" ? <DeadStock/> : null}
         </div>
     );
-}
-
-//Builds an object to set the top menu. Key is the UI display, value folder location
-function buildMenu() {
-    return (
-        {
-            "Orders": "shop-orders?tab=orders",
-            "Completed Orders": "shop-orders?tab=completed-orders",
-            "New Order": "shop-orders?tab=new-order",
-            "Dead Stock": "shop-orders?tab=dead-stock",
-        }
-    )
 }
 
 export const getServerSideProps = appWrapper.getServerSideProps(
@@ -71,8 +53,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(
             for (const item of sortedArray) {
                 tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
             }
-            const menuObject = buildMenu()
-            await store.dispatch(setMenuOptions(menuObject))
             await store.dispatch(setDeadStock(tempObject))
             return void {}
         }

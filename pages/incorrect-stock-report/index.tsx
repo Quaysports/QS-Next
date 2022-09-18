@@ -12,7 +12,6 @@ import {
     setValidData,
     setZeroStockInitialState,
 } from "../../store/incorrect-stock-slice";
-import {setMenuOptions} from "../../store/menu-slice";
 import Menu from "../../components/menu/menu";
 
 export default function IncorrectStockLandingPage() {
@@ -78,7 +77,7 @@ export default function IncorrectStockLandingPage() {
 
 export const getServerSideProps = appWrapper.getServerSideProps(
     (store) =>
-        async (context) => {
+        async () => {
             const data = JSON.parse(JSON.stringify(await getIncorrectStock()))
             let priorityObject = {}
             let tempObject = {}
@@ -91,9 +90,9 @@ export const getServerSideProps = appWrapper.getServerSideProps(
                     tempObject[data[i].BRAND].push(data[i])
                 }
             }
+
             store.dispatch(setIncorrectStockInitialState(priorityObject))
             store.dispatch(setZeroStockInitialState(tempObject))
-            store.dispatch(setMenuOptions({}))
             return void {}
         }
 )

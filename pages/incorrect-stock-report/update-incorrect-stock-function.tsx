@@ -2,6 +2,7 @@ import {
     setIncorrectStockSplice,
     setZeroStockSplice
 } from "../../store/incorrect-stock-slice";
+import {dispatchNotification} from "../../components/notification/notification-wrapper";
 
 
 export default function UpdateIncorrectStock(pageRerenderHandler, incorrectStockState,zeroStockState, validDataState, dispatch) {
@@ -30,23 +31,20 @@ export default function UpdateIncorrectStock(pageRerenderHandler, incorrectStock
                 'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({QUERY: "StockAdjust - " + date(), DATA: tempArray})
+            body: JSON.stringify({updateId: "StockAdjust - " + date(), data: tempArray})
         }
         fetch("/api/incorrect-stock/incorrect-stock-adjust-and-mongo-clean-up", opts)
             .then(res => res.json())
             .then(res => {
-                window.confirm(`${res.deletedCount} items updated`)
+                dispatchNotification({type:"alert", title:"Stock Update", content:`${res.deletedCount} items updated`})
                 pageRerenderHandler()
             })
     } else {
-        window.alert("Please enter only numbers in stock levels")
+        dispatchNotification({type:"alert", title:"Error", content: "Please enter only numbers in stock levels"})
     }
 }
 
 function date() {
-    let date = new Date();
-    let day = date.getDay()
-    let month = date.getMonth() + 1
-    let year = date.getFullYear()
-    return (`${day}/${month}/${year}`)
+    const date = new Date();
+    return (`${ date.getDay() }/${ date.getMonth() + 1 }/${ date.getFullYear() }`)
 }

@@ -3,11 +3,11 @@ import * as linn from "../../../server-modules/linn-api/linn-api"
 
 export default async function handler(req, res) {
     res.status(200).json(
-        await incorrectStockAdjustAndMongoCleanUp(req.body.DATA, req.body.QUERY)
+        await incorrectStockAdjustAndMongoCleanUp(req.body.updateId, req.body.data )
     )
 }
 
-async function incorrectStockAdjustAndMongoCleanUp(arr: { SKU:string,QTY:string }[], id: string){
+async function incorrectStockAdjustAndMongoCleanUp(id: string, arr: { SKU:string,QTY:string }[]){
     let stockData = []
     let mongoCleanUp = []
     for (let item of arr) {

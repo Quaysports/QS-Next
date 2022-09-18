@@ -4,6 +4,7 @@ export default function stockForecastLandingPage(){
     return (
         <div>
             <Menu/>
+
         </div>
     )
 }

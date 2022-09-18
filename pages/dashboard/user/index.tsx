@@ -18,10 +18,10 @@ export default function UserLandingPage() {
     }, [])
 
     return (
-        <div>
+        <>
             <div className={style["user-table"]}>
                 <UserTable userInfo={userInfo}/>
             </div>
-        </div>
+        </>
     )
 }

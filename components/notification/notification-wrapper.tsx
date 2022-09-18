@@ -1,29 +1,36 @@
-import Notification from "./notification";
+import Notification, {options} from "./notification";
 import {useEffect, useRef, useState} from "react";
 
+/**
+ * A wrapper component that listens for a custom event called "notification" and when it receives the event, it passes the event's detail to the Notification component
+ */
 export default function NotificationWrapper(){
 
     const element = useRef<HTMLDivElement>(null)
 
-    const [notificationContent, setNotificationContent] = useState(undefined)
+    const [notificationContent, setNotificationContent] = useState<options>(undefined)
 
     useEffect(()=>{
-        element.current.addEventListener('notification', notificationEventHandler);
+        element.current?.addEventListener('notification', notificationEventHandler);
         return () => {
-            element.current.removeEventListener('notification', notificationEventHandler);
+            element.current?.removeEventListener('notification', notificationEventHandler);
         };
     },[])
 
     function notificationEventHandler(e){
-        setNotificationContent(e.detail)
+        setNotificationContent(e.detail as options)
     }
 
     return <div id="notification-target" ref={element}>
-        <Notification options={notificationContent} close={()=>setNotificationContent({type:"", title:"", content:""})}/>
+        <Notification options={notificationContent} close={()=>setNotificationContent({type:null})}/>
     </div>
 }
 
-export function dispatchNotification(details){
-    const event = new CustomEvent('notification', { detail: details });
-    document.getElementById("notification-target").dispatchEvent(event)
+/**
+ * It dispatches a notification event to the notification-target element.
+ * @param {options} options - {
+ */
+export function dispatchNotification(options:options){
+    const event = new CustomEvent('notification', { detail: options });
+    document.getElementById("notification-target")?.dispatchEvent(event)
 }

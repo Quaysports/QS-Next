@@ -1,7 +1,24 @@
 import style from './notification.module.css'
 
-interface options {options:{type:string, title:string, content:JSX.Element | JSX.Element[] | string, fn?:Function}, close:Function}
-export default function Notification({options = {type:"", title:"", content:""}, close}:options){
+/**
+ * Notification options:
+ * @property  {string} type - Notification Type, "popup", "confirm", "alert" or null.
+ * @property  {string} [title] - Notification window title.
+ * @property  {JSX.Element | JSX.Element[] | string} [content] - Window content.
+ * @property  {function} [fn] - Function for confirm window, runs on "OK".
+ */
+export interface options {type:string,title?:string,content?:JSX.Element | JSX.Element[] | string,fn?:Function}
+
+
+/* Defining the props that the component will receive. */
+interface props {options:options, close:Function}
+
+/**
+ * It returns a popup, confirm, or alert depending on the type of notification passed to it
+ * @param {props}  - options.type - the type of notification to display.
+ * @returns A React component
+ */
+export default function Notification({options = {type:null}, close}:props){
     switch(options.type){
         case "popup": return(
             <div className={style['fullscreen-dim']}>
