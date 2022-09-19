@@ -40,10 +40,11 @@ export default function IncorrectStockLandingPage() {
             <Menu/>
             <div id={styles.incorrectStockListContainer}>
                 <div className={styles.titles}>HIGH PRIORITY ITEMS TO CHECK
-                    <button onClick={() => {
-                        UpdateIncorrectStock(pageRerenderHandler, incorrectStockState, zeroStockState, validDataState, dispatch)
-                    }}
-                            id={styles.saveButton}>Save
+                    <button
+                        onClick={() => {
+                            UpdateIncorrectStock(pageRerenderHandler, incorrectStockState, zeroStockState, validDataState, dispatch)
+                        }}
+                        id={styles.saveButton}>Save
                     </button>
                 </div>
                 <div className={styles.stockListsTitles}>
@@ -53,11 +54,11 @@ export default function IncorrectStockLandingPage() {
                     <span className={styles.stockCheckedTitles}>Stock</span>
                     <span className={styles.stockCheckedTitles}>Checked</span>
                 </div>
-                <div><IncorrectStockList
-                    validDataHandler={(x: boolean) => validDataHandler(x)}
-                /></div>
-                <div
-                    className={styles.titles}>--------------------------------------------------------------------------------------
+                <div>
+                    <IncorrectStockList validDataHandler={(x: boolean) => validDataHandler(x)}/>
+                </div>
+                <div className={styles.titles}>
+                    --------------------------------------------------------------------------------------
                 </div>
                 <div className={styles.titles}>LOW PRIORITY ITEMS TO CHECK</div>
                 <div className={styles.stockListsTitles}>
@@ -67,9 +68,9 @@ export default function IncorrectStockLandingPage() {
                     <span className={styles.stockCheckedTitles}>Stock</span>
                     <span className={styles.stockCheckedTitles}>Checked</span>
                 </div>
-                <div><ZeroStockList
-                    validDataHandler={(x: boolean) => validDataHandler(x)}
-                /></div>
+                <div>
+                    <ZeroStockList validDataHandler={(x: boolean) => validDataHandler(x)}/>
+                </div>
             </div>
         </div>
     )

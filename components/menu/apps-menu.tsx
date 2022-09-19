@@ -17,9 +17,9 @@ export default function AppsMenu({showAppsMenu, appsMenuHandler}) {
 
     if (showAppsMenu) {
         return (
-            <div key={24} id="apps-menu">
-                <div onClick={appsMenuHandler}><Link href="/dashboard">Dashboard</Link></div>
-                {permissions?.shopOrders?.auth ? <div onClick={appsMenuHandler}><Link href="/shop-orders">Shop Orders</Link></div> : null}
+            <div key={24} id="apps-menu" onMouseLeave={appsMenuHandler}>
+                <div onClick={appsMenuHandler}><Link href="/dashboard?tab=home">Dashboard</Link></div>
+                {permissions?.shopOrders?.auth ? <div onClick={appsMenuHandler}><Link href="/shop-orders?tab=orders">Shop Orders</Link></div> : null}
                 {permissions?.incorrectStock?.auth ? <div onClick={appsMenuHandler}><Link href="/incorrect-stock-report">Incorrect Stock</Link></div> : null}
                 {permissions?.itemDatabase?.auth ? <div onClick={appsMenuHandler}><Link href="/item-database">Item Database</Link></div> : null}
                 {permissions?.stockForecast?.auth ? <div onClick={appsMenuHandler}><Link href="/stock-forecast">Stock Forecast</Link></div> : null}
