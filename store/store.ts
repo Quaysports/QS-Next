@@ -5,6 +5,7 @@ import {dashboardSlice} from "./dashboard-slice";
 import {shopOrdersSlice} from "./shop-orders-slice";
 import {userSlice} from "./dashboard/user-slice";
 import {searchBarSlice} from "./components/search-bar-slice";
+import {stockForecastSlice} from "./stock-forecast-slice";
 
 const myStore = () =>
     configureStore({
@@ -14,6 +15,7 @@ const myStore = () =>
             [dashboardSlice.name]: dashboardSlice.reducer,
             [userSlice.name]:userSlice.reducer,
             [searchBarSlice.name]: searchBarSlice.reducer,
+            [stockForecastSlice.name]: stockForecastSlice.reducer
         },
         devTools: true,
     });

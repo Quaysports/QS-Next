@@ -3,7 +3,6 @@ import UpdateIncorrectStock from "./update-incorrect-stock-function"
 import ZeroStockList from "./zero-stock-list-function";
 import IncorrectStockList from "./incorrect-stock-list-function";
 import styles from './incorrect-stock-list.module.css'
-import {appWrapper} from "../../store/store";
 import {useDispatch, useSelector} from "react-redux";
 import {getIncorrectStock} from "../../server-modules/shop/shop"
 import {
@@ -14,7 +13,7 @@ import {
 } from "../../store/incorrect-stock-slice";
 import Menu from "../../components/menu/menu";
 
-export default function IncorrectStockLandingPage() {
+export default function IncorrectStockLandingPage({incorrectStock, zeroStock}) {
 
     const dispatch = useDispatch()
 
@@ -24,7 +23,8 @@ export default function IncorrectStockLandingPage() {
     const validDataState = useSelector(selectValidData)
 
     useEffect(() => {
-        //props.titleBar([])
+        dispatch(setIncorrectStockInitialState(incorrectStock))
+        dispatch(setZeroStockInitialState(zeroStock))
     }, [])
 
     function pageRerenderHandler() {
@@ -76,24 +76,20 @@ export default function IncorrectStockLandingPage() {
     )
 }
 
-export const getServerSideProps = appWrapper.getServerSideProps(
-    (store) =>
-        async () => {
-            const data = JSON.parse(JSON.stringify(await getIncorrectStock()))
-            let priorityObject = {}
-            let tempObject = {}
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].PRIORITY) {
-                    priorityObject[data[i].BRAND] ??= []
-                    priorityObject[data[i].BRAND].push(data[i])
-                } else {
-                    tempObject[data[i].BRAND] ??= []
-                    tempObject[data[i].BRAND].push(data[i])
-                }
-            }
-
-            store.dispatch(setIncorrectStockInitialState(priorityObject))
-            store.dispatch(setZeroStockInitialState(tempObject))
-            return void {}
+export async function getServerSideProps() {
+    const data = JSON.parse(JSON.stringify(await getIncorrectStock()))
+    let incorrectStock = {}
+    let zeroStock = {}
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].PRIORITY) {
+            incorrectStock[data[i].BRAND] ??= []
+            incorrectStock[data[i].BRAND].push(data[i])
+        } else {
+            zeroStock[data[i].BRAND] ??= []
+            zeroStock[data[i].BRAND].push(data[i])
         }
-)
+    }
+
+    return {props: {incorrectStock: incorrectStock, zeroStock: zeroStock}}
+}
+

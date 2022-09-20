@@ -92,7 +92,9 @@ export const shopOrdersSlice = createSlice({
         },
         reducers: {
             setDeadStock: (state, action) => {
+                console.log("dead stock!")
                 state.deadStock = action.payload
+                console.log("dead stock set!")
             },
             setSideBarContent: (state, action: PayloadAction<{ content: { [key: string]: string }, title: string }>) => {
                 state.sideBarContent = action.payload.content;

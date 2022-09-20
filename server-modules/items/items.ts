@@ -1,4 +1,4 @@
-import mongoI = require('../mongo-interface/mongo-interface')
+import * as mongoI from '../mongo-interface/mongo-interface'
 const fs = require("fs");
 
 export const dbUpdateImage = async (item: { _id?: string; SKU: string; IMAGES: { [p: string]: { filename: string } }; }) => {
@@ -27,7 +27,7 @@ export const updateItem = async (item:sbt.Item) => {
     return await mongoI.setData("Items", {SKU: item.SKU}, item)
 }
 
-export const getItems = async (query:object, projection:object, sort:object) => {
+export const getItems = async (query:object = {}, projection:object = {}, sort:object = {}) => {
     return await mongoI.find<sbt.Item>("Items", query, projection, sort)
 }
 

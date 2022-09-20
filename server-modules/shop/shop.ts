@@ -1,6 +1,6 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
 import * as linn from "../linn-api/linn-api"
-import * as eod from '../workers/shop-worker-modules/endOfDayReport'
+//import * as eod from '../workers/shop-worker-modules/endOfDayReport'
 
 interface stockError {
     BRAND?: string
@@ -19,6 +19,7 @@ export const reports = async () => {
     return await mongoI.find<any>("Shop-Reports")
 }
 
+/*
 export const shopSalesSpan = async () => {
     const result = await mongoI.findAggregate<eod.takings>("Shop-Reports", [
         {$sort: {date: 1}},
@@ -51,7 +52,7 @@ export const profitAdjust = async (query: object, data: eod.takings) => {
         delete data._id
     }
     return await mongoI.setData("Shop-Reports", query, data)
-}
+}*/
 
 export const orders = async (id: string) => {
     return await mongoI.find<any>("Shop", {"id": {$regex: id, $options: "i"}})

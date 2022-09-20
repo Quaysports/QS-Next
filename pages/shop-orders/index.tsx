@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {appWrapper} from "../../store/store";
 import {useRouter} from "next/router";
 import {deadStockReport} from "../../server-modules/shop/shop";
 import {setDeadStock} from "../../store/shop-orders-slice";
@@ -49,20 +48,11 @@ export default function ShopOrdersLandingPage(props) {
     );
 }
 
-export const getServerSideProps = appWrapper.getServerSideProps(
-    (store) =>
-        async () => {
-            const deadStock = JSON.parse(JSON.stringify(await deadStockReport()))
-            let sortedArray = deadStock.sort((a, b) => {
-                return a.SUPPLIER === b.SUPPLIER ? 0 : a.SUPPLIER > b.SUPPLIER ? 1 : -1
-            })
-            let tempObject = {}
-            for (const item of sortedArray) {
-                tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
-            }
-            //store.dispatch(setDeadStock(tempObject))
-            return {
-                props: {deadStock:tempObject}
-            }
-        }
-)
+export async function getServerSideProps() {
+    const deadStock = JSON.parse(JSON.stringify(await deadStockReport()))
+    let tempObject = {}
+    for (const item of deadStock) {
+        tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
+    }
+    return {props: {deadStock: tempObject}}
+}

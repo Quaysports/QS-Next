@@ -1,0 +1,14 @@
+.fullscreen-layout {
+    display: grid;
+    height: 100vh;
+    grid-template-rows: auto 1fr;
+}
+
+.forecast-table{
+    display: block;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    background: var(--primary-table-background);
+    margin: 10px;
+    border-radius:5px;
+}
