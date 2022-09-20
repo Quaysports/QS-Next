@@ -154,7 +154,7 @@ export default function StockList() {
                                                                          id={"all-items"} name="display-toggle"
                                                                          onChange={(e) => radioButtonsHandler(e.target.checked, "allItems")}/></span>
             </div>
-            <div>{buildSearchBar()}</div>
+            <div className={styles["search-bar-wrapper"]}>{buildSearchBar()}</div>
             <div className={`${styles["shop-orders-table"]} ${styles["low-stock-list-grid"]}`}>
                 <span/>
                 <span className={"center-align"}>Stock</span>

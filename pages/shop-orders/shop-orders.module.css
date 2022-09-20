@@ -179,3 +179,8 @@
     top: 0;
     background-color: rgba(45,45,45,0.95);
 }
+
+/*----------------------------------search bar wrapper----------------------------------------------*/
+.search-bar-wrapper{
+    margin: 15px 0;
+}

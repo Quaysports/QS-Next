@@ -2,7 +2,6 @@
     font-family: Roboto, Helvetica, Arial, sans-serif;
     scrollbar-width: thin;
     box-sizing: border-box;
-
 }
 
 ::-webkit-scrollbar {
@@ -127,6 +126,7 @@ select{
     padding: 5px 10px;
     color: var(--primary-inactive-text);
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .menu-bar span:hover{
@@ -272,9 +272,16 @@ select{
 
 /*------------------------------------Search Bar------------------------------------------*/
 
-#search-bar-parent{
+#search-bar{
     display: flex;
-    margin: 15px 0;
+    align-items: center;
+}
+
+#search-bar input[type=radio]{
+    margin: 0 5px;
+    -ms-transform: scale(1.1); /* IE 9 */
+    -webkit-transform: scale(1.1); /* Chrome, Safari, Opera */
+    transform: scale(1.1);
 }
 
 #search-bar-buttons{
@@ -282,7 +289,11 @@ select{
 }
 #search-bar-input{
     flex:1;
+    padding: 2px 5px;
+    text-align: left;
 }
+
+
 
 /*-------------------------------------Other default styles-----------------------------------*/
 

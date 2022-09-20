@@ -171,6 +171,6 @@ export const deadStockReport = async () => {
         SKU: {$nin: items},
         STOCKTOTAL: {$gt: 0},
         IDBFILTER: "domestic"
-    }, {SUPPLIER: 1, SKU: 1, TITLE: 1})
+    }, {SUPPLIER: 1, SKU: 1, TITLE: 1}, {SUPPLIER:1})
 }
 

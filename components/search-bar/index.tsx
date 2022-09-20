@@ -35,7 +35,7 @@ export default function SearchBar(props: SearchBarProps) {
     function searchArray(value) {
         let startsWith = []
         let contains = []
-        for (let i = 0; i< searchableArray.length; i++) {
+        for (let i = 0; i < searchableArray.length; i++) {
             if (searchType === "SKU") {
                 if (searchableArray[i].SKU.toUpperCase().startsWith(value.toUpperCase())) {
                     startsWith.push(searchableArray[i])
@@ -45,7 +45,7 @@ export default function SearchBar(props: SearchBarProps) {
                     contains.push(searchableArray[i])
                 }
             }
-            if(searchType === "Title") {
+            if (searchType === "Title") {
                 if (searchableArray[i].TITLE.toUpperCase().startsWith(value.toUpperCase())) {
                     startsWith.push(searchableArray[i])
                     continue;
@@ -54,7 +54,7 @@ export default function SearchBar(props: SearchBarProps) {
                     contains.push(searchableArray[i])
                 }
             }
-            if(searchType === "EAN") {
+            if (searchType === "EAN") {
                 if (searchableArray[i].EAN.toUpperCase().startsWith(value.toUpperCase())) {
                     startsWith.push(searchableArray[i])
                     continue;
@@ -68,22 +68,25 @@ export default function SearchBar(props: SearchBarProps) {
     }
 
     return (
-        <div id="search-bar-parent">
-            <span id="search-bar-buttons">
-                <label htmlFor={"sku-radio"}>SKU</label>
-                <input type="radio" id={"sku-radio"} name={"search-buttons"} defaultChecked={true} onChange={(e) => {
-                    searchTypeHandler(e.target.checked, "SKU")
-                }}/>
-                <label htmlFor={"title-radio"}>Title</label>
-                <input type="radio" id={"title-radio"} name={"search-buttons"} onChange={(e) => {
-                    searchTypeHandler(e.target.checked, "Title")
-                }}/>
-                {optionalButtons()}
-            </span>
-            <input id="search-bar-input"
-                   list="search-options"
-                   onChange={(e) => {
-                       searchArray(e.target.value)}}
+        <div id="search-bar">
+            <label htmlFor={"sku-radio"}>SKU</label>
+            <input
+                type="radio"
+                id={"sku-radio"}
+                defaultChecked={true}
+                onChange={e => searchTypeHandler(e.target.checked, "SKU")}
+            />
+            <label htmlFor={"title-radio"}>Title</label>
+            <input
+                type="radio"
+                id={"title-radio"}
+                onChange={e => searchTypeHandler(e.target.checked, "Title")}
+            />
+            {optionalButtons()}
+            <input
+                id="search-bar-input"
+                list="search-options"
+                onChange={e => searchArray(e.target.value)}
             />
         </div>
     )
