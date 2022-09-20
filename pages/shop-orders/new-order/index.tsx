@@ -78,6 +78,7 @@ export default function NewOrder() {
                 'Content-Type': 'application/json'
             }
         }
+        console.log(supplier)
         fetch("/api/shop-orders/get-suppliers-and-low-stock", opts)
             .then(res => res.json())
             .then(res => {
@@ -98,6 +99,7 @@ export default function NewOrder() {
             }
             dispatch(setSideBarContent({content: tempObject, title: "Suppliers"}))
         }
+        console.count("test")
     }, [supplier])
 
     return (

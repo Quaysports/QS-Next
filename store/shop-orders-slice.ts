@@ -112,6 +112,7 @@ export const shopOrdersSlice = createSlice({
                 state.editOrder = action.payload
                 state.newOrderArray = action.payload.order
                 state.supplierFilter = action.payload.supplier
+                console.log(current(state))
             },
             setArrivedHandler: (state, action) => {
                 state.loadedOrder.order[action.payload.index].arrived = action.payload.value

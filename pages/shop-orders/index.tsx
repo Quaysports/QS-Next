@@ -9,6 +9,8 @@ import NewOrder from "./new-order/index";
 import DeadStock from "./dead-stock/dead-stock";
 import Menu from "../../components/menu/menu";
 import ShopOrdersTabs from "./tabs";
+import {useEffect} from "react";
+import {useDispatch} from "react-redux";
 
 
 export interface item {
@@ -27,9 +29,14 @@ export interface item {
     newProduct: boolean
 }
 
-export default function ShopOrdersLandingPage() {
+export default function ShopOrdersLandingPage(props) {
 
     const router = useRouter()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(setDeadStock(props.deadStock))
+    })
 
     return (
         <div>
@@ -53,7 +60,9 @@ export const getServerSideProps = appWrapper.getServerSideProps(
             for (const item of sortedArray) {
                 tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
             }
-            await store.dispatch(setDeadStock(tempObject))
-            return void {}
+            //store.dispatch(setDeadStock(tempObject))
+            return {
+                props: {deadStock:tempObject}
+            }
         }
 )
