@@ -24,7 +24,7 @@ export default function DisplayOnOrder() {
     function editOrder(order) {
         console.log(order)
         dispatch(setEditOrder(order))
-        router.push("/shop-orders/new-order")
+        router.push("/shop-orders?tab=new-order")
     }
 
     function bookedInHandler(order, index) {
