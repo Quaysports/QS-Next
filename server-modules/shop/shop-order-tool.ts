@@ -1,5 +1,5 @@
-import mongoI = require('../mongo-interface/mongo-interface');
-import linn = require("../linn-api/linn-api");
+import * as mongoI from '../mongo-interface/mongo-interface';
+import * as linn from "../linn-api/linn-api";
 
 interface shopOrder {
     _id?: string

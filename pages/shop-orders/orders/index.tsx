@@ -10,14 +10,12 @@ import {
     setLoadedOrder,
     setSideBarContent,
     setOpenOrders,
-    selectSupplierFilter,
     selectOpenOrders
 } from "../../../store/shop-orders-slice";
 
 export default function Orders() {
 
     const dispatch = useDispatch()
-    const supplierFilter = useSelector(selectSupplierFilter)
     const openOrders = useSelector(selectOpenOrders)
     const [supplier, setSupplier] = useState<string>(null)
 
@@ -55,25 +53,25 @@ export default function Orders() {
                 dispatch(setOpenOrders(tempObject))
             }
         }
-        if (supplierFilter) {
-            let loadedOrder = openOrders[supplierFilter]
+        if (supplier) {
+            let loadedOrder = openOrders[supplier]
             dispatch(setLoadedOrder(loadedOrder))
         }
 
-    }, [supplierFilter])
+    }, [supplier])
 
     function supplierHandler(supplier){
         setSupplier(supplier)
     }
 
-
     return (
         <div className={styles["shop-orders-parent"]}>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
             <div className={styles["shop-orders-table-parent"]}>
-                <OrderInformation/>
-                <DisplayOnOrder/>
-                <DisplayArrived/>
+                {!supplier ? null : <>
+                    <OrderInformation supplierFilter={() => supplierHandler(null)}/>
+                    <DisplayOnOrder/>
+                    <DisplayArrived supplierFilter={() => supplierHandler(null)}/></>}
             </div>
         </div>
     );

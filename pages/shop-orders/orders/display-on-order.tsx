@@ -46,7 +46,7 @@ export default function DisplayOnOrder() {
             let conf = window.confirm("Did only part of the order arrive?")
             if (conf === true) {
                 setSaveOrder(true)
-                dispatch(setBookedInState({bookIn: "partial", index: index}))
+                dispatch(setBookedInState({bookedIn: "partial", index: index}))
             }
         }
     }

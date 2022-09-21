@@ -4,7 +4,10 @@ import styles from "../shop-orders.module.css";
 import {selectLoadedOrder, setLoadedOrder} from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
 
-export default function DisplayArrived() {
+interface DisplayArrivedProps{
+    supplierFilter: () => void
+}
+export default function DisplayArrived(props: DisplayArrivedProps) {
 
     const dispatch = useDispatch()
     const loadedOrder = useSelector(selectLoadedOrder)
@@ -53,7 +56,7 @@ export default function DisplayArrived() {
             <div className={styles["shop-orders-table-containers"]}>
                 <div className={styles["table-title-container"]}>
                     <span>Arrived</span>
-                    <SubmitToLinnworksButtons
+                    <SubmitToLinnworksButtons supplierFilter={props.supplierFilter}
                     />
                 </div>
                 <div className={`${styles["shop-orders-table"]} ${styles["open-orders-grid"]}`}>

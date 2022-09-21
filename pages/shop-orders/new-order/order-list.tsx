@@ -4,77 +4,97 @@ import {
     orderObject,
     selectEditOrder,
     selectNewOrderArray,
-    selectSupplierFilter,
-    selectSupplierItems,
     selectTotalPrice,
     setChangeOrderArray,
     setChangeOrderQty,
-    setEditOrder,
-    setNewOrderArray,
     setOrderInfoReset,
-    setSupplierFilter,
-    setTotalPrice
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
 import {dispatchNotification} from "../../../components/notification/notification-wrapper";
 import {useRouter} from "next/router";
 
-export default function OrderList() {
+interface OrderListProps {
+    supplier: string
+}
+
+export default function OrderList(props: OrderListProps) {
 
     const newOrderArray = useSelector(selectNewOrderArray)
     const totalPrice = useSelector(selectTotalPrice)
-    const supplier = useSelector(selectSupplierFilter)
     const editOrder = useSelector(selectEditOrder)
     const dispatch = useDispatch()
     const router = useRouter()
 
     function saveOrder() {
-        const confirmBox = window.confirm(`Create new ${supplier} order?`)
-        if (confirmBox) {
-            const date = new Date();
-
-            let newOrder = {
-                id: `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
-                supplier: supplier,
-                date: editOrder ? editOrder.date : date.getTime(),
-                complete: false,
-                arrived: [],
-                price: totalPrice,
-                order: newOrderArray,
-            }
-
-            let options = {
-                method: 'POST',
-                body: JSON.stringify(newOrder),
-                headers: {
-                    'token': "9b9983e5-30ae-4581-bdc1-3050f8ae91cc",
-                    'Content-Type': 'application/json'
-                }
-            }
-
-            fetch("/api/shop-orders/update-order", options)
-                .then((res) => {
-                    res.json()
-                        .then((res) => {
-                            if (res.acknowledged) {
-                                alert("New order created")
-                                dispatch(setOrderInfoReset({}))
-                                router.push("/shop-orders?tab=orders")
-                            } else {
-                                alert("Order failed, please try again")
-                            }
-                        })
-                })
+        if(editOrder){
+            dispatchNotification({
+                type: "confirm",
+                title: "Save order",
+                content: `Save changes to ${props.supplier} order?`,
+                fn: saveConfirmed
+            })
         } else {
-            alert("order cancelled")
+            dispatchNotification({
+                type: "confirm",
+                title: "Save order",
+                content: `Create new ${props.supplier} order?`,
+                fn: saveConfirmed
+            })
         }
     }
+
+    function saveConfirmed() {
+        const date = new Date();
+
+        let newOrder = {
+            id: `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
+            supplier: props.supplier,
+            date: editOrder ? editOrder.date : date.getTime(),
+            complete: false,
+            arrived: [],
+            price: totalPrice,
+            order: newOrderArray,
+        }
+
+        let options = {
+            method: 'POST',
+            body: JSON.stringify(newOrder),
+            headers: {
+                'token': "9b9983e5-30ae-4581-bdc1-3050f8ae91cc",
+                'Content-Type': 'application/json'
+            }
+        }
+
+        fetch("/api/shop-orders/update-order", options)
+            .then((res) => {
+                res.json()
+                    .then((res) => {
+                        if (res.acknowledged) {
+                            if(editOrder){
+                                dispatchNotification({type: "alert", title: "Success!", content: "Order changes saved"})
+                            } else {
+                                dispatchNotification({type: "alert", title: "Success!", content: "New order created"})
+                            }
+                            dispatch(setOrderInfoReset({}))
+                            router.push("/shop-orders?tab=orders")
+                        } else {
+                            dispatchNotification({
+                                type: "alert",
+                                title: "Error!",
+                                content: "Order failed, please try again"
+                            })
+                        }
+                    })
+            })
+    }
+
 
     function currentOrderList() {
         return (<Fragment>
                 {newOrderArray.map((item, index) => {
                     return (
-                        <div key={item.SKU} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["order-list-grid"]}`}>
+                        <div key={item.SKU}
+                             className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["order-list-grid"]}`}>
                             <button onClick={() => {
                                 dispatch(setChangeOrderArray({item: item, type: "remove", index: index}))
                             }}>⇅
@@ -116,7 +136,8 @@ export default function OrderList() {
         TITLE: "",
         newProduct: true,
         bookedIn: "false",
-        arrived: 0
+        arrived: 0,
+        submitted: false
     }
     let tempArray = [
         <div id={styles["add-new-item-container"]}>
@@ -145,7 +166,11 @@ export default function OrderList() {
                             <button onClick={() => saveOrder()}>Save</button>
                         </span>
                 <span className={styles["primary-buttons"]}>
-                            <button onClick={() => dispatchNotification({type: "popup", title: "New Item", content: tempArray,})}>Add New Item</button>
+                            <button onClick={() => dispatchNotification({
+                                type: "popup",
+                                title: "New Item",
+                                content: tempArray,
+                            })}>Add New Item</button>
                         </span>
                 <span id={styles["order-total"]}
                 >Total Order: £{totalPrice.toFixed(2)}</span>

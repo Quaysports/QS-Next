@@ -1,26 +1,24 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SideBar from "../sidebar/sidebar";
 import StockList from "./stock-list";
 import OrderList from "./order-list";
 import {
-    selectDeadStock,
     selectEditOrder, selectNewOrderArray,
-    selectSupplierFilter, selectSupplierItems, setEditOrder, setNewOrderArray,
-    setSideBarContent, setSupplierFilter,
-    setSupplierItems, setTotalPrice
+    setEditOrder, setNewOrderArray,
+    setSideBarContent, setSupplierItems,
+    setTotalPrice, selectDeadStock, setOrderInfoReset
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
 import styles from "../shop-orders.module.css"
+import {dispatchNotification} from "../../../components/notification/notification-wrapper";
 
 export default function NewOrder() {
 
     const dispatch = useDispatch()
-    const supplierFilter = useSelector(selectSupplierFilter)
     const editOrder = useSelector(selectEditOrder)
     const newOrderArray = useSelector(selectNewOrderArray)
     const deadStockList = useSelector(selectDeadStock)
-    const supplierItems = useSelector(selectSupplierItems)
-    const [supplier, setSupplier] = useState<string>(null)
+    const [supplier, setSupplier] = useState<string>(editOrder ? editOrder.supplier : null)
 
     const newOrderHandler = (freshOrder?) => {
         if (supplier) {
@@ -46,6 +44,7 @@ export default function NewOrder() {
                         res[i].arrived = 0
                         res[i].tradePack = 1
                         res[i].qty = 1
+                        res[i].submitted = false
                         if (res[i].STOCKTOTAL < res[i].MINSTOCK) res[i].lowStock = true;
                         if (deadStockList[supplier]) deadStockList[supplier].find((element) => element.SKU === res[i].SKU) ? res[i].deadStock = true : res[i].deadStock = false
                         itemsTempObject[supplier].push(res[i]);
@@ -96,20 +95,29 @@ export default function NewOrder() {
             }
             dispatch(setSideBarContent({content: tempObject, title: "Suppliers"}))
         }
+
         newOrderHandler()
 
-    }, [supplierFilter])
+    }, [supplier])
 
-    function supplierHandler(supplier){
-        setSupplier(supplier)
+    function supplierHandler(supplier) {
+        if(newOrderArray.length > 0){
+            dispatchNotification({
+                type:"confirm",
+                title: "Order not saved",
+                content: "This order has not been saved, changing the supplier will delete the current order, continue?",
+                fn:() => {dispatch(setOrderInfoReset({})); setSupplier(supplier)}
+            })
+        } else {
+            setSupplier(supplier)
+        }
     }
 
     return (
         <div className={styles["shop-orders-parent"]}>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
             <div className={styles["shop-orders-table-parent"]}>
-                {supplier ? <OrderList/> : null}
-                {supplier ? <StockList/> : null}
+                {!supplier ? null : <><OrderList supplier={supplier}/><StockList/></>}
             </div>
         </div>
     );

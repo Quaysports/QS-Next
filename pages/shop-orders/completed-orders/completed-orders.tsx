@@ -3,9 +3,8 @@ import SideBar from "../sidebar/sidebar";
 import {useEffect, useState} from "react";
 import {
     selectCompletedOrders, selectOrderContents,
-    selectSupplierFilter,
     setCompletedOrders, setOrderContents,
-    setSideBarContent, setSupplierFilter
+    setSideBarContent
 } from "../../../store/shop-orders-slice";
 import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
@@ -16,7 +15,6 @@ export default function CompletedOrders() {
     const dispatch = useDispatch()
     const completedOrders = useSelector(selectCompletedOrders)
     const orderContents = useSelector(selectOrderContents)
-    const supplierFilter = useSelector(selectSupplierFilter)
     const [supplier, setSupplier] = useState<string>("")
 
     useEffect(() => {
@@ -61,11 +59,7 @@ export default function CompletedOrders() {
                 }
                 transformCompletedOrdersForSideBar(res)
             })
-        return function cleanUp() {
-            setSupplier(supplierFilter)
-            dispatch(setSupplierFilter(""))
-        }
-    }, [supplierFilter, orderContents])
+    }, [supplier])
 
     function completedOrdersList() {
         if (supplier) {
@@ -116,9 +110,13 @@ export default function CompletedOrders() {
         }
     }
 
+    function supplierHandler(supplier){
+        setSupplier(supplier)
+    }
+
     return (
         <div className={styles["shop-orders-parent"]}>
-            <SideBar/>
+            <SideBar supplierFilter={(x) => supplierHandler(x)}/>
             <div className={styles["shop-orders-table-parent"]}>
                 {completedOrdersList()}
                 {showOrderContents()}
