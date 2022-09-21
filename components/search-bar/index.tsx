@@ -1,15 +1,12 @@
 import React, {Fragment, useState} from "react"
-import {useSelector} from "react-redux";
-import {selectEAN, selectSearchableArray} from "../../store/components/search-bar-slice";
 
 interface SearchBarProps {
-    itemIndex: (x: any[]) => void
+    itemIndex: (x: any[]) => void,
+    searchableArray: any[],
+    EAN:boolean
 }
 
-export default function SearchBar(props: SearchBarProps) {
-
-    const EAN = useSelector(selectEAN)
-    const searchableArray = useSelector(selectSearchableArray)
+export default function SearchBar({itemIndex, searchableArray, EAN}:SearchBarProps) {
 
     const [searchType, setSearchType] = useState<string>("SKU")
 
@@ -64,7 +61,7 @@ export default function SearchBar(props: SearchBarProps) {
                 }
             }
         }
-        props.itemIndex([...startsWith, ...contains])
+        itemIndex([...startsWith, ...contains])
     }
 
     return (

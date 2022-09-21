@@ -9,7 +9,6 @@ import {
     selectRenderedArray,
     selectSupplierItems,
     selectThreshold,
-    setChangeLowStockArray,
     setChangeOrderArray,
     setInputChange,
     setLowStockArray,
@@ -19,7 +18,6 @@ import {
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
 import styles from '../shop-orders.module.css'
-import {setEAN, setSearchableArray} from "../../../store/components/search-bar-slice";
 
 export default function StockList() {
 
@@ -30,6 +28,7 @@ export default function StockList() {
     const lowStockArray = useSelector(selectLowStockArray)
     const renderedArray = useSelector(selectRenderedArray)
     const[rerender, setRerender] = useState<boolean>(false)
+    const[searchableArray, setSearchableArray] = useState([])
 
     useEffect(() => {
         let tempArray = []
@@ -39,12 +38,11 @@ export default function StockList() {
         dispatch(setLowStockArray(tempArray))
         if (radioButtons.lowStock){
             dispatch(setRenderedArray(tempArray))
-            dispatch(setSearchableArray(tempArray))
+            setSearchableArray(tempArray)
         } else{
             dispatch(setRenderedArray(supplierItems))
-            dispatch(setSearchableArray(supplierItems))
+            setSearchableArray(supplierItems)
         }
-        dispatch(setEAN(false))
     }, [supplierItems, rerender])
 
     function radioButtonsHandler(checked: boolean, box: string) {
@@ -128,10 +126,10 @@ export default function StockList() {
 
     function buildSearchBar() {
         if (radioButtons.allItems) {
-            return <SearchBar itemIndex={(x) => setNewRenderedArray(x)}/>
+            return <SearchBar itemIndex={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
         }
         if (radioButtons.lowStock) {
-            return <SearchBar itemIndex={(x) => setNewRenderedArray(x)}/>
+            return <SearchBar itemIndex={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
         }
         return null
     }
