@@ -76,7 +76,6 @@ const initialState: ShopOrdersState = {
     threshold: 50,
     completedOrders: null,
     orderContents: null
-
 };
 
 export const shopOrdersSlice = createSlice({
@@ -92,9 +91,7 @@ export const shopOrdersSlice = createSlice({
         },
         reducers: {
             setDeadStock: (state, action) => {
-                console.log("dead stock!")
                 state.deadStock = action.payload
-                console.log("dead stock set!")
             },
             setSideBarContent: (state, action: PayloadAction<{ content: { [key: string]: string }, title: string }>) => {
                 state.sideBarContent = action.payload.content;
@@ -172,17 +169,13 @@ export const shopOrdersSlice = createSlice({
             },
             setInputChange: (state, action: PayloadAction<{ key: string, index: number, value: string }>) => {
                 if (state.radioButtons.lowStock) {
-                    console.log("lowStock")
                     if (action.payload.key === "qty") state.lowStockArray[action.payload.index].qty = Number(action.payload.value)
                     if (action.payload.key === "tradePack") state.lowStockArray[action.payload.index].tradePack = Number(action.payload.value)
-                    console.log(current(state))
                 }
                 if (state.radioButtons.allItems) {
-                    console.log("allItems")
                     if (action.payload.key === "qty") state.renderedArray[action.payload.index].qty = Number(action.payload.value)
                     if (action.payload.key === "tradePack") state.renderedArray[action.payload.index].tradePack = Number(action.payload.value)
                 }
-                console.log(action.payload.key)
             },
             setChangeLowStockArray: (state, action) => {state.lowStockArray.splice(action.payload, 1)},
             setCompletedOrders: (state, action) => {state.completedOrders = action.payload},
@@ -190,7 +183,7 @@ export const shopOrdersSlice = createSlice({
             setOrderInfoReset:(state, action) => {
                 state.editOrder = null
                 state.totalPrice = 0
-                state.supplierFilter= ""
+                state.supplierFilter = ""
             }
         },
     })

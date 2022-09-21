@@ -10,7 +10,6 @@ export default function OrderInformation() {
     const dispatch = useDispatch()
 
     async function deleteOrder(order){
-        console.log(order)
         let conf = window.confirm("Are you sure you want to delete "+ order.id + " order?")
         if(conf) {
             const opts = {
@@ -31,6 +30,7 @@ export default function OrderInformation() {
     }
 
     if (loadedOrder) {
+        console.log(loadedOrder)
         let tempArray: JSX.Element[] = []
         tempArray.push(
             <div key={1} className={styles["shop-orders-table-containers"]}>

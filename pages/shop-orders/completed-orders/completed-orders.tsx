@@ -1,11 +1,11 @@
 import * as React from 'react';
 import SideBar from "../sidebar/sidebar";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {
     selectCompletedOrders, selectOrderContents,
     selectSupplierFilter,
     setCompletedOrders, setOrderContents,
-    setSideBarContent
+    setSideBarContent, setSupplierFilter
 } from "../../../store/shop-orders-slice";
 import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
@@ -16,7 +16,8 @@ export default function CompletedOrders() {
     const dispatch = useDispatch()
     const completedOrders = useSelector(selectCompletedOrders)
     const orderContents = useSelector(selectOrderContents)
-    const supplier = useSelector(selectSupplierFilter)
+    const supplierFilter = useSelector(selectSupplierFilter)
+    const [supplier, setSupplier] = useState<string>("")
 
     useEffect(() => {
         const today = new Date()
@@ -46,20 +47,25 @@ export default function CompletedOrders() {
                         tempObject[res[i].supplier].push(res[i]) :
                         tempObject[res[i].supplier] = [res[i]]
                 }
-                console.log(tempObject)
                 dispatch(setCompletedOrders(tempObject))
 
                 function transformCompletedOrdersForSideBar(completedOrders) {
-                    let sortedData = completedOrders.sort((a,b)=>{return a.supplier === b.supplier ? 0 : a.supplier > b.supplier ? 1: -1})
+                    let sortedData = completedOrders.sort((a, b) => {
+                        return a.supplier === b.supplier ? 0 : a.supplier > b.supplier ? 1 : -1
+                    })
                     let tempObject = {}
                     for (let i = 0; i < sortedData.length; i++) {
-                        tempObject[sortedData[i].supplier] ? tempObject[sortedData[i].supplier] ++ : tempObject[sortedData[i].supplier] = 1
+                        tempObject[sortedData[i].supplier] ? tempObject[sortedData[i].supplier]++ : tempObject[sortedData[i].supplier] = 1
                     }
-                    dispatch(setSideBarContent({content:tempObject, title:"Completed Orders"}))
+                    dispatch(setSideBarContent({content: tempObject, title: "Completed Orders"}))
                 }
                 transformCompletedOrdersForSideBar(res)
             })
-    }, [])
+        return function cleanUp() {
+            setSupplier(supplierFilter)
+            dispatch(setSupplierFilter(""))
+        }
+    }, [supplierFilter, orderContents])
 
     function completedOrdersList() {
         if (supplier) {
@@ -86,7 +92,8 @@ export default function CompletedOrders() {
             let tempArray = []
             orderContents.arrived.forEach((item, index) => {
                     tempArray.push(
-                        <div key={index} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["completed-orders-list-grid"]}`}>
+                        <div key={index}
+                             className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["completed-orders-list-grid"]}`}>
                             <span className={"center-align"}>{item.qty}</span>
                             <span>{item.SKU}</span>
                             <span>{item.TITLE}</span>
@@ -113,8 +120,8 @@ export default function CompletedOrders() {
         <div className={styles["shop-orders-parent"]}>
             <SideBar/>
             <div className={styles["shop-orders-table-parent"]}>
-                    {completedOrdersList()}
-                    {showOrderContents()}
+                {completedOrdersList()}
+                {showOrderContents()}
             </div>
         </div>
     );

@@ -8,7 +8,7 @@ import {
     setBookedInState,
     setEditOrder,
 } from "../../../store/shop-orders-slice";
-import {useRouter} from "next/router";
+import {Router, useRouter} from "next/router";
 
 export default function DisplayOnOrder() {
 
@@ -22,7 +22,6 @@ export default function DisplayOnOrder() {
     }
 
     function editOrder(order) {
-        console.log(order)
         dispatch(setEditOrder(order))
         router.push("/shop-orders?tab=new-order")
     }
@@ -63,7 +62,6 @@ export default function DisplayOnOrder() {
                 body: JSON.stringify(loadedOrder)
             }
             fetch("/api/shop-orders/update-order", opts).then()
-            console.count("test")
             setSaveOrder(false)
         }
     }, [loadedOrder])
@@ -120,7 +118,6 @@ export default function DisplayOnOrder() {
     }
 
     if (loadedOrder) {
-        console.log(loadedOrder)
         return (
             <div className={styles["shop-orders-table-containers"]}>
                 <div className={styles["table-title-container"]}>

@@ -17,6 +17,7 @@ import {
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
 import {dispatchNotification} from "../../../components/notification/notification-wrapper";
+import {useRouter} from "next/router";
 
 export default function OrderList() {
 
@@ -25,6 +26,7 @@ export default function OrderList() {
     const supplier = useSelector(selectSupplierFilter)
     const editOrder = useSelector(selectEditOrder)
     const dispatch = useDispatch()
+    const router = useRouter()
 
     function saveOrder() {
         const confirmBox = window.confirm(`Create new ${supplier} order?`)
@@ -37,6 +39,7 @@ export default function OrderList() {
                 date: editOrder ? editOrder.date : date.getTime(),
                 complete: false,
                 arrived: [],
+                price: totalPrice,
                 order: newOrderArray,
             }
 
@@ -56,6 +59,7 @@ export default function OrderList() {
                             if (res.acknowledged) {
                                 alert("New order created")
                                 dispatch(setOrderInfoReset({}))
+                                router.push("/shop-orders?tab=orders")
                             } else {
                                 alert("Order failed, please try again")
                             }

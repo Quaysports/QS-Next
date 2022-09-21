@@ -4,7 +4,7 @@ import DisplayOnOrder from "./display-on-order";
 import DisplayArrived from "./display-arrived";
 import styles from "../shop-orders.module.css"
 import OrderInformation from "./order-information";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
     setLoadedOrder,
@@ -19,9 +19,10 @@ export default function Orders() {
     const dispatch = useDispatch()
     const supplierFilter = useSelector(selectSupplierFilter)
     const openOrders = useSelector(selectOpenOrders)
+    const [supplier, setSupplier] = useState<string>(null)
 
     useEffect(() => {
-        if (!supplierFilter) {
+        if (!supplier) {
             const opts = {
                 method: 'POST',
                 headers: {
@@ -34,8 +35,6 @@ export default function Orders() {
                 .then((res) => {
                     transformOrdersDataForSideBar(res)
                     transformOrdersDataToObject(res)
-                    console.log(res)
-
                 })
 
             function transformOrdersDataForSideBar(openOrders) {
@@ -60,12 +59,17 @@ export default function Orders() {
             let loadedOrder = openOrders[supplierFilter]
             dispatch(setLoadedOrder(loadedOrder))
         }
+
     }, [supplierFilter])
+
+    function supplierHandler(supplier){
+        setSupplier(supplier)
+    }
 
 
     return (
         <div className={styles["shop-orders-parent"]}>
-            <SideBar/>
+            <SideBar supplierFilter={(x) => supplierHandler(x)}/>
             <div className={styles["shop-orders-table-parent"]}>
                 <OrderInformation/>
                 <DisplayOnOrder/>
