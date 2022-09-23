@@ -1,4 +1,5 @@
 export default function exportToCSV(order){
+    if(!order || !order.order) return
     let string = "SKU,Title,Quantity\n"
     for(let item of order.order){
         string += `${item.SKU},${item.TITLE},${item.qty}\n`

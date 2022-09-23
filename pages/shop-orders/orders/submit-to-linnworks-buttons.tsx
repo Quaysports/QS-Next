@@ -2,7 +2,7 @@ import * as React from "react"
 import styles from "../shop-orders.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import {selectLoadedOrder, setCompleteOrder, setSubmittedOrder} from "../../../store/shop-orders-slice";
-import {dispatchNotification} from "../../../components/notification/notification-wrapper";
+import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
 interface SubmitToLinnworksButtonsProps {
     supplierFilter: () => void

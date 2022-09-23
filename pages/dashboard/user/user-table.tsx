@@ -5,7 +5,7 @@ import {FocusEvent} from "react";
 import {useDispatch} from "react-redux";
 import {user} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";
-import {dispatchNotification} from "../../../components/notification/notification-wrapper";
+import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
 interface propTypes {
     userInfo: user[]
@@ -52,7 +52,7 @@ export default function UserTable({userInfo}: propTypes) {
         return options
     }
 
-    if (userInfo.length === 0) return
+    if (!userInfo || userInfo.length === 0) return
 
     for (const [index, user] of Object.entries(userInfo)) {
         console.log(user)

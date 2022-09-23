@@ -10,8 +10,8 @@ import {
     setOrderInfoReset,
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
-import {dispatchNotification} from "../../../components/notification/notification-wrapper";
 import {useRouter} from "next/router";
+import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
 interface OrderListProps {
     supplier: string

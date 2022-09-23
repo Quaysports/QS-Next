@@ -9,7 +9,7 @@ import {
     setEditOrder,
 } from "../../../store/shop-orders-slice";
 import {Router, useRouter} from "next/router";
-import {dispatchNotification} from "../../../components/notification/notification-wrapper";
+import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
 export default function DisplayOnOrder() {
 

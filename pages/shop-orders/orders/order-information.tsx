@@ -4,7 +4,7 @@ import styles from "../shop-orders.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import {selectLoadedOrder, setLoadedOrder} from "../../../store/shop-orders-slice";
 import exportToCSV from "./download-csv";
-import {dispatchNotification} from "../../../components/notification/notification-wrapper";
+import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
 interface OrderInformationProps{
     supplierFilter: () => void;
