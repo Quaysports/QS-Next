@@ -1,11 +1,10 @@
 import * as React from 'react';
 import SideBar from "../sidebar/sidebar";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styles from '../shop-orders.module.css'
 import {
     selectDeadStock,
-    selectSupplierFilter,
     setSideBarContent,
 } from "../../../store/shop-orders-slice";
 
