@@ -1,10 +1,4 @@
-.item-database-container{
-    display:grid;
-    grid-template-areas:    "menu menu"
-                            "searchBar searchBar"
-                            "sideBar table";
-    grid-template-columns: 250px 1fr;
-}
+
 .item-details-parent{
     display:block;
     overflow-y: scroll;
@@ -17,17 +11,13 @@
     margin: 3px 0
 }
 .search-bar-container{
-    grid-area: searchBar;
+    grid-area: 2 / span 2;
 }
 .table{
-    grid-area: table;
     margin: 10px 10px 10px 0;
     background-color: var(--table-background-color);
     border-radius: var(--table-border-radius);
     box-shadow: var(--table-box-shadow);
-}
-.sideBar {
-    grid-area: sideBar;
 }
 .sideBar > div{
     background-color: var(--sidebar-background-color);

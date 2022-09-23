@@ -10,7 +10,7 @@ export default function itemDatabaseLandingPage(){
     const router = useRouter()
 
     return(
-        <div className={styles["item-database-parent"]}>
+        <div className={"fullscreen-layout"}>
             <Menu tabs={<ItemDatabaseTabs/>}/>
             {router.query.tab === "item-database" ? <ItemDatabaseLandingPage/> : null}
             {router.query.tab === "rod-locations" ? <RodLocationsLandingPage/> : null}

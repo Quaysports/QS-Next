@@ -28,11 +28,11 @@ export default function ItemDatabaseLandingPage(){
     }
 
     return (
-        <div className={styles["item-database-container"]}>
+        <>
             <div className={styles["search-bar-container"]}><SearchBar itemIndex={x => searchOptions(x)}
                                                                         searchableArray={[]} EAN={false}/></div>
                 {buildSideMenu()}
                 <div className={styles["table"]}></div>
-        </div>
+        </>
     )
 }
