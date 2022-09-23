@@ -1,4 +1,4 @@
-import {onOrder} from "./index";
+import {onOrder} from "../../pages/stock-forecast";
 
 interface stockForecastItem {
     hist?: {

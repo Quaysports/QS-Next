@@ -1,5 +1,5 @@
 import styles from './stock-forecast.module.css'
-import {timeSpan} from "./process-data";
+import {timeSpan} from "../../server-modules/stock-forecast/process-data";
 import StockForecastCell from "./stock-forecast-cell";
 
 export default function StockForecastTable({items}){

@@ -5,7 +5,7 @@ import styles from './stock-forecast.module.css'
 import {get} from "../../server-modules/shipping/shipping";
 import {useEffect, useState} from "react";
 import {getItems} from "../../server-modules/items/items";
-import {processData} from "./process-data";
+import {processData} from "../../server-modules/stock-forecast/process-data";
 
 export default function stockForecastLandingPage({filteredItems}) {
 
