@@ -1,12 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import UpdateIncorrectStock from "./update-incorrect-stock-function"
 import ZeroStockList from "./zero-stock-list-function";
 import IncorrectStockList from "./incorrect-stock-list-function";
 import styles from './incorrect-stock-list.module.css'
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {getIncorrectStock} from "../../server-modules/shop/shop"
 import {
-    selectIncorrectStockState, selectValidData, selectZeroStockState,
     setIncorrectStockInitialState,
     setValidData,
     setZeroStockInitialState,
@@ -17,19 +16,11 @@ export default function IncorrectStockLandingPage({incorrectStock, zeroStock}) {
 
     const dispatch = useDispatch()
 
-    const [refreshData, setRefreshData] = useState<boolean>(false);
-    const incorrectStockState = useSelector(selectIncorrectStockState);
-    const zeroStockState = useSelector(selectZeroStockState);
-    const validDataState = useSelector(selectValidData)
-
     useEffect(() => {
         dispatch(setIncorrectStockInitialState(incorrectStock))
         dispatch(setZeroStockInitialState(zeroStock))
     }, [])
 
-    function pageRerenderHandler() {
-        setRefreshData(!refreshData)
-    }
 
     function validDataHandler(boolean) {
         dispatch(setValidData(boolean))
@@ -40,12 +31,7 @@ export default function IncorrectStockLandingPage({incorrectStock, zeroStock}) {
             <Menu/>
             <div id={styles.incorrectStockListContainer}>
                 <div className={styles.titles}>HIGH PRIORITY ITEMS TO CHECK
-                    <button
-                        onClick={() => {
-                            UpdateIncorrectStock(pageRerenderHandler, incorrectStockState, zeroStockState, validDataState, dispatch)
-                        }}
-                        id={styles.saveButton}>Save
-                    </button>
+                    <UpdateIncorrectStock />
                 </div>
                 <div className={styles.stockListsTitles}>
                     <span/>

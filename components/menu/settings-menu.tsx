@@ -1,6 +1,6 @@
 
 import CustomisationPopup from "./customisation-popup";
-import {dispatchNotification} from "../notification/notification-wrapper";
+import {dispatchNotification} from "../../server-modules/dispatch-notification";
 
 export default function SettingsMenu({showSettingsMenu, settingsMenuHandler}) {
     if (showSettingsMenu) {

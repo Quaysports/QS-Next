@@ -1,7 +1,7 @@
 import {useRouter} from "next/router";
 import {selectEditOrder, setOrderInfoReset} from "../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
-import {dispatchNotification} from "../../components/notification/notification-wrapper";
+import {dispatchNotification} from "../../server-modules/dispatch-notification";
 
 export default function ShopOrdersTabs() {
 

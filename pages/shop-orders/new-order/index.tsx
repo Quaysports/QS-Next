@@ -10,7 +10,7 @@ import {
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
 import styles from "../shop-orders.module.css"
-import {dispatchNotification} from "../../../components/notification/notification-wrapper";
+import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
 export default function NewOrder() {
 
