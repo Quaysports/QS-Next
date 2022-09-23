@@ -1,4 +1,4 @@
-import mongoI = require('../mongo-interface/mongo-interface');
+import * as mongoI from '../mongo-interface/mongo-interface';
 import {setData} from "../mongo-interface/mongo-interface";
 
 interface rota {

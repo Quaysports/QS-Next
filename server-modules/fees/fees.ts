@@ -1,5 +1,5 @@
 const objectId = require('mongodb').ObjectID;
-import mongoI = require('../mongo-interface/mongo-interface');
+import * as mongoI from '../mongo-interface/mongo-interface';
 
 interface Fees {
     _id?: { $oid: string };

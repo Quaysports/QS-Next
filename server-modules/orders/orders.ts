@@ -1,5 +1,5 @@
-import mongoI = require('../mongo-interface/mongo-interface');
-import Linn = require('../linn-api/linn-api');
+import * as mongoI from '../mongo-interface/mongo-interface';
+import * as Linn from '../linn-api/linn-api';
 import {OnlineSalesReport} from "../workers/shop-worker-modules/onlineSalesReport";
 
 import { processNewOrder } from "./processNewOrder";
