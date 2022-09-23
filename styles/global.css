@@ -33,10 +33,31 @@
     --primary-background: #2d2d2d;
 
     --primary-box-shadow: 1px 1px 2px 1px #1c1c1c;
+    --primary-border-radius: 5px;
 
     --traffic-light-red: #b70202;
     --traffic-light-orange: #E09112;
     --traffic-light-green: #019972;
+
+    --sidebar-width: 250px;
+    --sidebar-border-radius: 5px;
+    --sidebar-box-shadow: var(--primary-box-shadow);
+    --sidebar-background-color: var(--primary-table-background);
+
+    --table-width: 1fr;
+    --table-border-radius: 5px;
+    --table-box-shadow: var(--primary-box-shadow);
+    --table-background-color: var(--primary-table-background);
+
+    --sidebar-cell-background-color:var(--primary-table-cell-background);
+    --sidebar-cell-border-radius:var(--primary-border-radius);
+    --sidebar-margin: 20px;
+    --sidebar-padding:10px;
+
+    --table-cell-background-color:var(--primary-table-cell-background);
+    --table-cell-border-radius:var(--primary-border-radius);
+    --table-margin: 20px;
+    --table-padding: 10px;
 }
 
 body{
