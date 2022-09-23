@@ -3,20 +3,17 @@ import ItemDatabaseTabs from "./tabs";
 import ItemDatabaseLandingPage from "./item-database";
 import {useRouter} from "next/router";
 import RodLocationsLandingPage from "./rod-locations";
-import PostageLandingPage from "./postage";
-import BrandedLabelsLandingPage from "./branded-labels";
+import styles from "./item-database.module.css"
 
 export default function itemDatabaseLandingPage(){
 
     const router = useRouter()
 
     return(
-        <div>
+        <div className={styles["item-database-parent"]}>
             <Menu tabs={<ItemDatabaseTabs/>}/>
             {router.query.tab === "item-database" ? <ItemDatabaseLandingPage/> : null}
             {router.query.tab === "rod-locations" ? <RodLocationsLandingPage/> : null}
-            {router.query.tab === "postage" ? <PostageLandingPage/> : null}
-            {router.query.tab === "branded-labels" ? <BrandedLabelsLandingPage/> : null}
         </div>
     )
 }
