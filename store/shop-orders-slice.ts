@@ -1,5 +1,6 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
+import {findKey} from "../server-modules/core/core"
 
 export interface OpenOrdersObject {
     _id: string
@@ -15,7 +16,7 @@ export interface OpenOrdersObject {
 export interface orderObject {
     IDBEP: { BRAND: string }
     MINSTOCK: number
-    SKU: string
+    "SKU": string
     STOCKTOTAL: string
     TITLE: string
     SUPPLIER: string
@@ -28,13 +29,13 @@ export interface orderObject {
     deadStock?: boolean
     newProduct?: boolean
     lowStock?: boolean
+    submitted: boolean
 }
 
 interface ShopOrdersState {
     deadStock: { [key: string]: { SUPPLIER: string, SKU: string, TITLE: string }[] };
     sideBarContent: { [key: string]: string }
     sideBarTitle: string
-    supplierFilter: string
     loadedOrder: OpenOrdersObject
     openOrders: { [key: string]: OpenOrdersObject }
     editOrder: OpenOrdersObject
@@ -60,7 +61,6 @@ const initialState: ShopOrdersState = {
     deadStock: {},
     sideBarContent: {},
     sideBarTitle: "",
-    supplierFilter: "",
     loadedOrder: null,
     openOrders: null,
     editOrder: null,
@@ -76,7 +76,6 @@ const initialState: ShopOrdersState = {
     threshold: 50,
     completedOrders: null,
     orderContents: null
-
 };
 
 export const shopOrdersSlice = createSlice({
@@ -92,17 +91,11 @@ export const shopOrdersSlice = createSlice({
         },
         reducers: {
             setDeadStock: (state, action) => {
-                console.log("dead stock!")
                 state.deadStock = action.payload
-                console.log("dead stock set!")
             },
             setSideBarContent: (state, action: PayloadAction<{ content: { [key: string]: string }, title: string }>) => {
                 state.sideBarContent = action.payload.content;
                 state.sideBarTitle = action.payload.title
-            },
-            setSupplierFilter: (state, action) => {
-                state.newOrderArray = []
-                state.supplierFilter = action.payload
             },
             setLoadedOrder: (state, action) => {
                 state.loadedOrder = action.payload
@@ -113,8 +106,6 @@ export const shopOrdersSlice = createSlice({
             setEditOrder: (state, action:PayloadAction<OpenOrdersObject>) => {
                 state.editOrder = action.payload
                 state.newOrderArray = action.payload.order
-                state.supplierFilter = action.payload.supplier
-                console.log(current(state))
             },
             setArrivedHandler: (state, action) => {
                 state.loadedOrder.order[action.payload.index].arrived = action.payload.value
@@ -131,6 +122,28 @@ export const shopOrdersSlice = createSlice({
                     state.loadedOrder.arrived[(state.loadedOrder.arrived.length - 1)].qty = state.loadedOrder.order[action.payload.index].arrived
                     state.loadedOrder.order[action.payload.index].arrived = 0
                 }
+            },
+            setRemoveFromBookedInState:(state, action:PayloadAction<{index:number, SKU:string}>) => {
+                let order = state.loadedOrder
+                const i = order.order.map((item:orderObject) => item.SKU).indexOf(action.payload.SKU)
+                if (i > -1){
+                    order.order[i].qty = (order.order[i].qty + order.arrived[action.payload.index].arrived)
+                    order.order[i].arrived = 0
+                    order.arrived.splice(action.payload.index, 1)
+                } else {
+                    order.arrived[action.payload.index].arrived = 0
+                    order.order.push(order.arrived[action.payload.index])
+                    order.arrived.splice(action.payload.index, 1)
+                }
+                const opts = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+                    },
+                    body: JSON.stringify(state.loadedOrder)
+                }
+                fetch("/api/shop-orders/update-order", opts).then()
             },
             setNewOrderArray: (state, action) => {
                 state.newOrderArray.push(action.payload)
@@ -172,17 +185,13 @@ export const shopOrdersSlice = createSlice({
             },
             setInputChange: (state, action: PayloadAction<{ key: string, index: number, value: string }>) => {
                 if (state.radioButtons.lowStock) {
-                    console.log("lowStock")
                     if (action.payload.key === "qty") state.lowStockArray[action.payload.index].qty = Number(action.payload.value)
                     if (action.payload.key === "tradePack") state.lowStockArray[action.payload.index].tradePack = Number(action.payload.value)
-                    console.log(current(state))
                 }
                 if (state.radioButtons.allItems) {
-                    console.log("allItems")
                     if (action.payload.key === "qty") state.renderedArray[action.payload.index].qty = Number(action.payload.value)
                     if (action.payload.key === "tradePack") state.renderedArray[action.payload.index].tradePack = Number(action.payload.value)
                 }
-                console.log(action.payload.key)
             },
             setChangeLowStockArray: (state, action) => {state.lowStockArray.splice(action.payload, 1)},
             setCompletedOrders: (state, action) => {state.completedOrders = action.payload},
@@ -190,7 +199,39 @@ export const shopOrdersSlice = createSlice({
             setOrderInfoReset:(state, action) => {
                 state.editOrder = null
                 state.totalPrice = 0
-                state.supplierFilter= ""
+                state.newOrderArray = []
+            },
+            setCompleteOrder:(state, action) => {
+                state.loadedOrder.complete = true
+                const opts = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+                    },
+                    body: JSON.stringify(current(state.loadedOrder))
+                }
+                fetch("/api/shop-orders/shop-stock-order", opts)
+                    .then()
+            },
+            setSubmittedOrder:  (state, action ) => {
+                for(const item of action.payload) {
+                    let posNew = state.loadedOrder.arrived.map(order => order.SKU).indexOf(item.SKU)
+                    if (Number(state.loadedOrder.arrived[posNew].qty) <= Number(item["StockLevel"])) {
+                        console.log("Passed")
+                        state.loadedOrder.arrived[posNew].submitted = true
+                    }
+                }
+                const opts = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+                    },
+                    body: JSON.stringify(current(state.loadedOrder))
+                }
+                fetch('/api/shop-orders/shop-stock-order', opts)
+                    .then()
             }
         },
     })
@@ -208,7 +249,6 @@ function totalPriceCalc(array){
 export const {
     setDeadStock,
     setSideBarContent,
-    setSupplierFilter,
     setLoadedOrder,
     setOpenOrders,
     setEditOrder,
@@ -223,11 +263,13 @@ export const {
     setLowStockArray,
     setRenderedArray,
     setInputChange,
-    setChangeLowStockArray,
     setChangeOrderQty,
     setCompletedOrders,
     setOrderContents,
-    setOrderInfoReset
+    setOrderInfoReset,
+    setCompleteOrder,
+    setRemoveFromBookedInState,
+    setSubmittedOrder
 } = shopOrdersSlice.actions
 
 
@@ -235,7 +277,6 @@ export const selectDeadStock = (state: ShopOrdersWrapper) => state.shopOrders.de
 export const selectSideBarContent = (state: ShopOrdersWrapper) => {
     return {content: state.shopOrders.sideBarContent, title: state.shopOrders.sideBarTitle}
 }
-export const selectSupplierFilter = (state: ShopOrdersWrapper) => state.shopOrders.supplierFilter
 export const selectLoadedOrder = (state: ShopOrdersWrapper) => state.shopOrders.loadedOrder
 export const selectOpenOrders = (state: ShopOrdersWrapper) => state.shopOrders.openOrders
 export const selectEditOrder = (state: ShopOrdersWrapper) => state.shopOrders.editOrder

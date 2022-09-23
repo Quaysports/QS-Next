@@ -38,10 +38,8 @@ export default function IncorrectStockList(validDataHandler) {
                                            }
                                            if (!e.target.validity.patternMismatch) {
                                                let value = e.target.value
-                                               console.log(value)
                                                if (value === "") value = "0"
                                                dispatch(setIncorrectStockQty({payload:parseInt(value), brand: key, location:index}))
-                                               console.log(incorrectStockState[key][index])
                                                e.target.style.borderColor = ""
                                                dispatch(setValidData(true))
                                            }

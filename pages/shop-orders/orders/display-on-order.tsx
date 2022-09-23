@@ -8,7 +8,8 @@ import {
     setBookedInState,
     setEditOrder,
 } from "../../../store/shop-orders-slice";
-import {useRouter} from "next/router";
+import {Router, useRouter} from "next/router";
+import {dispatchNotification} from "../../../components/notification/notification-wrapper";
 
 export default function DisplayOnOrder() {
 
@@ -22,18 +23,19 @@ export default function DisplayOnOrder() {
     }
 
     function editOrder(order) {
-        console.log(order)
-        dispatch(setEditOrder(order))
-        router.push("/shop-orders?tab=new-order")
+        if(order.order.length > 0) {
+            dispatch(setEditOrder(order))
+            router.push("/shop-orders?tab=new-order")
+        }
     }
 
     function bookedInHandler(order, index) {
         if (order.order[index].arrived <= 0) {
-            window.confirm("Please increase the amount that has arrived")
+            dispatchNotification({type: "alert", title:"None Arrived", content:"Please increase the amount that has arrived"})
             return
         }
         if ((order.order[index].qty - order.order[index].arrived) < 0) {
-            window.confirm("More have arrived than were ordered, please increase the order amount or check the amount that have arrived")
+            dispatchNotification({type: "alert", title:"Too Many Arrived", content:"More have arrived than were ordered, please increase the order amount or check the amount that have arrived"})
             return
         }
 
@@ -47,7 +49,7 @@ export default function DisplayOnOrder() {
             let conf = window.confirm("Did only part of the order arrive?")
             if (conf === true) {
                 setSaveOrder(true)
-                dispatch(setBookedInState({bookIn: "partial", index: index}))
+                dispatch(setBookedInState({bookedIn: "partial", index: index}))
             }
         }
     }
@@ -63,7 +65,6 @@ export default function DisplayOnOrder() {
                 body: JSON.stringify(loadedOrder)
             }
             fetch("/api/shop-orders/update-order", opts).then()
-            console.count("test")
             setSaveOrder(false)
         }
     }, [loadedOrder])
@@ -120,7 +121,6 @@ export default function DisplayOnOrder() {
     }
 
     if (loadedOrder) {
-        console.log(loadedOrder)
         return (
             <div className={styles["shop-orders-table-containers"]}>
                 <div className={styles["table-title-container"]}>

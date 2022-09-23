@@ -1,27 +1,26 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import SideBar from "../sidebar/sidebar";
 import StockList from "./stock-list";
 import OrderList from "./order-list";
 import {
-    selectDeadStock,
     selectEditOrder, selectNewOrderArray,
-    selectSupplierFilter, setEditOrder, setNewOrderArray,
-    setSideBarContent,
-    setSupplierItems, setTotalPrice
+    setEditOrder, setNewOrderArray,
+    setSideBarContent, setSupplierItems,
+    setTotalPrice, selectDeadStock, setOrderInfoReset
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
 import styles from "../shop-orders.module.css"
+import {dispatchNotification} from "../../../components/notification/notification-wrapper";
 
 export default function NewOrder() {
 
     const dispatch = useDispatch()
-    const supplier = useSelector(selectSupplierFilter)
     const editOrder = useSelector(selectEditOrder)
     const newOrderArray = useSelector(selectNewOrderArray)
     const deadStockList = useSelector(selectDeadStock)
+    const [supplier, setSupplier] = useState<string>(editOrder ? editOrder.supplier : null)
 
     const newOrderHandler = (freshOrder?) => {
-
         if (supplier) {
             const opts = {
                 method: "POST",
@@ -45,8 +44,9 @@ export default function NewOrder() {
                         res[i].arrived = 0
                         res[i].tradePack = 1
                         res[i].qty = 1
+                        res[i].submitted = false
                         if (res[i].STOCKTOTAL < res[i].MINSTOCK) res[i].lowStock = true;
-                        deadStockList[supplier].find((element) => element.SKU === res[i].SKU) ? res[i].deadStock = true : res[i].deadStock = false;
+                        if (deadStockList[supplier]) deadStockList[supplier].find((element) => element.SKU === res[i].SKU) ? res[i].deadStock = true : res[i].deadStock = false
                         itemsTempObject[supplier].push(res[i]);
                     }
                     if (freshOrder) {
@@ -64,7 +64,6 @@ export default function NewOrder() {
                         }
                         dispatch(setTotalPrice(totalPrice))
                     }
-                    console.log(itemsTempObject)
                     dispatch(setSupplierItems(itemsTempObject[supplier]))
                 })
         }
@@ -78,14 +77,11 @@ export default function NewOrder() {
                 'Content-Type': 'application/json'
             }
         }
-        console.log(supplier)
         fetch("/api/shop-orders/get-suppliers-and-low-stock", opts)
             .then(res => res.json())
             .then(res => {
                 transformLowStockDataForSidebar(res)
             })
-
-        newOrderHandler()
 
         function transformLowStockDataForSidebar(data) {
             let sortedData = data.sort((a, b) => {
@@ -99,17 +95,30 @@ export default function NewOrder() {
             }
             dispatch(setSideBarContent({content: tempObject, title: "Suppliers"}))
         }
-        console.count("test")
+
+        newOrderHandler()
+
     }, [supplier])
+
+    function supplierHandler(supplier) {
+        if(newOrderArray.length > 0){
+            dispatchNotification({
+                type:"confirm",
+                title: "Order not saved",
+                content: "This order has not been saved, changing the supplier will delete the current order, continue?",
+                fn:() => {dispatch(setOrderInfoReset({})); setSupplier(supplier)}
+            })
+        } else {
+            setSupplier(supplier)
+        }
+    }
 
     return (
         <div className={styles["shop-orders-parent"]}>
-            <SideBar/>
+            <SideBar supplierFilter={(x) => supplierHandler(x)}/>
             <div className={styles["shop-orders-table-parent"]}>
-                {supplier ? <OrderList/> : null}
-                {supplier ? <StockList/> : null}
+                {!supplier ? null : <><OrderList supplier={supplier}/><StockList/></>}
             </div>
         </div>
     );
-
 }

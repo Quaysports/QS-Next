@@ -12,12 +12,11 @@ import {
 export default function DeadStock() {
 
     const deadStockList = useSelector(selectDeadStock)
-    const supplier = useSelector(selectSupplierFilter)
     const dispatch = useDispatch()
+    const [supplier, setSupplier] = useState<string>(null)
 
 
     useEffect(() => {
-
         function transformDeadStockDataForSidebar(deadStockList) {
 
                 let tempObject = {}
@@ -26,7 +25,6 @@ export default function DeadStock() {
                 }
                 dispatch(setSideBarContent({content: tempObject, title: "Dead Stock"}))
             }
-
         transformDeadStockDataForSidebar(deadStockList)
     }, [deadStockList])
 
@@ -55,9 +53,13 @@ export default function DeadStock() {
         }
     }
 
+    function supplierHandler(supplier){
+        setSupplier(supplier)
+    }
+
     return (
         <div className={styles["shop-orders-parent"]}>
-            <SideBar/>
+            <SideBar supplierFilter={(x) => supplierHandler(x)}/>
             <div className={styles["shop-orders-table-parent"]}>
                 {buildDeadStockList()}
             </div>

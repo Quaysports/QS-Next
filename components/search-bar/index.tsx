@@ -21,7 +21,7 @@ export default function SearchBar({itemIndex, searchableArray, EAN}:SearchBarPro
             return (
                 <Fragment key={1}>
                     <label htmlFor={"ean-radio"}>EAN</label>
-                    <input id={"ean-radio"} name={"search-buttons"} onChange={(e) => {
+                    <input id={"ean-radio"} name={"search-radio"} onChange={(e) => {
                         searchTypeHandler(e.target.checked, "EAN")
                     }}/>
                 </Fragment>
@@ -69,6 +69,7 @@ export default function SearchBar({itemIndex, searchableArray, EAN}:SearchBarPro
             <label htmlFor={"sku-radio"}>SKU</label>
             <input
                 type="radio"
+                name="search-radio"
                 id={"sku-radio"}
                 defaultChecked={true}
                 onChange={e => searchTypeHandler(e.target.checked, "SKU")}
@@ -76,6 +77,7 @@ export default function SearchBar({itemIndex, searchableArray, EAN}:SearchBarPro
             <label htmlFor={"title-radio"}>Title</label>
             <input
                 type="radio"
+                name="search-radio"
                 id={"title-radio"}
                 onChange={e => searchTypeHandler(e.target.checked, "Title")}
             />

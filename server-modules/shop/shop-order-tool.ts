@@ -1,5 +1,5 @@
-import mongoI = require('../mongo-interface/mongo-interface');
-import linn = require("../linn-api/linn-api");
+import * as mongoI from '../mongo-interface/mongo-interface';
+import * as linn from "../linn-api/linn-api";
 
 interface shopOrder {
     _id?: string
@@ -53,7 +53,7 @@ export const updateStock = async (skus:string) => {
          WHERE sl.fkStockLocationId in ('00000000-0000-0000-0000-000000000000')
            AND si.ItemNumber IN (${skus})`)
 }
-export const adjustStock = async (arr:{SKU:string,QTY:string}[], id:string) => {
+export const adjustStock =  async (arr:{SKU:string,QTY:string}[], id:string) => {
     let stockData = []
     for (let item of arr) {
         let details = {
@@ -65,6 +65,7 @@ export const adjustStock = async (arr:{SKU:string,QTY:string}[], id:string) => {
     }
     return await linn.adjustStock(stockData, id)
 }
+
 export const getSuppliers = async () => {
     return await linn.getLinnQuery<{SupplierName:string}>("Select SupplierName FROM Supplier WHERE bLogicalDelete = 'false'")
 }

@@ -68,7 +68,6 @@ export default function StockList() {
     //TODO research if router.query.tab is causing a server side render hence the lag in page loading
 
     function addToOrderHandler(item: orderObject, index: number) {
-        console.log(index)
         let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
         if (radioButtons.allItems) {
             dispatch(setChangeOrderArray({item: renderedArray[index], type: "add", index: fullStockIndex}))
