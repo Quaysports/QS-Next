@@ -1,5 +1,6 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
+import {findKey} from "../server-modules/core/core"
 
 export interface OpenOrdersObject {
     _id: string
@@ -15,7 +16,7 @@ export interface OpenOrdersObject {
 export interface orderObject {
     IDBEP: { BRAND: string }
     MINSTOCK: number
-    SKU: string
+    "SKU": string
     STOCKTOTAL: string
     TITLE: string
     SUPPLIER: string
@@ -122,6 +123,28 @@ export const shopOrdersSlice = createSlice({
                     state.loadedOrder.order[action.payload.index].arrived = 0
                 }
             },
+            setRemoveFromBookedInState:(state, action:PayloadAction<{index:number, SKU:string}>) => {
+                let order = state.loadedOrder
+                const i = order.order.map((item:orderObject) => item.SKU).indexOf(action.payload.SKU)
+                if (i > -1){
+                    order.order[i].qty = (order.order[i].qty + order.arrived[action.payload.index].arrived)
+                    order.order[i].arrived = 0
+                    order.arrived.splice(action.payload.index, 1)
+                } else {
+                    order.arrived[action.payload.index].arrived = 0
+                    order.order.push(order.arrived[action.payload.index])
+                    order.arrived.splice(action.payload.index, 1)
+                }
+                const opts = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+                    },
+                    body: JSON.stringify(state.loadedOrder)
+                }
+                fetch("/api/shop-orders/update-order", opts).then()
+            },
             setNewOrderArray: (state, action) => {
                 state.newOrderArray.push(action.payload)
             },
@@ -190,6 +213,25 @@ export const shopOrdersSlice = createSlice({
                 }
                 fetch("/api/shop-orders/shop-stock-order", opts)
                     .then()
+            },
+            setSubmittedOrder:  (state, action ) => {
+                for(const item of action.payload) {
+                    let posNew = state.loadedOrder.arrived.map(order => order.SKU).indexOf(item.SKU)
+                    if (Number(state.loadedOrder.arrived[posNew].qty) <= Number(item["StockLevel"])) {
+                        console.log("Passed")
+                        state.loadedOrder.arrived[posNew].submitted = true
+                    }
+                }
+                const opts = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+                    },
+                    body: JSON.stringify(current(state.loadedOrder))
+                }
+                fetch('/api/shop-orders/shop-stock-order', opts)
+                    .then()
             }
         },
     })
@@ -225,7 +267,9 @@ export const {
     setCompletedOrders,
     setOrderContents,
     setOrderInfoReset,
-    setCompleteOrder
+    setCompleteOrder,
+    setRemoveFromBookedInState,
+    setSubmittedOrder
 } = shopOrdersSlice.actions
 
 

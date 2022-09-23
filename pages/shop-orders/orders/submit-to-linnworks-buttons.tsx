@@ -1,7 +1,7 @@
 import * as React from "react"
 import styles from "../shop-orders.module.css"
 import {useDispatch, useSelector} from "react-redux";
-import {selectLoadedOrder, setCompleteOrder} from "../../../store/shop-orders-slice";
+import {selectLoadedOrder, setCompleteOrder, setSubmittedOrder} from "../../../store/shop-orders-slice";
 import {dispatchNotification} from "../../../components/notification/notification-wrapper";
 
 interface SubmitToLinnworksButtonsProps {
@@ -13,7 +13,7 @@ export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtons
     const loadedOrder = useSelector(selectLoadedOrder)
     const dispatch = useDispatch()
 
-    function submitToLinnworks() {
+    async function submitToLinnworks() {
             let data = []
             for (let item of loadedOrder.arrived) {
                 if (item.qty > 0 && !item.submitted && !item.newProduct) {
@@ -30,22 +30,12 @@ export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtons
                     },
                     body: JSON.stringify({QUERY:loadedOrder.id, DATA: data})
                 }
-                fetch("/api/shop-orders/adjust-stock", opts).then(res => {
-                    /*for (let v of res) {
-                        let pos = getPos(loadedOrder.arrived, "SKU", v.SKU)
-                        if (Number(loadedOrder.arrived[pos].qty) <= Number(v["StockLevel"])) {
-                            loadedOrder.arrived[pos].submitted = true
-                            post('/Shop/ShopStockOrder', loadedOrder).then(() => {
-                                setNewOrderId(loadedOrder.date)
-                                createOrderDash()
-                            })
-                        } else {
-                            loadedOrder.arrived[pos].bookedIn = false
-                        }
-                    }*/
-                })
-            } else {
-                alert("Nothing to book in! Check for zero ordered quantities")
+                await fetch("/api/shop-orders/adjust-stock", opts)
+                    .then(res => res.json())
+                    .then(res => {dispatch(setSubmittedOrder(res))})
+
+                } else {
+                dispatchNotification({type:"alert", title: "Error", content:"Nothing to book in! Check for zero ordered quantities"})
             }
         }
 

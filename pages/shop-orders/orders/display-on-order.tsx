@@ -9,6 +9,7 @@ import {
     setEditOrder,
 } from "../../../store/shop-orders-slice";
 import {Router, useRouter} from "next/router";
+import {dispatchNotification} from "../../../components/notification/notification-wrapper";
 
 export default function DisplayOnOrder() {
 
@@ -22,17 +23,19 @@ export default function DisplayOnOrder() {
     }
 
     function editOrder(order) {
-        dispatch(setEditOrder(order))
-        router.push("/shop-orders?tab=new-order")
+        if(order.order.length > 0) {
+            dispatch(setEditOrder(order))
+            router.push("/shop-orders?tab=new-order")
+        }
     }
 
     function bookedInHandler(order, index) {
         if (order.order[index].arrived <= 0) {
-            window.confirm("Please increase the amount that has arrived")
+            dispatchNotification({type: "alert", title:"None Arrived", content:"Please increase the amount that has arrived"})
             return
         }
         if ((order.order[index].qty - order.order[index].arrived) < 0) {
-            window.confirm("More have arrived than were ordered, please increase the order amount or check the amount that have arrived")
+            dispatchNotification({type: "alert", title:"Too Many Arrived", content:"More have arrived than were ordered, please increase the order amount or check the amount that have arrived"})
             return
         }
 

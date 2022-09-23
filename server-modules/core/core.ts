@@ -8,6 +8,8 @@ export const guid = () => {
 }
 
 export const findKey = <T>(array, key, id): T | null =>{
+    console.log("find key")
     let pos = array.map(v => {return v[key]}).indexOf(id)
+    console.log(pos)
     return pos !== -1 ? array[pos] : null
 }
