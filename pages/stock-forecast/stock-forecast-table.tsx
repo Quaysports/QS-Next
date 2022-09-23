@@ -30,9 +30,10 @@ export default function StockForecastTable({items}){
 
 function buildList(items){
     let elementArray = []
+    if(!items) return null
     for(let item of items) {
         let monthStockLevels = []
-        for(let i in item.months){
+        for(let i in item?.months){
             monthStockLevels.push(<StockForecastCell style={item.months[i].style} />)
         }
         elementArray.push(
