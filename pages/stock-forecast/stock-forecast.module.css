@@ -6,9 +6,21 @@
 
 .forecast-table{
     display: block;
+    overflow-y: scroll;
     width: calc(100% - 20px);
     height: calc(100% - 20px);
     background: var(--primary-table-background);
     margin: 10px;
+    padding:2px;
     border-radius:5px;
+}
+
+.forecast-row{
+    display: grid;
+    grid-template-columns: 20px 20px 250px 100px 100px repeat(24, 1fr);
+    line-height: 26px;
+}
+
+.forecast-row > div {
+    border-bottom:1px solid var(--primary-inactive-text)
 }

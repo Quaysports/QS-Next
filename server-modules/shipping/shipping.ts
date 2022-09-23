@@ -62,7 +62,6 @@ interface shippingCompany{
 }
 
 export const get = async (query: {} | undefined) => {
-    console.log("mongoI running")
     if (query) {
         return await mongoI.find<shipment>("Shipping", query)
     } else {
