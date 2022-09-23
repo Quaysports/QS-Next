@@ -1,6 +1,5 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import * as Linn from '../linn-api/linn-api';
-import {OnlineSalesReport} from "../workers/shop-worker-modules/onlineSalesReport";
 
 import { processNewOrder } from "./processNewOrder";
 
@@ -103,7 +102,7 @@ export const compare = async (data: { orderId: string; weight: number; }) => {
     if(!order) return
     return await processItem(order, data.weight)
 }
-
+/*
 export const onlineSalesSpan = async () => {
     const result = await mongoI.findAggregate<OnlineSalesReport>("Online-Reports", [
         {$group: {_id: null, first: {$first: '$$ROOT'}, last: {$last: '$$ROOT'}}},
@@ -143,7 +142,7 @@ export const onlineSalesMonthTotal = async (firstDay:string, lastDay:string) => 
 
 export const onlineSalesByMonth = async (firstDay:string, lastDay:string) => {
     return await mongoI.find<OnlineSalesReport>("Online-Reports", {$and: [{date: {$gt: firstDay}}, {date: {$lt: lastDay}}]})
-}
+}*/
 
 const processItem = async (order:sbt.OnlineOrder, weight: number) => {
     if (!order) {
