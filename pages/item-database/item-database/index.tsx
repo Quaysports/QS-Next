@@ -1,5 +1,5 @@
 import styles from "../item-database.module.css";
-import SearchBar from "../../../components/search-bar";
+import DatabaseSearchBar from "../../../components/database-search-bar/DatabaseSearch";
 
 export default function ItemDatabaseLandingPage() {
 
@@ -43,8 +43,7 @@ export default function ItemDatabaseLandingPage() {
 
     return (
         <>
-            <div className={styles["search-bar-container"]}><SearchBar itemIndex={x => searchOptions(x)}
-                                                                       searchableArray={[]} EAN={false}/></div>
+            <div className={styles["search-bar-container"]}><DatabaseSearchBar handler={x => searchOptions(x)}/></div>
             {item ? buildSideMenu() : null}
             {item ? <div className={styles["table"]}></div> : null}
         </>
