@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-
+import styles from './database-search-bar.module.css'
 export interface searchResult {
     _id:string,SKU:"string",TITLE:"string"
 }
@@ -8,8 +8,11 @@ export default function DatabaseSearchBar({handler}:{handler:(x:searchResult[])=
 
     const [searchType, setSearchType] = useState<string>("SKU")
     const [currentSearchValue, setCurrentSearchValue] = useState("")
+    const [searchResults, setSearchResults] = useState([])
+    const [triggerUpdate, setTriggerUpdate] = useState(false)
 
     useEffect(()=>{
+        console.log("use effect!")
         if(currentSearchValue.length > 1) {
             const opts = {
                 method: "POST",
@@ -17,11 +20,13 @@ export default function DatabaseSearchBar({handler}:{handler:(x:searchResult[])=
             }
             fetch("/api/items/search",opts).then(res=>{
                 res.json().then(json=>
-                    handler(searchArray(currentSearchValue, json))
+                    setSearchResults(searchArray(currentSearchValue, json))
                 )
             })
+        } else {
+            setSearchResults([])
         }
-    },[searchType, currentSearchValue])
+    },[searchType, currentSearchValue, triggerUpdate])
 
     function searchTypeHandler(checked: boolean, type: string) {
         if (type === "SKU" && checked) setSearchType("SKU")
@@ -47,11 +52,20 @@ export default function DatabaseSearchBar({handler}:{handler:(x:searchResult[])=
                 }
             }
         }
-        return([...startsWith, ...contains])
+        return([...startsWith, ...contains].slice(0,20))
+    }
+
+    function buildList(){
+        let items = []
+        for(const item of searchResults) items.push(<div key={item.SKU} onClick={()=>{
+            handler(item)
+            setSearchResults([])
+        }}>{item.SKU}</div>)
+        return items
     }
 
     return (
-        <div id="search-bar">
+        <div className={styles["search-bar"]}>
             <label htmlFor={"sku-radio"}>SKU</label>
             <input
                 type="radio"
@@ -68,10 +82,12 @@ export default function DatabaseSearchBar({handler}:{handler:(x:searchResult[])=
                 onChange={e => searchTypeHandler(e.target.checked, "TITLE")}
             />
             <input
-                id="search-bar-input"
+                className={styles["search-bar-input"]}
                 list="search-options"
+                onFocus={() => {setTriggerUpdate(!triggerUpdate)}}
                 onChange={e => setCurrentSearchValue(e.target.value)}
             />
+            <div className={styles["search-results"]}>{buildList()}</div>
         </div>
     )
 }
