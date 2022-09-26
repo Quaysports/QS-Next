@@ -51,12 +51,12 @@
 
     --sidebar-cell-background-color:var(--primary-table-cell-background);
     --sidebar-cell-border-radius:var(--primary-border-radius);
-    --sidebar-margin: 20px;
+    --sidebar-margin: 10px;
     --sidebar-padding:10px;
 
     --table-cell-background-color:var(--primary-table-cell-background);
     --table-cell-border-radius:var(--primary-border-radius);
-    --table-margin: 20px;
+    --table-margin: 10px;
     --table-padding: 10px;
 }
 
@@ -145,7 +145,6 @@ select{
 
 .menu-bar{
     display: flex;
-    height:29px;
     background-color: var(--primary-color);
     justify-content: center;
 }
