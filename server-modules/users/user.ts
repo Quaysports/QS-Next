@@ -14,6 +14,7 @@ export interface user {
 }
 
 export interface Permissions {
+    [x: string]: any;
     webpages: { auth: boolean, label: "Webpages" };
     stockTakeList: { auth: boolean, label: "Stock Take List" };
     stockTransfer: { auth: boolean, label: "Stock Transfer" };
@@ -23,6 +24,7 @@ export interface Permissions {
     itemDatabase: { auth: boolean, label: "Item Database" };
     incorrectStock: { auth: boolean, label: "Incorrect Stock" };
     shopOrders: { auth: boolean, label: "Shop Orders" };
+    shopTills: { auth: boolean, label: "Shop Tills" };
     users: { auth: boolean, label: "Users" };
     orderSearch: { auth: boolean, label: "Order Search" };
     priceUpdates: { auth: boolean, label: "Price Updates" };

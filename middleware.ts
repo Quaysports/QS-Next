@@ -11,6 +11,7 @@ export async function middleware(request) {
     switch(request.nextUrl.pathname) {
         case '/item-database':          return user.permissions.itemDatabase?.auth ?        null: rootRedirect();
         case '/shop-orders':            return user.permissions.shopOrders?.auth ?          null: rootRedirect();
+        case '/shop-tills':             return user.permissions.shopTills?.auth ?           null: rootRedirect();
         case '/incorrect-stock-report': return user.permissions.incorrectStock?.auth ?      null: rootRedirect();
         case '/stock-forecast':         return user.permissions.stockForecast?.auth ?       null: rootRedirect();
         case '/shipments':              return user.permissions.shipments?.auth ?           null: rootRedirect();
@@ -29,6 +30,7 @@ export const config = {
         "/item-database",
         "/dashboard",
         "/shop-orders",
+        "/shop-tills",
         "/incorrect-stock-report",
         "/item-database",
         "/stock-forecast",

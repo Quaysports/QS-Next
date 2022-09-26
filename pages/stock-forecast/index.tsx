@@ -1,7 +1,6 @@
 import Menu from "../../components/menu/menu";
 import StockForecastMenuTabs from "./tabs";
 import StockForecastTable from "./stock-forecast-table";
-import styles from './stock-forecast.module.css'
 import {get} from "../../server-modules/shipping/shipping";
 import {useEffect, useState} from "react";
 import {getItems} from "../../server-modules/items/items";
@@ -20,7 +19,7 @@ export default function stockForecastLandingPage({filteredItems}) {
     }, [filteredItems])
 
     return (
-        <div className={styles["fullscreen-layout"]}>
+        <div className={"fullscreen-layout"}>
             <Menu tabs={<StockForecastMenuTabs searchData={filteredItems} updateItemsHandler={updateItemsHandler}/>}/>
             <StockForecastTable items={items}/>
         </div>

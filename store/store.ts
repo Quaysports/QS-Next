@@ -5,6 +5,7 @@ import {dashboardSlice} from "./dashboard-slice";
 import {shopOrdersSlice} from "./shop-orders-slice";
 import {userSlice} from "./dashboard/user-slice";
 import {stockForecastSlice} from "./stock-forecast-slice";
+import {quickLinksSlice} from "./shop-tills/quicklinks";
 
 const myStore = () =>
     configureStore({
@@ -13,7 +14,8 @@ const myStore = () =>
             [incorrectStockSlice.name]: incorrectStockSlice.reducer,
             [dashboardSlice.name]: dashboardSlice.reducer,
             [userSlice.name]:userSlice.reducer,
-            [stockForecastSlice.name]: stockForecastSlice.reducer
+            [stockForecastSlice.name]: stockForecastSlice.reducer,
+            [quickLinksSlice.name]: quickLinksSlice.reducer,
         },
         devTools: true,
     });

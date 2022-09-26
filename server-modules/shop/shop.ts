@@ -1,5 +1,5 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
-import * as linn from "../linn-api/linn-api"
+//import * as linn from "../linn-api/linn-api"
 //import * as eod from '../workers/shop-worker-modules/endOfDayReport'
 
 interface stockError {
@@ -56,6 +56,41 @@ export const profitAdjust = async (query: object, data: eod.takings) => {
 
 export const orders = async (id: string) => {
     return await mongoI.find<any>("Shop", {"id": {$regex: id, $options: "i"}})
+}
+
+export const getQuickLinks = async ()=>{
+    console.log("getQuickLinks")
+    const query = [
+        {
+            '$match': {}
+        }, {
+            '$lookup': {
+                'from': 'Items',
+                'let': {
+                    'sku': '$links.SKU'
+                },
+                'pipeline': [
+                    {
+                        '$match': {
+                            '$expr': {
+                                '$in': [
+                                    '$SKU', '$$sku'
+                                ]
+                            }
+                        }
+                    }, {
+                        '$project': {
+                            'SKU': 1,
+                            'SHOPPRICEINCVAT': 1,
+                            'TITLE': 1
+                        }
+                    }
+                ],
+                'as': 'links'
+            }
+        }
+    ]
+    return await mongoI.findAggregate<object>("Shop-Till-QuickLinks", query)
 }
 
 export const getSupplierPriceChanges = async (data: { supplier: string, data: string }) => {
@@ -174,4 +209,3 @@ export const deadStockReport = async () => {
         IDBFILTER: "domestic"
     }, {SUPPLIER: 1, SKU: 1, TITLE: 1}, {SUPPLIER:1})
 }
-

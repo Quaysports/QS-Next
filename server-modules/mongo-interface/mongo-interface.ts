@@ -147,7 +147,6 @@ export const findAggregate = async <T>(collection: string, aggregate: object[]) 
   const client = await connect()
   try {
     const db = client.db(process.env.DB_NAME);
-    console.log(db)
     return await db.collection(collection).aggregate<T>(aggregate, {serializeFunctions:true}).toArray()
   } catch (e) {
     console.error(e)
