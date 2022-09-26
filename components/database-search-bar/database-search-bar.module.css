@@ -19,6 +19,8 @@
 
 .search-results{
     position: absolute;
+    z-index:100;
+    max-width:300px;
     top: 40px;
     width: 100%;
     background: var(--table-background-color);
