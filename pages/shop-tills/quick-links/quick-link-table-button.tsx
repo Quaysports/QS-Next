@@ -16,9 +16,9 @@ export default function QuickLinkButton({listIndex, itemIndex, item}) {
     return (
         <>
             <div className={styles["quick-link-table-button"]}>
-                <div>{item.SKU}</div>
-                <div>{item.SHOPPRICEINCVAT}</div>
-                <div className={styles["title-text"]}>{item.TITLE}</div>
+                <div>{item?.SKU}</div>
+                <div>{item?.SHOPPRICEINCVAT}</div>
+                <div className={styles["title-text"]}>{item?.TITLE}</div>
                 <button onClick={()=>dispatchNotification({
                     type:"confirm",
                     title:"Remove Item",
