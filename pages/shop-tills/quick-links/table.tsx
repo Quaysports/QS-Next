@@ -1,7 +1,7 @@
 import styles from '../shop-tills.module.css'
 import QuickLinkButton from "./quick-link-table-button";
 import {useSelector} from "react-redux";
-import {selectQuickLinks} from "../../../store/shop-tills/quicklinks";
+import {selectQuickLinks} from "../../../store/shop-tills/quicklinks-slice";
 import QuickLinkTableAddButton from "./quick-link-table-add-button";
 
 export default function QuickLinksTable({id}){
@@ -22,7 +22,7 @@ export default function QuickLinksTable({id}){
             <div className={styles.table}>
                 <div>
                     {buildTable(id, links)}
-                    <QuickLinkTableAddButton />
+                    {links[id]?.links?.length < 20 ? <QuickLinkTableAddButton id={id}/> : null}
                 </div>
             </div>
         </>

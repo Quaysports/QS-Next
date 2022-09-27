@@ -20,6 +20,7 @@
     margin-top:50px;
     max-height:calc(100vh - 100px);
     height: min-content;
+    box-shadow: var(--primary-box-shadow);
 }
 .popup-title{
     display: grid;
@@ -47,6 +48,7 @@
     max-height:calc(100vh - 100px);
     height: min-content;
     width:250px;
+    box-shadow: var(--primary-box-shadow);
 }
 .confirm-title{
     text-align: center;
@@ -77,6 +79,7 @@
     max-height:calc(100vh - 100px);
     height: min-content;
     width:250px;
+    box-shadow: var(--primary-box-shadow);
 }
 .alert-title{
     text-align: center;

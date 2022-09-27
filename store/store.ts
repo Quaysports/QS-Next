@@ -5,7 +5,7 @@ import {dashboardSlice} from "./dashboard-slice";
 import {shopOrdersSlice} from "./shop-orders-slice";
 import {userSlice} from "./dashboard/user-slice";
 import {stockForecastSlice} from "./stock-forecast-slice";
-import {quickLinksSlice} from "./shop-tills/quicklinks";
+import {quickLinksSlice} from "./shop-tills/quicklinks-slice";
 
 const myStore = () =>
     configureStore({

@@ -1,4 +1,5 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
+import {ObjectId} from 'mongodb'
 //import * as linn from "../linn-api/linn-api"
 //import * as eod from '../workers/shop-worker-modules/endOfDayReport'
 
@@ -17,6 +18,18 @@ export const get = async (query: object) => {
 
 export const reports = async () => {
     return await mongoI.find<any>("Shop-Reports")
+}
+
+export const updateQuickLinks = async (data)=> {
+    let query = data._id ? {_id:new ObjectId(data._id)} : {id:data.id}
+    if(data._id) delete data._id
+    return await mongoI.setData("Shop-Till-QuickLinks", query, data)
+}
+
+export const deleteQuickLinks = async (data)=> {
+    let query = data._id ? {_id:new ObjectId(data._id)} : {id:data.id}
+    if(data._id) delete data._id
+    return await mongoI.deleteOne("Shop-Till-QuickLinks", query)
 }
 
 /*

@@ -20,7 +20,7 @@
 .search-results{
     position: absolute;
     z-index:100;
-    max-width:300px;
+    max-width:400px;
     top: 40px;
     width: 100%;
     background: var(--table-background-color);
@@ -37,4 +37,13 @@
 .search-results > div:hover{
     background:var(--primary-color);
     transform: translate(-1px, -1px);
+}
+
+.hide-list{
+    display:none;
+}
+
+.secondary-info{
+    font-size: 0.8em;
+    color:gray
 }

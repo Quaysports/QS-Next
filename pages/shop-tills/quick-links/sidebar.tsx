@@ -1,7 +1,7 @@
 import styles from '../shop-tills.module.css'
 import QuickLinksSidebarButton from "./quick-link-sidebar-button";
 import {useSelector} from "react-redux";
-import {selectQuickLinks} from "../../../store/shop-tills/quicklinks";
+import {selectQuickLinks} from "../../../store/shop-tills/quicklinks-slice";
 import QuickLinkSidebarAddButton from "./quick-link-sidebar-add-button";
 
 export default function QuickLinksSidebar({idHandler}){

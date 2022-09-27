@@ -4,7 +4,7 @@ import {
     deleteQuickLink,
     selectQuickLinks,
     updateQuickLinkID
-} from "../../../store/shop-tills/quicklinks";
+} from "../../../store/shop-tills/quicklinks-slice";
 import styles from "../shop-tills.module.css";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
