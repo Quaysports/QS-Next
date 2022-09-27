@@ -4,7 +4,7 @@ import {useState} from "react";
 
 export default function QuickLinks({links}){
 
-    const [id, setId] = useState(links.length > 0 ? 0 : null)
+    const [id, setId] = useState(links?.length > 0 ? 0 : null)
     const idHandler = (id)=> setId(id)
 
     return(

@@ -15,7 +15,7 @@ export default function EditQuickLinkMenuPopup({id}){
     return(
         <div className={styles["new-quick-link-popup"]}>
             <div>Edit Quick link menu ID using the input <br/> or click delete to remove menu.</div>
-            <input ref={inputRef} defaultValue={links[id].id}/>
+            <input ref={inputRef} defaultValue={links[id]?.id}/>
             <div className={styles["dual-button-container"]}>
                 <button onClick={()=>{
                 dispatch(updateQuickLinkID({id:id, data:inputRef.current.value}))
