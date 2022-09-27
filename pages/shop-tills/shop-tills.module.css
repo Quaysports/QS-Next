@@ -30,7 +30,13 @@
 .quick-link-table-button{
     display:grid;
     text-align: center;
-    grid-template-rows:auto
+    grid-template-rows:40px 40px 1fr 20px;
+}
+.title-text{
+    font-size: 0.8em;
+    color:gray;
+    overflow:hidden;
+    text-overflow: ellipsis;
 }
 .quick-link-table-add-button{
     display: flex;

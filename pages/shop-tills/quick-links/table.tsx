@@ -11,8 +11,13 @@ export default function QuickLinksTable({id}){
     const buildTable = (id, links)=>{
         const buttons = []
         if(!links || !links[id]) return null
-        for(let link of links[id].links){
-            buttons.push(<QuickLinkButton key={link.SKU} sku={link.SKU} title={link.TITLE} price={"£"+link.SHOPPRICEINCVAT}/>)
+        for(let index in links[id].links){
+            buttons.push(<QuickLinkButton
+                key={index}
+                listIndex = {id}
+                itemIndex={index}
+                item={links[id].links[index]}
+            />)
         }
         return buttons
     }

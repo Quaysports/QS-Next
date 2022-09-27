@@ -72,7 +72,6 @@ export const orders = async (id: string) => {
 }
 
 export const getQuickLinks = async ()=>{
-    console.log("getQuickLinks")
     const query = [
         {
             '$match': {}
