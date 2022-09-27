@@ -17,7 +17,7 @@ export default function QuickLinkButton({listIndex, itemIndex, item}) {
         <>
             <div className={styles["quick-link-table-button"]}>
                 <div>{item?.SKU}</div>
-                <div>{"£"+item?.SHOPPRICEINCVAT.toFixed(2)}</div>
+                <div>{"£"+parseFloat(item?.SHOPPRICEINCVAT).toFixed(2)}</div>
                 <div className={styles["title-text"]}>{item?.TITLE}</div>
                 <button onClick={()=>dispatchNotification({
                     type:"confirm",
