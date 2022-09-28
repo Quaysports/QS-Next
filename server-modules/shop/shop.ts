@@ -216,39 +216,65 @@ export const getIncorrectStock = async () => {
 }
 
 export const deadStockReport = async () => {
-    let pastDate = new Date()
-    pastDate.setMonth(pastDate.getMonth() - 6)
-    let items = await mongoI.findAggregate<string[]>("Shop-Reports", [
-        {
-            '$match': {
-                'date': {
-                    '$gt': pastDate.getTime()
+    console.log("call!")
+    let tenMonths = new Date()
+    tenMonths.setMonth(tenMonths.getMonth() - 10)
+
+    let sixMonths = new Date()
+    sixMonths.setMonth(sixMonths.getMonth() - 6)
+
+    let threeMonths = new Date()
+    threeMonths.setMonth(threeMonths.getMonth() - 3)
+
+    async function mongoAggregate(from) {
+        console.log(from)
+        let query = [
+            {
+                '$match':{'date': {'$gt': from.getTime().toString()}}
+            }, {
+                '$project': {
+                    'items': {
+                        '$objectToArray': '$items'
+                    }
+                }
+            }, {
+                '$unwind': {
+                    'path': '$items',
+                    'includeArrayIndex': 'string',
+                    'preserveNullAndEmptyArrays': false
+                }
+            }, {
+                '$group': {
+                    '_id': '',
+                    'items': {
+                        '$addToSet': '$items.k'
+                    }
                 }
             }
-        }, {
-            '$project': {
-                'items': {
-                    '$objectToArray': '$items'
-                }
-            }
-        }, {
-            '$unwind': {
-                'path': '$items',
-                'includeArrayIndex': 'string',
-                'preserveNullAndEmptyArrays': false
-            }
-        }, {
-            '$group': {
-                '_id': '',
-                'items': {
-                    '$addToSet': '$items.k'
-                }
-            }
-        }
-    ])
-    return await mongoI.find<{ SUPPLIER: string, SKU: string, TITLE: string }>("Items", {
-        SKU: {$nin: items},
-        STOCKTOTAL: {$gt: 0},
-        IDBFILTER: "domestic"
-    }, {SUPPLIER: 1, SKU: 1, TITLE: 1}, {SUPPLIER: 1})
+        ]
+        let deadReport = await mongoI.findAggregate<{_id:string, items:string[]}>("Shop-Reports", query)
+        return await mongoI.find<{ SUPPLIER: string, SKU: string, TITLE: string, SOLDFLAG?:number }>("Items", {
+            SKU: {$nin: deadReport[0].items},
+            STOCKTOTAL: {$gt: 0},
+            IDBFILTER: "domestic"
+        }, {SUPPLIER: 1, SKU: 1, TITLE: 1}, {SUPPLIER: 1})
+    }
+
+    let tenMonthDead = await mongoAggregate(tenMonths)
+    let sixMonthDead = await mongoAggregate(sixMonths)
+    let threeMonthDead = await mongoAggregate(threeMonths)
+
+    let tempMap = new Map()
+    for(const item of threeMonthDead){
+        item.SOLDFLAG = 3
+        tempMap.set(item.SKU, item)
+    }
+    for(const item of sixMonthDead) {
+        if(tempMap.has(item.SKU)) tempMap.get(item.SKU).SOLDFLAG = 6
+    }
+    for(const item of tenMonthDead) {
+        if(tempMap.has(item.SKU)) tempMap.get(item.SKU).SOLDFLAG = 10
+    }
+
+    return Array.from(tempMap.values())
 }

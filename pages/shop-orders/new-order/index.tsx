@@ -46,7 +46,14 @@ export default function NewOrder() {
                         res[i].qty = 1
                         res[i].submitted = false
                         if (res[i].STOCKTOTAL < res[i].MINSTOCK) res[i].lowStock = true;
-                        if (deadStockList[supplier]) deadStockList[supplier].find((element) => element.SKU === res[i].SKU) ? res[i].deadStock = true : res[i].deadStock = false
+                        let item = deadStockList[supplier].find((element) => element.SKU === res[i].SKU)
+                        if (item){
+                            res[i].deadStock = true
+                            res[i].SOLDFLAG = item.SOLDFLAG
+                        } else {
+                            res[i].deadStock = false
+                            res[i].SOLDFLAG = 0
+                        }
                         itemsTempObject[supplier].push(res[i]);
                     }
                     if (freshOrder) {

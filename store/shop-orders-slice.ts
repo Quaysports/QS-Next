@@ -1,6 +1,5 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-import {findKey} from "../server-modules/core/core"
 
 export interface OpenOrdersObject {
     _id: string
@@ -30,10 +29,11 @@ export interface orderObject {
     newProduct?: boolean
     lowStock?: boolean
     submitted: boolean
+    SOLDFLAG: number
 }
 
 interface ShopOrdersState {
-    deadStock: { [key: string]: { SUPPLIER: string, SKU: string, TITLE: string }[] };
+    deadStock: { [key: string]: { SUPPLIER: string, SKU: string, TITLE: string, SOLDFLAG: number}[]};
     sideBarContent: { [key: string]: string }
     sideBarTitle: string
     loadedOrder: OpenOrdersObject
@@ -90,7 +90,7 @@ export const shopOrdersSlice = createSlice({
             },
         },
         reducers: {
-            setDeadStock: (state, action) => {
+            setDeadStock: (state, action:PayloadAction<ShopOrdersState["deadStock"]>) => {
                 state.deadStock = action.payload
             },
             setSideBarContent: (state, action: PayloadAction<{ content: { [key: string]: string }, title: string }>) => {

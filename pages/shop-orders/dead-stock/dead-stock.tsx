@@ -8,6 +8,7 @@ import {
     setSideBarContent,
 } from "../../../store/shop-orders-slice";
 import ColumnLayout from "../../../components/layouts/column-layout";
+import Image from "next/image";
 
 export default function DeadStock() {
 
@@ -28,6 +29,22 @@ export default function DeadStock() {
         transformDeadStockDataForSidebar(deadStockList)
     }, [deadStockList])
 
+    function imageCheck(item){
+        switch (item.SOLDFLAG) {
+            case 3:
+                return (<Image src="/dead-stock-icon-green.webp" width="22px" height="22px"
+                               alt={"dead-stock-icon"}/>)
+
+            case 6:
+                return (<Image src="/dead-stock-icon-orange.webp" width="22px" height="22px"
+                               alt={"dead-stock-icon"}/>)
+
+            case 10:
+                return (<Image src="/dead-stock-icon-red.webp" width="22px" height="22px"
+                               alt={"dead-stock-icon"}/>)
+        }
+    }
+
     function buildDeadStockList() {
         let tempArray = []
             tempArray.push(
@@ -35,6 +52,7 @@ export default function DeadStock() {
                     <span/>
                     <span>SKU</span>
                     <span>Title</span>
+                    <span/>
                 </div>
             )
             deadStockList[supplier].forEach((value, key) => {
@@ -42,6 +60,7 @@ export default function DeadStock() {
                         <span/>
                         <span>{value.SKU}</span>
                         <span>{value.TITLE}</span>
+                        <span>{imageCheck(value)}</span>
                     </div>)
             })
             return (

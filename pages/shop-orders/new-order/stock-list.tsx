@@ -27,8 +27,8 @@ export default function StockList() {
     const supplierItems = useSelector(selectSupplierItems)
     const lowStockArray = useSelector(selectLowStockArray)
     const renderedArray = useSelector(selectRenderedArray)
-    const[rerender, setRerender] = useState<boolean>(false)
-    const[searchableArray, setSearchableArray] = useState([])
+    const [rerender, setRerender] = useState<boolean>(false)
+    const [searchableArray, setSearchableArray] = useState([])
 
     useEffect(() => {
         let tempArray = []
@@ -36,10 +36,10 @@ export default function StockList() {
             if (value.lowStock) tempArray.push(value)
         })
         dispatch(setLowStockArray(tempArray))
-        if (radioButtons.lowStock){
+        if (radioButtons.lowStock) {
             dispatch(setRenderedArray(tempArray))
             setSearchableArray(tempArray)
-        } else{
+        } else {
             dispatch(setRenderedArray(supplierItems))
             setSearchableArray(supplierItems)
         }
@@ -69,9 +69,26 @@ export default function StockList() {
         if (radioButtons.allItems) {
             dispatch(setChangeOrderArray({item: renderedArray[index], type: "add", index: fullStockIndex}))
         }
-        if(radioButtons.lowStock){
+        if (radioButtons.lowStock) {
             dispatch(setChangeOrderArray({item: lowStockArray[index], type: "add", index: fullStockIndex}))
         }
+    }
+
+    function imageCheck(item: orderObject) {
+        switch (item.SOLDFLAG) {
+            case 3:
+                return (<Image src="/dead-stock-icon-green.webp" width="22px" height="22px"
+                               alt={"dead-stock-icon"}/>)
+
+            case 6:
+                return (<Image src="/dead-stock-icon-orange.webp" width="22px" height="22px"
+                               alt={"dead-stock-icon"}/>)
+
+            case 10:
+                return (<Image src="/dead-stock-icon-red.webp" width="22px" height="22px"
+                               alt={"dead-stock-icon"}/>)
+        }
+
     }
 
     function buildListRow(item: orderObject, index: number, allItems: boolean) {
@@ -79,7 +96,7 @@ export default function StockList() {
         tempArray.push(
             <div key={item.SKU}
                  className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["low-stock-list-grid"]}`}>
-                <button key={item.SKU + 0} onClick={() => {
+                <button onClick={() => {
                     addToOrderHandler(item, index)
                 }}>⇅
                 </button>
@@ -94,9 +111,8 @@ export default function StockList() {
                     inputChangeHandler(e.target.value, "tradePack", index)
                 }}/>
                 <span className={"center-align"}>£{item.PURCHASEPRICE.toFixed(2)}</span>
-                <span className={styles["dead-stock-image-parent"]}>{item.deadStock ?
-                    <Image key={item.SKU + 9} src="/dead-stock-icon.webp" width="22px" height="22px"
-                           alt={"dead-stock-icon"}/> : ""}</span>
+                <span className={styles["dead-stock-image-parent"]}>{item.deadStock ? imageCheck(item) : null}
+                    </span>
             </div>
         )
         if (allItems) {

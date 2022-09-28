@@ -24,7 +24,6 @@ export default function SideBar(props:SideBarProps) {
             )
             i++
         }
-
         return elementArray
     }
 
