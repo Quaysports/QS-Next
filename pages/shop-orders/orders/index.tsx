@@ -2,7 +2,6 @@ import * as React from 'react';
 import SideBar from "../sidebar/sidebar";
 import DisplayOnOrder from "./display-on-order";
 import DisplayArrived from "./display-arrived";
-import styles from "../shop-orders.module.css"
 import OrderInformation from "./order-information";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +11,7 @@ import {
     setOpenOrders,
     selectOpenOrders
 } from "../../../store/shop-orders-slice";
+import ColumnLayout from "../../../components/layouts/column-layout";
 
 export default function Orders() {
 
@@ -60,20 +60,18 @@ export default function Orders() {
 
     }, [supplier])
 
-    function supplierHandler(supplier){
+    function supplierHandler(supplier) {
         setSupplier(supplier)
     }
 
     return (
-        <div className={styles["shop-orders-parent"]}>
+        <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            <div className={styles["shop-orders-table-parent"]}>
-                {!supplier ? null : <>
-                    <OrderInformation supplierFilter={() => supplierHandler(null)}/>
-                    <DisplayOnOrder/>
-                    <DisplayArrived supplierFilter={() => supplierHandler(null)}/></>}
-            </div>
-        </div>
+            {!supplier ? null : <ColumnLayout>
+                <OrderInformation supplierFilter={() => supplierHandler(null)}/>
+                <DisplayOnOrder/>
+                <DisplayArrived supplierFilter={() => supplierHandler(null)}/></ColumnLayout>}
+        </>
     );
 }
 

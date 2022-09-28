@@ -2,6 +2,7 @@ import * as React from "react";
 import styles from "../shop-orders.module.css"
 import {useSelector} from "react-redux";
 import {selectSideBarContent} from "../../../store/shop-orders-slice";
+import SidebarLayout from "../../../components/layouts/sidebar-layout";
 
 interface SideBarProps {
     supplierFilter : (x:string) => void
@@ -28,9 +29,9 @@ export default function SideBar(props:SideBarProps) {
     }
 
     return (
-        <div className={styles["shop-orders-sidebar"]}>
+        <SidebarLayout>
             <div key={1} id={styles["sidebar-title"]}>{sideBarContent.title}</div>
             {buildSideBar()}
-        </div>
+        </SidebarLayout>
     )
 };

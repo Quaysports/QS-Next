@@ -9,13 +9,14 @@ import {
 import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
 import styles from '../shop-orders.module.css'
+import ColumnLayout from "../../../components/layouts/column-layout";
 
 export default function CompletedOrders() {
 
     const dispatch = useDispatch()
     const completedOrders = useSelector(selectCompletedOrders)
     const orderContents = useSelector(selectOrderContents)
-    const [supplier, setSupplier] = useState<string>("")
+    const [supplier, setSupplier] = useState<string>(null)
 
     useEffect(() => {
         const today = new Date()
@@ -112,15 +113,16 @@ export default function CompletedOrders() {
 
     function supplierHandler(supplier){
         setSupplier(supplier)
+        dispatch(setOrderContents(null))
     }
 
     return (
-        <div className={styles["shop-orders-parent"]}>
+        <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            <div className={styles["shop-orders-table-parent"]}>
+            {!supplier ? null : <ColumnLayout>
                 {completedOrdersList()}
                 {showOrderContents()}
-            </div>
-        </div>
+            </ColumnLayout>}
+        </>
     );
 }
