@@ -37,6 +37,35 @@
     margin: var(--sidebar-margin);
 }
 
+.sidebar-button{
+    background-color: var(--primary-color);
+    color: var(--primary-inactive-text);
+    cursor:pointer;
+    user-select: none;
+    border:1px solid var(--primary-color);
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: var(--primary-box-shadow);
+    transition-duration: 0.1s;
+    margin:5px;
+    padding:3px;
+}
+.sidebar-button:hover{
+    color: var(--primary-active-text);
+    border:1px solid var(--primary-color);
+    background-color: inherit;
+    transform: translate(-1px, -1px);
+}
+.sidebar-button:active{
+    transform: translate(1px, 1px);
+}
+
+.active{
+    color: var(--primary-active-text);
+    border:1px solid var(--primary-color);
+    background-color: inherit;
+}
+
 .column-layout{
     grid-area:column;
     justify-content: center;

@@ -19,8 +19,8 @@ export default function ShopTills({links}) {
 
     return (
         <>
-            {router.query.tab === "quick-links" ?
-                <SidebarOneColumn><Menu tabs={<ShopTabs/>}/><QuickLinks links={links}/></SidebarOneColumn> : <SidebarOneColumn><Menu tabs={<ShopTabs/>}/></SidebarOneColumn>}
+            {router.query.tab === undefined ? <SidebarOneColumn><Menu tabs={<ShopTabs/>}/></SidebarOneColumn> : null}
+            {router.query.tab === "quick-links" ? <SidebarOneColumn><Menu tabs={<ShopTabs/>}/><QuickLinks links={links}/></SidebarOneColumn> : null}
         </>
     )
 }

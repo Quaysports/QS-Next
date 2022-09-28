@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     IncorrectStockItem,
     selectZeroStockState, setZeroStockChecked, setZeroStockQty
-} from "../../../store/incorrect-stock-slice";
+} from "../../../store/stock-reports-slice";
 
 
 export default function ZeroStockList(validDataHandler) {

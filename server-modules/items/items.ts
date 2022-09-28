@@ -176,3 +176,9 @@ export const getBrandLabelImages = async () => {
         console.error(e)
     }
 }
+
+export const getBrands = async () => {
+    let result = await mongoI.findDistinct("Items", "IDBEP.BRAND", {})
+    console.log(result)
+     return result
+}

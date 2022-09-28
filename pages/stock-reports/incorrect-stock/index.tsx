@@ -1,10 +1,10 @@
 import styles from "./incorrect-stock-list.module.css";
 import UpdateIncorrectStock from "./update-incorrect-stock-function";
-import ZeroStockList from "./zero-stock-list-function";
+import ZeroStockList from "./zero-stock-list";
 import React from "react";
 import {useDispatch} from "react-redux";
-import {setValidData} from "../../../store/incorrect-stock-slice";
-import IncorrectStockList from "./incorrect-stock-list-function";
+import {setValidData} from "../../../store/stock-reports-slice";
+import IncorrectStockList from "./incorrect-stock-list";
 
 export default function IncorrectStock(){
 

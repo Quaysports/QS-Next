@@ -50,6 +50,7 @@
 .sidebar-button-title, .sidebar-button-edit{
     padding:5px;
     align-self: center;
+    height: 100%;
 }
 .sidebar-button-title{
     border-radius:0 5px 5px 0

@@ -10,32 +10,32 @@ export interface IncorrectStockItem {
     PRIORITY: boolean
 }
 
-export interface IncorrectStockState {
+export interface StockReportState {
     incorrectStockReport: {[key:string]:IncorrectStockItem[]};
     zeroStockReport: {[key:string]:IncorrectStockItem[]};
+    brands: string[]
     validData: boolean;
-    IncorrectStockReportMenuOptions: {[key:string]:string};
 }
 
-export interface IncorrectStockWrapper {
-    [key: string]: IncorrectStockState
+export interface StockReportWrapper {
+    [key: string]: StockReportState
 }
 
-const initialState: IncorrectStockState = {
+const initialState: StockReportState = {
     incorrectStockReport: {},
     zeroStockReport: {},
+    brands: [],
     validData: true,
-    IncorrectStockReportMenuOptions: null,
 };
 
-export const incorrectStockSlice = createSlice({
-        name: "incorrectStock",
+export const stockReportsSlice = createSlice({
+        name: "stockReports",
         initialState,
         extraReducers: {
             [HYDRATE]: (state, action) => {
                 return {
                     ...state,
-                    ...action.payload.incorrectStock,
+                    ...action.payload.stockReports,
                 };
             },
         },
@@ -56,18 +56,18 @@ export const incorrectStockSlice = createSlice({
     })
 ;
 
-export const {setIncorrectStockInitialState} = incorrectStockSlice.actions;
-export const {setZeroStockInitialState} = incorrectStockSlice.actions
-export const {setIncorrectStockQty} = incorrectStockSlice.actions;
-export const {setZeroStockQty} = incorrectStockSlice.actions;
-export const {setValidData} = incorrectStockSlice.actions;
-export const {setIncorrectStockChecked} = incorrectStockSlice.actions
-export const {setZeroStockChecked} = incorrectStockSlice.actions
-export const {setZeroStockSplice} = incorrectStockSlice.actions
-export const {setIncorrectStockSplice} = incorrectStockSlice.actions
+export const {setIncorrectStockInitialState} = stockReportsSlice.actions;
+export const {setZeroStockInitialState} = stockReportsSlice.actions
+export const {setIncorrectStockQty} = stockReportsSlice.actions;
+export const {setZeroStockQty} = stockReportsSlice.actions;
+export const {setValidData} = stockReportsSlice.actions;
+export const {setIncorrectStockChecked} = stockReportsSlice.actions
+export const {setZeroStockChecked} = stockReportsSlice.actions
+export const {setZeroStockSplice} = stockReportsSlice.actions
+export const {setIncorrectStockSplice} = stockReportsSlice.actions
 
-export const selectIncorrectStockState = (state:IncorrectStockWrapper) => state.incorrectStock.incorrectStockReport
-export const selectZeroStockState = (state: IncorrectStockWrapper) => state.incorrectStock.zeroStockReport
-export const selectValidData = (state: IncorrectStockWrapper) => state.incorrectStock.validData
+export const selectIncorrectStockState = (state:StockReportWrapper) => state.stockReports.incorrectStockReport
+export const selectZeroStockState = (state: StockReportWrapper) => state.stockReports.zeroStockReport
+export const selectValidData = (state: StockReportWrapper) => state.stockReports.validData
 
-export default incorrectStockSlice.reducer;
+export default stockReportsSlice.reducer;

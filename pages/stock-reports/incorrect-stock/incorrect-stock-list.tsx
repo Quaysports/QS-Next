@@ -4,7 +4,7 @@ import {
     IncorrectStockItem,
     selectIncorrectStockState, setIncorrectStockChecked,
     setIncorrectStockQty, setValidData
-} from "../../../store/incorrect-stock-slice";
+} from "../../../store/stock-reports-slice";
 import {useDispatch, useSelector} from "react-redux";
 
 export default function IncorrectStockList() {

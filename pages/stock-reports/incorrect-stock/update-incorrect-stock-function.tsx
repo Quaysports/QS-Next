@@ -2,7 +2,7 @@ import {
     selectIncorrectStockState, selectValidData, selectZeroStockState,
     setIncorrectStockSplice,
     setZeroStockSplice
-} from "../../../store/incorrect-stock-slice";
+} from "../../../store/stock-reports-slice";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import styles from "./incorrect-stock-list.module.css";
 import React from "react";

@@ -16,7 +16,7 @@ export default function QuickLinksTable({id}){
             if(links[id].links[index].SKU){
             buttons.push(<QuickLinkButton key={index} listIndex = {id} itemIndex={index} item={links[id].links[index]}/>)
             } else {
-                buttons.push(<QuickLinkTableAddButton id={id} index={index}/>)
+                buttons.push(<QuickLinkTableAddButton key={index} id={id} index={index}/>)
             }
         }
         return buttons
