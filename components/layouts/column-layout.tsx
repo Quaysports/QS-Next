@@ -15,9 +15,7 @@ export default function ColumnLayout({children, scroll = false, maxWidth = undef
 
     return(
         <div className={styles["column-layout"]}>
-            <div
-                style={styleOverrides}
-            >{children}</div>
+            <div style={styleOverrides}>{children}</div>
         </div>
     )
 }

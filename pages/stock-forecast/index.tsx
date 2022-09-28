@@ -6,6 +6,8 @@ import {useEffect, useState} from "react";
 import {getItems} from "../../server-modules/items/items";
 import {processData} from "../../server-modules/stock-forecast/process-data";
 import {binarySearch} from "../../server-modules/core/core";
+import OneColumn from "../../components/layouts/one-column";
+import ColumnLayout from "../../components/layouts/column-layout";
 
 export default function stockForecastLandingPage({filteredItems}) {
 
@@ -20,10 +22,12 @@ export default function stockForecastLandingPage({filteredItems}) {
     }, [filteredItems])
 
     return (
-        <div className={"fullscreen-layout"}>
+        <OneColumn>
             <Menu tabs={<StockForecastMenuTabs searchData={filteredItems} updateItemsHandler={updateItemsHandler}/>}/>
-            <StockForecastTable items={items}/>
-        </div>
+            <ColumnLayout scroll={true}>
+                <StockForecastTable items={items}/>
+            </ColumnLayout>
+        </OneColumn>
     )
 }
 
@@ -87,7 +91,7 @@ function addOnOrderToItems(shipments, items) {
     for (const shipment of shipments) {
         if(shipment.delivered) continue
         for (let val of shipment.data) {
-            let item = binarySearch(items, "SKU", val.sku, 0, items.length - 1)
+            let item = binarySearch<{SKU:string,onOrder:any}>(items, "SKU", val.sku, 0, items.length - 1)
             if (!item) continue;
 
             let cd = new Date();

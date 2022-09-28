@@ -11,6 +11,8 @@ import {useRouter} from "next/router";
 import StockReportTabs from "./tabs";
 import ShopStockTake from "./shop";
 import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
+import OneColumn from "../../components/layouts/one-column";
+import ColumnLayout from "../../components/layouts/column-layout";
 
 export default function IncorrectStockLandingPage({incorrectStock, zeroStock}) {
 
@@ -25,10 +27,12 @@ export default function IncorrectStockLandingPage({incorrectStock, zeroStock}) {
     return (
         <>
             {router.query.tab === "incorrect-stock" ?
-                <div>
+                <OneColumn>
                     <Menu tabs={<StockReportTabs/>}/>
-                    <IncorrectStock/>
-                </div> : null}
+                    <ColumnLayout scroll={true} maxWidth={"fit-content"}>
+                        <IncorrectStock/>
+                    </ColumnLayout>
+                </OneColumn> : null}
             {router.query.tab === "shop" ?
                 <SidebarOneColumn>
                     <Menu tabs={<StockReportTabs/>}/>

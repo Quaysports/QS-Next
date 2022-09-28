@@ -12,7 +12,7 @@ export default function IncorrectStock(){
     const validDataHandler = (boolean) => dispatch(setValidData(boolean))
 
     return(
-        <div id={styles.incorrectStockListContainer}>
+        <>
             <div className={styles.titles}>HIGH PRIORITY ITEMS TO CHECK
                 <UpdateIncorrectStock />
             </div>
@@ -40,6 +40,6 @@ export default function IncorrectStock(){
             <div>
                 <ZeroStockList validDataHandler={(x: boolean) => validDataHandler(x)}/>
             </div>
-        </div>
+        </>
     )
 }
