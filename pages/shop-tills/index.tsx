@@ -6,25 +6,26 @@ import {getQuickLinks} from "../../server-modules/shop/shop";
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {updateQuickLinks} from "../../store/shop-tills/quicklinks-slice";
+import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
 
-export default function ShopTills({links}){
+export default function ShopTills({links}) {
     const router = useRouter()
     const dispatch = useDispatch()
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(links)
         dispatch(updateQuickLinks(links))
-    },[links])
+    }, [links])
 
     return (
-        <div className={"fullscreen-layout"}>
-            <Menu tabs={<ShopTabs />}/>
-            {router.query.tab === "quick-links" ? <QuickLinks links={links}/> : null}
-        </div>
+        <>
+            {router.query.tab === "quick-links" ?
+                <SidebarOneColumn><Menu tabs={<ShopTabs/>}/><QuickLinks links={links}/></SidebarOneColumn> : <SidebarOneColumn><Menu tabs={<ShopTabs/>}/></SidebarOneColumn>}
+        </>
     )
 }
 
-export async function getServerSideProps(){
+export async function getServerSideProps() {
     const links = JSON.parse(JSON.stringify(await getQuickLinks()))
-    return {props:{links:links}}
+    return {props: {links: links}}
 }

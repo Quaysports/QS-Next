@@ -3,9 +3,6 @@ import {dispatchNotification} from "../../../server-modules/dispatch-notificatio
 import EditQuickLinkMenuPopup from "./edit-quicklink-menu-popup";
 
 export default function QuickLinksSidebarButton({id, handler, text}){
-
-
-
     return(
         <div className={styles["quick-link-sidebar-button"]}>
             <div className={styles["sidebar-button-edit"]} onClick={()=>dispatchNotification({

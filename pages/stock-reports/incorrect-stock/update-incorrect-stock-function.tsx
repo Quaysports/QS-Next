@@ -2,8 +2,8 @@ import {
     selectIncorrectStockState, selectValidData, selectZeroStockState,
     setIncorrectStockSplice,
     setZeroStockSplice
-} from "../../store/incorrect-stock-slice";
-import {dispatchNotification} from "../../server-modules/dispatch-notification";
+} from "../../../store/incorrect-stock-slice";
+import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import styles from "./incorrect-stock-list.module.css";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -69,4 +69,3 @@ export default function UpdateIncorrectStock() {
         </button>
     )
 }
-

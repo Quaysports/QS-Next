@@ -4,12 +4,12 @@ import DatabaseSearchBar, {searchResult} from "../../../components/database-sear
 import {addItemToLinks} from "../../../store/shop-tills/quicklinks-slice";
 import {useDispatch} from "react-redux";
 
-export default function QuickLinkTableAddButton({id}){
+export default function QuickLinkTableAddButton({id, index}){
 
     const dispatch = useDispatch()
     const handler = (res:searchResult)=>{
         dispatchNotification({type:null})
-        dispatch(addItemToLinks({id:id, data:{SKU: res.SKU, SHOPPRICEINCVAT: 0, TITLE: res.TITLE}}))
+        dispatch(addItemToLinks({id:id, index:index, data:{SKU: res.SKU, SHOPPRICEINCVAT: 0, TITLE: res.TITLE}}))
         console.log("handled!")
         console.log(res)
     }

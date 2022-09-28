@@ -12,12 +12,11 @@ export default function QuickLinksTable({id}){
         const buttons = []
         if(!links || !links[id]) return null
         for(let index in links[id].links){
-            buttons.push(<QuickLinkButton
-                key={index}
-                listIndex = {id}
-                itemIndex={index}
-                item={links[id].links[index]}
-            />)
+            if(links[id].links[index].SKU){
+            buttons.push(<QuickLinkButton key={index} listIndex = {id} itemIndex={index} item={links[id].links[index]}/>)
+            } else {
+                buttons.push(<QuickLinkTableAddButton id={id} index={index}/>)
+            }
         }
         return buttons
     }
@@ -27,7 +26,6 @@ export default function QuickLinksTable({id}){
             <div className={styles.table}>
                 <div>
                     {buildTable(id, links)}
-                    {links[id]?.links?.length < 20 ? <QuickLinkTableAddButton id={id}/> : null}
                 </div>
             </div>
         </>

@@ -57,12 +57,9 @@ export const quickLinksSlice = createSlice({
                 fetch('/api/shop-tills/update-quick-links', opt)
             },
             addItemToLinks: (state, action) => {
-                let pos = state.quickLinksArray[action.payload.id].links.map(item => item.SKU).indexOf(action.payload.data.SKU)
-                if (pos === -1) {
-                    state.quickLinksArray[action.payload.id].links.push(action.payload.data)
-                    const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.id])}
-                    fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
-                }
+                state.quickLinksArray[action.payload.id].links[action.payload.index] = action.payload.data
+                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.id])}
+                fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             }
         },
     })

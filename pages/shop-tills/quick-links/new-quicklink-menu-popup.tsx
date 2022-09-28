@@ -13,7 +13,8 @@ export default function NewQuickLinkMenuPopup(){
             <div>Enter Quick link menu ID</div>
             <input ref={inputRef}/>
             <button onClick={()=>{
-                dispatch(addNewQuickLinkMenu({id:inputRef.current.value,links:[]}))
+                let itemsArray = Array.from({length:20}, ()=>({SKU:null}))
+                dispatch(addNewQuickLinkMenu({id:inputRef.current.value,links:itemsArray}))
                 dispatchNotification({type:null})
             }}>Submit</button>
         </div>

@@ -13,3 +13,15 @@ export const findKey = <T>(array, key, id): T | null =>{
     console.log(pos)
     return pos !== -1 ? array[pos] : null
 }
+
+export const binarySearch = function <T>(arr:T[], key:keyof T, x:T[keyof T], start = 0, end = arr.length):T | null {
+
+    if (start > end || arr.length === 0) return null;
+
+    let mid = Math.floor((start + end) / 2);
+    if (arr[mid][key] === x) return arr[mid];
+
+    return arr[mid][key] > x
+        ? binarySearch(arr, key, x, start, mid - 1)
+        : binarySearch(arr, key, x, mid + 1, end);
+}

@@ -5,6 +5,7 @@ import {get} from "../../server-modules/shipping/shipping";
 import {useEffect, useState} from "react";
 import {getItems} from "../../server-modules/items/items";
 import {processData} from "../../server-modules/stock-forecast/process-data";
+import {binarySearch} from "../../server-modules/core/core";
 
 export default function stockForecastLandingPage({filteredItems}) {
 
@@ -132,16 +133,4 @@ function filterDataBasedOnToggles(items, pageQuery) {
         filter.push(v)
     }
     return filter
-}
-
-let binarySearch = function (arr, key, x, start, end) {
-
-    if (start > end) return undefined;
-
-    let mid = Math.floor((start + end) / 2);
-    if (arr[mid][key] === x) return arr[mid];
-
-    return arr[mid][key] > x
-        ? binarySearch(arr, key, x, start, mid - 1)
-        : binarySearch(arr, key, x, mid + 1, end);
 }

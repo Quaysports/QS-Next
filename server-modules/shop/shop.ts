@@ -1,5 +1,6 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
 import {ObjectId} from 'mongodb'
+import {binarySearch} from "../core/core";
 //import * as linn from "../linn-api/linn-api"
 //import * as eod from '../workers/shop-worker-modules/endOfDayReport'
 
@@ -20,15 +21,15 @@ export const reports = async () => {
     return await mongoI.find<any>("Shop-Reports")
 }
 
-export const updateQuickLinks = async (data)=> {
-    let query = data._id ? {_id:new ObjectId(data._id)} : {id:data.id}
-    if(data._id) delete data._id
+export const updateQuickLinks = async (data) => {
+    let query = data._id ? {_id: new ObjectId(data._id)} : {id: data.id}
+    if (data._id) delete data._id
     return await mongoI.setData("Shop-Till-QuickLinks", query, data)
 }
 
-export const deleteQuickLinks = async (data)=> {
-    let query = data._id ? {_id:new ObjectId(data._id)} : {id:data.id}
-    if(data._id) delete data._id
+export const deleteQuickLinks = async (data) => {
+    let query = data._id ? {_id: new ObjectId(data._id)} : {id: data.id}
+    if (data._id) delete data._id
     return await mongoI.deleteOne("Shop-Till-QuickLinks", query)
 }
 
@@ -71,7 +72,7 @@ export const orders = async (id: string) => {
     return await mongoI.find<any>("Shop", {"id": {$regex: id, $options: "i"}})
 }
 
-export const getQuickLinks = async ()=>{
+export const getQuickLinks = async () => {
     const query = [
         {
             '$match': {}
@@ -96,13 +97,41 @@ export const getQuickLinks = async ()=>{
                             'SHOPPRICEINCVAT': 1,
                             'TITLE': 1
                         }
+                    },
+                    {
+                        '$sort': {
+                            'SKU': 1
+                        }
                     }
                 ],
-                'as': 'links'
+                'as': 'updates'
             }
         }
     ]
-    return await mongoI.findAggregate<object>("Shop-Till-QuickLinks", query)
+
+    interface QuickLinks {
+        _id: string,
+        id: string,
+        links: QuickLinkItem[],
+        updates: QuickLinkItem[]
+    }
+
+    interface QuickLinkItem {
+        SKU: string | null,
+        TITLE?: string,
+        SHOPPRICEINCVAT?: string
+    }
+
+    let result = await mongoI.findAggregate<QuickLinks>("Shop-Till-QuickLinks", query)
+    for (let quickLinks of result) {
+        for (let index in quickLinks.links) {
+            if(!quickLinks.links[index].SKU) continue
+            let search = binarySearch<QuickLinkItem>(quickLinks.updates, "SKU", quickLinks.links[index].SKU)
+            if (search) quickLinks.links[index] = search
+        }
+        delete quickLinks.updates
+    }
+    return result
 }
 
 export const getSupplierPriceChanges = async (data: { supplier: string, data: string }) => {
@@ -142,7 +171,9 @@ export const getSupplierPriceChanges = async (data: { supplier: string, data: st
     for (let item of result) {
         if (item.SKU.indexOf("-") !== -1) {
             let check = item.SKU.split("-")
-            let pos = json.map(item=>{return item.SKU}).indexOf(check[1])
+            let pos = json.map(item => {
+                return item.SKU
+            }).indexOf(check[1])
             if (pos !== -1) {
                 json[pos]["SKU"] = item.SKU
                 json[pos]["title"] = item.TITLE
@@ -155,7 +186,7 @@ export const getSupplierPriceChanges = async (data: { supplier: string, data: st
 
     return itemChanges
 }
-//only used in /pages/incorrect-stock-report
+//only used in /pages/stock-reports
 export const getIncorrectStock = async () => {
     console.dir("Get Incorrect Stock")
     const query = [
@@ -215,9 +246,9 @@ export const deadStockReport = async () => {
             }
         }
     ])
-    return await mongoI.find<{SUPPLIER: string, SKU: string, TITLE: string}>("Items", {
+    return await mongoI.find<{ SUPPLIER: string, SKU: string, TITLE: string }>("Items", {
         SKU: {$nin: items},
         STOCKTOTAL: {$gt: 0},
         IDBFILTER: "domestic"
-    }, {SUPPLIER: 1, SKU: 1, TITLE: 1}, {SUPPLIER:1})
+    }, {SUPPLIER: 1, SKU: 1, TITLE: 1}, {SUPPLIER: 1})
 }
