@@ -7,6 +7,7 @@ import {
     selectDeadStock,
     setSideBarContent,
 } from "../../../store/shop-orders-slice";
+import ColumnLayout from "../../../components/layouts/column-layout";
 
 export default function DeadStock() {
 
@@ -29,7 +30,6 @@ export default function DeadStock() {
 
     function buildDeadStockList() {
         let tempArray = []
-        if (supplier) {
             tempArray.push(
                 <div className={`${styles["shop-orders-table"]} ${styles["dead-stock-list-grid"]}`}>
                     <span/>
@@ -47,9 +47,6 @@ export default function DeadStock() {
             return (
                 <div className={styles["shop-orders-table-containers"]}>{tempArray}</div>
             )
-        } else {
-            return <></>
-        }
     }
 
     function supplierHandler(supplier){
@@ -57,11 +54,11 @@ export default function DeadStock() {
     }
 
     return (
-        <div className={styles["shop-orders-parent"]}>
+        <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            <div className={styles["shop-orders-table-parent"]}>
+            {!supplier ? null :<ColumnLayout>
                 {buildDeadStockList()}
-            </div>
-        </div>
+            </ColumnLayout>}
+        </>
     );
 }

@@ -9,8 +9,8 @@ import {
     setTotalPrice, selectDeadStock, setOrderInfoReset
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
-import styles from "../shop-orders.module.css"
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import ColumnLayout from "../../../components/layouts/column-layout";
 
 export default function NewOrder() {
 
@@ -114,11 +114,9 @@ export default function NewOrder() {
     }
 
     return (
-        <div className={styles["shop-orders-parent"]}>
+        <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            <div className={styles["shop-orders-table-parent"]}>
-                {!supplier ? null : <><OrderList supplier={supplier}/><StockList/></>}
-            </div>
-        </div>
+            {!supplier ? null : <ColumnLayout><OrderList supplier={supplier}/><StockList/></ColumnLayout>}
+        </>
     );
 }

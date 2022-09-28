@@ -64,9 +64,6 @@ export default function StockList() {
         dispatch(setInputChange({key: key, index: index, value: value}))
     }
 
-    //TODO change which array the item is being manipulated in when multiple inputs are changed
-    //TODO research if router.query.tab is causing a server side render hence the lag in page loading
-
     function addToOrderHandler(item: orderObject, index: number) {
         let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
         if (radioButtons.allItems) {
@@ -75,7 +72,6 @@ export default function StockList() {
         if(radioButtons.lowStock){
             dispatch(setChangeOrderArray({item: lowStockArray[index], type: "add", index: fullStockIndex}))
         }
-
     }
 
     function buildListRow(item: orderObject, index: number, allItems: boolean) {

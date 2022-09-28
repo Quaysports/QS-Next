@@ -10,6 +10,7 @@ import Menu from "../../components/menu/menu";
 import ShopOrdersTabs from "./tabs";
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
+import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
 
 
 export interface item {
@@ -38,13 +39,13 @@ export default function ShopOrdersLandingPage(props) {
     })
 
     return (
-        <div>
+        <SidebarOneColumn>
             <Menu tabs={<ShopOrdersTabs/>}/>
             {router.query.tab === undefined || router.query.tab === "orders" ? <Orders/> : null}
             {router.query.tab === "completed-orders" ? <CompletedOrders/> : null}
             {router.query.tab === "new-order" ? <NewOrder/> : null}
             {router.query.tab === "dead-stock" ? <DeadStock/> : null}
-        </div>
+        </SidebarOneColumn>
     );
 }
 

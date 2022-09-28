@@ -3,17 +3,30 @@ import ItemDatabaseTabs from "./tabs";
 import ItemDatabaseLandingPage from "./item-database";
 import {useRouter} from "next/router";
 import RodLocationsLandingPage from "./rod-locations";
-import styles from "./item-database.module.css"
+import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
+import SearchbarSidebarOneColumn from "../../components/layouts/searchbar-sidebar-one-column";
 
-export default function itemDatabaseLandingPage(){
+export default function itemDatabaseLandingPage() {
 
     const router = useRouter()
 
-    return(
-        <div className={"fullscreen-layout"}>
-            <Menu tabs={<ItemDatabaseTabs/>}/>
-            {router.query.tab === "item-database" ? <ItemDatabaseLandingPage/> : null}
-            {router.query.tab === "rod-locations" ? <RodLocationsLandingPage/> : null}
-        </div>
+    return (
+        <>
+
+            {router.query.tab === undefined || router.query.tab ===  "item-database" ?
+                <>
+                    <SearchbarSidebarOneColumn>
+                    <Menu tabs={<ItemDatabaseTabs/>}/>
+                    <ItemDatabaseLandingPage/>
+                    </SearchbarSidebarOneColumn>
+                </> : null}
+            {router.query.tab === "rod-locations" ?
+                <>
+                    <SidebarOneColumn>
+                        <Menu tabs={<ItemDatabaseTabs/>}/>
+                        <RodLocationsLandingPage/>
+                    </SidebarOneColumn>
+                </> : null}
+        </>
     )
 }
