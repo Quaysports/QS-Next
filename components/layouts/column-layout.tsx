@@ -1,3 +1,4 @@
+import React from 'react'
 import styles from './layout-styles.module.css'
 
 export default function ColumnLayout({children, scroll = false, maxWidth = undefined}){
@@ -14,10 +15,12 @@ export default function ColumnLayout({children, scroll = false, maxWidth = undef
     }
 
     return(
-        <div className={styles["column-layout"]}>
+        <>
+        {children ? <div className={styles["column-layout"]}>
             <div
                 style={cssStyles}
             >{children}</div>
-        </div>
+        </div> : null}
+        </>
     )
 }

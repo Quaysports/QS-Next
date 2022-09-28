@@ -1,23 +1,7 @@
 /*-----------------------------------Shop order default styling---------------------------------------*/
 
-.shop-orders-parent{
-    display: flex;
-    border-radius: 5px;
-    max-width: 1600px;
-    min-width: 1300px;
-    margin: 0 auto;
-}
-
-.shop-orders-table-parent{
-    flex-direction: column;
-    justify-content: flex-end;
-    font-size: 0.9em;
-    flex: 4.5 0 0
-}
-
 .shop-orders-table-containers{
     box-shadow: var(--primary-box-shadow);
-    background-color: var(--primary-table-background);
     margin: 10px;
     padding: 10px;
     border-radius: 5px;
