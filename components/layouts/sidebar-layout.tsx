@@ -4,7 +4,7 @@ export default function SidebarLayout({children, scroll = false}){
     const styleOverrides = {overflowY:null, maxHeight:null}
 
     if(scroll){
-        styleOverrides.overflowY = "scroll"
+        styleOverrides.overflowY = "auto"
         styleOverrides.maxHeight = "calc(100vh - 52px)"
     }
     return(

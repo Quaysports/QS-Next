@@ -1,6 +1,33 @@
-.button{
-
+.row , .title {
+    display:grid;
+    grid-template-columns: 250px 150px 500px 75px 75px 75px;
+    line-height:26px;
+    grid-gap:10px;
+    padding:2px 10px;
+    margin: 5px;
+    background: var(--table-cell-background-color);
+    border-radius:var(--table-cell-border-radius);
 }
-.button:hover{
+.row {
+    background: var(--table-cell-background-color);
+}
+.title {
+    background: inherit;
+}
+.search {
+    margin: 10px auto;
+    width:800px;
+}
+.center {
+    text-align: center;
+}
 
+.row div{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.row input {
+    width:100%
 }
