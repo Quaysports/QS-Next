@@ -1,5 +1,7 @@
-export default function HomeLandingPage(){
-    return(<div>
+import ColumnLayout from "../../../components/layouts/column-layout";
 
-    </div>)
+export default function HomeLandingPage(){
+    return(<ColumnLayout>
+
+    </ColumnLayout>)
 }

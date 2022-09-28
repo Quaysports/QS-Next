@@ -1,8 +1,8 @@
 import {useEffect} from "react";
-import style from './user.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {selectUsers, setAllUserData} from "../../../store/dashboard/user-slice";
 import UserTable from "./user-table";
+import ColumnLayout from "../../../components/layouts/column-layout";
 
 export default function UserLandingPage() {
 
@@ -18,10 +18,8 @@ export default function UserLandingPage() {
     }, [])
 
     return (
-        <>
-            <div className={style["user-table"]}>
+        <ColumnLayout scroll={true} maxWidth={"fit-content"}>
                 <UserTable userInfo={userInfo}/>
-            </div>
-        </>
+        </ColumnLayout>
     )
 }

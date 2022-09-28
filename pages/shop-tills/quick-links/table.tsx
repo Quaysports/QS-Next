@@ -3,6 +3,7 @@ import QuickLinkButton from "./quick-link-table-button";
 import {useSelector} from "react-redux";
 import {selectQuickLinks} from "../../../store/shop-tills/quicklinks-slice";
 import QuickLinkTableAddButton from "./quick-link-table-add-button";
+import ColumnLayout from "../../../components/layouts/column-layout";
 
 export default function QuickLinksTable({id}){
 
@@ -23,11 +24,9 @@ export default function QuickLinksTable({id}){
 
     return(
         <>
-            <div className={styles.table}>
-                <div>
-                    {buildTable(id, links)}
-                </div>
-            </div>
+            <ColumnLayout scroll={true}>
+                <div className={styles.table}>{buildTable(id, links)}</div>
+            </ColumnLayout>
         </>
     )
 }

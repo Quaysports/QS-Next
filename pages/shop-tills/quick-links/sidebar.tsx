@@ -1,8 +1,8 @@
-import styles from '../shop-tills.module.css'
 import QuickLinksSidebarButton from "./quick-link-sidebar-button";
 import {useSelector} from "react-redux";
 import {selectQuickLinks} from "../../../store/shop-tills/quicklinks-slice";
 import QuickLinkSidebarAddButton from "./quick-link-sidebar-add-button";
+import SidebarLayout from "../../../components/layouts/sidebar-layout";
 
 export default function QuickLinksSidebar({idHandler}){
 
@@ -18,12 +18,10 @@ export default function QuickLinksSidebar({idHandler}){
 
     return(
         <>
-            <div className={styles.sidebar}>
-                <div>
+            <SidebarLayout>
                     {createLinkButtons(links)}
                     {links.length < 6 ? <QuickLinkSidebarAddButton type={"parent"}/> : null}
-                </div>
-            </div>
+            </SidebarLayout>
         </>
     )
 }

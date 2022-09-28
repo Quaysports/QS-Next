@@ -21,6 +21,8 @@
 
 .sidebar-layout{
     grid-area:sidebar;
+}
+.sidebar-layout > div {
     background: var(--primary-table-background);
     box-shadow: var(--primary-box-shadow);
     padding: var(--sidebar-padding);
@@ -30,6 +32,10 @@
 
 .column-layout{
     grid-area:column;
+    justify-content: center;
+}
+
+.column-layout > div {
     background: var(--primary-table-background);
     box-shadow: var(--primary-box-shadow);
     padding: var(--sidebar-padding);
