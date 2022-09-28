@@ -1,12 +1,3 @@
-
-#incorrectStockListContainer {
-    max-width: 1000px;
-    margin: 20px auto;
-    padding: 20px 0;
-    background-color: var(--primary-table-background);
-    box-shadow: var(--primary-box-shadow);
-}
-
 .stockLists{
     display:grid;
     max-width: 910px;

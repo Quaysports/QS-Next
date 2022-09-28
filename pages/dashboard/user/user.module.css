@@ -1,17 +1,5 @@
-/*-----------------------------------User tab default styling---------------------------------------*/
-
-
 
 /*-----------------------------------User tab grid styling---------------------------------------*/
-.user-table{
-    width:930px;
-    margin: 20px auto;
-    padding: 10px;
-    background-color: var(--primary-table-background);
-    box-shadow: var(--primary-box-shadow);
-    border-radius: 5px;
-}
-
 .user-table-row{
     display: grid;
     grid-column-gap: 10px;
