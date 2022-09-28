@@ -9,7 +9,7 @@ export default function QuickLinks({links}){
 
     return(
         <>
-            <QuickLinksSidebar idHandler={idHandler} />
+            <QuickLinksSidebar id={id} idHandler={idHandler} />
             <QuickLinksTable id={id}/>
         </>
     )

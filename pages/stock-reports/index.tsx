@@ -39,7 +39,7 @@ export default function IncorrectStockLandingPage({brands}) {
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async()=>{
     const data = JSON.parse(JSON.stringify(await getIncorrectStock()))
-    const brands = await getBrands()
+    const brands = await getBrands({IDBFILTER:"domestic"})
 
     let incorrectStock = {}
     let zeroStock = {}

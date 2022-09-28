@@ -5,7 +5,7 @@ export default function ColumnLayout({children, scroll = false, maxWidth = undef
     const styleOverrides = {overflowY:null, margin:null, maxHeight:null, maxWidth:null}
 
     if(scroll){
-        styleOverrides.overflowY = "scroll"
+        styleOverrides.overflowY = "auto"
         styleOverrides.maxHeight = "calc(100vh - 52px)"
     }
     if(maxWidth){

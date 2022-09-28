@@ -1,12 +1,12 @@
 import React, {Fragment, useState} from "react"
 
 interface SearchBarProps {
-    itemIndex: (x: any[]) => void,
+    arrHandler: (x: any[]) => void,
     searchableArray: any[],
     EAN:boolean
 }
 
-export default function SearchBar({itemIndex, searchableArray, EAN}:SearchBarProps) {
+export default function SearchBar({arrHandler, searchableArray, EAN}:SearchBarProps) {
 
     const [searchType, setSearchType] = useState<string>("SKU")
 
@@ -21,7 +21,7 @@ export default function SearchBar({itemIndex, searchableArray, EAN}:SearchBarPro
             return (
                 <Fragment key={1}>
                     <label htmlFor={"ean-radio"}>EAN</label>
-                    <input id={"ean-radio"} name={"search-radio"} onChange={(e) => {
+                    <input type="radio" id={"ean-radio"} name={"search-radio"} onChange={(e) => {
                         searchTypeHandler(e.target.checked, "EAN")
                     }}/>
                 </Fragment>
@@ -61,7 +61,7 @@ export default function SearchBar({itemIndex, searchableArray, EAN}:SearchBarPro
                 }
             }
         }
-        itemIndex([...startsWith, ...contains])
+        arrHandler([...startsWith, ...contains])
     }
 
     return (

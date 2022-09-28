@@ -32,32 +32,26 @@
 }
 .quick-link-sidebar-button{
     display:grid;
+    padding:0;
     grid-template-columns: auto 1fr;
-    text-align: center;
-    background:var(--primary-table-background);
-    box-shadow: var(--primary-box-shadow);
-    border-radius:5px;
-    margin:var(--sidebar-margin)
 }
 .quick-link-add-button{
-    padding:5px;
     text-align: center;
     background:var(--primary-table-background);
     box-shadow: var(--primary-box-shadow);
     border-radius:5px;
     margin:var(--sidebar-margin)
 }
+
 .sidebar-button-title, .sidebar-button-edit{
-    padding:5px;
-    align-self: center;
-    height: 100%;
+    padding:2px 5px;
+    line-height:18px;
 }
-.sidebar-button-title{
-    border-radius:0 5px 5px 0
+
+.quick-link-sidebar-add-button{
+    text-align: center;
 }
-.sidebar-button-edit{
-    border-radius:5px 0 0 5px
-}
+
 .sidebar-button-title:hover,
 .sidebar-button-edit:hover,
 .quick-link-add-button:hover,

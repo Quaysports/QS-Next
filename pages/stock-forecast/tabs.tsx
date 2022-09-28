@@ -28,7 +28,7 @@ export default function StockForecastMenuTabs({searchData, updateItemsHandler}){
             <span><Link href={{pathname:router.pathname, query:{...router.query, list:listToggle === 'true' ? 'false': 'true'}}}>List</Link></span>
             <span><Link href="/shipments">Shipments</Link></span>
             <span>Supplier Select</span>
-            <SearchBar itemIndex={x => updateItemsHandler(x)} EAN={false} searchableArray={searchData}/>
+            <SearchBar arrHandler={x => updateItemsHandler(x)} EAN={false} searchableArray={searchData}/>
         </>
     )
 }

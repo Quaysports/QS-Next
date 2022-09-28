@@ -125,10 +125,10 @@ export default function StockList() {
 
     function buildSearchBar() {
         if (radioButtons.allItems) {
-            return <SearchBar itemIndex={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
+            return <SearchBar arrHandler={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
         }
         if (radioButtons.lowStock) {
-            return <SearchBar itemIndex={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
+            return <SearchBar arrHandler={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
         }
         return null
     }
@@ -170,4 +170,3 @@ export default function StockList() {
     );
 
 }
-

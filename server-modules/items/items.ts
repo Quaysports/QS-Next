@@ -177,8 +177,8 @@ export const getBrandLabelImages = async () => {
     }
 }
 
-export const getBrands = async () => {
-    let result = await mongoI.findDistinct("Items", "IDBEP.BRAND", {})
+export const getBrands = async (filter = {}) => {
+    let result = await mongoI.findDistinct("Items", "IDBEP.BRAND", filter)
     console.log(result)
      return result
 }
