@@ -3,6 +3,7 @@ import styles from "../shop-orders.module.css"
 import {useSelector} from "react-redux";
 import {selectSideBarContent} from "../../../store/shop-orders-slice";
 import SidebarLayout from "../../../components/layouts/sidebar-layout";
+import SidebarButton from "../../../components/layouts/SidebarButton";
 
 interface SideBarProps {
     supplierFilter : (x:string) => void
@@ -16,11 +17,10 @@ export default function SideBar(props:SideBarProps) {
         let i = 0
         for(const key of Object.keys(sideBarContent.content)){
             elementArray.push(
-                <div className={`${styles["sidebar-rows"]} ${"button"}`} key={i} onClick={() =>  props.supplierFilter(key)
+                <SidebarButton className={`${styles["sidebar-rows"]} ${"button"}`} key={i} onClick={() =>  props.supplierFilter(key)
                 }>
-                    <span>{key}</span>
-                    <span>({sideBarContent.content[key].toString()})</span>
-                </div>
+                    {key}({sideBarContent.content[key].toString()})
+                </SidebarButton>
             )
             i++
         }

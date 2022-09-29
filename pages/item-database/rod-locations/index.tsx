@@ -1,5 +1,8 @@
 import {useEffect, useState} from "react";
 import styles from "../item-database.module.css"
+import SidebarLayout from "../../../components/layouts/sidebar-layout";
+import SidebarButton from "../../../components/layouts/SidebarButton";
+import ColumnLayout from "../../../components/layouts/column-layout";
 
 interface rodLocationObject {
     BRANDLABEL:{loc:string},
@@ -36,34 +39,34 @@ export default function RodLocationsLandingPage(){
     function buildFilter(){
         let tempArray = []
         rodLocations.forEach((item, key) => {
-            tempArray.push(<button onClick={() => setBrandFilter(key)}>{key} ({item.length})</button>)
+            tempArray.push(<SidebarButton onClick={() => setBrandFilter(key)}>{key} ({item.length})</SidebarButton>)
         })
-        return <span className={styles["side-bar-cell"]}>{tempArray}</span>
+        return <div>{tempArray}</div>
     }
 
     function buildTable() {
         let tempArray = [<div className={styles["rod-location-title"]}><span/><span>SKU</span><span>Title</span><span className={"center-align"}>Location</span></div>]
         rodLocations.get(brandFilter).map((item) => {
-            tempArray.push(<div className={styles["rod-location-grid"]}>
+            tempArray.push(<div className={styles["rod-location-grid-cell"]}>
                 <span/>
                 <span>{item.SKU}</span>
                 <span>{item.TITLE}</span>
                 <span className={"center-align"}>{item.BRANDLABEL.loc}</span>
             </div>)
         })
-        return <>{tempArray}</>
+        return <div className={styles["rod-location-grid"]}>{tempArray}</div>
     }
 
 
     return(
         <>
-        <div className={styles["side-bar"]}>
+        <SidebarLayout>
             {rodLocations ? "Suppliers" : null}
             {rodLocations ? buildFilter() : null}
-        </div>
-        <div className={styles["table"]}>
+        </SidebarLayout>
+        <ColumnLayout>
             {brandFilter ? buildTable() : null}
-        </div>
+        </ColumnLayout>
         </>
     )
 }

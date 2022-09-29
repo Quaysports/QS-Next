@@ -1,51 +1,38 @@
 import styles from "../item-database.module.css";
-import DatabaseSearchBar from "../../../components/database-search-bar/DatabaseSearch";
+import DatabaseSearchBar, {searchResult} from "../../../components/database-search-bar/DatabaseSearch";
+import SideBar from "./sidebar";
+import ItemDetails from "./item-details";
+import {useDispatch, useSelector} from "react-redux";
+import {selectItem, setItem} from "../../../store/item-database/item-database-slice";
 
 export default function ItemDatabaseLandingPage() {
 
-    const item = "svc"
+    const dispatch = useDispatch()
+    const item = useSelector(selectItem)
 
-    function searchOptions(options) {
-
-    }
-
-    function buildSideMenu() {
-        if (item) {
-            return [
-                    <div className={styles["side-bar"]}>
-                        <span className={styles["side-bar-cell"]}>
-                            <div>
-                                <button>Barcode</button>
-                            </div>
-                            <div>
-                                <button>Tag</button>
-                            </div>
-                            <div>
-                                <button>Shelf Tag</button>
-                            </div>
-                            <div style={{margin: "20px 0"}}>
-                                <button style={{height: "35px"}}>Upload to Linnworks</button>
-                            </div>
-                            <div>
-                                <button>Jarilo Template</button>
-                            </div>
-                            <div>
-                                <button>Import Details</button>
-                            </div>
-                            <div>
-                                <button>Branded Labels</button>
-                            </div>
-                        </span>
-                    </div>
-            ]
+    function searchOptions(options:searchResult) {
+        const opts = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+            },
+            body:JSON.stringify({SKU: options.SKU})
         }
+        fetch("/api/item-database/get-item-details", opts)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                dispatch(setItem(res))
+
+            })
     }
 
     return (
         <>
-            <div className={styles["search-bar-container"]}><DatabaseSearchBar handler={x => searchOptions(x)}/></div>
-            {item ? buildSideMenu() : null}
-            {item ? <div className={styles["table"]}></div> : null}
+            <div className={styles["search-bar-container"]}><DatabaseSearchBar handler={(x) => searchOptions(x)}/></div>
+            {item ? <SideBar/> : null}
+            {item ? <ItemDetails/> : null}
         </>
     )
 }

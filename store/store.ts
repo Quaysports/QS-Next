@@ -6,6 +6,7 @@ import {shopOrdersSlice} from "./shop-orders-slice";
 import {userSlice} from "./dashboard/user-slice";
 import {stockForecastSlice} from "./stock-forecast-slice";
 import {quickLinksSlice} from "./shop-tills/quicklinks-slice";
+import {itemDatabaseSlice} from "./item-database/item-database-slice";
 
 const myStore = () =>
     configureStore({
@@ -16,6 +17,7 @@ const myStore = () =>
             [userSlice.name]:userSlice.reducer,
             [stockForecastSlice.name]: stockForecastSlice.reducer,
             [quickLinksSlice.name]: quickLinksSlice.reducer,
+            [itemDatabaseSlice.name]: itemDatabaseSlice.reducer
         },
         devTools: true,
     });

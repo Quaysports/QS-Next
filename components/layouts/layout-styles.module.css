@@ -49,6 +49,7 @@
     transition-duration: 0.1s;
     margin:5px;
     padding:3px;
+    font-size: 0.9em;
 }
 .sidebar-button:hover{
     color: var(--primary-active-text);

@@ -216,7 +216,6 @@ export const getIncorrectStock = async () => {
 }
 
 export const deadStockReport = async () => {
-    console.log("call!")
     let tenMonths = new Date()
     tenMonths.setMonth(tenMonths.getMonth() - 10)
 
