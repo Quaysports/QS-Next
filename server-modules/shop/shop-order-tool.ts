@@ -67,7 +67,11 @@ export const adjustStock =  async (arr:{SKU:string,QTY:string}[], id:string) => 
 }
 
 export const getSuppliers = async () => {
-    return await linn.getLinnQuery<{SupplierName:string}>("Select SupplierName FROM Supplier WHERE bLogicalDelete = 'false'")
+    return await mongoI.findDistinct("Items", "SUPPLIER", {})
+}
+
+export const getBrandsForSupplier = async (supplier) => {
+    return await mongoI.findDistinct("Items", "IDEBP.BRAND", {SUPPLIER:supplier})
 }
 
 export const getSuppliersAndLowStock = async () => {

@@ -6,98 +6,17 @@ export interface itemDatabaseWrapper {
 }
 
 export interface itemDatabaseState {
-    item: itemObject
-}
-
-export interface itemObject {
-    AMZPRICEINCVAT: string,
-    AMZPRIME: boolean,
-    BRAND: string,
-    BRANDLABEL: {
-        image: string,
-        path: string,
-        brand: string,
-        loc: string,
-        title1: string,
-        title2: string
-    }
-    CD: { [key: string]: [] },
-    CHECK: {
-        DONE: {
-            AMAZON: boolean,
-            EBAY: boolean,
-            QS: boolean
-        },
-        READY: {
-            AMAZON: boolean,
-            EBAY: boolean,
-            QS: boolean
-        },
-        NA: {
-            AMAZON: boolean,
-            EBAY: boolean,
-            QS: boolean
-        },
-    }
-    COMPDATA: [],
-    CP: { AMAZON: {}, EBAY: {}, MAGENTO: {} },
-    DESCRIPTION: string
-    EAN: string,
-    EBAYPRICEINCVAT: string,
-    EXTENDEDPROPERTY: {}[],
-    HIDE: boolean
-    IDBEP: {
-        AMZLATENCY: number
-        BRAND: string
-        COMISO2: string
-        COMISO3: string
-        TARIFFCODE: string
-    },
-    IDBFILTER: string,
-    IMAGES: { [key: string]: { filename: string, id: string } }
-    ISCOMPOSITE: boolean,
-    INVCHECK: {}
-    INVCHECKDATE: string
-    LASTUPDATE: string
-    LINKEDSKUS: string[]
-    LINNID: string,
-    LISTINGVARIATION: boolean,
-    MARGINNOTE: string
-    MCOVERRIDES: { EBAY: boolean, AMAZON: boolean, MAGENTO: boolean }
-    MD: {},
-    MINSTOCK: number
-    MONTHSTOCKHIST: { [key: string]: { [key: string]: string } }
-    ONORDER: []
-    PACKAGING: { ITEMS: [] }
-    PACKGROUP: string,
-    POSTID: string
-    POSTMODID: number,
-    PURCHASEPRICE: number,
-    QSPRICEINCVAT: string,
-    RETAILPRICE: number,
-    SHIPAMAZONEXP: string
-    SHIPCOURIEREXP: string
-    SHIPCOURIERSTD: string
-    SHIPEBAYSTD: string
-    SHIPFORMAT: string
-    SHOP: { PRICE: string, STATUS: number },
-    SHOPPRICEINCVAT: string,
-    SKU: string,
-    STOCKINFO: {
-        YELLAND: number,
-        WAREHOUSE: number
-    }
-    STOCKTOTAL: number
-    STOCKVAL: number
-    SUPPLIER: string,
-    TITLE: string,
-    TITLEWEBSITE: string
-    WEIGHT: number,
-    _id: string
+    item: sbt.Item
+    suppliers: string[]
+    brands: string[]
+    currentSupplier: string
 }
 
 const initialState: itemDatabaseState = {
-    item: null
+    item: null,
+    suppliers: null,
+    brands: [],
+    currentSupplier: null
 }
 
 export const itemDatabaseSlice = createSlice({
@@ -114,13 +33,31 @@ export const itemDatabaseSlice = createSlice({
         reducers: {
             setItem: (state, action) => {
                 state.item = action.payload
+            },
+            setSuppliers: (state, action) => {
+                state.suppliers = action.payload
+            },
+            setBrands: (state, action) => {
+                state.brands = action.payload
+            },
+            setCurrentSupplier: (state, action) => {
+                console.log(action.payload)
+                state.currentSupplier = action.payload
             }
         },
     })
 ;
 
-export const {setItem} = itemDatabaseSlice.actions
+export const {
+    setItem,
+    setSuppliers,
+    setBrands,
+    setCurrentSupplier
+} = itemDatabaseSlice.actions
 
 export const selectItem = (state: itemDatabaseWrapper) => state.itemDatabase.item
+export const selectSuppliers = (state: itemDatabaseWrapper) => state.itemDatabase.suppliers
+export const selectBrands = (state: itemDatabaseWrapper) => state.itemDatabase.brands
+export const selectCurrentSupplier = (state: itemDatabaseWrapper) => state.itemDatabase.currentSupplier
 
 export default itemDatabaseSlice.reducer;

@@ -3,12 +3,22 @@ import DatabaseSearchBar, {searchResult} from "../../../components/database-sear
 import SideBar from "./sidebar";
 import ItemDetails from "./item-details";
 import {useDispatch, useSelector} from "react-redux";
-import {selectItem, setItem} from "../../../store/item-database/item-database-slice";
+import {selectItem, setItem, setSuppliers} from "../../../store/item-database/item-database-slice";
+import {useEffect} from "react";
 
 export default function ItemDatabaseLandingPage() {
 
     const dispatch = useDispatch()
     const item = useSelector(selectItem)
+
+    useEffect(() => {
+        fetch("/api/item-database/get-suppliers")
+            .then(res => res.json())
+            .then(res => {
+                dispatch(setSuppliers(res))
+            })
+
+    }, [])
 
     function searchOptions(options:searchResult) {
         const opts = {
@@ -17,9 +27,9 @@ export default function ItemDatabaseLandingPage() {
                 'Content-Type': 'application/json',
                 'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
             },
-            body:JSON.stringify({SKU: options.SKU})
+            body:JSON.stringify({filter: {SKU:options.SKU}})
         }
-        fetch("/api/item-database/get-item-details", opts)
+        fetch("/api/items/get-item", opts)
             .then(res => res.json())
             .then(res => {
                 console.log(res)

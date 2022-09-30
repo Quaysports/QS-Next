@@ -32,21 +32,49 @@
 .upload-button{
     margin: 20px 5px;
 }
-.details-sections{
-    box-shadow: var(--primary-box-shadow);
-    height: 100px;
-    margin: 10px;
-    border-radius: var(--primary-border-radius);
-    padding: 10px;
-}
+
 .sidebar-button-container{
     position: sticky;
     top:10px;
 }
 /*-------------------------------------------Item Details-----------------------------------------*/
+
+.details-sections{
+    box-shadow: var(--primary-box-shadow);
+    background-color: var(--primary-table-background);
+    border-radius: var(--primary-border-radius);
+    margin: 10px;
+    padding: 10px;
+}
 .item-details-status{
     display:grid;
-    grid-template-columns: 33% 33% 1fr;
+    grid-template-columns: 35% 15% 15% 35%;
+}
+.status-titles{
+    display:grid;
+    grid-template-rows: repeat(5, 26px);
+    margin:0 10px;
+    text-align: right;
+}
+.status-inputs{
+    display:grid;
+    grid-template-rows: repeat(5, 26px);
+    justify-content: left;
+}
+.item-details-essentials{
+    display:grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+.essentials-titles{
+    display:grid;
+    grid-template-rows: repeat(8, 26px);
+    margin:0 10px;
+    text-align: right;
+}
+.essentials-inputs{
+    display:grid;
+    grid-template-rows: repeat(8, 26px);
+    justify-content: left;
 }
 
 

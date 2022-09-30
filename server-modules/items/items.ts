@@ -18,7 +18,7 @@ export const dbUpdateImage = async (item: { _id?: string; SKU: string; IMAGES: {
     }
 }
 
-export const getItem = async (query:object, projection:object) => {
+export const getItem = async (query:object, projection:object = {}) => {
     return await mongoI.findOne<sbt.Item>("Items", query, projection)
 }
 
