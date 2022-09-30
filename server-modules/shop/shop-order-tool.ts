@@ -71,7 +71,7 @@ export const getSuppliers = async () => {
 }
 
 export const getBrandsForSupplier = async (supplier) => {
-    return await mongoI.findDistinct("Items", "IDEBP.BRAND", {SUPPLIER:supplier})
+    return await mongoI.findDistinct("Items", "IDBEP.BRAND", {SUPPLIER:supplier})
 }
 
 export const getSuppliersAndLowStock = async () => {

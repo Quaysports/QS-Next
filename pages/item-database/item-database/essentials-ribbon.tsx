@@ -19,9 +19,18 @@ export default function EssentialsRibbon(){
     const dispatch = useDispatch()
 
     useEffect(() => {
-        fetch("/api/item-database/get-supplier-brands")
+        const opts = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+            },
+            body:JSON.stringify(currentSupplier)
+    }
+        fetch("/api/item-database/get-supplier-brands", opts)
             .then(res => res.json())
             .then(res => {
+                console.log(res)
                 dispatch(setBrands(res))
             })
     }, [currentSupplier])
@@ -36,7 +45,7 @@ export default function EssentialsRibbon(){
 
     function numberOptions(){
         let numberArray = [<option/>]
-        for(let i = 0; i < 99; i++){
+        for(let i = 0; i < 100; i++){
             numberArray.push(<option>{i}</option>)
         }
         return numberArray
@@ -46,7 +55,7 @@ export default function EssentialsRibbon(){
         let supplierArray = [<option/>]
         for(let i = 0; i < suppliers?.length; i++){
             supplierArray.push(
-                <option onClick={() => dispatch(setCurrentSupplier(suppliers[i]))}>{suppliers[i]}</option>
+                <option>{suppliers[i]}</option>
             )
         }
         return supplierArray
@@ -68,7 +77,7 @@ export default function EssentialsRibbon(){
 
     return(
         <div className={styles["item-details-essentials"]}>
-            <span className={styles["essentials-titles"]}>
+            <div className={styles["essentials-titles-1"]}>
                 <div>Brand:</div>
                 <div>SKU:</div>
                 <div>EAN:</div>
@@ -77,31 +86,31 @@ export default function EssentialsRibbon(){
                 <div>Location:</div>
                 <div>Website Title:</div>
                 <div>Linnworks Title:</div>
-            </span>
-            <span className={styles["essentials-inputs"]}>
+            </div>
+            <div className={styles["essentials-inputs-1"]}>
                 <div><select defaultValue={item?.IDBEP?.BRAND ? item.IDBEP.BRAND: null}>{brandOptions()}</select></div>
                 <div>{item?.SKU}</div>
                 <div>{item?.EAN}</div>
-                <div><select value={item?.SUPPLIER ? item.SUPPLIER: null}>{supplierOptions()}</select></div>
+                <div><select defaultValue={item?.SUPPLIER ? item.SUPPLIER: null} onChange={(e) => dispatch(setCurrentSupplier(e.target.value))}>{supplierOptions()}</select></div>
                 <div>{item?.STOCKTOTAL}</div>
                 <div><select>{letterOptions()}</select><select>{numberOptions()}</select></div>
-                <div><input/></div>
-                <div><input/></div>
-            </span>
-            <span className={styles["essentials-titles"]}>
+                <div><input style={{width:"100%"}} defaultValue={item?.TITLEWEBSITE ? item.TITLEWEBSITE : null}/></div>
+                <div><input style={{width:"100%"}} defaultValue={item?.TITLE ? item.TITLE : null}/></div>
+            </div>
+            <div className={styles["essentials-titles-2"]}>
                 <div>Channel Prices</div>
                 <div>eBay:</div>
                 <div>Amazon:</div>
                 <div>Quay Sports:</div>
                 <div>Shop:</div>
-            </span>
-            <span className={styles["essentials-inputs"]}>
+            </div>
+            <div className={styles["essentials-inputs-2"]}>
                 <div/>
-                <div>{item?.EBAYPRICEINCVAT}</div>
-                <div>{item?.AMZPRICEINCVAT}</div>
-                <div>{item?.QSPRICEINCVAT}</div>
-                <div>{item?.SHOPPRICEINCVAT}</div>
-            </span>
+                <div>£{item?.EBAYPRICEINCVAT}</div>
+                <div>£{item?.AMZPRICEINCVAT}</div>
+                <div>£{item?.QSPRICEINCVAT}</div>
+                <div>£{item?.SHOPPRICEINCVAT}</div>
+            </div>
         </div>
     )
 }
