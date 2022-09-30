@@ -2,8 +2,6 @@ import styles from './layout-styles.module.css'
 
 export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined}){
 
-    console.log(background)
-
     const styleOverrides = {overflowY:null, margin:null, maxHeight:null, maxWidth:null}
 
     if(scroll){
