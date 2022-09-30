@@ -66,7 +66,6 @@ export default function EssentialsRibbon(){
         }
     }
 
-    console.log(item.SUPPLIER)
     return(
         <div className={styles["item-details-essentials"]}>
             <span className={styles["essentials-titles"]}>
@@ -81,10 +80,10 @@ export default function EssentialsRibbon(){
             </span>
             <span className={styles["essentials-inputs"]}>
                 <div><select defaultValue={item?.IDBEP?.BRAND ? item.IDBEP.BRAND: null}>{brandOptions()}</select></div>
-                <div>{item.SKU}</div>
-                <div>{item.EAN}</div>
+                <div>{item?.SKU}</div>
+                <div>{item?.EAN}</div>
                 <div><select value={item?.SUPPLIER ? item.SUPPLIER: null}>{supplierOptions()}</select></div>
-                <div>{item.STOCKTOTAL}</div>
+                <div>{item?.STOCKTOTAL}</div>
                 <div><select>{letterOptions()}</select><select>{numberOptions()}</select></div>
                 <div><input/></div>
                 <div><input/></div>
