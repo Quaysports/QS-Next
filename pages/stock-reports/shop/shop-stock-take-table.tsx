@@ -4,6 +4,7 @@ import ShopStockTakeRow from "./shop-stock-take-row";
 import SearchBar from "../../../components/search-bar";
 import {useEffect, useState} from "react";
 import styles from './shop-stock-take.module.css'
+import CSVButton from "../../../components/csv-button";
 
 export default function ShopStockTakeTable(){
     const brandItems = useSelector(selectBrandItems)
@@ -18,16 +19,20 @@ export default function ShopStockTakeTable(){
     }
 
     function buildList(){
+
+        const csvObject = []
+
         let elements = [
-            <div className={styles["top-bar"]}>
+            <div key={"top-bar"} className={styles["top-bar"]}>
                 <SearchBar arrHandler={handler} searchableArray={brandItems} EAN={true}/>
-                <div><button>CSV</button></div>
+                <div><CSVButton objectArray={csvObject}/></div>
                 <div><button>Commit</button></div>
             </div>,
-            <ShopStockTakeRow />
+            <ShopStockTakeRow key={"stock-take"}/>
         ]
         if(!activeItems) return null
-        for(const item of activeItems) elements.push(<ShopStockTakeRow item={item}/>)
+        for(const item of activeItems) {csvObject.push({SKU:item.SKU, TITLE:item.TITLE, Stock:item.STOCKTOTAL, Actual:""})}
+        for(const item of activeItems) elements.push(<ShopStockTakeRow key={item.SKU} item={item}/>)
         return elements
     }
 

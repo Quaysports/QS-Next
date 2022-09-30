@@ -3,8 +3,8 @@ import {Fragment} from "react";
 import styles from "../shop-orders.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import {selectLoadedOrder, setLoadedOrder} from "../../../store/shop-orders-slice";
-import exportToCSV from "./download-csv";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import CSVButton from "../../../components/csv-button";
 
 interface OrderInformationProps{
     supplierFilter: () => void;
@@ -51,6 +51,10 @@ export default function OrderInformation(props: OrderInformationProps) {
 
     if (loadedOrder) {
         let tempArray: JSX.Element[] = []
+        let csvObject = []
+        if(loadedOrder && loadedOrder.order){
+            for(const item of loadedOrder.order) csvObject.push({SKU:item.SKU, Title:item.TITLE, Quantity:item.qty})
+        }
         tempArray.push(
             <div key={1} className={styles["shop-orders-table-containers"]}>
                 <div className={styles["shop-order-information"]} key={loadedOrder.date}>
@@ -58,7 +62,7 @@ export default function OrderInformation(props: OrderInformationProps) {
                     <span>Cost: £{loadedOrder.price ? loadedOrder.price : 0}</span>
                     <span className={styles["primary-buttons"]}>
                     <button onClick={() => deleteOrder(loadedOrder)}>Delete Order</button>
-                    <button onClick={() => exportToCSV(loadedOrder)}>Download CSV</button>
+                    <CSVButton objectArray={csvObject} fileName={`${loadedOrder.supplier}-${loadedOrder.id}`}/>
                 </span>
                 </div>
             </div>
