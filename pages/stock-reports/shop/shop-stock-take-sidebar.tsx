@@ -12,7 +12,9 @@ export default function ShopStockTakeSidebar({brands}){
         setActiveElement(brand)
         const opts = {method: 'POST', body: brand}
         fetch("/api/stock-report/get-brand-items",opts).then(async(res) => {
-            dispatch(setBrandItems(await res.json()))
+            let data = await res.json();
+            for(let item of data) item.stockTake ??= {checked:false, date:null, quantity:0}
+            dispatch(setBrandItems(data))
         })
     }
 

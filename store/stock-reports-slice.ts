@@ -10,17 +10,24 @@ export interface IncorrectStockItem {
     PRIORITY: boolean
 }
 
+export interface BrandItem {
+    _id: string
+    SKU: string;
+    EAN: string;
+    TITLE: string;
+    STOCKTOTAL: number;
+    stockTake?: {
+        checked?: boolean;
+        date?: Date | null;
+        quantity?: number;
+    }
+}
+
 export interface StockReportState {
     incorrectStockReport: { [key: string]: IncorrectStockItem[] };
     zeroStockReport: { [key: string]: IncorrectStockItem[] };
     brands: string[];
-    brandItems:{
-        _id:string;
-        SKU:string;
-        EAN:string;
-        TITLE:string;
-        STOCKTOTAL:number;
-    }[];
+    brandItems: BrandItem[];
     validData: boolean;
 }
 
@@ -32,7 +39,7 @@ const initialState: StockReportState = {
     incorrectStockReport: {},
     zeroStockReport: {},
     brands: [],
-    brandItems:[],
+    brandItems: [],
     validData: true,
 };
 
@@ -80,6 +87,13 @@ export const stockReportsSlice = createSlice({
 
             setBrandItems: (state, action) => {
                 state.brandItems = action.payload
+            },
+
+            setStockTakeInfo: (state, action) => {
+                state.brandItems[action.payload.index].stockTake ??= {checked:false, date:null, quantity:0}
+                state.brandItems[action.payload.index].stockTake[action.payload.id] = action.payload.data
+                let opts = {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(state.brandItems[action.payload.index])}
+                fetch("/api/items/update-item",opts).then(res=>console.log(res.statusText))
             }
         },
     })
@@ -87,7 +101,8 @@ export const stockReportsSlice = createSlice({
 
 export const {
     setIncorrectStockInitialState, setIncorrectStockChecked, setIncorrectStockSplice, setIncorrectStockQty,
-    setZeroStockInitialState, setZeroStockChecked, setZeroStockSplice, setZeroStockQty, setValidData, setBrandItems
+    setZeroStockInitialState, setZeroStockChecked, setZeroStockSplice, setZeroStockQty, setValidData, setBrandItems,
+    setStockTakeInfo
 } = stockReportsSlice.actions;
 
 

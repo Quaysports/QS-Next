@@ -34,7 +34,6 @@ export default function ItemDatabaseLandingPage() {
             .then(res => {
                 console.log(res)
                 dispatch(setItem(res))
-
             })
     }
 

@@ -1,25 +1,26 @@
 import styles from './layout-styles.module.css'
 
-export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined}){
+export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined}) {
 
-    const styleOverrides = {overflowY:null, margin:null, maxHeight:null, maxWidth:null}
+    const styleOverrides = {overflowY: null, margin: null, maxHeight: null, maxWidth: null}
 
-    if(scroll){
+    if (scroll) {
         styleOverrides.overflowY = "auto"
         styleOverrides.maxHeight = "calc(100vh - 52px)"
     }
-    if(maxWidth){
+    if (maxWidth) {
         styleOverrides.margin = "var(--sidebar-margin) auto"
         styleOverrides.maxWidth = maxWidth
     }
 
-    return(
+    return (
         <>
-        {children ? <div className={`${styles["column-layout"]} ${background === true ? styles["column-layout-background"]: ""}`}>
-            <div
-                style={styleOverrides}
-            >{children}</div>
-        </div> : null}
+            {children ?
+                <div
+                    className={`${styles["column-layout"]} ${background === true ? styles["column-layout-background"] : ""}`}
+                    style={styleOverrides}>
+                    {children}
+                </div> : null}
         </>
     )
 }

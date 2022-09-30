@@ -123,6 +123,7 @@ export default function OrderList(props: OrderListProps) {
     }
 
     let newProduct: orderObject = {
+        SOLDFLAG: 0,
         IDBEP: {BRAND: ""},
         MINSTOCK: 0,
         PURCHASEPRICE: 0,

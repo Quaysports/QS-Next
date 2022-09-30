@@ -8,9 +8,10 @@ import EssentialsRibbon from "./essentials-ribbon";
 export default function ItemDetails(){
 
     const item = useSelector(selectItem)
+
     return (
         <ColumnLayout background={false}>
-            <div className={"center-align"}>{item.TITLE} Details</div>
+            <div className={"center-align"}>{item?.TITLE ? item.TITLE: ""} Details</div>
             <div className={styles["details-sections"]}>
                 <div>Status</div>
                 <StatusRibbon/>

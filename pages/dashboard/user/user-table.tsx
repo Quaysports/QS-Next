@@ -1,11 +1,11 @@
 import style from "./user.module.css";
 import PermissionsPopup from "./permissions-popup";
 import {deleteUser, setUserData} from "../../../store/dashboard/user-slice";
-import {FocusEvent} from "react";
 import {useDispatch} from "react-redux";
 import {user} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import RegexInput from "../../../components/RegexInput";
 
 interface propTypes {
     userInfo: user[]
@@ -18,17 +18,7 @@ export default function UserTable({userInfo}: propTypes) {
         dispatch(setUserData({index: index, key: key, data: data}))
     }
 
-    function verifyPin(index: string, key: string, e: FocusEvent<HTMLInputElement>) {
-        if (e.target.validity.patternMismatch) {
-            e.target.style.borderColor = "var(--secondary-color)"
-            e.target.setCustomValidity("Pin must contain only numbers and be exactly four digits long.")
-            e.target.reportValidity()
-        } else {
-            e.target.style.borderColor = "";
-            updateUserData(index, key, e.target.value)
-        }
-    }
-
+    
     const userArray = [<div key="title" className={style["user-table-row"]}>
         <span></span>
         <span><button
@@ -55,7 +45,9 @@ export default function UserTable({userInfo}: propTypes) {
     if (!userInfo || userInfo.length === 0) return
 
     for (const [index, user] of Object.entries(userInfo)) {
-        console.log(user)
+
+        const pinHandler = (value:string) => updateUserData(index, "pin", value)
+        
         userArray.push(
             <div key={index} className={style["user-table-row"]}>
                 <span><button onClick={() => {
@@ -87,7 +79,9 @@ export default function UserTable({userInfo}: propTypes) {
 
                 <span><input type="number" defaultValue={user.holiday} onBlur={(e) => updateUserData(index, "holiday", e.target.value)}/></span>
                 <span><input type="text" defaultValue={user.password} onBlur={(e) => updateUserData(index, "password", e.target.value)}/></span>
-                <span><input defaultValue={user.pin} pattern="^[0-9]{4}$" onBlur={(e) => verifyPin(index, "pin", e)}/></span>
+                <span>
+                    <RegexInput type={"pin"} value={user.pin} errorMessage={"Pin must contain only numbers and be exactly four digits long."} handler={pinHandler}/>
+                </span>
                 <span><input type="color" defaultValue={user.colour} onBlur={(e) => updateUserData(index, "colour", e.target.value)}/></span>
             </div>
         )
