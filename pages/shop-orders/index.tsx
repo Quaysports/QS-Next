@@ -64,8 +64,6 @@ export async function getServerSideProps() {
 
     deadStock.sort( compare );
 
-    console.log(deadStock)
-
     let tempObject = {}
     for (const item of deadStock) {
         tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
