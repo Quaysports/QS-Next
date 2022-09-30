@@ -75,7 +75,7 @@ export default function DeadStock() {
     return (
         <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            {!supplier ? null :<ColumnLayout>
+            {!supplier ? null :<ColumnLayout background={false}>
                 {buildDeadStockList()}
             </ColumnLayout>}
         </>

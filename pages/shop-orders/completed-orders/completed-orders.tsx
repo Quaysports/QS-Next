@@ -119,7 +119,7 @@ export default function CompletedOrders() {
     return (
         <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            {!supplier ? null : <ColumnLayout>
+            {!supplier ? null : <ColumnLayout background={false}>
                 {completedOrdersList()}
                 {showOrderContents()}
             </ColumnLayout>}

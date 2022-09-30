@@ -14,9 +14,12 @@
 .title {
     background: inherit;
 }
-.search {
+.top-bar {
+    display: grid;
+    grid-template-columns: 600px 100px 100px;
     margin: 10px auto;
     width:800px;
+    text-align: center;
 }
 .center {
     text-align: center;

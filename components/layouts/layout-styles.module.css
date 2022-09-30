@@ -72,7 +72,7 @@
     justify-content: center;
 }
 
-.column-layout > div {
+.column-layout-background {
     background: var(--primary-table-background);
     box-shadow: var(--primary-box-shadow);
     padding: var(--sidebar-padding);

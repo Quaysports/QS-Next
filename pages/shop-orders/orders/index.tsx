@@ -67,7 +67,7 @@ export default function Orders() {
     return (
         <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            {!supplier ? null : <ColumnLayout>
+            {!supplier ? null : <ColumnLayout background={false}>
                 <OrderInformation supplierFilter={() => supplierHandler(null)}/>
                 <DisplayOnOrder/>
                 <DisplayArrived supplierFilter={() => supplierHandler(null)}/></ColumnLayout>}

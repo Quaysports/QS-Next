@@ -123,7 +123,7 @@ export default function NewOrder() {
     return (
         <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            {!supplier ? null : <ColumnLayout><OrderList supplier={supplier}/><StockList/></ColumnLayout>}
+            {!supplier ? null : <ColumnLayout background={false}><OrderList supplier={supplier}/><StockList/></ColumnLayout>}
         </>
     );
 }

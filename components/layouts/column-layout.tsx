@@ -1,6 +1,8 @@
 import styles from './layout-styles.module.css'
 
-export default function ColumnLayout({children, scroll = false, maxWidth = undefined}){
+export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined}){
+
+    console.log(background)
 
     const styleOverrides = {overflowY:null, margin:null, maxHeight:null, maxWidth:null}
 
@@ -15,7 +17,7 @@ export default function ColumnLayout({children, scroll = false, maxWidth = undef
 
     return(
         <>
-        {children ? <div className={styles["column-layout"]}>
+        {children ? <div className={`${styles["column-layout"]} ${background === true ? styles["column-layout-background"]: ""}`}>
             <div
                 style={styleOverrides}
             >{children}</div>

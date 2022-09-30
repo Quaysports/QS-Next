@@ -19,7 +19,11 @@ export default function ShopStockTakeTable(){
 
     function buildList(){
         let elements = [
-            <div className={styles.search}><SearchBar arrHandler={handler} searchableArray={brandItems} EAN={true}/></div>,
+            <div className={styles["top-bar"]}>
+                <SearchBar arrHandler={handler} searchableArray={brandItems} EAN={true}/>
+                <div><button>CSV</button></div>
+                <div><button>Commit</button></div>
+            </div>,
             <ShopStockTakeRow />
         ]
         if(!activeItems) return null
