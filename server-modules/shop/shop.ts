@@ -214,8 +214,21 @@ export const getIncorrectStock = async () => {
     ]
     return await mongoI.findAggregate<StockError>('Shop-Stock-Report', query);
 }
+/**
+ * Dead Stock Object
+ * @property {string} SUPPLIER
+ * @property {string} SKU
+ * @property {string} TITLE
+ * @property {number} SOLDFLAG
+ */
+export interface DeadStockReport {
+    SUPPLIER: string,
+    SKU: string,
+    TITLE: string,
+    SOLDFLAG: number
+}
 
-export const deadStockReport = async () => {
+export const deadStockReport = async ():Promise<DeadStockReport[]> => {
     let tenMonths = new Date()
     tenMonths.setMonth(tenMonths.getMonth() - 10)
 

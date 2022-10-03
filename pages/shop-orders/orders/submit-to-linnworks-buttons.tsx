@@ -8,6 +8,9 @@ interface SubmitToLinnworksButtonsProps {
     supplierFilter: () => void
 }
 
+/**
+ * Submit To Linnworks Buttons Component
+ */
 export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtonsProps) {
 
     const loadedOrder = useSelector(selectLoadedOrder)

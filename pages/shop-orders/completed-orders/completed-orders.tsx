@@ -10,13 +10,17 @@ import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
 import styles from '../shop-orders.module.css'
 import ColumnLayout from "../../../components/layouts/column-layout";
+import {shopOrder} from "../../../server-modules/shop/shop-order-tool"
 
+/**
+ * Completed Orders Tab
+ */
 export default function CompletedOrders() {
 
     const dispatch = useDispatch()
     const completedOrders = useSelector(selectCompletedOrders)
     const orderContents = useSelector(selectOrderContents)
-    const [supplier, setSupplier] = useState<string>(null)
+    const [supplier, setSupplier] = useState<string | null>(null)
 
     useEffect(() => {
         const today = new Date()
@@ -40,7 +44,7 @@ export default function CompletedOrders() {
             .then(res => res.json())
             .then(res => {
 
-                let tempObject = {}
+                let tempObject:{[key:string]:shopOrder[]} = {}
                 for (let i = 0; i < res.length; i++) {
                     tempObject[res[i].supplier] ?
                         tempObject[res[i].supplier].push(res[i]) :
@@ -48,11 +52,11 @@ export default function CompletedOrders() {
                 }
                 dispatch(setCompletedOrders(tempObject))
 
-                function transformCompletedOrdersForSideBar(completedOrders) {
+                function transformCompletedOrdersForSideBar(completedOrders:shopOrder[]) {
                     let sortedData = completedOrders.sort((a, b) => {
                         return a.supplier === b.supplier ? 0 : a.supplier > b.supplier ? 1 : -1
                     })
-                    let tempObject = {}
+                    let tempObject:{[key:string]:number} = {}
                     for (let i = 0; i < sortedData.length; i++) {
                         tempObject[sortedData[i].supplier] ? tempObject[sortedData[i].supplier]++ : tempObject[sortedData[i].supplier] = 1
                     }
@@ -84,7 +88,7 @@ export default function CompletedOrders() {
 
     function showOrderContents() {
         if (orderContents) {
-            let tempArray = []
+            let tempArray:JSX.Element[] = []
             orderContents.arrived.forEach((item, index) => {
                     tempArray.push(
                         <div key={index}
@@ -111,7 +115,7 @@ export default function CompletedOrders() {
         }
     }
 
-    function supplierHandler(supplier){
+    function supplierHandler(supplier:string){
         setSupplier(supplier)
         dispatch(setOrderContents(null))
     }

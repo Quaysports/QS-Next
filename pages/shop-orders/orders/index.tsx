@@ -12,12 +12,16 @@ import {
     selectOpenOrders
 } from "../../../store/shop-orders-slice";
 import ColumnLayout from "../../../components/layouts/column-layout";
+import {shopOrder} from "../../../server-modules/shop/shop-order-tool";
 
+/**
+ * Orders Tab
+ */
 export default function Orders() {
 
     const dispatch = useDispatch()
     const openOrders = useSelector(selectOpenOrders)
-    const [supplier, setSupplier] = useState<string>(null)
+    const [supplier, setSupplier] = useState<string | undefined>(undefined)
 
     useEffect(() => {
         if (!supplier) {
@@ -35,16 +39,16 @@ export default function Orders() {
                     transformOrdersDataToObject(res)
                 })
 
-            function transformOrdersDataForSideBar(openOrders) {
-                let tempObject = {}
+            function transformOrdersDataForSideBar(openOrders:shopOrder[]) {
+                let tempObject:{[key:string]: string} = {}
                 for (let i = 0; i < openOrders.length; i++) {
                     tempObject[(i + 1).toString() + " - " + openOrders[i].supplier] = openOrders[i].id
                 }
                 dispatch(setSideBarContent({content: tempObject, title: "Orders"}))
             }
 
-            function transformOrdersDataToObject(openOrders) {
-                let tempObject = {}
+            function transformOrdersDataToObject(openOrders:shopOrder[]) {
+                let tempObject:{[key:string]:shopOrder} = {}
                 let i = 0
                 for (const order of openOrders) {
                     tempObject[(i + 1).toString() + " - " + openOrders[i].supplier] = order
@@ -60,17 +64,17 @@ export default function Orders() {
 
     }, [supplier])
 
-    function supplierHandler(supplier) {
+    function supplierHandler(supplier:string | undefined) {
         setSupplier(supplier)
     }
 
     return (
         <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            {!supplier ? null : <ColumnLayout background={false}>
-                <OrderInformation supplierFilter={() => supplierHandler(null)}/>
+            {!supplier ? undefined : <ColumnLayout background={false}>
+                <OrderInformation supplierFilter={() => supplierHandler(undefined)}/>
                 <DisplayOnOrder/>
-                <DisplayArrived supplierFilter={() => supplierHandler(null)}/></ColumnLayout>}
+                <DisplayArrived supplierFilter={() => supplierHandler(undefined)}/></ColumnLayout>}
         </>
     );
 }

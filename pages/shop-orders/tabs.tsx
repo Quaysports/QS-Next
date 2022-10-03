@@ -3,6 +3,9 @@ import {selectEditOrder, setOrderInfoReset} from "../../store/shop-orders-slice"
 import {useDispatch, useSelector} from "react-redux";
 import {dispatchNotification} from "../../server-modules/dispatch-notification";
 
+/**
+ * Shop Orders Tabs
+ */
 export default function ShopOrdersTabs() {
 
     const router = useRouter()
@@ -13,12 +16,12 @@ export default function ShopOrdersTabs() {
         return router.query.tab === id ? "active-tab" : "";
     }
 
-    function checkHandler(route){
+    function checkHandler(route:string){
         dispatch(setOrderInfoReset({}));
         router.push(route)
     }
 
-    async function newOrderCheck(route){
+    async function newOrderCheck(route:string){
         if(editOrder){
             dispatchNotification({
                 type:"confirm",

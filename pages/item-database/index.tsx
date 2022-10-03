@@ -11,7 +11,7 @@ import {setItem, setSuppliers} from "../../store/item-database/item-database-sli
 import {getItem, getItems} from "../../server-modules/items/items";
 import {InferGetServerSidePropsType} from "next";
 
-export interface rodLocationObject {
+export type rodLocationObject = {
     BRANDLABEL:{loc:string},
     IDBEP:{BRAND:string},
     SKU:string,
@@ -52,18 +52,12 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     let query = {"BRANDLABEL.loc": {$exists: true, $ne: ""}}
     let projection = {SKU: 1, TITLE: 1, "IDBEP.BRAND": 1, "BRANDLABEL.loc": 1}
 
-    let rodLocations = await getItems({query}, {projection}) as rodLocationObject[]
-    let sortedData = rodLocations.sort((a, b) => {
+    let rodLocations = await getItems(query, projection) as rodLocationObject[]
+    let sortedData:rodLocationObject[] = rodLocations?.sort((a, b) => {
         if (!a.IDBEP.BRAND) a.IDBEP.BRAND = "Default"
         if (!b.IDBEP.BRAND) b.IDBEP.BRAND = "Default"
         return a.IDBEP.BRAND.localeCompare(b.IDBEP.BRAND)
     })
 
-    let tempMap:Map<string,rodLocationObject[]> = new Map()
-    sortedData?.map((item) => {
-        tempMap.has(item.IDBEP.BRAND) ?
-            tempMap.get(item.IDBEP.BRAND)!.push(item) : tempMap.set(item.IDBEP.BRAND, [item])
-    })
-
-    return {props: {rodLocations: tempMap}}
+    return {props: {rodLocations: sortedData}}
 })

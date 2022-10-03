@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Fragment, useEffect, useState} from "react";
-import SearchBar from "../../../components/search-bar/index";
+import SearchBar, {SearchItem} from "../../../components/search-bar/index";
 import Image from "next/image";
 import {
     orderObject,
@@ -19,6 +19,10 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import styles from '../shop-orders.module.css'
 
+
+/**
+ * Stock List Component
+ */
 export default function StockList() {
 
     const dispatch = useDispatch()
@@ -28,10 +32,10 @@ export default function StockList() {
     const lowStockArray = useSelector(selectLowStockArray)
     const renderedArray = useSelector(selectRenderedArray)
     const [rerender, setRerender] = useState<boolean>(false)
-    const [searchableArray, setSearchableArray] = useState([])
+    const [searchableArray, setSearchableArray] = useState<orderObject[]>([])
 
     useEffect(() => {
-        let tempArray = []
+        let tempArray:orderObject[] = []
         supplierItems.forEach((value) => {
             if (value.lowStock) tempArray.push(value)
         })
@@ -60,7 +64,7 @@ export default function StockList() {
         }
     }
 
-    function inputChangeHandler(value, key, index) {
+    function inputChangeHandler(value: string, key: string, index:number) {
         dispatch(setInputChange({key: key, index: index, value: value}))
     }
 
@@ -137,15 +141,15 @@ export default function StockList() {
 
     function buildSearchBar() {
         if (radioButtons.allItems) {
-            return <SearchBar arrHandler={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
+            return <SearchBar resultHandler={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
         }
         if (radioButtons.lowStock) {
-            return <SearchBar arrHandler={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
+            return <SearchBar resultHandler={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
         }
         return null
     }
 
-    function setNewRenderedArray(filteredArray) {
+    function setNewRenderedArray(filteredArray: SearchItem[]) {
         dispatch(setThreshold(50))
         dispatch(setRenderedArray(filteredArray))
     }

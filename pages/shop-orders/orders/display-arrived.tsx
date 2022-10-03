@@ -8,9 +8,16 @@ import {
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
 
+/**
+ * @property {supplierFilter} supplierFilter
+ */
 interface DisplayArrivedProps{
     supplierFilter: () => void
 }
+
+/**
+ * Display Arrived Component
+ */
 export default function DisplayArrived(props: DisplayArrivedProps) {
 
     const dispatch = useDispatch()

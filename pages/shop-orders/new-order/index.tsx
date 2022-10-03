@@ -4,23 +4,26 @@ import StockList from "./stock-list";
 import OrderList from "./order-list";
 import {
     selectEditOrder, selectNewOrderArray,
-    setEditOrder, setNewOrderArray,
     setSideBarContent, setSupplierItems,
     setTotalPrice, selectDeadStock, setOrderInfoReset
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import ColumnLayout from "../../../components/layouts/column-layout";
+import {SupplierItem, SupplierLowStock} from "../../../server-modules/shop/shop-order-tool";
 
+/**
+ * New Order Tab
+ */
 export default function NewOrder() {
 
     const dispatch = useDispatch()
     const editOrder = useSelector(selectEditOrder)
     const newOrderArray = useSelector(selectNewOrderArray)
     const deadStockList = useSelector(selectDeadStock)
-    const [supplier, setSupplier] = useState<string>(editOrder ? editOrder.supplier : null)
+    const [supplier, setSupplier] = useState<string | null>(editOrder ? editOrder.supplier : null)
 
-    const newOrderHandler = (freshOrder?) => {
+    const newOrderHandler = () => {
         if (supplier) {
             const opts = {
                 method: "POST",
@@ -33,7 +36,7 @@ export default function NewOrder() {
             fetch("/api/shop-orders/get-supplier-items", opts)
                 .then(res => res.json())
                 .then(res => {
-                    let itemsTempObject = {}
+                    let itemsTempObject: {[key:string]: SupplierItem[]} = {}
                     itemsTempObject[supplier] = []
                     for (let i = 0; i < res.length; i++) {
                         res[i].SUPPLIER = supplier
@@ -47,7 +50,7 @@ export default function NewOrder() {
                         res[i].submitted = false
                         if (res[i].STOCKTOTAL < res[i].MINSTOCK) res[i].lowStock = true;
                         let item = deadStockList[supplier].find((element) => element.SKU === res[i].SKU)
-                        if (item){
+                        if (item) {
                             res[i].deadStock = true
                             res[i].SOLDFLAG = item.SOLDFLAG
                         } else {
@@ -56,21 +59,17 @@ export default function NewOrder() {
                         }
                         itemsTempObject[supplier].push(res[i]);
                     }
-                    if (freshOrder) {
-                        dispatch(setNewOrderArray([]))
-                        dispatch(setTotalPrice(0))
-                        dispatch(setEditOrder(null))
-                    } else {
-                        let totalPrice = 0
-                        for (let i = 0; i < newOrderArray.length; i++) {
-                            totalPrice += (newOrderArray[i].PURCHASEPRICE * newOrderArray[i].tradePack * newOrderArray[i].qty)
-                            if (editOrder) {
-                                let index = itemsTempObject[supplier].findIndex(item => item.SKU === newOrderArray[i].SKU)
-                                itemsTempObject[supplier].splice(index, 1)
-                            }
+
+                    let totalPrice = 0
+                    for (let i = 0; i < newOrderArray.length; i++) {
+                        totalPrice += (newOrderArray[i].PURCHASEPRICE * newOrderArray[i].tradePack * newOrderArray[i].qty)
+                        if (editOrder) {
+                            let index = itemsTempObject[supplier].findIndex(item => item.SKU === newOrderArray[i].SKU)
+                            itemsTempObject[supplier].splice(index, 1)
                         }
-                        dispatch(setTotalPrice(totalPrice))
                     }
+                    dispatch(setTotalPrice(totalPrice))
+
                     dispatch(setSupplierItems(itemsTempObject[supplier]))
                 })
         }
@@ -90,13 +89,13 @@ export default function NewOrder() {
                 transformLowStockDataForSidebar(res)
             })
 
-        function transformLowStockDataForSidebar(data) {
+        function transformLowStockDataForSidebar(data:SupplierLowStock[]) {
             let sortedData = data.sort((a, b) => {
                 if (!a.SUPPLIER) a.SUPPLIER = "Default"
                 if (!b.SUPPLIER) b.SUPPLIER = "Default"
                 return a.SUPPLIER.localeCompare(b.SUPPLIER)
             })
-            let tempObject = {}
+            let tempObject:{[key:string]: number} = {}
             for (let i = 0; i < sortedData.length; i++) {
                 tempObject[sortedData[i].SUPPLIER] = sortedData[i].LOWSTOCKCOUNT
             }
@@ -107,13 +106,16 @@ export default function NewOrder() {
 
     }, [supplier])
 
-    function supplierHandler(supplier) {
-        if(newOrderArray.length > 0){
+    function supplierHandler(supplier:string) {
+        if (newOrderArray.length > 0) {
             dispatchNotification({
-                type:"confirm",
+                type: "confirm",
                 title: "Order not saved",
                 content: "This order has not been saved, changing the supplier will delete the current order, continue?",
-                fn:() => {dispatch(setOrderInfoReset({})); setSupplier(supplier)}
+                fn: () => {
+                    dispatch(setOrderInfoReset({}));
+                    setSupplier(supplier)
+                }
             })
         } else {
             setSupplier(supplier)
@@ -123,7 +125,8 @@ export default function NewOrder() {
     return (
         <>
             <SideBar supplierFilter={(x) => supplierHandler(x)}/>
-            {!supplier ? null : <ColumnLayout background={false}><OrderList supplier={supplier}/><StockList/></ColumnLayout>}
+            {!supplier ? null :
+                <ColumnLayout background={false}><OrderList supplier={supplier}/><StockList/></ColumnLayout>}
         </>
     );
 }

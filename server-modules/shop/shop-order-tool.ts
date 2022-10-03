@@ -1,7 +1,17 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import * as linn from "../linn-api/linn-api";
 
-interface shopOrder {
+/**
+ * @property {string} _id
+ * @property {orderItem[]} arrived
+ * @property {boolean} complete
+ * @property {number} date
+ * @property {string} id
+ * @property {number} price
+ * @property {orderItem[]} order
+ * @property {string} supplier
+ */
+export interface shopOrder {
     _id?: string
     arrived: orderItem[] | []
     complete: boolean
@@ -11,7 +21,20 @@ interface shopOrder {
     order: orderItem[] | []
     supplier: string
 }
-
+/**
+ * @property {{BRAND:string}} IDBEP
+ * @property {number} MINSTOCK
+ * @property {string} SKU
+ * @property {string} STOCKTOTAL
+ * @property {string} TITLE
+ * @property {string} _id
+ * @property {string} bookedIn
+ * @property {number} qty
+ * @property {number} tradePack
+ * @property {number} arrived
+ * @property {number} purchasePrice
+ * @property {boolean} deadStock
+ */
 interface orderItem {
     IDBEP: { BRAND: string }
     MINSTOCK: number
@@ -27,7 +50,6 @@ interface orderItem {
     deadStock: boolean
 }
 
-// Shop order tool
 export const getLowStock = async () => {
     return await mongoI.find<sbt.Item>("Items",
         {IDBFILTER: "domestic", MINSTOCK: {$gt: 0}, $expr: {$lt: ["$STOCKTOTAL", "$MINSTOCK"]}},
@@ -74,6 +96,17 @@ export const getBrandsForSupplier = async (supplier) => {
     return await mongoI.findDistinct("Items", "IDBEP.BRAND", {SUPPLIER:supplier})
 }
 
+
+/**
+ * @property {string} _id
+ * @property {string} SUPPLIER
+ * @property {number} LOWSTOCKCOUNT
+ */
+export interface SupplierLowStock {
+    _id:string,
+    SUPPLIER:string,
+    LOWSTOCKCOUNT:number
+}
 export const getSuppliersAndLowStock = async () => {
     const query = [
         {
@@ -103,8 +136,26 @@ export const getSuppliersAndLowStock = async () => {
             }
         }
     ]
-    return await mongoI.findAggregate<{ _id:string,SUPPLIER:string,LOWSTOCKCOUNT:number }>("Items", query)
+    return await mongoI.findAggregate<SupplierLowStock>("Items", query)
+}
+
+/**
+ * Supplier Item
+ * @property {string} SKU
+ * @property {string} TITLE
+ * @property {{BRAND: string}} IDBEP
+ * @property {number} MINSTOCK
+ * @property {number} STOCKTOTAL
+ * @property {number} PURCHASEPRICE
+ */
+export interface SupplierItem {
+    SKU: string,
+    TITLE: string,
+    IDBEP:{BRAND: string},
+    MINSTOCK: number,
+    STOCKTOTAL: number,
+    PURCHASEPRICE:number
 }
 export const getSupplierItems = async (supplier:string) => {
-    return await mongoI.find<sbt.Item>("Items", {SUPPLIER: supplier, IDBFILTER: "domestic"}, {SKU: 1, TITLE: 1, "IDBEP.BRAND": 1, MINSTOCK: 1, STOCKTOTAL: 1, PURCHASEPRICE:1},{SKU:1})
+    return await mongoI.find<SupplierItem>("Items", {SUPPLIER: supplier, IDBFILTER: "domestic"}, {SKU: 1, TITLE: 1, "IDBEP.BRAND": 1, MINSTOCK: 1, STOCKTOTAL: 1, PURCHASEPRICE:1},{SKU:1})
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useRouter} from "next/router";
-import {deadStockReport} from "../../server-modules/shop/shop";
+import {DeadStockReport, deadStockReport} from "../../server-modules/shop/shop";
 import {setDeadStock} from "../../store/shop-orders-slice";
 import Orders from "./orders";
 import CompletedOrders from "./completed-orders/completed-orders";
@@ -11,6 +11,7 @@ import ShopOrdersTabs from "./tabs";
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
+import {InferGetServerSidePropsType} from "next";
 
 
 export interface item {
@@ -29,7 +30,10 @@ export interface item {
     newProduct: boolean
 }
 
-export default function ShopOrdersLandingPage(props) {
+/**
+ * Shop Orders Landing Page
+ */
+export default function ShopOrdersLandingPage(props:InferGetServerSidePropsType<typeof getServerSideProps>) {
 
     const router = useRouter()
     const dispatch = useDispatch()
@@ -40,7 +44,7 @@ export default function ShopOrdersLandingPage(props) {
 
     return (
         <SidebarOneColumn>
-            <Menu tabs={<ShopOrdersTabs/>}/>
+            <Menu><ShopOrdersTabs/></Menu>
             {router.query.tab === undefined || router.query.tab === "orders" ? <Orders/> : null}
             {router.query.tab === "completed-orders" ? <CompletedOrders/> : null}
             {router.query.tab === "new-order" ? <NewOrder/> : null}
@@ -50,9 +54,9 @@ export default function ShopOrdersLandingPage(props) {
 }
 
 export async function getServerSideProps() {
-    const deadStock = JSON.parse(JSON.stringify(await deadStockReport()))
+    const deadStock = await deadStockReport()
 
-    function compare( a, b ) {
+    function compare( a:DeadStockReport, b:DeadStockReport ) {
         if ( a.SOLDFLAG < b.SOLDFLAG ){
             return 1;
         }
@@ -64,7 +68,7 @@ export async function getServerSideProps() {
 
     deadStock.sort( compare );
 
-    let tempObject = {}
+    let tempObject:{[key:string]: DeadStockReport[]} = {}
     for (const item of deadStock) {
         tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
     }

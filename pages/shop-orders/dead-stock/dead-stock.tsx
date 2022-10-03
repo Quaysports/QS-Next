@@ -5,22 +5,26 @@ import {useDispatch, useSelector} from "react-redux";
 import styles from '../shop-orders.module.css'
 import {
     selectDeadStock,
-    setSideBarContent,
+    setSideBarContent, ShopOrdersState,
 } from "../../../store/shop-orders-slice";
 import ColumnLayout from "../../../components/layouts/column-layout";
 import Image from "next/image";
+import {DeadStockReport} from "../../../server-modules/shop/shop";
 
+/**
+ * Dead Stock Tab
+ */
 export default function DeadStock() {
 
     const deadStockList = useSelector(selectDeadStock)
     const dispatch = useDispatch()
-    const [supplier, setSupplier] = useState<string>(null)
+    const [supplier, setSupplier] = useState<string | null>(null)
 
 
     useEffect(() => {
-        function transformDeadStockDataForSidebar(deadStockList) {
+        function transformDeadStockDataForSidebar(deadStockList:ShopOrdersState["deadStock"]) {
 
-                let tempObject = {}
+                let tempObject:{[key:string]:number} = {}
                 for (const key in deadStockList) {
                     tempObject[key] = deadStockList[key].length
                 }
@@ -29,7 +33,7 @@ export default function DeadStock() {
         transformDeadStockDataForSidebar(deadStockList)
     }, [deadStockList])
 
-    function imageCheck(item){
+    function imageCheck(item:DeadStockReport){
         switch (item.SOLDFLAG) {
             case 3:
                 return (<Image src="/dead-stock-icon-green.webp" width="22px" height="22px"
@@ -55,7 +59,7 @@ export default function DeadStock() {
                     <span/>
                 </div>
             )
-            deadStockList[supplier].forEach((value, key) => {
+            deadStockList[supplier!].forEach((value, key) => {
                     tempArray.push(<div key={key} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["dead-stock-list-grid"]}`}>
                         <span/>
                         <span>{value.SKU}</span>
@@ -68,7 +72,7 @@ export default function DeadStock() {
             )
     }
 
-    function supplierHandler(supplier){
+    function supplierHandler(supplier:string){
         setSupplier(supplier)
     }
 

@@ -3,6 +3,7 @@ import {Fragment, useEffect, useState} from "react";
 import styles from "../shop-orders.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import {
+    OpenOrdersObject,
     selectLoadedOrder,
     setArrivedHandler,
     setBookedInState,
@@ -11,6 +12,9 @@ import {
 import {Router, useRouter} from "next/router";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
+/**
+ * Display On Order Component
+ */
 export default function DisplayOnOrder() {
 
     const loadedOrder = useSelector(selectLoadedOrder)
@@ -18,34 +22,34 @@ export default function DisplayOnOrder() {
     const router = useRouter()
     const [saveOrder, setSaveOrder] = useState<boolean>(false)
 
-    function arrivedHandler(quantity, item, index) {
+    function arrivedHandler(quantity:string, item:OpenOrdersObject, index:number) {
         dispatch(setArrivedHandler({index: index, value: quantity}))
     }
 
-    function editOrder(order) {
+    function editOrder(order:OpenOrdersObject) {
         if(order.order.length > 0) {
             dispatch(setEditOrder(order))
             router.push("/shop-orders?tab=new-order")
         }
     }
 
-    function bookedInHandler(order, index) {
-        if (order.order[index].arrived <= 0) {
+    function bookedInHandler(order:OpenOrdersObject, index:number) {
+        if (order.order[index].arrived! <= 0) {
             dispatchNotification({type: "alert", title:"None Arrived", content:"Please increase the amount that has arrived"})
             return
         }
-        if ((order.order[index].qty - order.order[index].arrived) < 0) {
+        if ((order.order[index].qty - order.order[index].arrived!) < 0) {
             dispatchNotification({type: "alert", title:"Too Many Arrived", content:"More have arrived than were ordered, please increase the order amount or check the amount that have arrived"})
             return
         }
 
-        if ((order.order[index].qty - order.order[index].arrived) === 0) {
+        if ((order.order[index].qty - order.order[index].arrived!) === 0) {
             setSaveOrder(true)
             dispatch(setBookedInState({bookedIn: "false", index: index}))
             return
         }
 
-        if ((order.order[index].qty - order.order[index].arrived) > 0) {
+        if ((order.order[index].qty - order.order[index].arrived!) > 0) {
             let conf = window.confirm("Did only part of the order arrive?")
             if (conf === true) {
                 setSaveOrder(true)
@@ -69,7 +73,7 @@ export default function DisplayOnOrder() {
         }
     }, [loadedOrder])
 
-    function backgroundColorCheck(bookedIn: string) {
+    function backgroundColorCheck(bookedIn: string | undefined) {
         if (bookedIn === "partial") {
             return {backgroundColor: "orange"}
         } else {
