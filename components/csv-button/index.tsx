@@ -1,4 +1,16 @@
-export default function CSVButton({fileName = (new Date()).toString(), objectArray = []}){
+/**
+ * @property {string} fileName - Text used as filename
+ * @property {JSON[]} objectArray - Json object array
+ */
+interface Props {
+    fileName:string,
+    objectArray: { [key:string]:string }[]
+}
+
+/**
+ * Button component that takes an array of json objects, converts to csv and downloads.
+ */
+export default function CSVButton({fileName = (new Date()).toString(), objectArray = []}:Props){
 
     function createCSV(){
         let str = ""

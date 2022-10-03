@@ -1,17 +1,30 @@
 import React, {Fragment, useState} from "react"
 
+/**
+ * @property {string} SKU - Item sku for use in search
+ * @property {string} TITLE - Item title for use in search
+ * @property {string} [EAN] - Optional EAN for use in search
+ */
 export interface SearchItem {
     SKU: string;
     TITLE: string;
     EAN?: string;
 }
 
+/**
+ * @param {resultHandler} resultHandler - Handles returned {@link SearchItem} array.
+ * @param {SearchItem[]} searchableArray - Array of searchable items.
+ * @param {boolean} EAN - Toggle to enable EAN search radio button.
+ */
 interface Props {
     resultHandler: (results: SearchItem[]) => void,
     searchableArray: SearchItem[],
     EAN:boolean
 }
 
+/**
+ * Search bar component that takes an array of {@link SearchItem}
+ */
 export default function SearchBar({resultHandler, searchableArray, EAN}:Props) {
 
     const [searchType, setSearchType] = useState<string>("SKU")

@@ -1,8 +1,8 @@
 import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 import {User} from "./server-modules/users/user";
 
-export async function middleware(request) {
+export async function middleware(request:NextRequest) {
 
     function rootRedirect(){ return NextResponse.redirect(new URL('/', request.url)) }
 

@@ -3,11 +3,18 @@ import {getSession, signOut} from "next-auth/react";
 import {useEffect, useState} from "react";
 import {Permissions} from "../../server-modules/users/user";
 
+/**
+ * @param {boolean} showAppsMenu - Boolean to toggle menu display
+ * @param {appsMenuHandler} appsMenuHandler - Handler to update display boolean
+ */
 interface props {
     showAppsMenu:boolean;
     appsMenuHandler:()=>void
 }
 
+/**
+ * Apps menu component for Menu bar, contains shortcuts to pages
+ */
 export default function AppsMenu({showAppsMenu, appsMenuHandler}:props) {
 
     const [permissions, setPermissions] = useState<Permissions | null>(null)

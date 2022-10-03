@@ -5,8 +5,7 @@ import {User} from "../../server-modules/users/user";
 
 
 /**
- * It renders a form that allows the user to change the primary colour of the website
- * @returns A React component
+ * Renders a form that allows the user to change the primary colour of the website
  */
 export default function CustomisationPopup() {
 
@@ -18,20 +17,12 @@ export default function CustomisationPopup() {
         if (user?.theme?.['--primary-color']) setPrimaryColor(user.theme['--primary-color'])
     })
 
-    /**
-     * It updates the user's theme colors.
-     * @param key - the key of the color you want to change
-     * @param e - the event object
-     */
     async function handleColorChange(key:string, e:React.FocusEvent<HTMLInputElement>) {
         const data = {...{username: user?.username}, ...{theme: {[key]: e.target.value}}}
         const opts = {method: "POST", body: JSON.stringify(data)}
         await fetch('/api/user/update-user', opts)
     }
 
-    /**
-     * It sends a request to the server to update the user's theme to an empty object
-     */
     async function resetTheme() {
         const data = {...{username: user?.username}, ...{theme: {}}}
         const opts = {method: "POST", body: JSON.stringify(data)}

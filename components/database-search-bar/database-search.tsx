@@ -1,10 +1,21 @@
 import React, {useEffect, useState} from "react"
 import styles from './database-search-bar.module.css'
 
+/**
+ * @property {handler} handler - Function passed in to receive search result for further processing.
+ */
 interface Props {
     handler: (result: DatabaseSearchItem) => void
 }
 
+/**
+ * Search Item object used in searchArray
+ * @property {string} _id this is a test
+ * @property {string} SKU - SKU search values
+ * @property {string} TITLE - Title search values
+ * @property {string} [more] - more items element flag
+ *
+ */
 export interface DatabaseSearchItem {
     _id: string
     SKU: string
@@ -12,6 +23,9 @@ export interface DatabaseSearchItem {
     more?: string
 }
 
+/**
+ * Search bar with radio buttons that performs direct database searches (rather than taking in an array).
+ */
 export default function DatabaseSearchBar({handler}: Props) {
 
     const [searchType, setSearchType] = useState<string>("SKU")

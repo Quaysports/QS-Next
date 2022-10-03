@@ -3,6 +3,9 @@ import AppsMenu from "./apps-menu";
 import SettingsMenu from "./settings-menu";
 import MenuLayout from "../layouts/menu-layout";
 
+/**
+ * Menubar component, pass in array of divs to render as tabs
+ */
 export default function Menu({children}:{children:ReactNode}) {
 
     const [showAppsMenu, setShowAppsMenu] = useState<boolean>(false)

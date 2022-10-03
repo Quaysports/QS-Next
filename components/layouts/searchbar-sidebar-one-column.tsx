@@ -5,6 +5,9 @@ interface Props {
     children:ReactNode
 }
 
+/**
+ * Search bar, Sidebar and Column layout wrapper
+ */
 export default function SearchbarSidebarOneColumn({children}:Props){
     return(
         <div className={styles["searchbar-sidebar-one-column"]}>

@@ -1,6 +1,12 @@
 import styles from './layout-styles.module.css'
 import {CSSProperties, ReactNode} from "react";
 
+/**
+ * @param {ReactNode} children - Wrapped child elements.
+ * @param {boolean} [background=true] - Toggles display of column background.
+ * @param {boolean} [scroll=false] - Toggles column scroll when true, if false whole window scrolls.
+ * @param {string} [maxWidth=undefined] - Sets the maxWidth of the column content.
+ */
 interface Props {
     children:ReactNode;
     background?: boolean;
@@ -8,6 +14,9 @@ interface Props {
     maxWidth?:string;
 }
 
+/**
+ * Layout component for basic column, child elements are the columns contents.
+ */
 export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined}:Props) {
 
     const styleOverrides: CSSProperties = {overflowY: undefined, margin: undefined, maxHeight: undefined, maxWidth: undefined}

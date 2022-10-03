@@ -1,8 +1,15 @@
+
+
 /**
- * @property type String
+ * Notification options:
+ * @property  {string} type - Notification Type, "popup", "confirm", "alert" or null.
+ * @property  {string} [title] - Notification window title.
+ * @property  {JSX.Element | JSX.Element[] | string} [content] - Window content.
+ * @property  {function} [fn] - Function for confirm window, runs on "OK".
  */
-type Options = {type?:string,title?:string,content?:JSX.Element | JSX.Element[] | string,fn?:Function}
- //It dispatches a notification event to the notification-target element.
+interface Options {type?:string,title?:string,content?:JSX.Element | JSX.Element[] | string,fn?:Function}
+
+//It dispatches a notification event to the notification-target element.
 export function dispatchNotification(options:Options) {
     const event = new CustomEvent('notification', {detail: options});
     document.getElementById("notification-target")?.dispatchEvent(event)

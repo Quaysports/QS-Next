@@ -2,21 +2,27 @@ import style from './notification.module.css'
 
 /**
  * Notification options:
- * @property  {string} type - Notification Type, "popup", "confirm", "alert" or null.
+ * @property  {string} [type] - Notification Type, "popup", "confirm", "alert" or null.
  * @property  {string} [title] - Notification window title.
  * @property  {JSX.Element | JSX.Element[] | string} [content] - Window content.
- * @property  {function} [fn] - Function for confirm window, runs on "OK".
+ * @property  {fn} [fn] - Function for confirm window, runs on "OK".
  */
-export type Options = {type?:string,title?:string,content?:JSX.Element | JSX.Element[] | string,fn?:Function}
-
-
-/* Defining the props that the component will receive. */
-interface Props {options:Options, close:Function}
+export interface Options {
+    type?:string;
+    title?:string;
+    content?:JSX.Element | JSX.Element[] | string;
+    fn?:()=>void;
+}
 
 /**
- * It returns a popup, confirm, or alert depending on the type of notification passed to it
- * @param {props}  - options.type - the type of notification to display.
- * @returns A React component
+ * Notification props
+ * @param {Options} options - Notification options object
+ * @param {close} close - Run on notification popup close
+ */
+interface Props {options:Options, close:()=>void}
+
+/**
+ * Returns a popup, confirm, or alert depending on the type of notification passed to it
  */
 export default function Notification({options = {type:undefined}, close}:Props){
     switch(options.type){
