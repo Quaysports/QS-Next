@@ -1,12 +1,18 @@
 import React, {Fragment, useState} from "react"
 
-interface SearchBarProps {
-    arrHandler: (x: any[]) => void,
-    searchableArray: any[],
+export interface SearchItem {
+    SKU: string;
+    TITLE: string;
+    EAN?: string;
+}
+
+interface Props {
+    resultHandler: (results: SearchItem[]) => void,
+    searchableArray: SearchItem[],
     EAN:boolean
 }
 
-export default function SearchBar({arrHandler, searchableArray, EAN}:SearchBarProps) {
+export default function SearchBar({resultHandler, searchableArray, EAN}:Props) {
 
     const [searchType, setSearchType] = useState<string>("SKU")
 
@@ -29,7 +35,7 @@ export default function SearchBar({arrHandler, searchableArray, EAN}:SearchBarPr
         }
     }
 
-    function searchArray(value) {
+    function searchArray(value:string) {
         let startsWith = []
         let contains = []
         for (let i = 0; i < searchableArray.length; i++) {
@@ -52,16 +58,16 @@ export default function SearchBar({arrHandler, searchableArray, EAN}:SearchBarPr
                 }
             }
             if (searchType === "EAN") {
-                if (searchableArray[i].EAN.toUpperCase().startsWith(value.toUpperCase())) {
+                if (searchableArray[i].EAN?.toUpperCase().startsWith(value.toUpperCase())) {
                     startsWith.push(searchableArray[i])
                     continue;
                 }
-                if (searchableArray[i].EAN.toUpperCase().includes(value.toUpperCase())) {
+                if (searchableArray[i].EAN?.toUpperCase().includes(value.toUpperCase())) {
                     contains.push(searchableArray[i])
                 }
             }
         }
-        arrHandler([...startsWith, ...contains])
+        resultHandler([...startsWith, ...contains])
     }
 
     return (

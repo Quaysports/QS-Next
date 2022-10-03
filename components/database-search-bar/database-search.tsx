@@ -1,18 +1,22 @@
 import React, {useEffect, useState} from "react"
 import styles from './database-search-bar.module.css'
 
-export interface SearchResult {
+interface Props {
+    handler: (result: DatabaseSearchItem) => void
+}
+
+export interface DatabaseSearchItem {
     _id: string
     SKU: string
     TITLE: string
     more?: string
 }
 
-export default function DatabaseSearchBar({handler}: { handler: (x: SearchResult) => void }) {
+export default function DatabaseSearchBar({handler}: Props) {
 
     const [searchType, setSearchType] = useState<string>("SKU")
     const [currentSearchValue, setCurrentSearchValue] = useState<string>("")
-    const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+    const [searchResults, setSearchResults] = useState<DatabaseSearchItem[]>([])
     const [triggerUpdate, setTriggerUpdate] = useState<boolean>(false)
 
     useEffect(() => {
@@ -36,9 +40,9 @@ export default function DatabaseSearchBar({handler}: { handler: (x: SearchResult
         if (type === "TITLE" && checked) setSearchType("TITLE")
     }
 
-    function searchArray(value: string, searchResults: SearchResult[]) {
-        let startsWith: SearchResult[] = []
-        let contains: SearchResult[] = []
+    function searchArray(value: string, searchResults: DatabaseSearchItem[]) {
+        let startsWith: DatabaseSearchItem[] = []
+        let contains: DatabaseSearchItem[] = []
         for (let i = 0; i < searchResults.length; i++) {
             if (searchType === "SKU") {
                 if (searchResults[i].SKU.toUpperCase().startsWith(value.toUpperCase())) {
