@@ -6,12 +6,13 @@ import {User} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import RegexInput from "../../../components/RegexInput";
+import {ReactElement} from "react";
 
-interface propTypes {
+interface Props {
     userInfo: User[]
 }
 
-export default function UserTable({userInfo}: propTypes) {
+export default function UserTable({userInfo}: Props) {
     const dispatch = useDispatch()
 
     function updateUserData(index: string, key: string, data: string) {
@@ -19,7 +20,7 @@ export default function UserTable({userInfo}: propTypes) {
     }
 
     
-    const userArray = [<div key="title" className={style["user-table-row"]}>
+    const userArray:ReactElement[] = [<div key="title" className={style["user-table-row"]}>
         <span></span>
         <span><button
             className={style["add-user-button"]}
@@ -36,13 +37,13 @@ export default function UserTable({userInfo}: propTypes) {
         <span>User Colour</span>
     </div>]
 
-    const selectOptions = (values) => {
+    const selectOptions = (values:string[]) => {
         const options = []
         for (const value of values) options.push(<option key={options.length} value={value}>{value}</option>)
         return options
     }
 
-    if (!userInfo || userInfo.length === 0) return
+    if (!userInfo || userInfo.length === 0) return null
 
     for (const [index, user] of Object.entries(userInfo)) {
 
@@ -80,7 +81,7 @@ export default function UserTable({userInfo}: propTypes) {
                 <span><input type="number" defaultValue={user.holiday} onBlur={(e) => updateUserData(index, "holiday", e.target.value)}/></span>
                 <span><input type="text" defaultValue={user.password} onBlur={(e) => updateUserData(index, "password", e.target.value)}/></span>
                 <span>
-                    <RegexInput type={"pin"} value={user.pin} errorMessage={"Pin must contain only numbers and be exactly four digits long."} handler={pinHandler}/>
+                    <RegexInput type={"pin"} value={user.pin ? user.pin : ""} errorMessage={"Pin must contain only numbers and be exactly four digits long."} handler={pinHandler}/>
                 </span>
                 <span><input type="color" defaultValue={user.colour} onBlur={(e) => updateUserData(index, "colour", e.target.value)}/></span>
             </div>

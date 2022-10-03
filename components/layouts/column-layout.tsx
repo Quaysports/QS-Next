@@ -5,7 +5,7 @@ interface Props {
     children:ReactNode;
     background?: boolean;
     scroll?:boolean;
-    maxWidth?:number;
+    maxWidth?:string;
 }
 
 export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined}:Props) {

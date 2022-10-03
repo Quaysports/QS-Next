@@ -2,18 +2,19 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import {getSession} from "next-auth/react";
 import {useRouter} from "next/router";
+import {Permissions} from "../../server-modules/users/user";
 
 export default function DashboardTabs() {
 
     const router = useRouter()
 
-    const [permissions, setPermissions] = useState(null)
+    const [permissions, setPermissions] = useState<Permissions | undefined>(undefined)
 
     useEffect(()=>{
-        if(permissions === null) getSession().then(session=>setPermissions(session.user.permissions))
+        if(permissions === null) getSession().then(session=>setPermissions(session?.user.permissions))
     })
 
-    function activeTab(id:string){
+    const activeTab = (id:string) => {
         return router.query.tab === id ? "active-tab" : "";
     }
 

@@ -10,7 +10,7 @@ export default function Dashboard() {
 
     return (
         <OneColumn>
-            <Menu tabs={<DashboardTabs/>}/>
+            <Menu><DashboardTabs/></Menu>
             {router.query.tab === undefined || router.query.tab === "home" ? <HomeLandingPage/> : null}
             {router.query.tab === "user" ? <UserLandingPage/> : null}
         </OneColumn>

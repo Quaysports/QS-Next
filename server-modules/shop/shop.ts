@@ -13,6 +13,19 @@ interface stockError {
     PRIORITY: boolean
 }
 
+export interface QuickLinks {
+    _id?: string,
+    id: string,
+    links: QuickLinkItem[],
+    updates?: QuickLinkItem[]
+}
+
+export interface QuickLinkItem {
+    SKU: string | null,
+    TITLE?: string,
+    SHOPPRICEINCVAT?: string
+}
+
 export const get = async (query: object) => {
     return await mongoI.find<sbt.shopOrder>("Shop", query)
 }
@@ -21,13 +34,13 @@ export const reports = async () => {
     return await mongoI.find<any>("Shop-Reports")
 }
 
-export const updateQuickLinks = async (data) => {
+export const updateQuickLinks = async (data:QuickLinks) => {
     let query = data._id ? {_id: new ObjectId(data._id)} : {id: data.id}
     if (data._id) delete data._id
     return await mongoI.setData("Shop-Till-QuickLinks", query, data)
 }
 
-export const deleteQuickLinks = async (data) => {
+export const deleteQuickLinks = async (data:QuickLinks) => {
     let query = data._id ? {_id: new ObjectId(data._id)} : {id: data.id}
     if (data._id) delete data._id
     return await mongoI.deleteOne("Shop-Till-QuickLinks", query)
@@ -109,24 +122,11 @@ export const getQuickLinks = async () => {
         }
     ]
 
-    interface QuickLinks {
-        _id: string,
-        id: string,
-        links: QuickLinkItem[],
-        updates: QuickLinkItem[]
-    }
-
-    interface QuickLinkItem {
-        SKU: string | null,
-        TITLE?: string,
-        SHOPPRICEINCVAT?: string
-    }
-
     let result = await mongoI.findAggregate<QuickLinks>("Shop-Till-QuickLinks", query)
-    for (let quickLinks of result) {
+    for (let quickLinks of result!) {
         for (let index in quickLinks.links) {
             if(!quickLinks.links[index].SKU) continue
-            let search = binarySearch<QuickLinkItem>(quickLinks.updates, "SKU", quickLinks.links[index].SKU)
+            let search = binarySearch<QuickLinkItem>(quickLinks.updates!, "SKU", quickLinks.links[index].SKU)
             if (search) quickLinks.links[index] = search
         }
         delete quickLinks.updates
@@ -225,8 +225,7 @@ export const deadStockReport = async () => {
     let threeMonths = new Date()
     threeMonths.setMonth(threeMonths.getMonth() - 3)
 
-    async function mongoAggregate(from) {
-        console.log(from)
+    async function mongoAggregate(from:Date) {
         let query = [
             {
                 '$match':{'date': {'$gt': from.getTime().toString()}}
@@ -253,7 +252,7 @@ export const deadStockReport = async () => {
         ]
         let deadReport = await mongoI.findAggregate<{_id:string, items:string[]}>("Shop-Reports", query)
         return await mongoI.find<{ SUPPLIER: string, SKU: string, TITLE: string, SOLDFLAG?:number }>("Items", {
-            SKU: {$nin: deadReport[0].items},
+            SKU: {$nin: deadReport![0].items},
             STOCKTOTAL: {$gt: 0},
             IDBFILTER: "domestic"
         }, {SUPPLIER: 1, SKU: 1, TITLE: 1}, {SUPPLIER: 1})
@@ -264,14 +263,14 @@ export const deadStockReport = async () => {
     let threeMonthDead = await mongoAggregate(threeMonths)
 
     let tempMap = new Map()
-    for(const item of threeMonthDead){
+    for(const item of threeMonthDead!){
         item.SOLDFLAG = 3
         tempMap.set(item.SKU, item)
     }
-    for(const item of sixMonthDead) {
+    for(const item of sixMonthDead!) {
         if(tempMap.has(item.SKU)) tempMap.get(item.SKU).SOLDFLAG = 6
     }
-    for(const item of tenMonthDead) {
+    for(const item of tenMonthDead!) {
         if(tempMap.has(item.SKU)) tempMap.get(item.SKU).SOLDFLAG = 10
     }
 

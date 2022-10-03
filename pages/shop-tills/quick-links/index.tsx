@@ -1,11 +1,16 @@
 import QuickLinksSidebar from "./sidebar";
 import QuickLinksTable from "./table";
 import {useState} from "react";
+import {QuickLinks} from "../../../server-modules/shop/shop"
 
-export default function QuickLinksSetup({links}){
+interface Props {
+    links:QuickLinks[]
+}
+
+export default function QuickLinksSetup({links}:Props){
 
     const [id, setId] = useState(links?.length > 0 ? 0 : null)
-    const idHandler = (id)=> setId(id)
+    const idHandler = (id:number)=> setId(id)
 
     return(
         <>

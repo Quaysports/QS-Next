@@ -3,8 +3,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectUsers, setUserPermissions} from "../../../store/dashboard/user-slice";
 import {ChangeEvent} from "react";
 
-export default function PermissionsPopup({index}) {
-    const user = useSelector(selectUsers)[index]
+interface Props {
+    index:string
+}
+
+export default function PermissionsPopup({index}:Props) {
+    const user = useSelector(selectUsers)[Number(index)]
     const dispatch = useDispatch()
 
     function updatePermissions(index: string, key: string, e: ChangeEvent<HTMLInputElement>) {
