@@ -1,14 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-
-export interface IncorrectStockItem {
-    BRAND: string
-    TITLE: string
-    SKU: string
-    CHECKED: boolean
-    QTY: number
-    PRIORITY: boolean
-}
+import {StockError} from "../server-modules/shop/shop";
 
 export interface BrandItem {
     _id: string
@@ -16,16 +8,18 @@ export interface BrandItem {
     EAN: string;
     TITLE: string;
     STOCKTOTAL: number;
-    stockTake?: {
-        checked?: boolean;
-        date?: Date | null;
-        quantity?: number;
-    }
+    stockTake?: StockTake
+}
+
+interface StockTake {
+    checked?: boolean;
+    date?: Date | null;
+    quantity?: number;
 }
 
 export interface StockReportState {
-    incorrectStockReport: { [key: string]: IncorrectStockItem[] };
-    zeroStockReport: { [key: string]: IncorrectStockItem[] };
+    incorrectStockReport: { [key: string]: StockError[] };
+    zeroStockReport: { [key: string]: StockError[] };
     brands: string[];
     brandItems: BrandItem[];
     validData: boolean;
@@ -85,13 +79,17 @@ export const stockReportsSlice = createSlice({
                 state.validData = action.payload;
             },
 
+            setBrands: (state, action) => {
+                state.brands = action.payload
+            },
+
             setBrandItems: (state, action) => {
                 state.brandItems = action.payload
             },
 
             setStockTakeInfo: (state, action) => {
                 state.brandItems[action.payload.index].stockTake ??= {checked:false, date:null, quantity:0}
-                state.brandItems[action.payload.index].stockTake[action.payload.id] = action.payload.data
+                state.brandItems[action.payload.index].stockTake![action.payload.id as keyof StockTake] = action.payload.data
                 let opts = {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(state.brandItems[action.payload.index])}
                 fetch("/api/items/update-item",opts).then(res=>console.log(res.statusText))
             }
@@ -102,7 +100,7 @@ export const stockReportsSlice = createSlice({
 export const {
     setIncorrectStockInitialState, setIncorrectStockChecked, setIncorrectStockSplice, setIncorrectStockQty,
     setZeroStockInitialState, setZeroStockChecked, setZeroStockSplice, setZeroStockQty, setValidData, setBrandItems,
-    setStockTakeInfo
+    setBrands, setStockTakeInfo
 } = stockReportsSlice.actions;
 
 
@@ -110,5 +108,6 @@ export const selectIncorrectStockState = (state: StockReportWrapper) => state.st
 export const selectZeroStockState = (state: StockReportWrapper) => state.stockReports.zeroStockReport
 export const selectValidData = (state: StockReportWrapper) => state.stockReports.validData
 export const selectBrandItems = (state: StockReportWrapper) => state.stockReports.brandItems
+export const selectBrands = (state:StockReportWrapper) => state.stockReports.brands
 
 export default stockReportsSlice.reducer;

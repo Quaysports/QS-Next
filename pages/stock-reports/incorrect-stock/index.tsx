@@ -9,7 +9,7 @@ import IncorrectStockList from "./incorrect-stock-list";
 export default function IncorrectStock(){
 
     const dispatch = useDispatch()
-    const validDataHandler = (boolean) => dispatch(setValidData(boolean))
+    const validDataHandler = (x:boolean) => dispatch(setValidData(x))
 
     return(
         <>

@@ -1,7 +1,9 @@
 import React from "react";
 import IncorrectStock from "./incorrect-stock/index"
-import {getIncorrectStock} from "../../server-modules/shop/shop"
+import {getIncorrectStock, StockError} from "../../server-modules/shop/shop"
 import {
+    setBrandItems,
+    setBrands,
     setIncorrectStockInitialState,
     setZeroStockInitialState,
 } from "../../store/stock-reports-slice";
@@ -13,9 +15,9 @@ import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
 import OneColumn from "../../components/layouts/one-column";
 import ColumnLayout from "../../components/layouts/column-layout";
 import {appWrapper} from "../../store/store";
-import {getBrands} from "../../server-modules/items/items";
+import {getBrands, getItems} from "../../server-modules/items/items";
 
-export default function IncorrectStockLandingPage({brands}) {
+export default function IncorrectStockLandingPage() {
 
     const router = useRouter()
 
@@ -23,36 +25,56 @@ export default function IncorrectStockLandingPage({brands}) {
         <>
             {router.query.tab === "incorrect-stock" ?
                 <OneColumn>
-                    <Menu tabs={<StockReportTabs/>}/>
+                    <Menu>
+                        <StockReportTabs/>
+                    </Menu>
                     <ColumnLayout scroll={true} maxWidth={"fit-content"}>
                         <IncorrectStock/>
                     </ColumnLayout>
                 </OneColumn> : null}
             {router.query.tab === "shop" ?
                 <SidebarOneColumn>
-                    <Menu tabs={<StockReportTabs/>}/>
-                    <ShopStockTake brands={brands}/>
+                    <Menu>
+                        <StockReportTabs/>
+                    </Menu>
+                    <ShopStockTake/>
                 </SidebarOneColumn> : null}
         </>
     )
 }
 
-export const getServerSideProps = appWrapper.getServerSideProps(store => async()=>{
-    const data = JSON.parse(JSON.stringify(await getIncorrectStock()))
-    const brands = await getBrands({IDBFILTER:"domestic"})
+export const getServerSideProps = appWrapper.getServerSideProps(store => async(context)=>{
 
-    let incorrectStock = {}
-    let zeroStock = {}
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].PRIORITY) {
-            incorrectStock[data[i].BRAND] ??= []
-            incorrectStock[data[i].BRAND].push(data[i])
-        } else {
-            zeroStock[data[i].BRAND] ??= []
-            zeroStock[data[i].BRAND].push(data[i])
+    if(context.query.tab === "shop") store.dispatch(setBrands(
+        await getBrands({IDBFILTER:"domestic"})
+    ))
+
+    if(context.query.brand) store.dispatch(setBrandItems(
+        await getItems(
+            {"IDBEP.BRAND":context.query.brand, IDBFILTER:"domestic", ISCOMPOSITE:false},
+            {SKU:1, TITLE:1,EAN:1, STOCKTOTAL:1, stockTake:1})
+    ))
+    console.log(context.query.brand)
+
+    if(context.query.tab === "incorrect-stock") {
+        const data = await getIncorrectStock()
+        if(data) {
+            let incorrectStock:{[key:string]:StockError[] | undefined} = {}
+            let zeroStock:{[key:string]:StockError[] | undefined} = {}
+            for (let i = 0; i < data.length; i++) {
+                if(!data[i].BRAND) continue;
+                if (data[i].PRIORITY) {
+                    incorrectStock[data[i].BRAND!] ??= []
+                    incorrectStock[data[i].BRAND!]!.push(data[i])
+                } else {
+                    zeroStock[data[i].BRAND!] ??= []
+                    zeroStock[data[i].BRAND!]!.push(data[i])
+                }
+            }
+            store.dispatch(setIncorrectStockInitialState(incorrectStock))
+            store.dispatch(setZeroStockInitialState(zeroStock))
         }
     }
-    store.dispatch(setIncorrectStockInitialState(incorrectStock))
-    store.dispatch(setZeroStockInitialState(zeroStock))
-    return {props:{brands:brands}}
+
+    return {props:{}}
 })

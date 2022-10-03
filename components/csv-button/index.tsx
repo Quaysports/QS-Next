@@ -3,8 +3,8 @@
  * @property {JSON[]} objectArray - Json object array
  */
 interface Props {
-    fileName:string,
-    objectArray: { [key:string]:string }[]
+    fileName?:string,
+    objectArray: { [key:string]:string | number }[]
 }
 
 /**

@@ -14,6 +14,7 @@ interface Props {
 export default function QuickLinksSidebar({id, idHandler}:Props){
 
     const links = useSelector(selectQuickLinks)
+    console.log(links)
     useEffect(()=>{
         console.log("sidebar update")
         console.log(links)

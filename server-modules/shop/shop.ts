@@ -4,7 +4,7 @@ import {binarySearch} from "../core/core";
 //import * as linn from "../linn-api/linn-api"
 //import * as eod from '../workers/shop-worker-modules/endOfDayReport'
 
-interface stockError {
+export interface StockError {
     BRAND?: string
     TITLE: string
     SKU: string
@@ -212,7 +212,7 @@ export const getIncorrectStock = async () => {
             }
         }
     ]
-    return await mongoI.findAggregate<stockError>('Shop-Stock-Report', query);
+    return await mongoI.findAggregate<StockError>('Shop-Stock-Report', query);
 }
 
 export const deadStockReport = async () => {

@@ -1,21 +1,18 @@
 import SidebarButton from "../../../components/layouts/SidebarButton";
 import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {setBrandItems} from "../../../store/stock-reports-slice";
+import {useSelector} from "react-redux";
+import {selectBrands} from "../../../store/stock-reports-slice";
+import {useRouter} from "next/router";
 
-export default function ShopStockTakeSidebar({brands}){
+export default function ShopStockTakeSidebar(){
 
+    const brands = useSelector(selectBrands)
+    const router = useRouter()
     const [activeElement,setActiveElement] = useState("")
-    const dispatch = useDispatch()
 
-    const clickHandler = (brand)=>{
+    const clickHandler = (brand:string)=>{
         setActiveElement(brand)
-        const opts = {method: 'POST', body: brand}
-        fetch("/api/stock-report/get-brand-items",opts).then(async(res) => {
-            let data = await res.json();
-            for(let item of data) item.stockTake ??= {checked:false, date:null, quantity:0}
-            dispatch(setBrandItems(data))
-        })
+        router.push({pathname: router.pathname ,query:{...router.query, brand:brand}})
     }
 
     function buildBrandsList(){

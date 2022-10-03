@@ -6,14 +6,14 @@ export interface itemDatabaseWrapper {
 }
 
 export interface itemDatabaseState {
-    item?: sbt.Item
+    item: sbt.Item | null
     suppliers: string[]
     brands: string[]
     currentSupplier?: string
 }
 
 const initialState: itemDatabaseState = {
-    item: undefined,
+    item: null,
     suppliers: [],
     brands: [],
     currentSupplier: ""

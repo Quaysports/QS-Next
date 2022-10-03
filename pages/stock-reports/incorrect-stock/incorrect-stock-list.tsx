@@ -1,11 +1,11 @@
 import * as React from "react";
 import styles from './incorrect-stock-list.module.css'
 import {
-    IncorrectStockItem,
     selectIncorrectStockState, setIncorrectStockChecked,
     setIncorrectStockQty, setValidData
 } from "../../../store/stock-reports-slice";
 import {useDispatch, useSelector} from "react-redux";
+import {StockError} from "../../../server-modules/shop/shop";
 
 export default function IncorrectStockList() {
 
@@ -22,7 +22,7 @@ export default function IncorrectStockList() {
                     <div className={styles.brandTitles}>
                         <div>{key !== "undefined" ? key:"Unbranded"}</div>
                     </div>
-                    {values.map((item: IncorrectStockItem, index: number) => {
+                    {values.map((item: StockError, index: number) => {
                         return (
                             <div className={styles.stockLists} key={index}>
                                 <span/>

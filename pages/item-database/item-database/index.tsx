@@ -1,5 +1,5 @@
 import styles from "../item-database.module.css";
-import DatabaseSearchBar, {searchResult} from "../../../components/database-search-bar/DatabaseSearch";
+import DatabaseSearchBar, {DatabaseSearchItem} from "../../../components/database-search-bar/database-search";
 import SideBar from "./sidebar";
 import ItemDetails from "./item-details";
 import {useSelector} from "react-redux";
@@ -16,7 +16,7 @@ export default function ItemDatabaseLandingPage() {
 
     const router = useRouter()
 
-    function searchOptions(options:searchResult) {
+    function searchOptions(options:DatabaseSearchItem) {
         router.push({pathname: router.pathname ,query:{...router.query, sku:options.SKU}})
     }
 

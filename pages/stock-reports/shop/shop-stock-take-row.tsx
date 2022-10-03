@@ -11,9 +11,9 @@ interface props {
 export default function ShopStockTakeRow({index = null, item = null}: props) {
     const dispatch = useDispatch()
 
-    const updateSlice = (index, id, value) => dispatch(setStockTakeInfo({index: index, id: id, data: value}))
+    const updateSlice = (index:string, id:string, value:string | number | boolean) => dispatch(setStockTakeInfo({index: index, id: id, data: value}))
 
-    const validationHandler = (value) => updateSlice(index, "quantity", Number(value))
+    const validationHandler = (value:string) => updateSlice(index!, "quantity", Number(value))
 
     return (
         <>
@@ -31,22 +31,22 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                     <div>{item.EAN}</div>
                     <div>{item.TITLE}</div>
                     <div>{item.STOCKTOTAL}</div>
-                    <div>{item.stockTake.date === null
+                    <div>{!item.stockTake?.date
                         ? <RegexInput
                             type={"number"}
                             value={item.stockTake?.quantity ? item.stockTake.quantity : 0}
                             handler={validationHandler}
                             errorMessage={"Numbers Only"}/>
-                        : item.stockTake.quantity}
+                        : item.stockTake?.quantity}
                     </div>
-                    <div>{item.stockTake.date === null
+                    <div>{!item.stockTake?.date
                         ? <input
                             type={"checkbox"}
                             defaultChecked={item.stockTake?.checked}
-                            onChange={e => updateSlice(index, "checked", e.target.checked)}/>
+                            onChange={e => updateSlice(index!, "checked", e.target.checked)}/>
                         : <input
                             type={"checkbox"}
-                            checked={item.stockTake.checked}
+                            checked={item.stockTake?.checked}
                             readOnly={true}/>}
                     </div>
                 </div>}

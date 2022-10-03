@@ -1,7 +1,7 @@
-import {selectBrandItems, setStockTakeInfo} from "../../../store/stock-reports-slice";
+import {BrandItem, selectBrandItems, setStockTakeInfo} from "../../../store/stock-reports-slice";
 import {useDispatch, useSelector} from "react-redux";
 import ShopStockTakeRow from "./shop-stock-take-row";
-import SearchBar from "../../../components/search-bar";
+import SearchBar, {SearchItem} from "../../../components/search-bar";
 import {useEffect, useState} from "react";
 import styles from './shop-stock-take.module.css'
 import CSVButton from "../../../components/csv-button";
@@ -10,15 +10,15 @@ export default function ShopStockTakeTable(){
 
     const dispatch = useDispatch()
     const brandItems = useSelector(selectBrandItems)
-    const [activeItems, setActiveItems] = useState(brandItems)
+    const [activeItems, setActiveItems] = useState<BrandItem[]>(brandItems)
 
     useEffect(()=>{
         setActiveItems(brandItems)
         console.log(brandItems)
     },[brandItems])
 2
-    const handler = (arr)=>{
-        setActiveItems(arr)
+    const handler = (arr:SearchItem[])=>{
+        setActiveItems(arr as BrandItem[])
     }
 
 
@@ -31,11 +31,11 @@ export default function ShopStockTakeTable(){
             }
         }
 
-        const csvObject = []
+        const csvObject:{SKU:string, TITLE:string,Stock:number,Actual:string}[] = []
 
         let elements = [
             <div key={"top-bar"} className={styles["top-bar"]}>
-                <SearchBar arrHandler={handler} searchableArray={brandItems} EAN={true}/>
+                <SearchBar resultHandler={handler} searchableArray={brandItems} EAN={true}/>
                 <div><CSVButton objectArray={csvObject}/></div>
                 <div><button onClick={()=>commitChecked()}>Commit</button></div>
             </div>,

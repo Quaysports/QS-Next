@@ -14,7 +14,7 @@ export default function DashboardTabs() {
     const [permissions, setPermissions] = useState<Permissions | undefined>(undefined)
 
     useEffect(()=>{
-        if(permissions === null) getSession().then(session=>setPermissions(session?.user.permissions))
+        if(!permissions) getSession().then(session=>setPermissions(session?.user.permissions))
     })
 
     const activeTab = (id:string) => {

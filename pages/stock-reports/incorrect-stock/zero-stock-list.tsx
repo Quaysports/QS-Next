@@ -2,12 +2,14 @@ import * as React from "react";
 import styles from './incorrect-stock-list.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {
-    IncorrectStockItem,
     selectZeroStockState, setZeroStockChecked, setZeroStockQty
 } from "../../../store/stock-reports-slice";
+import {StockError} from "../../../server-modules/shop/shop";
 
-
-export default function ZeroStockList(validDataHandler) {
+interface Props {
+    validDataHandler:(x:boolean)=>void
+}
+export default function ZeroStockList({validDataHandler}:Props) {
 
     const zeroStockState = useSelector(selectZeroStockState);
     const dispatch = useDispatch()
@@ -23,7 +25,7 @@ export default function ZeroStockList(validDataHandler) {
                     <div>{key !== "undefined" ? key:"Unbranded"}</div>
                 </div>
                 <div>
-                    {values.map((item: IncorrectStockItem, index: number) => {
+                    {values.map((item: StockError, index: number) => {
                         return (
                             <div className={styles.stockLists} key={index}>
                                 <span/>
