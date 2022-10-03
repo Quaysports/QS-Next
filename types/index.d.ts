@@ -104,7 +104,7 @@ declare namespace sbt {
     *   StockItem?
     * */
 
-    interface brandLabel {
+    type brandLabel = {
         brand: string,
         image: string,
         loc: string,
@@ -114,16 +114,16 @@ declare namespace sbt {
         title2: string
     }
 
-    interface channelData {
+    type channelData = {
         [key: number]: channelDataSource[]
     }
 
-    interface channelDataSource {
+    type channelDataSource = {
         QTY: string,
         SOURCE: string
     }
 
-    interface statusChecks {
+    type statusChecks = {
         DONE: {
             ADDINV: boolean,
             AMAZON: boolean,
@@ -163,7 +163,7 @@ declare namespace sbt {
         }
     }
 
-    interface composite {
+    type composite = {
         ItemTitle: string,
         PurchasePrice: number,
         Quantity: number,
@@ -171,11 +171,11 @@ declare namespace sbt {
         Weight: number
     }
 
-    interface channelPrice {
+    type channelPrice = {
         [key: string]: channelPriceData
     }
 
-    interface channelPriceData {
+    type channelPriceData = {
         ID?: string,
         PRICE: string,
         STATUS?: number,
@@ -184,14 +184,14 @@ declare namespace sbt {
         updateReq?: boolean
     }
 
-    interface linnExtendedProperty {
+    type linnExtendedProperty = {
         epName: string,
         epType: string,
         epValue: string,
         pkRowId: string,
     }
 
-    interface itemDatabaseExtendedProperties {
+    type itemDatabaseExtendedProperties = {
         AMAZSPORT?: string,
         AMZDEPARTMENT?: string,
         AMZLATENCY?: number,
@@ -216,7 +216,7 @@ declare namespace sbt {
         TRADEPACK?: string
     }
 
-    interface itemImages {
+    type itemImages = {
         [key: string]: {
             link?: string
             filename: string
@@ -224,7 +224,7 @@ declare namespace sbt {
         }
     }
 
-    interface marginData {
+    type marginData = {
         AMAZONFEES?: number,
         AMAZPAVC?: number,
         AMAZPROFITLY?: number,
@@ -247,7 +247,7 @@ declare namespace sbt {
         TOTALPROFITLY?: number
     }
 
-    interface monthStockHistory {
+    type monthStockHistory = {
         [key: string]: {
             1: string,
             2: string,
@@ -264,14 +264,14 @@ declare namespace sbt {
         }
     }
 
-    interface onOrder {
+    type onOrder = {
         CONF: boolean,
         DUE: string,
         ID: string,
         QTY: string
     }
 
-    interface pickListItem {
+    type pickListItem = {
         DimDepth: number,
         DimHeight: number,
         DimWidth: number,
