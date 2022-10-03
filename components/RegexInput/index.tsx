@@ -1,3 +1,5 @@
+import {FocusEvent, ChangeEvent} from "react";
+
 interface RegexDictionary {
     [key: string]: string;
 }
@@ -18,7 +20,7 @@ export default function RegexInput({type, value, errorMessage, handler}: props) 
 
     let valid = false
 
-    const validateInput = (e) => {
+    const validateInput = (e:FocusEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>) => {
         if (e.target.validity.patternMismatch) {
             valid = false
             e.target.style.borderColor = "var(--secondary-color)"
@@ -36,7 +38,7 @@ export default function RegexInput({type, value, errorMessage, handler}: props) 
             <input
                 pattern={regexDictionary[type]}
                 defaultValue={value}
-                onChange={(e) => validateInput(e)}
+                onChange={validateInput}
                 onBlur={(e) => {
                     if (valid) handler(e.target.value)
                 }}/>
