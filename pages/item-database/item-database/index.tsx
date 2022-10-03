@@ -1,40 +1,23 @@
 import styles from "../item-database.module.css";
-import DatabaseSearchBar, {SearchResult} from "../../../components/database-search-bar/database-search";
+import DatabaseSearchBar, {searchResult} from "../../../components/database-search-bar/DatabaseSearch";
 import SideBar from "./sidebar";
 import ItemDetails from "./item-details";
-import {useDispatch, useSelector} from "react-redux";
-import {selectItem, setItem, setSuppliers} from "../../../store/item-database/item-database-slice";
+import {useSelector} from "react-redux";
+import {selectItem} from "../../../store/item-database/item-database-slice";
 import {useEffect} from "react";
+import {useRouter} from "next/router";
 
 export default function ItemDatabaseLandingPage() {
 
-    const dispatch = useDispatch()
     const item = useSelector(selectItem)
+    useEffect(()=>{
+        console.log(item)
+    },[item])
 
-    useEffect(() => {
-        fetch("/api/item-database/get-suppliers")
-            .then(res => res.json())
-            .then(res => {
-                dispatch(setSuppliers(res))
-            })
+    const router = useRouter()
 
-    }, [])
-
-    function searchOptions(options:SearchResult) {
-        const opts = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
-            },
-            body:JSON.stringify({filter: {SKU:options.SKU}})
-        }
-        fetch("/api/items/get-item", opts)
-            .then(res => res.json())
-            .then(res => {
-                console.log(res)
-                dispatch(setItem(res))
-            })
+    function searchOptions(options:searchResult) {
+        router.push({pathname: router.pathname ,query:{...router.query, sku:options.SKU}})
     }
 
     return (

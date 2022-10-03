@@ -5,13 +5,14 @@ import styles from "../item-database.module.css"
 export default function LinkedSKURibbon(){
 
     const item = useSelector(selectItem)
+    const linkedSKUs:string[]  = item.LINKEDSKUS ? item.LINKEDSKUS : []
 
     function linkedSKUS(){
         let linkedSKUArray = []
 
         if(!item?.LINKEDSKUS) return null
 
-        for(const SKU of item.LINKEDSKUS){
+        for(const SKU of linkedSKUs){
             linkedSKUArray.push(
                 <div>{SKU}</div>
             )

@@ -1,7 +1,8 @@
 import * as mongoI from '../../../server-modules/mongo-interface/mongo-interface'
+import {NextApiRequest, NextApiResponse} from "next";
 import shopOrder = sbt.shopOrder;
 
-export default async function handler(req, res) {
+export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     res.status(200).json(
         await getOpenOrders()
     )

@@ -4,7 +4,8 @@ import {
     selectCurrentSupplier,
     selectItem,
     selectSuppliers,
-    setBrands, setCurrentSupplier
+    setBrands,
+    setCurrentSupplier
 } from "../../../store/item-database/item-database-slice";
 import styles from "../item-database.module.css"
 import {useEffect} from "react";
@@ -30,10 +31,17 @@ export default function EssentialsRibbon(){
         fetch("/api/item-database/get-supplier-brands", opts)
             .then(res => res.json())
             .then(res => {
-                console.log(res)
                 dispatch(setBrands(res))
             })
     }, [currentSupplier])
+
+    function prefixOptions(){
+        return [<>
+            <option/>
+            <option>R</option>
+            <option>S</option>
+        </>]
+    }
 
     function letterOptions(){
         let alphabetArray = [<option/>]
@@ -74,6 +82,7 @@ export default function EssentialsRibbon(){
             return [<option>No associated brands</option>]
         }
     }
+    console.log(item)
 
     return(
         <div className={styles["item-details-essentials"]}>
@@ -88,14 +97,14 @@ export default function EssentialsRibbon(){
                 <div>Linnworks Title:</div>
             </div>
             <div className={styles["essentials-inputs-1"]}>
-                <div><select defaultValue={item?.IDBEP?.BRAND ? item.IDBEP.BRAND: null}>{brandOptions()}</select></div>
+                <div><select value={item?.IDBEP?.BRAND}>{brandOptions()}</select></div>
                 <div>{item?.SKU}</div>
                 <div>{item?.EAN}</div>
-                <div><select defaultValue={item?.SUPPLIER ? item.SUPPLIER: null} onChange={(e) => dispatch(setCurrentSupplier(e.target.value))}>{supplierOptions()}</select></div>
+                <div><select value={item?.SUPPLIER} onChange={(e) => dispatch(setCurrentSupplier(e.target.value))}>{supplierOptions()}</select></div>
                 <div>{item?.STOCKTOTAL}</div>
-                <div><select>{letterOptions()}</select><select>{numberOptions()}</select></div>
-                <div><input style={{width:"100%"}} defaultValue={item?.TITLEWEBSITE ? item.TITLEWEBSITE : null}/></div>
-                <div><input style={{width:"100%"}} defaultValue={item?.TITLE ? item.TITLE : null}/></div>
+                <div><select>{prefixOptions()}</select><select>{letterOptions()}</select><select>{numberOptions()}</select></div>
+                <div><input style={{width:"100%"}} defaultValue={item?.TITLEWEBSITE}/></div>
+                <div><input style={{width:"100%"}} defaultValue={item?.TITLE}/></div>
             </div>
             <div className={styles["essentials-titles-2"]}>
                 <div>Channel Prices</div>
