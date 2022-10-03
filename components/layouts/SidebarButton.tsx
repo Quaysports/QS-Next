@@ -3,9 +3,9 @@ import {ReactNode} from "react";
 
 interface Props {
     children:ReactNode;
-    active:boolean;
+    active?:boolean;
     onClick: ()=>void;
-    className: string;
+    className?: string;
 }
 
 export default function SidebarButton({children, active = false, onClick = ()=>{}, className = ""}:Props){
