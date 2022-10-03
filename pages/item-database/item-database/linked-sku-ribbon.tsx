@@ -8,6 +8,9 @@ export default function LinkedSKURibbon(){
 
     function linkedSKUS(){
         let linkedSKUArray = []
+
+        if(!item?.LINKEDSKUS) return null
+
         for(const SKU of item.LINKEDSKUS){
             linkedSKUArray.push(
                 <div>{SKU}</div>
