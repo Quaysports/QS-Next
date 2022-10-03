@@ -22,7 +22,7 @@ export interface Permissions {
     shipments: { auth: boolean, label: "Shipments" };
     stockForecast: { auth: boolean, label: "Stock Forecast" };
     itemDatabase: { auth: boolean, label: "Item Database" };
-    incorrectStock: { auth: boolean, label: "Incorrect Stock" };
+    stockReports: { auth: boolean, label: "Incorrect Stock" };
     shopOrders: { auth: boolean, label: "Shop Orders" };
     shopTills: { auth: boolean, label: "Shop Tills" };
     users: { auth: boolean, label: "Users" };

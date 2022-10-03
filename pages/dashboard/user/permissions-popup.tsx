@@ -26,7 +26,7 @@ export default function PermissionsPopup({index}) {
             <div className={style["permission-table-title"]}>Apps</div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.shopOrders?.auth} onChange={(e) => updatePermissions(index, "shopOrders", e)}/><label>Shop Orders</label></div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.shopTills?.auth} onChange={(e) => updatePermissions(index, "shopTills", e)}/><label>Shop Tills</label></div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.incorrectStock?.auth} onChange={(e) => updatePermissions(index, "incorrectStock", e)}/><label>Incorrect Stock</label></div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.stockReports?.auth} onChange={(e) => updatePermissions(index, "stockReports", e)}/><label>Stock Report</label></div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.itemDatabase?.auth} onChange={(e) => updatePermissions(index, "itemDatabase", e)}/><label>Item Database</label></div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.stockForecast?.auth} onChange={(e) => updatePermissions(index, "stockForecast", e)}/><label>Stock Forecast</label></div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.shipments?.auth} onChange={(e) => updatePermissions(index, "shipments", e)}/><label>Shipments</label></div>

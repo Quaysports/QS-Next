@@ -21,7 +21,7 @@ export default function AppsMenu({showAppsMenu, appsMenuHandler}) {
                 <div onClick={appsMenuHandler}><Link href="/dashboard?tab=home">Dashboard</Link></div>
                 {permissions?.shopOrders?.auth ? <div onClick={appsMenuHandler}><Link href="/shop-orders?tab=orders">Shop Orders</Link></div> : null}
                 {permissions?.shopTills?.auth ? <div onClick={appsMenuHandler}><Link href="/shop-tills">Shop Tills</Link></div> : null}
-                {permissions?.incorrectStock?.auth ? <div onClick={appsMenuHandler}><Link href="/stock-reports?tab=incorrect-stock">Stock Reports</Link></div> : null}
+                {permissions?.stockReports?.auth ? <div onClick={appsMenuHandler}><Link href="/stock-reports?tab=incorrect-stock">Stock Reports</Link></div> : null}
                 {permissions?.itemDatabase?.auth ? <div onClick={appsMenuHandler}><Link href="/item-database">Item Database</Link></div> : null}
                 {permissions?.stockForecast?.auth ? <div onClick={appsMenuHandler}><Link href="/stock-forecast">Stock Forecast</Link></div> : null}
                 {permissions?.shipments?.auth ? <div onClick={appsMenuHandler}><Link href="/shipments">Shipments</Link></div> : null}

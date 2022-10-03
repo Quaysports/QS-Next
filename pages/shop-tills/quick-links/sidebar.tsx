@@ -3,10 +3,15 @@ import {useSelector} from "react-redux";
 import {selectQuickLinks} from "../../../store/shop-tills/quicklinks-slice";
 import QuickLinkSidebarAddButton from "./quick-link-sidebar-add-button";
 import SidebarLayout from "../../../components/layouts/sidebar-layout";
+import {useEffect} from "react";
 
 export default function QuickLinksSidebar({id, idHandler}){
 
     const links = useSelector(selectQuickLinks)
+    useEffect(()=>{
+        console.log("sidebar update")
+        console.log(links)
+    }, [links])
 
     function createLinkButtons(links){
         let buttons = []
