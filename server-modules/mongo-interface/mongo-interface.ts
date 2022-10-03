@@ -2,7 +2,11 @@
 import * as mongoDB from 'mongodb'
 
 export const connect = async () => {
-  return await new mongoDB.MongoClient(process.env.DB_URL).connect()
+  return await new mongoDB.MongoClient(process.env.DB_URL!).connect()
+}
+
+function convertBSONIDsToString<T>(data:T){
+  return JSON.parse(JSON.stringify(data)) as T
 }
 
 export const ping = async () => {
@@ -135,7 +139,8 @@ export const find = async <T>(collection: string, filter = {}, projection = {}, 
   const client = await connect()
   try {
     const db = client.db(process.env.DB_NAME);
-    return await db.collection(collection).find<T>(filter, {serializeFunctions:true}).project(projection).limit(limit).sort(sort).toArray() as T[]
+    const data = await db.collection(collection).find<T>(filter, {serializeFunctions:true}).project(projection).limit(limit).sort(sort).toArray() as T[]
+    return convertBSONIDsToString<T[]>(data)
   } catch (e) {
     console.error(e)
   } finally {
@@ -147,7 +152,8 @@ export const findAggregate = async <T>(collection: string, aggregate: object[]) 
   const client = await connect()
   try {
     const db = client.db(process.env.DB_NAME);
-    return await db.collection(collection).aggregate<T>(aggregate, {serializeFunctions:true}).toArray()
+    const data = await db.collection(collection).aggregate<T>(aggregate, {serializeFunctions:true}).toArray() as T[]
+    return convertBSONIDsToString<T[]>(data)
   } catch (e) {
     console.error(e)
   } finally {
@@ -159,7 +165,8 @@ export const findOne = async <T>(collection: string, filter = {}, projection = {
   const client = await connect()
   try {
     const db = client.db(process.env.DB_NAME);
-    return await db.collection(collection).findOne<T>(filter, { serializeFunctions:true, projection: projection, sort: sort, limit: limit })
+    const data = await db.collection(collection).findOne<T>(filter, { serializeFunctions:true, projection: projection, sort: sort, limit: limit }) as T
+    return convertBSONIDsToString<T>(data)
   } catch (e) {
     console.error(e)
   } finally {
