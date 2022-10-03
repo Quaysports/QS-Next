@@ -1,4 +1,4 @@
-import Notification, {options} from "./notification";
+import Notification, {Options} from "./notification";
 import {useEffect, useRef, useState} from "react";
 
 /**
@@ -8,7 +8,7 @@ export default function NotificationWrapper(){
 
     const element = useRef<HTMLDivElement>(null)
 
-    const [notificationContent, setNotificationContent] = useState<options>(undefined)
+    const [notificationContent, setNotificationContent] = useState<Options>({})
 
     useEffect(()=>{
         element.current?.addEventListener('notification', notificationEventHandler);
@@ -17,12 +17,11 @@ export default function NotificationWrapper(){
         };
     },[])
 
-    function notificationEventHandler(e){
-        setNotificationContent(e.detail as options)
+    function notificationEventHandler(e:Event){
+        setNotificationContent((e as CustomEvent).detail as Options)
     }
 
     return <div id="notification-target" ref={element}>
-        <Notification options={notificationContent} close={()=>setNotificationContent({type:null})}/>
+        <Notification options={notificationContent} close={()=>setNotificationContent({type:undefined})}/>
     </div>
 }
-

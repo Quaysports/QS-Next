@@ -7,18 +7,18 @@ import style from './notification.module.css'
  * @property  {JSX.Element | JSX.Element[] | string} [content] - Window content.
  * @property  {function} [fn] - Function for confirm window, runs on "OK".
  */
-export interface options {type:string,title?:string,content?:JSX.Element | JSX.Element[] | string,fn?:Function}
+export interface Options {type?:string,title?:string,content?:JSX.Element | JSX.Element[] | string,fn?:Function}
 
 
 /* Defining the props that the component will receive. */
-interface props {options:options, close:Function}
+interface Props {options:Options, close:Function}
 
 /**
  * It returns a popup, confirm, or alert depending on the type of notification passed to it
  * @param {props}  - options.type - the type of notification to display.
  * @returns A React component
  */
-export default function Notification({options = {type:null}, close}:props){
+export default function Notification({options = {type:undefined}, close}:Props){
     switch(options.type){
         case "popup": return(
             <div className={style['fullscreen-dim']}>
@@ -34,7 +34,7 @@ export default function Notification({options = {type:null}, close}:props){
                     <div className={style['confirm-title']}>{options.title}</div>
                     <div className={style['confirm-text']}>{options.content}</div>
                     <div className={style['confirm-buttons']}>
-                        <button onClick={()=>{options.fn(); close()}}>Yes</button>
+                        <button onClick={()=>{options.fn!(); close()}}>Yes</button>
                         <button onClick={()=> close()}>No</button>
                     </div>
                 </div>
