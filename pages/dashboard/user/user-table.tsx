@@ -8,10 +8,16 @@ import {dispatchNotification} from "../../../server-modules/dispatch-notificatio
 import RegexInput from "../../../components/RegexInput";
 import {ReactElement} from "react";
 
+/**
+ * @param {User[]} userInfo - Array of user info from database
+ */
 interface Props {
     userInfo: User[]
 }
 
+/**
+ * User Table component. Takes user data from database and turns into table.
+ */
 export default function UserTable({userInfo}: Props) {
     const dispatch = useDispatch()
 

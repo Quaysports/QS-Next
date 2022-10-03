@@ -1,6 +1,9 @@
 import ColumnLayout from "../../../components/layouts/column-layout";
 
-export default function HomeLandingPage(){
+/**
+ * Dashboard Home tab
+ */
+export default function HomeTab(){
     return(<ColumnLayout>
         <div></div>
     </ColumnLayout>)

@@ -1,5 +1,8 @@
 import style from './user.module.css'
 
+/**
+ * Create user component. Used in popup call.
+ */
 export default function CreateUser(){
 
     let userTemplate = {

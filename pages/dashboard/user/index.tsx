@@ -4,7 +4,10 @@ import {selectUsers, setAllUserData} from "../../../store/dashboard/user-slice";
 import UserTable from "./user-table";
 import ColumnLayout from "../../../components/layouts/column-layout";
 
-export default function UserLandingPage() {
+/**
+ * Dashboard User tab.
+ */
+export default function UserTab() {
 
     const userInfo = useSelector(selectUsers)
     const dispatch = useDispatch()

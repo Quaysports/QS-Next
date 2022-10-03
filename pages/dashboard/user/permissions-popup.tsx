@@ -2,11 +2,18 @@ import style from "./user.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUsers, setUserPermissions} from "../../../store/dashboard/user-slice";
 import {ChangeEvent} from "react";
+import {User} from "../../../server-modules/users/user";
 
+/**
+ * @param {string} index - Index of user in {@link User} array.
+ */
 interface Props {
     index:string
 }
 
+/**
+ * Change permissions component. Used in popup call.
+ */
 export default function PermissionsPopup({index}:Props) {
     const user = useSelector(selectUsers)[Number(index)]
     const dispatch = useDispatch()

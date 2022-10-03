@@ -4,6 +4,9 @@ import {getSession} from "next-auth/react";
 import {useRouter} from "next/router";
 import {Permissions} from "../../server-modules/users/user";
 
+/**
+ * Dashboard tabs component. Used for populating Menu bar tabs.
+ */
 export default function DashboardTabs() {
 
     const router = useRouter()
