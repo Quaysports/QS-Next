@@ -1,6 +1,18 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
+import {DeadStockReport} from "../server-modules/shop/shop";
 
+/**
+ * @property {string} _id
+ * @property {string} arrived
+ * @property {orderObject[]} complete
+ * @property {number} date
+ * @property {string} id
+ * @property {number} price
+ * @property {string} order
+ * @property {orderObject[]} supplier
+ *
+ */
 export interface OpenOrdersObject {
     _id: string
     arrived: orderObject[]
@@ -11,11 +23,29 @@ export interface OpenOrdersObject {
     order: orderObject[]
     supplier: string
 }
-
+/**
+ * @property {{BRAND: string}} IDBEP
+ * @property {number} MINSTOCK
+ * @property {string} SKU
+ * @property {string} STOCKTOTAL
+ * @property {string} TITLE
+ * @property {string} SUPPLIER
+ * @property {string} _id
+ * @property {string} [bookedIn]
+ * @property {number} qty
+ * @property {number} tradePack
+ * @property {number} [arrived]
+ * @property {number} PURCHASEPRICE
+ * @property {boolean} [deadStock]
+ * @property {boolean} [newProduct]
+ * @property {boolean} [lowStock]
+ * @property {boolean} submitted
+ * @property {number} SOLDFLAG
+ */
 export interface orderObject {
     IDBEP: { BRAND: string }
     MINSTOCK: number
-    "SKU": string
+    SKU: string
     STOCKTOTAL: string
     TITLE: string
     SUPPLIER: string
@@ -31,10 +61,28 @@ export interface orderObject {
     submitted: boolean
     SOLDFLAG: number
 }
-
-interface ShopOrdersState {
-    deadStock: { [key: string]: { SUPPLIER: string, SKU: string, TITLE: string, SOLDFLAG: number}[]};
-    sideBarContent: { [key: string]: string }
+/**
+ * Shop Orders State
+ * @property {Object<string, deadStockObject[]>} deadStock
+ * @property {Object<string, string | number> } sideBarContent
+ * @property {string} sideBarTitle
+ * @property {OpenOrdersObject} loadedOrder
+ * @property {Object<string, OpenOrdersObject>} openOrders
+ * @property {OpenOrdersObject} editOrder
+ * @property {orderObject[]} newOrderArray
+ * @property {number} totalPrice
+ * @property {orderObject[]} supplierItems
+ * @property {radioButtonsObject} radioButtons
+ * @property {orderObject[]} renderedArray
+ * @property {orderObject[]} lowStockArray
+ * @property {number} threshold
+ * @property {Object<string, OpenOrdersObject[]>} completedOrders
+ * @property {OpenOrdersObject} orderContents
+ * </ul>
+ */
+export interface ShopOrdersState {
+    deadStock: { [key: string]: DeadStockReport[] };
+    sideBarContent: { [key: string]: string | number }
     sideBarTitle: string
     loadedOrder: OpenOrdersObject
     openOrders: { [key: string]: OpenOrdersObject }
@@ -42,15 +90,24 @@ interface ShopOrdersState {
     newOrderArray: orderObject[]
     totalPrice: number
     supplierItems: orderObject[]
-    radioButtons: {
-        lowStock: boolean,
-        allItems: boolean
-    }
+    radioButtons: radioButtonsObject
     renderedArray: orderObject[]
     lowStockArray: orderObject[]
     threshold: number
-    completedOrders: {[key:string]:OpenOrdersObject[]}
+    completedOrders: { [key: string]: OpenOrdersObject[] }
     orderContents: OpenOrdersObject
+}
+
+
+/**
+ * Radio Buttons Object
+ * @property {boolean} lowStock
+ * @property {boolean} allItems
+ */
+
+interface radioButtonsObject {
+    lowStock: boolean
+    allItems: boolean
 }
 
 export interface ShopOrdersWrapper {
@@ -90,10 +147,10 @@ export const shopOrdersSlice = createSlice({
             },
         },
         reducers: {
-            setDeadStock: (state, action:PayloadAction<ShopOrdersState["deadStock"]>) => {
+            setDeadStock: (state, action: PayloadAction<ShopOrdersState["deadStock"]>) => {
                 state.deadStock = action.payload
             },
-            setSideBarContent: (state, action: PayloadAction<{ content: { [key: string]: string }, title: string }>) => {
+            setSideBarContent: (state, action: PayloadAction<{ content: { [key: string]: string | number }, title: string }>) => {
                 state.sideBarContent = action.payload.content;
                 state.sideBarTitle = action.payload.title
             },
@@ -103,7 +160,7 @@ export const shopOrdersSlice = createSlice({
             setOpenOrders: (state, action) => {
                 state.openOrders = action.payload
             },
-            setEditOrder: (state, action:PayloadAction<OpenOrdersObject>) => {
+            setEditOrder: (state, action: PayloadAction<OpenOrdersObject>) => {
                 state.editOrder = action.payload
                 state.newOrderArray = action.payload.order
             },
@@ -123,10 +180,10 @@ export const shopOrdersSlice = createSlice({
                     state.loadedOrder.order[action.payload.index].arrived = 0
                 }
             },
-            setRemoveFromBookedInState:(state, action:PayloadAction<{index:number, SKU:string}>) => {
+            setRemoveFromBookedInState: (state, action: PayloadAction<{ index: number, SKU: string }>) => {
                 let order = state.loadedOrder
-                const i = order.order.map((item:orderObject) => item.SKU).indexOf(action.payload.SKU)
-                if (i > -1){
+                const i = order.order.map((item: orderObject) => item.SKU).indexOf(action.payload.SKU)
+                if (i > -1) {
                     order.order[i].qty = (order.order[i].qty + order.arrived[action.payload.index].arrived)
                     order.order[i].arrived = 0
                     order.arrived.splice(action.payload.index, 1)
@@ -154,19 +211,19 @@ export const shopOrdersSlice = createSlice({
             setSupplierItems: (state, action) => {
                 state.supplierItems = action.payload
             },
-            setChangeOrderQty:(state, action:PayloadAction<{item: orderObject, type:string, index:number, value:string}>) => {
+            setChangeOrderQty: (state, action: PayloadAction<{ item: orderObject, type: string, index: number, value: string }>) => {
                 if (action.payload.type === "qty") state.newOrderArray[action.payload.index].qty = parseFloat(action.payload.value)
                 if (action.payload.type === "tradePack") state.newOrderArray[action.payload.index].tradePack = parseFloat(action.payload.value)
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
             },
-            setChangeOrderArray: (state, action: PayloadAction<{ item: orderObject, type: string, index: number}>) => {
+            setChangeOrderArray: (state, action: PayloadAction<{ item: orderObject, type: string, index?: number}>) => {
                 if (action.payload.type === "remove") {
-                    state.newOrderArray.splice(action.payload.index, 1)
+                    state.newOrderArray.splice(action.payload.index!, 1)
                     state.supplierItems.push(action.payload.item)
                 }
                 if (action.payload.type === "add") {
                     state.newOrderArray.push(action.payload.item)
-                    if (action.payload.index >= 0) state.supplierItems.splice(action.payload.index, 1)
+                    if (action.payload.index) state.supplierItems.splice(action.payload.index, 1)
                 }
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
             },
@@ -193,15 +250,21 @@ export const shopOrdersSlice = createSlice({
                     if (action.payload.key === "tradePack") state.renderedArray[action.payload.index].tradePack = Number(action.payload.value)
                 }
             },
-            setChangeLowStockArray: (state, action) => {state.lowStockArray.splice(action.payload, 1)},
-            setCompletedOrders: (state, action) => {state.completedOrders = action.payload},
-            setOrderContents: (state, action) => {state.orderContents = action.payload},
-            setOrderInfoReset:(state, action) => {
+            setChangeLowStockArray: (state, action) => {
+                state.lowStockArray.splice(action.payload, 1)
+            },
+            setCompletedOrders: (state, action) => {
+                state.completedOrders = action.payload
+            },
+            setOrderContents: (state, action) => {
+                state.orderContents = action.payload
+            },
+            setOrderInfoReset: (state, action) => {
                 state.editOrder = null
                 state.totalPrice = 0
                 state.newOrderArray = []
             },
-            setCompleteOrder:(state, action) => {
+            setCompleteOrder: (state, action) => {
                 state.loadedOrder.complete = true
                 const opts = {
                     method: 'POST',
@@ -214,8 +277,8 @@ export const shopOrdersSlice = createSlice({
                 fetch("/api/shop-orders/shop-stock-order", opts)
                     .then()
             },
-            setSubmittedOrder:  (state, action ) => {
-                for(const item of action.payload) {
+            setSubmittedOrder: (state, action) => {
+                for (const item of action.payload) {
                     let posNew = state.loadedOrder.arrived.map(order => order.SKU).indexOf(item.SKU)
                     if (Number(state.loadedOrder.arrived[posNew].qty) <= Number(item["StockLevel"])) {
                         console.log("Passed")
@@ -237,9 +300,9 @@ export const shopOrdersSlice = createSlice({
     })
 ;
 
-function totalPriceCalc(array){
+function totalPriceCalc(array) {
     let totalPrice = 0
-    for(let i = 0; i < array.length; i ++){
+    for (let i = 0; i < array.length; i++) {
         let price = array[i].PURCHASEPRICE * (array[i].qty * array[i].tradePack)
         totalPrice += price
     }

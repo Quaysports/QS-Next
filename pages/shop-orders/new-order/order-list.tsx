@@ -13,10 +13,16 @@ import styles from "../shop-orders.module.css"
 import {useRouter} from "next/router";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
+/**
+ * @property {string} supplier
+ */
 interface OrderListProps {
     supplier: string
 }
 
+/**
+ * Order List Component
+ */
 export default function OrderList(props: OrderListProps) {
 
     const newOrderArray = useSelector(selectNewOrderArray)
@@ -147,12 +153,12 @@ export default function OrderList(props: OrderListProps) {
             <div>
                 <button
                     onClick={() => {
-                        dispatch(setChangeOrderArray({item: newProduct, type: "add", index: null}));
-                        dispatchNotification({type: null});
+                        dispatch(setChangeOrderArray({item: newProduct, type: "add"}));
+                        dispatchNotification({type: undefined});
                     }}>Submit
                 </button>
                 <button id={styles["add-new-item-container-cancel-button"]} onClick={() => {
-                    dispatchNotification({type: null});
+                    dispatchNotification({type: undefined});
                 }}>Cancel
                 </button>
             </div>

@@ -8,6 +8,10 @@ import SidebarButton from "../../../components/layouts/SidebarButton";
 interface SideBarProps {
     supplierFilter : (x:string) => void
 }
+
+/**
+ * Side Bar Component
+ */
 export default function SideBar(props:SideBarProps) {
 
     const sideBarContent = useSelector(selectSideBarContent)

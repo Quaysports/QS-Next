@@ -322,9 +322,9 @@ declare namespace sbt {
     }
 
     //shop order struct
-    interface shopOrder {
+    interface TillOrder {
         _id?: string,
-        order: shopOrderItem[],
+        order: TillOrderItem[],
         transaction: {
             giftCard?: number;
             type?: string,
@@ -358,11 +358,11 @@ declare namespace sbt {
             OrderId?: string,
             Processed?: boolean
         },
-        rmas?: shopOrderRmas[],
-        returns?: shopOrderReturns[],
+        rmas?: TillOrderRmas[],
+        returns?: TillOrderReturns[],
     }
 
-    interface shopOrderItem {
+    type TillOrderItem = {
         _id: string,
         EAN: string,
         SKU: string,
@@ -382,25 +382,25 @@ declare namespace sbt {
         STOCKTOTAL: number
     }
 
-    interface shopOrderRmas {
+    type TillOrderRmas = {
         id: string,
         reason: string,
         user: string,
         date: string,
-        items: shopOrderItem[]
+        items: TillOrderItem[]
     }
 
-    interface shopOrderReturns {
+    type TillOrderReturns = {
         id: string,
         reason: string,
         user: string,
         date: string,
         total: number,
-        transaction: shopOrderReturnTransaction,
-        items: shopOrderItem[]
+        transaction: TillOrderReturnTransaction,
+        items: TillOrderItem[]
     }
 
-    interface shopOrderReturnTransaction {
+    type TillOrderReturnTransaction = {
         type: string,
         mask?: string,
         amount: string,

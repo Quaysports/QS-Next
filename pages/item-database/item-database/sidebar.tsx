@@ -6,25 +6,25 @@ export default function SideBar(){
     return(
         <SidebarLayout>
             <div className={styles["sidebar-button-container"]}>
-            <SidebarButton>
+            <SidebarButton onClick={() => null}>
                 Barcode
             </SidebarButton>
-            <SidebarButton>
+            <SidebarButton onClick={() => null}>
                 Tag
             </SidebarButton>
-            <SidebarButton>
+            <SidebarButton onClick={() => null}>
                 Shelf Tag
             </SidebarButton>
-            <SidebarButton className={styles["upload-button"]}>
+            <SidebarButton className={styles["upload-button"]}  onClick={() => null}>
                 Upload to Linnworks
             </SidebarButton>
-            <SidebarButton>
+            <SidebarButton onClick={() => null}>
                 Jarilo Template
             </SidebarButton>
-            <SidebarButton>
+            <SidebarButton onClick={() => null}>
                 Import Details
             </SidebarButton>
-            <SidebarButton>
+            <SidebarButton onClick={() => null}>
                 Branded Labels
             </SidebarButton>
             </div>

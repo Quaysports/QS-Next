@@ -4,7 +4,7 @@
  */
 interface Props {
     fileName:string,
-    objectArray: { [key:string]:string }[]
+    objectArray: { [key:string]:string | number }[]
 }
 
 /**

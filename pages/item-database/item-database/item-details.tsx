@@ -30,7 +30,7 @@ export default function ItemDetails(){
             <div className={styles["details-sections"]}>
                 <div>Amazon Props</div>
             </div>
-            {item.LINKEDSKUS ? <div className={styles["details-sections"]}>
+            {item?.LINKEDSKUS ? <div className={styles["details-sections"]}>
                 <div>Linked SKUs</div>
                 <LinkedSKURibbon/>
             </div>  : null}

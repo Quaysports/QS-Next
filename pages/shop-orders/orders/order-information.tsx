@@ -2,19 +2,26 @@ import * as React from 'react';
 import {Fragment} from "react";
 import styles from "../shop-orders.module.css"
 import {useDispatch, useSelector} from "react-redux";
-import {selectLoadedOrder, setLoadedOrder} from "../../../store/shop-orders-slice";
+import {OpenOrdersObject, selectLoadedOrder, setLoadedOrder} from "../../../store/shop-orders-slice";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import CSVButton from "../../../components/csv-button";
 
+/**
+ * @property {supplierFilter} supplierFilter
+ */
 interface OrderInformationProps{
     supplierFilter: () => void;
 }
+
+/**
+ * Order Information Component
+ */
 export default function OrderInformation(props: OrderInformationProps) {
 
     const loadedOrder = useSelector(selectLoadedOrder)
     const dispatch = useDispatch()
 
-    async function deleteOrder(order) {
+    async function deleteOrder(order:OpenOrdersObject) {
         dispatchNotification({
             type: "confirm",
             title: "Warning",
@@ -23,7 +30,7 @@ export default function OrderInformation(props: OrderInformationProps) {
         })
     }
 
-    function deleteConfirmed(order) {
+    function deleteConfirmed(order:OpenOrdersObject) {
         const opts = {
             method: 'POST',
             headers: {
@@ -45,7 +52,7 @@ export default function OrderInformation(props: OrderInformationProps) {
                         title: "Success",
                         content: `${order.supplier}(${order.id}) has been deleted`
                     }); props.supplierFilter()
-                dispatch(setLoadedOrder(null))
+                dispatch(setLoadedOrder(undefined))
             })
     }
 
