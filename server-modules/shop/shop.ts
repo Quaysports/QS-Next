@@ -13,14 +13,14 @@ interface stockError {
     PRIORITY: boolean
 }
 
-export interface QuickLinks {
+export type QuickLinks = {
     _id?: string,
     id: string,
     links: QuickLinkItem[],
     updates?: QuickLinkItem[]
 }
 
-export interface QuickLinkItem {
+export type QuickLinkItem = {
     SKU: string | null,
     TITLE?: string,
     SHOPPRICEINCVAT?: string

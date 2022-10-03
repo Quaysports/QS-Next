@@ -1,21 +1,13 @@
 import {createSlice, current} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-
-interface quicklinksSlice {
-    id: string;
-    links: {
-        SKU: string;
-        SHOPPRICEINCVAT: number;
-        TITLE: string;
-    }[]
-}
+import {QuickLinks} from "../../server-modules/shop/shop";
 
 export interface quickLinksWrapper {
     quickLinks: quickLinksState
 }
 
 export interface quickLinksState {
-    quickLinksArray: quicklinksSlice[]
+    quickLinksArray: QuickLinks[]
 }
 
 const initialState: quickLinksState = {

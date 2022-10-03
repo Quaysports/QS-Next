@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 interface Props {
     children:ReactNode;
     active?:boolean;
-    onClick: ()=>void;
+    onClick?: ()=>void;
     className?: string;
 }
 

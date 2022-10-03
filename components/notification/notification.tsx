@@ -7,7 +7,7 @@ import style from './notification.module.css'
  * @property  {JSX.Element | JSX.Element[] | string} [content] - Window content.
  * @property  {function} [fn] - Function for confirm window, runs on "OK".
  */
-export interface Options {type?:string,title?:string,content?:JSX.Element | JSX.Element[] | string,fn?:Function}
+export type Options = {type?:string,title?:string,content?:JSX.Element | JSX.Element[] | string,fn?:Function}
 
 
 /* Defining the props that the component will receive. */

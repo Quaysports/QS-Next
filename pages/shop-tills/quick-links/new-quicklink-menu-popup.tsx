@@ -5,7 +5,7 @@ import {useDispatch} from "react-redux";
 import styles from '../shop-tills.module.css'
 
 export default function NewQuickLinkMenuPopup(){
-    const inputRef = useRef(null)
+    const inputRef = useRef<HTMLInputElement>(null)
     const dispatch = useDispatch()
 
     return (
@@ -14,8 +14,8 @@ export default function NewQuickLinkMenuPopup(){
             <input ref={inputRef}/>
             <button onClick={()=>{
                 let itemsArray = Array.from({length:20}, ()=>({SKU:""}))
-                dispatch(addNewQuickLinkMenu({id:inputRef.current.value,links:itemsArray}))
-                dispatchNotification({type:null})
+                dispatch(addNewQuickLinkMenu({id:inputRef.current!.value,links:itemsArray}))
+                dispatchNotification({type:undefined})
             }}>Submit</button>
         </div>
     )

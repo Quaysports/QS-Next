@@ -3,9 +3,11 @@ import {dispatchNotification} from "../../../server-modules/dispatch-notificatio
 import NewQuickLinkMenuPopup from "./new-quicklink-menu-popup";
 import SidebarButton from "../../../components/layouts/SidebarButton";
 
-export default function QuickLinkSidebarAddButton({type}){
+interface Props {
+    type:string;
+}
 
-
+export default function QuickLinkSidebarAddButton({type}:Props){
     if(type === "parent"){
         return (
             <>
@@ -20,6 +22,5 @@ export default function QuickLinkSidebarAddButton({type}){
             </>
         )
     }
-
     return null
 }

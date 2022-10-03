@@ -1,14 +1,19 @@
 import styles from '../shop-tills.module.css'
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
-import DatabaseSearchBar, {SearchResult} from "../../../components/database-search-bar/database-search";
+import DatabaseSearchBar, {DatabaseSearchItem} from "../../../components/database-search-bar/database-search";
 import {addItemToLinks} from "../../../store/shop-tills/quicklinks-slice";
 import {useDispatch} from "react-redux";
 
-export default function QuickLinkTableAddButton({id, index}){
+interface Props {
+    id:number;
+    index:number;
+}
+
+export default function QuickLinkTableAddButton({id, index}:Props){
 
     const dispatch = useDispatch()
-    const handler = (res:SearchResult)=>{
-        dispatchNotification({type:null})
+    const handler = (res:DatabaseSearchItem)=>{
+        dispatchNotification({type:undefined})
         dispatch(addItemToLinks({id:id, index:index, data:{SKU: res.SKU, SHOPPRICEINCVAT: 0, TITLE: res.TITLE}}))
         console.log("handled!")
         console.log(res)

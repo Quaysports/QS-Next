@@ -8,8 +8,12 @@ import {
 import styles from "../shop-tills.module.css";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
-export default function EditQuickLinkMenuPopup({id}){
-    const inputRef = useRef(null)
+interface Props {
+    id: number;
+}
+
+export default function EditQuickLinkMenuPopup({id}:Props){
+    const inputRef = useRef<HTMLInputElement>(null)
     const links = useSelector(selectQuickLinks)
     const dispatch = useDispatch()
     return(
@@ -18,12 +22,12 @@ export default function EditQuickLinkMenuPopup({id}){
             <input ref={inputRef} defaultValue={links[id]?.id}/>
             <div className={styles["dual-button-container"]}>
                 <button onClick={()=>{
-                dispatch(updateQuickLinkID({id:id, data:inputRef.current.value}))
-                dispatchNotification({type:null})
+                dispatch(updateQuickLinkID({id:id, data:inputRef.current!.value}))
+                dispatchNotification({type:undefined})
                 }}>Update</button>
                 <button onClick={()=>{
                     dispatch(deleteQuickLink(id))
-                    dispatchNotification({type:null})
+                    dispatchNotification({type:undefined})
                 }}>Delete</button>
             </div>
         </div>
