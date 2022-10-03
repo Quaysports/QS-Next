@@ -1,7 +1,8 @@
 import * as mongoI from '../../../server-modules/mongo-interface/mongo-interface'
 import * as linn from "../../../server-modules/linn-api/linn-api"
+import {NextApiRequest, NextApiResponse} from "next";
 
-export default async function handler(req, res) {
+export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     res.status(200).json(
         await incorrectStockAdjustAndMongoCleanUp(req.body.updateId, req.body.data )
     )

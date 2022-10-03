@@ -1,4 +1,5 @@
 import * as mongoI from "../../../server-modules/mongo-interface/mongo-interface";
+import {NextApiRequest, NextApiResponse} from "next";
 
 interface shopOrder {
     _id?: string
@@ -26,7 +27,7 @@ interface orderItem {
     deadStock: boolean
 }
 
-export default async function handler(req, res) {
+export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     res.status(200).json(
         await shopStockOrder(req.body)
     )

@@ -6,17 +6,17 @@ export interface itemDatabaseWrapper {
 }
 
 export interface itemDatabaseState {
-    item: sbt.Item
+    item?: sbt.Item
     suppliers: string[]
     brands: string[]
-    currentSupplier: string
+    currentSupplier?: string
 }
 
 const initialState: itemDatabaseState = {
-    item: null,
-    suppliers: null,
+    item: undefined,
+    suppliers: [],
     brands: [],
-    currentSupplier: null
+    currentSupplier: ""
 }
 
 export const itemDatabaseSlice = createSlice({
@@ -26,7 +26,7 @@ export const itemDatabaseSlice = createSlice({
             [HYDRATE]: (state, action) => {
                 return {
                     ...state,
-                    ...action.payload.users
+                    ...action.payload.itemDatabase
                 }
             },
         },
