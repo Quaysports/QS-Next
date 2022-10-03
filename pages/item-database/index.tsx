@@ -8,37 +8,62 @@ import SearchbarSidebarOneColumn from "../../components/layouts/searchbar-sideba
 import {appWrapper} from "../../store/store";
 import {getSuppliers} from "../../server-modules/shop/shop-order-tool";
 import {setItem, setSuppliers} from "../../store/item-database/item-database-slice";
-import {getItem} from "../../server-modules/items/items";
+import {getItem, getItems} from "../../server-modules/items/items";
+import {InferGetServerSidePropsType} from "next";
 
-export default function itemDatabaseLandingPage() {
+export interface rodLocationObject {
+    BRANDLABEL:{loc:string},
+    IDBEP:{BRAND:string},
+    SKU:string,
+    TITLE:string
+}
+
+export default function itemDatabaseLandingPage({rodLocations}:InferGetServerSidePropsType<typeof getServerSideProps>) {
 
     const router = useRouter()
-
     return (
         <>
-            {router.query.tab === undefined || router.query.tab ===  "item-database" ?
+            {router.query.tab === undefined || router.query.tab === "item-database" ?
                 <>
                     <SearchbarSidebarOneColumn>
-                    <Menu><ItemDatabaseTabs/></Menu>
-                    <ItemDatabaseLandingPage/>
+                        <Menu><ItemDatabaseTabs/></Menu>
+                        <ItemDatabaseLandingPage/>
                     </SearchbarSidebarOneColumn>
                 </> : null}
             {router.query.tab === "rod-locations" ?
                 <>
                     <SidebarOneColumn>
                         <Menu><ItemDatabaseTabs/></Menu>
-                        <RodLocationsLandingPage/>
+                        <RodLocationsLandingPage rodLocations={rodLocations}/>
                     </SidebarOneColumn>
                 </> : null}
         </>
     )
 }
 
-export const getServerSideProps = appWrapper.getServerSideProps(store=>async(context)=>{
+export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
+
     let sku = context.query.sku
-    let item = await getItem({SKU:sku})
+    let item = await getItem({SKU: sku})
     store.dispatch(setItem(item))
     let suppliers = await getSuppliers()
     store.dispatch(setSuppliers(suppliers))
-    return {props:{}}
+
+    let query = {"BRANDLABEL.loc": {$exists: true, $ne: ""}}
+    let projection = {SKU: 1, TITLE: 1, "IDBEP.BRAND": 1, "BRANDLABEL.loc": 1}
+
+    let rodLocations = await getItems({query}, {projection}) as rodLocationObject[]
+    let sortedData = rodLocations.sort((a, b) => {
+        if (!a.IDBEP.BRAND) a.IDBEP.BRAND = "Default"
+        if (!b.IDBEP.BRAND) b.IDBEP.BRAND = "Default"
+        return a.IDBEP.BRAND.localeCompare(b.IDBEP.BRAND)
+    })
+
+    let tempMap:Map<string,rodLocationObject[]> = new Map()
+    sortedData?.map((item) => {
+        tempMap.has(item.IDBEP.BRAND) ?
+            tempMap.get(item.IDBEP.BRAND)!.push(item) : tempMap.set(item.IDBEP.BRAND, [item])
+    })
+
+    return {props: {rodLocations: tempMap}}
 })
