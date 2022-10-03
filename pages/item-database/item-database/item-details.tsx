@@ -4,6 +4,7 @@ import {selectItem} from "../../../store/item-database/item-database-slice";
 import styles from "../item-database.module.css"
 import StatusRibbon from "./status-ribbon";
 import EssentialsRibbon from "./essentials-ribbon";
+import LinkedSKURibbon from "./linked-sku-ribbon";
 
 export default function ItemDetails(){
 
@@ -11,7 +12,7 @@ export default function ItemDetails(){
 
     return (
         <ColumnLayout background={false}>
-            <div className={"center-align"}>{item?.TITLE ? item.TITLE: ""} Details</div>
+            <div className={`${styles["details-sections"]} center-align`}>{item?.TITLE ? item.TITLE: ""} Details</div>
             <div className={styles["details-sections"]}>
                 <div>Status</div>
                 <StatusRibbon/>
@@ -20,10 +21,22 @@ export default function ItemDetails(){
                 <div>Essentials</div>
                 <EssentialsRibbon/>
             </div>
-            <div className={styles["details-sections"]}>Descriptions</div>
-            <div className={styles["details-sections"]}>Images</div>
-            <div className={styles["details-sections"]}>Amazon Props</div>
-            <div className={styles["details-sections"]}>Shipping</div>
+            <div className={styles["details-sections"]}>
+                <div>Descriptions</div>
+            </div>
+            <div className={styles["details-sections"]}>
+                <div>Images</div>
+            </div>
+            <div className={styles["details-sections"]}>
+                <div>Amazon Props</div>
+            </div>
+            <div className={styles["details-sections"]}>
+                <div>Linked SKUs</div>
+                <LinkedSKURibbon/>
+            </div>
+            <div className={styles["details-sections"]}>
+                <div>Shipping</div>
+            </div>
         </ColumnLayout>
     )
 }
