@@ -1,13 +1,19 @@
 import Link from "next/link";
 import {getSession, signOut} from "next-auth/react";
 import {useEffect, useState} from "react";
+import {Permissions} from "../../server-modules/users/user";
 
-export default function AppsMenu({showAppsMenu, appsMenuHandler}) {
+interface props {
+    showAppsMenu:boolean;
+    appsMenuHandler:()=>void
+}
 
-    const [permissions, setPermissions] = useState(null)
+export default function AppsMenu({showAppsMenu, appsMenuHandler}:props) {
+
+    const [permissions, setPermissions] = useState<Permissions | null>(null)
 
     useEffect(()=>{
-        if(permissions === null) getSession().then(session=>setPermissions(session.user.permissions))
+        if(permissions === null) getSession().then(session=>setPermissions(session?.user.permissions as Permissions))
     })
 
     async function logoutHandler() {
@@ -33,4 +39,6 @@ export default function AppsMenu({showAppsMenu, appsMenuHandler}) {
             </div>
         )
     }
+
+    return null
 }

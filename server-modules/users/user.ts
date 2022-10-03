@@ -1,6 +1,6 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 
-export interface user {
+export interface User {
     theme: { [key:string]: string };
     _id?: string;
     username: string;
@@ -36,13 +36,13 @@ export interface Permissions {
 }
 
 export const auth = async (code: string) => {
-    return await mongoI.findOne<user>("Users", {pin: {$eq: code}})
+    return await mongoI.findOne<User>("Users", {pin: {$eq: code}})
 }
 
 //used in session auth
 export const login = async (user: string, password: string) => {
 
-    const result = await mongoI.findOne<user>("Users",
+    const result = await mongoI.findOne<User>("Users",
         {username: {$eq: user}, password: {$eq: password}},
         {username: 1, role: 1, rota: 1, permissions: 1, theme:1})
     if (result) {
@@ -53,15 +53,15 @@ export const login = async (user: string, password: string) => {
 }
 
 export const getUsers = async (query?: object) => {
-    return await mongoI.find<user>("Users", query)
+    return await mongoI.find<User>("Users", query)
 }
 
-export const updateUser = async (data: user) => {
+export const updateUser = async (data: User) => {
     if (data._id) delete data._id
     return await mongoI.setData("Users", {username: {$eq: data.username}}, data)
 }
 
-export const deleteUser = async (data: user) => {
+export const deleteUser = async (data: User) => {
     return await mongoI.deleteOne("Users", {username: {$eq: data.username}})
 }
 

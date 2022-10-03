@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import {getSession} from "next-auth/react";
-import {user} from "../server-modules/users/user";
+import {User} from "../server-modules/users/user";
 
 export default function UserSetup() {
 
-    const [user, setUser] = useState<user>(null)
+    const [user, setUser] = useState<User>(null)
 
     useEffect(() => {
         if (user === null) {

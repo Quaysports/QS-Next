@@ -1,6 +1,7 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {getSession, signOut} from "next-auth/react";
 import style from './customisation-popup.module.css'
+import {User} from "../../server-modules/users/user";
 
 
 /**
@@ -9,11 +10,11 @@ import style from './customisation-popup.module.css'
  */
 export default function CustomisationPopup() {
 
-    const [user,setUser] = useState(null)
+    const [user,setUser] = useState<User | undefined>(undefined)
     const [primaryColor, setPrimaryColor] = useState("#586221")
 
     useEffect(() => {
-        if(user === null) getSession().then(session=>setUser(session.user))
+        if(user === null) getSession().then(session=>setUser(session?.user))
         if (user?.theme?.['--primary-color']) setPrimaryColor(user.theme['--primary-color'])
     })
 
@@ -22,8 +23,8 @@ export default function CustomisationPopup() {
      * @param key - the key of the color you want to change
      * @param e - the event object
      */
-    async function handleColorChange(key, e) {
-        const data = {...{username: user.username}, ...{theme: {[key]: e.target.value}}}
+    async function handleColorChange(key:string, e:React.FocusEvent<HTMLInputElement>) {
+        const data = {...{username: user?.username}, ...{theme: {[key]: e.target.value}}}
         const opts = {method: "POST", body: JSON.stringify(data)}
         await fetch('/api/user/update-user', opts)
     }
@@ -32,7 +33,7 @@ export default function CustomisationPopup() {
      * It sends a request to the server to update the user's theme to an empty object
      */
     async function resetTheme() {
-        const data = {...{username: user.username}, ...{theme: {}}}
+        const data = {...{username: user?.username}, ...{theme: {}}}
         const opts = {method: "POST", body: JSON.stringify(data)}
         await fetch('/api/user/update-user', opts)
     }

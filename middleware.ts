@@ -1,12 +1,12 @@
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
-import {user} from "./server-modules/users/user";
+import {User} from "./server-modules/users/user";
 
 export async function middleware(request) {
 
     function rootRedirect(){ return NextResponse.redirect(new URL('/', request.url)) }
 
-    const user = await getToken({ req: request, secret: process.env.JWT_SECRET })  as unknown as user
+    const user = await getToken({ req: request, secret: process.env.JWT_SECRET })  as unknown as User
     if(!user) return NextResponse.redirect(new URL('/login', request.url))
     switch(request.nextUrl.pathname) {
         case '/item-database':          return user.permissions.itemDatabase?.auth ?        null: rootRedirect();

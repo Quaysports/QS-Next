@@ -2,7 +2,12 @@
 import CustomisationPopup from "./customisation-popup";
 import {dispatchNotification} from "../../server-modules/dispatch-notification";
 
-export default function SettingsMenu({showSettingsMenu, settingsMenuHandler}) {
+interface props {
+    showSettingsMenu:boolean;
+    settingsMenuHandler: ()=>void
+}
+
+export default function SettingsMenu({showSettingsMenu, settingsMenuHandler}:props) {
     if (showSettingsMenu) {
         return (
             <div key={25} id="settings-menu" onMouseLeave={settingsMenuHandler}>
@@ -13,4 +18,6 @@ export default function SettingsMenu({showSettingsMenu, settingsMenuHandler}) {
             </div>
         )
     }
+
+    return null
 }

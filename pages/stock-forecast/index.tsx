@@ -8,6 +8,7 @@ import {processData} from "../../server-modules/stock-forecast/process-data";
 import {binarySearch} from "../../server-modules/core/core";
 import OneColumn from "../../components/layouts/one-column";
 import ColumnLayout from "../../components/layouts/column-layout";
+import {NextPageContext} from "next";
 
 export default function stockForecastLandingPage({filteredItems}) {
 
@@ -23,7 +24,7 @@ export default function stockForecastLandingPage({filteredItems}) {
 
     return (
         <OneColumn>
-            <Menu tabs={<StockForecastMenuTabs searchData={filteredItems} updateItemsHandler={updateItemsHandler}/>}/>
+            <Menu><StockForecastMenuTabs searchData={filteredItems} updateItemsHandler={updateItemsHandler}/></Menu>
             <ColumnLayout scroll={true}>
                 <StockForecastTable items={items}/>
             </ColumnLayout>
@@ -33,8 +34,8 @@ export default function stockForecastLandingPage({filteredItems}) {
 
 
 
-export async function getServerSideProps(context) {
-    const shipping = JSON.parse(JSON.stringify(await get({delivered: false})))
+export async function getServerSideProps(context:NextPageContext) {
+    const shipping = await get({delivered: false})
     const domestic = context.query.domestic
 
     const itemQuery = {
@@ -60,7 +61,7 @@ export async function getServerSideProps(context) {
     }
 
     const sort = {SKU: 1}
-    const items = JSON.parse(JSON.stringify(await getItems(itemQuery, projection, sort)))
+    const items = await getItems(itemQuery, projection, sort)
 
     addOnOrderToItems(shipping, items)
     const filteredItems = filterDataBasedOnToggles(items, context.query)

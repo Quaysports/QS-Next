@@ -1,14 +1,15 @@
 import Menu from "../../components/menu/menu";
 import ShopTabs from "./tabs";
 import {useRouter} from "next/router";
-import QuickLinks from "./quick-links";
+import QuickLinksSetup from "./quick-links";
 import {getQuickLinks} from "../../server-modules/shop/shop";
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {updateQuickLinks} from "../../store/shop-tills/quicklinks-slice";
 import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
+import {InferGetServerSidePropsType} from "next";
 
-export default function ShopTills({links}) {
+export default function ShopTills({links}:InferGetServerSidePropsType<typeof getServerSideProps>) {
     const router = useRouter()
     const dispatch = useDispatch()
 
@@ -19,13 +20,13 @@ export default function ShopTills({links}) {
 
     return (
         <>
-            {router.query.tab === undefined ? <SidebarOneColumn><Menu tabs={<ShopTabs/>}/></SidebarOneColumn> : null}
-            {router.query.tab === "quick-links" ? <SidebarOneColumn><Menu tabs={<ShopTabs/>}/><QuickLinks links={links}/></SidebarOneColumn> : null}
+            {router.query.tab === undefined ? <SidebarOneColumn><Menu><ShopTabs/></Menu></SidebarOneColumn> : null}
+            {router.query.tab === "quick-links" ? <SidebarOneColumn><Menu><ShopTabs/></Menu><QuickLinksSetup links={links}/></SidebarOneColumn> : null}
         </>
     )
 }
 
-export async function getServerSideProps() {
-    const links = JSON.parse(JSON.stringify(await getQuickLinks()))
+export async function getServerSideProps<GetServerSideProps>() {
+    const links = await getQuickLinks()
     return {props: {links: links}}
 }

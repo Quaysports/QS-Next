@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, current} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 
 interface quicklinksSlice {
@@ -49,6 +49,9 @@ export const quickLinksSlice = createSlice({
             },
             deleteQuickLink: (state, action) => {
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload])}
+                console.log(action.payload.id)
+                state.quickLinksArray.splice(action.payload.id,1)
+                console.dir(current(state))
                 fetch('/api/shop-tills/delete-quick-links', opt)
             },
             deleteQuickLinkItem: (state, action) => {

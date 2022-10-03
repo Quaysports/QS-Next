@@ -2,13 +2,13 @@ import style from "./user.module.css";
 import PermissionsPopup from "./permissions-popup";
 import {deleteUser, setUserData} from "../../../store/dashboard/user-slice";
 import {useDispatch} from "react-redux";
-import {user} from "../../../server-modules/users/user";
+import {User} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import RegexInput from "../../../components/RegexInput";
 
 interface propTypes {
-    userInfo: user[]
+    userInfo: User[]
 }
 
 export default function UserTable({userInfo}: propTypes) {

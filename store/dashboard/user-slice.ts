@@ -1,13 +1,13 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-import {user} from "../../server-modules/users/user";
+import {User} from "../../server-modules/users/user";
 
 export interface userWrapper {
     users: userState
 }
 
 export interface userState {
-    usersArray: user[]
+    usersArray: User[]
 }
 
 const initialState:userState = {
