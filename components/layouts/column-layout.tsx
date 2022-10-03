@@ -3,8 +3,8 @@ import {CSSProperties, ReactNode} from "react";
 
 interface Props {
     children:ReactNode;
-    background: boolean;
-    scroll:boolean;
+    background?: boolean;
+    scroll?:boolean;
     maxWidth?:number;
 }
 

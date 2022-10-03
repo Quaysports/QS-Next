@@ -3,7 +3,7 @@ import {ReactNode, CSSProperties} from "react";
 
 interface Props {
     children:ReactNode;
-    scroll:boolean;
+    scroll?:boolean;
 }
 
 export default function SidebarLayout({children, scroll = false}:Props){
