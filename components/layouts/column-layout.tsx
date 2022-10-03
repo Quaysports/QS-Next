@@ -1,8 +1,16 @@
 import styles from './layout-styles.module.css'
+import {CSSProperties, ReactNode} from "react";
 
-export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined}) {
+interface Props {
+    children:ReactNode;
+    background: boolean;
+    scroll:boolean;
+    maxWidth?:number;
+}
 
-    const styleOverrides = {overflowY: null, margin: null, maxHeight: null, maxWidth: null}
+export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined}:Props) {
+
+    const styleOverrides: CSSProperties = {overflowY: undefined, margin: undefined, maxHeight: undefined, maxWidth: undefined}
 
     if (scroll) {
         styleOverrides.overflowY = "auto"
@@ -17,7 +25,7 @@ export default function ColumnLayout({children, background = true, scroll = fals
         <>
             {children ?
                 <div
-                    className={`${styles["column-layout"]} ${background === true ? styles["column-layout-background"] : ""}`}
+                    className={`${styles["column-layout"]} ${background ? styles["column-layout-background"] : ""}`}
                     style={styleOverrides}>
                     {children}
                 </div> : null}

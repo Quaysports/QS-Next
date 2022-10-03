@@ -1,4 +1,4 @@
-export default function CSVButton({fileName = (new Date()).toString(), objectArray}){
+export default function CSVButton({fileName = (new Date()).toString(), objectArray = []}){
 
     function createCSV(){
         let str = ""

@@ -1,6 +1,11 @@
 import styles from './layout-styles.module.css'
+import {ReactNode} from "react";
 
-export default function MenuLayout({children}){
+interface Props {
+    children:ReactNode
+}
+
+export default function MenuLayout({children}:Props){
     return(
         <div className={styles["menu-layout"]}>{children}</div>
     )

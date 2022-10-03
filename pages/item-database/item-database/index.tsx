@@ -1,5 +1,5 @@
 import styles from "../item-database.module.css";
-import DatabaseSearchBar, {searchResult} from "../../../components/database-search-bar/DatabaseSearch";
+import DatabaseSearchBar, {SearchResult} from "../../../components/database-search-bar/database-search";
 import SideBar from "./sidebar";
 import ItemDetails from "./item-details";
 import {useDispatch, useSelector} from "react-redux";
@@ -20,7 +20,7 @@ export default function ItemDatabaseLandingPage() {
 
     }, [])
 
-    function searchOptions(options:searchResult) {
+    function searchOptions(options:SearchResult) {
         const opts = {
             method: 'POST',
             headers: {

@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from "react"
 import styles from './database-search-bar.module.css'
 
-export interface searchResult {
+export interface SearchResult {
     _id: string
     SKU: string
     TITLE: string
     more?: string
 }
 
-export default function DatabaseSearchBar({handler}: { handler: (x: searchResult) => void }) {
+export default function DatabaseSearchBar({handler}: { handler: (x: SearchResult) => void }) {
 
     const [searchType, setSearchType] = useState<string>("SKU")
-    const [currentSearchValue, setCurrentSearchValue] = useState("")
-    const [searchResults, setSearchResults] = useState([])
-    const [triggerUpdate, setTriggerUpdate] = useState(false)
+    const [currentSearchValue, setCurrentSearchValue] = useState<string>("")
+    const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+    const [triggerUpdate, setTriggerUpdate] = useState<boolean>(false)
 
     useEffect(() => {
         if (currentSearchValue.length > 1) {
@@ -36,9 +36,9 @@ export default function DatabaseSearchBar({handler}: { handler: (x: searchResult
         if (type === "TITLE" && checked) setSearchType("TITLE")
     }
 
-    function searchArray(value: string, searchResults: searchResult[]) {
-        let startsWith: searchResult[] = []
-        let contains: searchResult[] = []
+    function searchArray(value: string, searchResults: SearchResult[]) {
+        let startsWith: SearchResult[] = []
+        let contains: SearchResult[] = []
         for (let i = 0; i < searchResults.length; i++) {
             if (searchType === "SKU") {
                 if (searchResults[i].SKU.toUpperCase().startsWith(value.toUpperCase())) {
