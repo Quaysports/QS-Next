@@ -1,7 +1,6 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {DeadStockReport} from "../server-modules/shop/shop";
-import {SupplierItem} from "../server-modules/shop/shop-order-tool";
 
 /**
  * @property {string} _id
@@ -108,7 +107,7 @@ export interface ShopOrdersState {
  * @property {boolean} allItems
  */
 
-interface radioButtonsObject {
+export interface radioButtonsObject {
     lowStock: boolean
     allItems: boolean
 }

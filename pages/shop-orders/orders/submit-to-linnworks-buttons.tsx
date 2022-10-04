@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectLoadedOrder, setCompleteOrder, setSubmittedOrder} from "../../../store/shop-orders-slice";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
-interface SubmitToLinnworksButtonsProps {
+export interface SubmitToLinnworksButtonsProps {
     supplierFilter: () => void
 }
 

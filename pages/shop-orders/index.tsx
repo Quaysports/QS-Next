@@ -13,26 +13,10 @@ import {useDispatch} from "react-redux";
 import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
 import {InferGetServerSidePropsType} from "next";
 
-
-export interface item {
-    IDBEP: { BRAND: string },
-    MINSTOCK: number,
-    SKU: string,
-    STOCKTOTAL: number,
-    SUPPLIER: string,
-    TITLE: string,
-    PURCHASEPRICE: number,
-    _id: string
-    qty: number
-    deadStock: boolean
-    tradePack: number
-    lowStock?: boolean
-    newProduct: boolean
-}
-
 /**
  * Shop Orders Landing Page
  */
+
 export default function ShopOrdersLandingPage(props:InferGetServerSidePropsType<typeof getServerSideProps>) {
 
     const router = useRouter()

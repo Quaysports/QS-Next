@@ -9,7 +9,7 @@ import CSVButton from "../../../components/csv-button";
 /**
  * @property {supplierFilter} supplierFilter
  */
-interface OrderInformationProps{
+export interface OrderInformationProps{
     supplierFilter: () => void;
 }
 
