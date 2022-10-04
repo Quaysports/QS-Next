@@ -5,7 +5,7 @@ import {selectSideBarContent} from "../../../store/shop-orders-slice";
 import SidebarLayout from "../../../components/layouts/sidebar-layout";
 import SidebarButton from "../../../components/layouts/SidebarButton";
 
-interface SideBarProps {
+export interface SideBarProps {
     supplierFilter : (x:string) => void
 }
 

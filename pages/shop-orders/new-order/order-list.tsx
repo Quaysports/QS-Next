@@ -16,7 +16,7 @@ import {dispatchNotification} from "../../../server-modules/dispatch-notificatio
 /**
  * @property {string} supplier
  */
-interface OrderListProps {
+export interface OrderListProps {
     supplier: string
 }
 

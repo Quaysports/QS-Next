@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 /**
  * @property {supplierFilter} supplierFilter
  */
-interface DisplayArrivedProps{
+export interface DisplayArrivedProps{
     supplierFilter: () => void
 }
 

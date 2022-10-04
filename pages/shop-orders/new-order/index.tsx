@@ -10,7 +10,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import ColumnLayout from "../../../components/layouts/column-layout";
-import {SupplierItem, SupplierLowStock} from "../../../server-modules/shop/shop-order-tool";
+import {SupplierLowStock} from "../../../server-modules/shop/shop-order-tool";
 
 /**
  * New Order Tab
