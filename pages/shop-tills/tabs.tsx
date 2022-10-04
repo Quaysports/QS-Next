@@ -1,5 +1,8 @@
 import Link from "next/link";
 
+/**
+ * Menu tabs for Shop Tills page
+ */
 export default function ShopTabs(){
     return(
         <>

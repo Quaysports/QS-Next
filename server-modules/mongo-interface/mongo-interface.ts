@@ -135,7 +135,7 @@ export const bulkUpdateAny = async (collection: string, arr: mongoDB.Document[],
   return { status: `BulkUpdated ${updatedItems} items` };
 }
 
-export const find = async <T>(collection: string, filter = {}, projection = {}, sort = {}, limit = 20000) => {
+export const find = async <T extends mongoDB.Document>(collection: string, filter = {}, projection = {}, sort = {}, limit = 20000) => {
   const client = await connect()
   try {
     const db = client.db(process.env.DB_NAME);
@@ -148,7 +148,7 @@ export const find = async <T>(collection: string, filter = {}, projection = {}, 
   }
 }
 
-export const findAggregate = async <T>(collection: string, aggregate: object[]) => {
+export const findAggregate = async <T extends mongoDB.Document>(collection: string, aggregate: object[]) => {
   const client = await connect()
   try {
     const db = client.db(process.env.DB_NAME);

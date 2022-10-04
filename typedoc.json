@@ -1,4 +1,5 @@
 {
-  "entryPoints": ["pages/index.tsx"],
+  "excludeNotExported": true,
+  "mode": "file",
   "out": "docs"
 }

@@ -4,6 +4,9 @@ import {useState} from "react";
 import {selectQuickLinks} from "../../../store/shop-tills/quicklinks-slice";
 import {useSelector} from "react-redux";
 
+/**
+ * Quick Links tab, accesses links array and sets loaded links to first in the array
+ */
 export default function QuickLinks(){
 
     const links = useSelector(selectQuickLinks)

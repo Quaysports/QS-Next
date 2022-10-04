@@ -3,7 +3,10 @@ import React, {useRef} from "react";
 import {signIn} from 'next-auth/react'
 import styles from './login.module.css'
 
-export default function Index() {
+/**
+ * Login landing page with function to intercept form, pass details to next-auth and reload page on auth.
+ */
+export default function LoginLandingPage() {
     const user = useRef<HTMLInputElement>(null)
     const password = useRef<HTMLInputElement>(null)
 

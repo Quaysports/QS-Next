@@ -7,6 +7,9 @@ import {updateQuickLinks} from "../../store/shop-tills/quicklinks-slice";
 import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
 import {appWrapper} from "../../store/store";
 
+/**
+ * Shop Tills landing page and routing
+ */
 export default function ShopTills() {
     const router = useRouter()
 
@@ -19,6 +22,9 @@ export default function ShopTills() {
 }
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async(context)=>{
-    if(context.query.tab === "quick-links") store.dispatch(updateQuickLinks(await getQuickLinks()))
+    if(context.query.tab === "quick-links"){
+        const data = await getQuickLinks()
+        if(data) store.dispatch(updateQuickLinks(data))
+    }
     return {props:{}}
 })

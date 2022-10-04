@@ -16,7 +16,7 @@ export default function QuickLinksSidebarButton({id, active, handler, text}:Prop
             <div className={styles["sidebar-button-edit"]} onClick={()=>dispatchNotification({
                 type:"popup",
                 title:"New QuickLink Menu",
-                content:<EditQuickLinkMenuPopup id={id}/>
+                content:<EditQuickLinkMenuPopup index={id}/>
             })}>&#9998;</div>
             <div className={styles["sidebar-button-title"]} onClick={()=>handler(id)}>{text}</div>
         </SidebarButton>

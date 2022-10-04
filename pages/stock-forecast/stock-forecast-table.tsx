@@ -1,8 +1,14 @@
 import styles from './stock-forecast.module.css'
-import {timeSpan} from "../../server-modules/stock-forecast/process-data";
+import {StockForecastItem, timeSpan} from "../../server-modules/stock-forecast/process-data";
 import StockForecastCell from "./stock-forecast-cell";
 
-export default function StockForecastTable({items}){
+interface Props {
+    items: StockForecastItem[] | null
+}
+
+export default function StockForecastTable({items}:Props){
+
+    if(!items) return null
 
     const listItems = buildList(items)
     const titleMonths = timeSpan()
@@ -28,7 +34,7 @@ export default function StockForecastTable({items}){
     )
 }
 
-function buildList(items){
+function buildList(items:StockForecastItem[]){
     let elementArray = []
     if(!items) return null
     for(let item of items) {
@@ -50,5 +56,3 @@ function buildList(items){
     console.log(items)
     return elementArray
 }
-
-

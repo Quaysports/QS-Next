@@ -14,7 +14,7 @@ export default function QuickLinkTableAddButton({id, index}:Props){
     const dispatch = useDispatch()
     const handler = (res:DatabaseSearchItem)=>{
         dispatchNotification({type:undefined})
-        dispatch(addItemToLinks({id:id, index:index, data:{SKU: res.SKU, SHOPPRICEINCVAT: 0, TITLE: res.TITLE}}))
+        dispatch(addItemToLinks({id:id, index:index, data:{SKU: res.SKU, SHOPPRICEINCVAT: "0", TITLE: res.TITLE}}))
         console.log("handled!")
         console.log(res)
     }
