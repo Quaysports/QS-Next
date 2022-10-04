@@ -6,7 +6,7 @@ import {userSlice} from "./dashboard/user-slice";
 import {quickLinksSlice} from "./shop-tills/quicklinks-slice";
 import {itemDatabaseSlice} from "./item-database/item-database-slice";
 
-const myStore = () =>
+export const myStore = () =>
     configureStore({
         reducer: {
             [shopOrdersSlice.name]: shopOrdersSlice.reducer,

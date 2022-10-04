@@ -1,6 +1,9 @@
 import {FocusEvent, ChangeEvent} from "react";
 
 /**
+ * @module Regex-Index
+ */
+/**
  * Array of object with {[key:string]: string} acting as regex dictionary.<br />
  * Regex Dictionary: {@link regexDictionary}
  * @property {Object<string,string>[]} DictionaryEntry - Key as id, property as regex

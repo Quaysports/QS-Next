@@ -5,7 +5,7 @@ import {SessionProvider} from "next-auth/react";
 import UserSetup from './user-setup'
 import NotificationWrapper from "../components/notification/notification-wrapper";
 
-function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
+export function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
     return (
             <SessionProvider session={session}>
                 <UserSetup {...pageProps}/>
