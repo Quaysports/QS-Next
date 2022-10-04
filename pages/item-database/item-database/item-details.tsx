@@ -6,6 +6,9 @@ import StatusRibbon from "./status-ribbon";
 import EssentialsRibbon from "./essentials-ribbon";
 import LinkedSKURibbon from "./linked-sku-ribbon";
 
+/**
+ * Item Details Component
+ */
 export default function ItemDetails(){
 
     const item = useSelector(selectItem)

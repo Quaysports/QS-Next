@@ -17,7 +17,7 @@ export default function ShopOrdersTabs() {
     }
 
     function checkHandler(route:string){
-        dispatch(setOrderInfoReset({}));
+        dispatch(setOrderInfoReset());
         router.push(route)
     }
 

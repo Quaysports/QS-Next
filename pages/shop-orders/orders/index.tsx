@@ -9,7 +9,7 @@ import {
     setLoadedOrder,
     setSideBarContent,
     setOpenOrders,
-    selectOpenOrders
+    selectOpenOrders, OpenOrdersObject
 } from "../../../store/shop-orders-slice";
 import ColumnLayout from "../../../components/layouts/column-layout";
 import {shopOrder} from "../../../server-modules/shop/shop-order-tool";
@@ -54,11 +54,11 @@ export default function Orders() {
                     tempObject[(i + 1).toString() + " - " + openOrders[i].supplier] = order
                     i++
                 }
-                dispatch(setOpenOrders(tempObject))
+                dispatch(setOpenOrders(tempObject as {[key:string]:OpenOrdersObject}))
             }
         }
         if (supplier) {
-            let loadedOrder = openOrders[supplier]
+            let loadedOrder = openOrders![supplier]
             dispatch(setLoadedOrder(loadedOrder))
         }
 

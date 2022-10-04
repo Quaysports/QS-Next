@@ -81,7 +81,7 @@ export default function OrderList(props: OrderListProps) {
                             } else {
                                 dispatchNotification({type: "alert", title: "Success!", content: "New order created"})
                             }
-                            dispatch(setOrderInfoReset({}))
+                            dispatch(setOrderInfoReset())
                             router.push("/shop-orders?tab=orders")
                         } else {
                             dispatchNotification({

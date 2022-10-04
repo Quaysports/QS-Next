@@ -151,7 +151,7 @@ export default function StockList() {
 
     function setNewRenderedArray(filteredArray: SearchItem[]) {
         dispatch(setThreshold(50))
-        dispatch(setRenderedArray(filteredArray))
+        dispatch(setRenderedArray(filteredArray as orderObject[]))
     }
 
     return (

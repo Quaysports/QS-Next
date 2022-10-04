@@ -29,16 +29,16 @@ export default function DisplayArrived(props: DisplayArrivedProps) {
 
     function arrivedTableCells() {
         let tempArray = []
-        for (let i = 0; i < loadedOrder.arrived.length; i++) {
-            console.log(loadedOrder.arrived[i])
+        for (let i = 0; i < loadedOrder!.arrived.length; i++) {
+            console.log(loadedOrder!.arrived[i])
             tempArray.push(
-                <div key={i} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`} style={loadedOrder.arrived[i].submitted ? {backgroundColor:"var(--traffic-light-green)"} : {backgroundColor:"var(--primary-table-cell-background)"}} >
-                    {!loadedOrder.arrived[i].submitted ? <button onClick={() => removeFromBookedInHandler(loadedOrder, i, loadedOrder.arrived[i].SKU)}>⇅</button>: <span/>}
-                    <span className={styles["center-align"]}>{loadedOrder.arrived[i].qty ? loadedOrder.arrived[i].qty : 0} </span>
-                    <span className={styles["center-align"]}>{loadedOrder.arrived[i].tradePack ??= 0}</span>
-                    <span>{loadedOrder.arrived[i].SKU} </span>
-                    <span>{loadedOrder.arrived[i].TITLE} </span>
-                    <span>{loadedOrder.arrived[i].arrived} </span>
+                <div key={i} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`} style={loadedOrder!.arrived[i].submitted ? {backgroundColor:"var(--traffic-light-green)"} : {backgroundColor:"var(--primary-table-cell-background)"}} >
+                    {!loadedOrder!.arrived[i].submitted ? <button onClick={() => removeFromBookedInHandler(loadedOrder!, i, loadedOrder!.arrived[i].SKU)}>⇅</button>: <span/>}
+                    <span className={styles["center-align"]}>{loadedOrder!.arrived[i].qty ? loadedOrder!.arrived[i].qty : 0} </span>
+                    <span className={styles["center-align"]}>{loadedOrder!.arrived[i].tradePack ??= 0}</span>
+                    <span>{loadedOrder!.arrived[i].SKU} </span>
+                    <span>{loadedOrder!.arrived[i].TITLE} </span>
+                    <span>{loadedOrder!.arrived[i].arrived} </span>
                 </div>
             )
         }

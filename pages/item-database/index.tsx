@@ -18,6 +18,9 @@ export type rodLocationObject = {
     TITLE:string
 }
 
+/**
+ * Item Database Landing Page
+ */
 export default function itemDatabaseLandingPage({rodLocations}:InferGetServerSidePropsType<typeof getServerSideProps>) {
 
     const router = useRouter()

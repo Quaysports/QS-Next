@@ -7,6 +7,9 @@ import {selectItem} from "../../../store/item-database/item-database-slice";
 import {useEffect} from "react";
 import {useRouter} from "next/router";
 
+/**
+ * Item Database Tab
+ */
 export default function ItemDatabaseLandingPage() {
 
     const item = useSelector(selectItem)

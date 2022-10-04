@@ -52,7 +52,7 @@ export default function OrderInformation(props: OrderInformationProps) {
                         title: "Success",
                         content: `${order.supplier}(${order.id}) has been deleted`
                     }); props.supplierFilter()
-                dispatch(setLoadedOrder(undefined))
+                dispatch(setLoadedOrder(null))
             })
     }
 

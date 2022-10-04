@@ -2,6 +2,7 @@ import * as React from 'react';
 import SideBar from "../sidebar/sidebar";
 import {useEffect, useState} from "react";
 import {
+    OpenOrdersObject,
     selectCompletedOrders, selectOrderContents,
     setCompletedOrders, setOrderContents,
     setSideBarContent
@@ -50,7 +51,7 @@ export default function CompletedOrders() {
                         tempObject[res[i].supplier].push(res[i]) :
                         tempObject[res[i].supplier] = [res[i]]
                 }
-                dispatch(setCompletedOrders(tempObject))
+                dispatch(setCompletedOrders(tempObject as {[key:string]:OpenOrdersObject[]}))
 
                 function transformCompletedOrdersForSideBar(completedOrders:shopOrder[]) {
                     let sortedData = completedOrders.sort((a, b) => {
@@ -70,7 +71,7 @@ export default function CompletedOrders() {
         if (supplier) {
             let tempArray = [<option onClick={() => dispatch(setOrderContents(null))} key={0}>Select Order</option>]
             let i = 0
-            completedOrders[supplier].slice().reverse().forEach((value) => {
+            completedOrders![supplier].slice().reverse().forEach((value) => {
                 tempArray.push(
                     <option onClick={() => dispatch(setOrderContents(value))} key={value.id + i}>{value.id}</option>
                 )

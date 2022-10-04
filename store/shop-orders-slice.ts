@@ -1,6 +1,7 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {DeadStockReport} from "../server-modules/shop/shop";
+import {SupplierItem} from "../server-modules/shop/shop-order-tool";
 
 /**
  * @property {string} _id
@@ -159,7 +160,7 @@ export const shopOrdersSlice = createSlice({
                 state.sideBarContent = action.payload.content;
                 state.sideBarTitle = action.payload.title
             },
-            setLoadedOrder: (state, action:PayloadAction<OpenOrdersObject>) => {
+            setLoadedOrder: (state, action:PayloadAction<OpenOrdersObject | null>) => {
                 state.loadedOrder = action.payload
             },
             setOpenOrders: (state, action:PayloadAction<{[key:string]:OpenOrdersObject}>) => {
@@ -169,7 +170,7 @@ export const shopOrdersSlice = createSlice({
                 state.editOrder = action.payload
                 state.newOrderArray = action.payload.order
             },
-            setArrivedHandler: (state, action:PayloadAction<{ index: number, value:number | undefined }>) => {
+            setArrivedHandler: (state, action:PayloadAction<{ index: number, value:number }>) => {
                 state.loadedOrder!.order[action.payload.index].arrived = action.payload.value
             },
             setBookedInState: (state, action:PayloadAction<{ bookedIn:string, index:number }>) => {
@@ -258,7 +259,7 @@ export const shopOrdersSlice = createSlice({
             setCompletedOrders: (state, action:PayloadAction<{[key:string]:OpenOrdersObject[]}>) => {
                 state.completedOrders = action.payload
             },
-            setOrderContents: (state, action:PayloadAction<OpenOrdersObject>) => {
+            setOrderContents: (state, action:PayloadAction<OpenOrdersObject | null>) => {
                 state.orderContents = action.payload
             },
             setOrderInfoReset: (state) => {

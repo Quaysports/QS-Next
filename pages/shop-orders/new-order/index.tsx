@@ -5,7 +5,7 @@ import OrderList from "./order-list";
 import {
     selectEditOrder, selectNewOrderArray,
     setSideBarContent, setSupplierItems,
-    setTotalPrice, selectDeadStock, setOrderInfoReset
+    setTotalPrice, selectDeadStock, setOrderInfoReset, orderObject
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
@@ -36,7 +36,7 @@ export default function NewOrder() {
             fetch("/api/shop-orders/get-supplier-items", opts)
                 .then(res => res.json())
                 .then(res => {
-                    let itemsTempObject: {[key:string]: SupplierItem[]} = {}
+                    let itemsTempObject: {[key:string]: orderObject[]} = {}
                     itemsTempObject[supplier] = []
                     for (let i = 0; i < res.length; i++) {
                         res[i].SUPPLIER = supplier
@@ -113,7 +113,7 @@ export default function NewOrder() {
                 title: "Order not saved",
                 content: "This order has not been saved, changing the supplier will delete the current order, continue?",
                 fn: () => {
-                    dispatch(setOrderInfoReset({}));
+                    dispatch(setOrderInfoReset());
                     setSupplier(supplier)
                 }
             })

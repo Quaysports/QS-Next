@@ -2,6 +2,9 @@ import SidebarButton from "../../../components/layouts/SidebarButton";
 import styles from "../item-database.module.css";
 import SidebarLayout from "../../../components/layouts/sidebar-layout";
 
+/**
+ * Side Bar Component
+ */
 export default function SideBar(){
     return(
         <SidebarLayout>

@@ -9,6 +9,9 @@ interface Props {
     rodLocations: rodLocationObject[]
 }
 
+/**
+ * Rod Loactions Tab
+ */
 export default function RodLocationsLandingPage({rodLocations}:Props){
 
     const [brandFilter, setBrandFilter] = useState<string | null>(null)

@@ -23,7 +23,7 @@ export default function DisplayOnOrder() {
     const [saveOrder, setSaveOrder] = useState<boolean>(false)
 
     function arrivedHandler(quantity:string, item:OpenOrdersObject, index:number) {
-        dispatch(setArrivedHandler({index: index, value: quantity}))
+        dispatch(setArrivedHandler({index: index, value: Number(quantity)}))
     }
 
     function editOrder(order:OpenOrdersObject) {
@@ -51,7 +51,7 @@ export default function DisplayOnOrder() {
 
         if ((order.order[index].qty - order.order[index].arrived!) > 0) {
             let conf = window.confirm("Did only part of the order arrive?")
-            if (conf === true) {
+            if (conf) {
                 setSaveOrder(true)
                 dispatch(setBookedInState({bookedIn: "partial", index: index}))
             }
@@ -85,35 +85,35 @@ export default function DisplayOnOrder() {
         let tempArray = []
         let newProductArray = [<div key={"new-title"}><span/><span/><span/><span>New Products</span><span/><span/>
         </div>]
-        for (let i = 0; i < loadedOrder.order.length; i++) {
-            if (loadedOrder.order[i].newProduct) {
+        for (let i = 0; i < loadedOrder!.order.length; i++) {
+            if (loadedOrder!.order[i].newProduct) {
                 newProductArray.push(
-                    <div key={loadedOrder.order[i].SKU}
+                    <div key={loadedOrder!.order[i].SKU}
                          className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`}
-                         style={backgroundColorCheck(loadedOrder.order[i].bookedIn)}>
-                        <button onClick={() => bookedInHandler(loadedOrder, i)}>⇅</button>
-                        <span className={styles["center-align"]}>{loadedOrder.order[i].qty ??= 0}</span>
-                        <span className={styles["center-align"]}>{loadedOrder.order[i].tradePack ??= 0}</span>
-                        <span>{loadedOrder.order[i].SKU} </span>
-                        <span>{loadedOrder.order[i].TITLE} </span>
-                        <input value={loadedOrder.order[i].arrived}
+                         style={backgroundColorCheck(loadedOrder!.order[i].bookedIn)}>
+                        <button onClick={() => bookedInHandler(loadedOrder!, i)}>⇅</button>
+                        <span className={styles["center-align"]}>{loadedOrder!.order[i].qty ??= 0}</span>
+                        <span className={styles["center-align"]}>{loadedOrder!.order[i].tradePack ??= 0}</span>
+                        <span>{loadedOrder!.order[i].SKU} </span>
+                        <span>{loadedOrder!.order[i].TITLE} </span>
+                        <input value={loadedOrder!.order[i].arrived}
                                onChange={(e) => {
-                                   arrivedHandler(e.target.value, loadedOrder, i)
+                                   arrivedHandler(e.target.value, loadedOrder!, i)
                                }}/>
                     </div>)
             } else {
                 tempArray.push(
-                    <div key={loadedOrder.order[i].SKU}
+                    <div key={loadedOrder!.order[i].SKU}
                          className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`}
-                         style={backgroundColorCheck(loadedOrder.order[i].bookedIn)}>
-                        <button onClick={() => bookedInHandler(loadedOrder, i)}>⇅</button>
-                        <span className={styles["center-align"]}>{loadedOrder.order[i].qty ??= 0}</span>
-                        <span className={styles["center-align"]}>{loadedOrder.order[i].tradePack ??= 0}</span>
-                        <span>{loadedOrder.order[i].SKU} </span>
-                        <span>{loadedOrder.order[i].TITLE} </span>
-                        <input value={loadedOrder.order[i].arrived}
+                         style={backgroundColorCheck(loadedOrder!.order[i].bookedIn)}>
+                        <button onClick={() => bookedInHandler(loadedOrder!, i)}>⇅</button>
+                        <span className={styles["center-align"]}>{loadedOrder!.order[i].qty ??= 0}</span>
+                        <span className={styles["center-align"]}>{loadedOrder!.order[i].tradePack ??= 0}</span>
+                        <span>{loadedOrder!.order[i].SKU} </span>
+                        <span>{loadedOrder!.order[i].TITLE} </span>
+                        <input value={loadedOrder!.order[i].arrived}
                                onChange={(e) => {
-                                   arrivedHandler(e.target.value, loadedOrder, i)
+                                   arrivedHandler(e.target.value, loadedOrder!, i)
                                }}/>
                     </div>
                 )

@@ -10,6 +10,9 @@ import {
 import styles from "../item-database.module.css"
 import {useEffect} from "react";
 
+/**
+ * Essentials Ribbon Component
+ */
 
 export default function EssentialsRibbon(){
 

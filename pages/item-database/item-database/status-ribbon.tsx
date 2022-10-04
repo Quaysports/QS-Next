@@ -2,6 +2,9 @@ import {useSelector} from "react-redux";
 import {selectItem} from "../../../store/item-database/item-database-slice";
 import styles from "../item-database.module.css"
 
+/**
+ * Status Ribbon Component
+ */
 export default function StatusRibbon() {
 
     const item = useSelector(selectItem)

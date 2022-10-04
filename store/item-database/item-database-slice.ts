@@ -1,10 +1,19 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 
+/**
+ * @property {itemDatabaseState} itemDatabase
+ */
 export interface itemDatabaseWrapper {
     itemDatabase: itemDatabaseState
 }
 
+/**
+ * @property {sbt.Item | null} item
+ * @property {string[]} suppliers
+ * @property {Array string} brands
+ * @property {string} [currentSupplier]
+ */
 export interface itemDatabaseState {
     item: sbt.Item | null
     suppliers: string[]
