@@ -1,7 +1,7 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 
-export interface User {
-    theme: { [key:string]: string };
+export interface User{
+    theme: UserTheme;
     _id?: string;
     username: string;
     pin?: string;
@@ -11,6 +11,10 @@ export interface User {
     colour?: string;
     permissions: Permissions;
     holiday?: string;
+}
+
+export interface UserTheme {
+ [key:string]: string ;
 }
 
 export interface Permissions {

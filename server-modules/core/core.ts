@@ -7,7 +7,7 @@ export const guid = () => {
     return _p8(false) + _p8(true) + _p8(true) + _p8(false)
 }
 
-export const findKey = <T>(array, key, id): T | null =>{
+export const findKey = <T>(array: T[], key: keyof T, id:any): T | null =>{
     console.log("find key")
     let pos = array.map(v => {return v[key]}).indexOf(id)
     console.log(pos)

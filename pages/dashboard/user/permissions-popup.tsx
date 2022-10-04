@@ -19,7 +19,7 @@ export default function PermissionsPopup({index}:Props) {
     const dispatch = useDispatch()
 
     function updatePermissions(index: string, key: string, e: ChangeEvent<HTMLInputElement>) {
-        dispatch(setUserPermissions({index: index, key: key, data: {auth: e.target.checked}}))
+        dispatch(setUserPermissions({index: Number(index), key: key, data: {auth: e.target.checked}}))
     }
 
     return (<div key={index}>

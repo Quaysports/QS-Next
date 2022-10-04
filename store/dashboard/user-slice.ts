@@ -27,17 +27,17 @@ export const userSlice = createSlice({
         },
         reducers:{
             setAllUserData:(state,action) => {state.usersArray = action.payload},
-            setUserData:(state,action:PayloadAction<{index:string, key:string, data:string}>) => {
-                state.usersArray[action.payload.index][action.payload.key] = action.payload.data
+            setUserData:(state,action:PayloadAction<{index:number, user:User}>) => {
+                state.usersArray[action.payload.index] = action.payload.user
                 const opt = {method:'POST', body: JSON.stringify(state.usersArray[action.payload.index])}
                 fetch('/api/user/update-user', opt).then(res=>console.log(res))
             },
-            setUserPermissions:(state, action:PayloadAction<{index:string, key:string, data:{auth:boolean}}>)=> {
+            setUserPermissions:(state, action:PayloadAction<{index:number, key:string, data:{auth:boolean}}>)=> {
                 state.usersArray[action.payload.index].permissions[action.payload.key] = action.payload.data
                 const opt = {method:'POST', body: JSON.stringify(state.usersArray[action.payload.index])}
                 fetch('/api/user/update-user', opt)
             },
-            deleteUser:(state, action:PayloadAction<{index:string}>)=>{
+            deleteUser:(state, action:PayloadAction<{index:number}>)=>{
                 const opt = {method:'POST', body: JSON.stringify(state.usersArray[action.payload.index])}
                 fetch('/api/user/delete-user', opt).then(()=>window.location.reload())
             }

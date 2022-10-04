@@ -21,8 +21,9 @@ interface Props {
 export default function UserTable({userInfo}: Props) {
     const dispatch = useDispatch()
 
-    function updateUserData(index: string, key: string, data: string) {
-        dispatch(setUserData({index: index, key: key, data: data}))
+    function updateUserData(index: string, user:User) {
+        console.log(user)
+        dispatch(setUserData({index: Number(index), user:user}))
     }
 
     
@@ -53,7 +54,11 @@ export default function UserTable({userInfo}: Props) {
 
     for (const [index, user] of Object.entries(userInfo)) {
 
-        const pinHandler = (value:string) => updateUserData(index, "pin", value)
+        let loadedUser = {...user}
+        const pinHandler = (value:string) => {
+            loadedUser.pin = value
+            updateUserData(index, loadedUser)
+        }
         
         userArray.push(
             <div key={index} className={style["user-table-row"]}>
@@ -62,7 +67,7 @@ export default function UserTable({userInfo}: Props) {
                         type: "confirm",
                         title: 'Delete User',
                         content: "Are you sure you wish to delete this user?",
-                        fn: () => dispatch(deleteUser({index: index}))
+                        fn: () => dispatch(deleteUser({index: Number(index)}))
                     });
                 }}>X</button></span>
 
@@ -74,22 +79,40 @@ export default function UserTable({userInfo}: Props) {
                     });
                 }}>Permissions</button></span>
 
-                <span><input type="text" defaultValue={user.username} onBlur={(e) => updateUserData(index, "username", e.target.value)}/></span>
+                <span><input type="text" defaultValue={user.username} onBlur={(e) =>{
+                    loadedUser.username = e.target.value
+                    updateUserData(index, loadedUser)}
+                }/></span>
 
-                <span><select defaultValue={user.role} onChange={(e) => updateUserData(index, "role", e.target.value)}>
+                <span><select defaultValue={user.role} onChange={(e) => {
+                    loadedUser.role = e.target.value
+                    updateUserData(index, loadedUser)
+                }}>
                     {selectOptions(['admin', 'senior', 'user'])}
                 </select></span>
 
-                <span><select defaultValue={user.rota} onChange={(e) => updateUserData(index, "rota", e.target.value)}>
+                <span><select defaultValue={user.rota} onChange={(e) => {
+                    loadedUser.rota = e.target.value
+                    updateUserData(index, loadedUser)
+                }}>
                     {selectOptions(['online', 'shop'])}
                 </select></span>
 
-                <span><input type="number" defaultValue={user.holiday} onBlur={(e) => updateUserData(index, "holiday", e.target.value)}/></span>
-                <span><input type="text" defaultValue={user.password} onBlur={(e) => updateUserData(index, "password", e.target.value)}/></span>
+                <span><input type="number" defaultValue={user.holiday} onBlur={(e) =>{
+                    loadedUser.holiday = e.target.value
+                    updateUserData(index, loadedUser)
+                }}/></span>
+                <span><input type="text" defaultValue={user.password} onBlur={(e) =>{
+                    loadedUser.password = e.target.value
+                    updateUserData(index, loadedUser)
+                }}/></span>
                 <span>
                     <RegexInput type={"pin"} value={user.pin ? user.pin : ""} errorMessage={"Pin must contain only numbers and be exactly four digits long."} handler={pinHandler}/>
                 </span>
-                <span><input type="color" defaultValue={user.colour} onBlur={(e) => updateUserData(index, "colour", e.target.value)}/></span>
+                <span><input type="color" defaultValue={user.colour} onBlur={(e) =>{
+                    loadedUser.colour = e.target.value
+                    updateUserData(index, loadedUser)
+                }}/></span>
             </div>
         )
     }
