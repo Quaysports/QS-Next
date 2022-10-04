@@ -23,6 +23,7 @@ export interface OpenOrdersObject {
     order: orderObject[]
     supplier: string
 }
+
 /**
  * @property {{BRAND: string}} IDBEP
  * @property {number} MINSTOCK
@@ -61,9 +62,10 @@ export interface orderObject {
     submitted: boolean
     SOLDFLAG: number
 }
+
 /**
  * Shop Orders State
- * @property {Object<string, deadStockObject[]>} deadStock
+ * @property {Object<string, DeadStockReport[]>} deadStock
  * @property {Object<string, string | number> } sideBarContent
  * @property {string} sideBarTitle
  * @property {OpenOrdersObject} loadedOrder
@@ -84,9 +86,9 @@ export interface ShopOrdersState {
     deadStock: { [key: string]: DeadStockReport[] };
     sideBarContent: { [key: string]: string | number }
     sideBarTitle: string
-    loadedOrder: OpenOrdersObject
-    openOrders: { [key: string]: OpenOrdersObject }
-    editOrder: OpenOrdersObject
+    loadedOrder: OpenOrdersObject | null
+    openOrders: { [key: string]: OpenOrdersObject } | null
+    editOrder: OpenOrdersObject | null
     newOrderArray: orderObject[]
     totalPrice: number
     supplierItems: orderObject[]
@@ -94,8 +96,8 @@ export interface ShopOrdersState {
     renderedArray: orderObject[]
     lowStockArray: orderObject[]
     threshold: number
-    completedOrders: { [key: string]: OpenOrdersObject[] }
-    orderContents: OpenOrdersObject
+    completedOrders: { [key: string]: OpenOrdersObject[] } | null
+    orderContents: OpenOrdersObject | null
 }
 
 
@@ -110,6 +112,9 @@ interface radioButtonsObject {
     allItems: boolean
 }
 
+/**
+ * @property {ShopOrdersState} shopOrders
+ */
 export interface ShopOrdersWrapper {
     shopOrders: ShopOrdersState
 }
@@ -154,37 +159,37 @@ export const shopOrdersSlice = createSlice({
                 state.sideBarContent = action.payload.content;
                 state.sideBarTitle = action.payload.title
             },
-            setLoadedOrder: (state, action) => {
+            setLoadedOrder: (state, action:PayloadAction<OpenOrdersObject>) => {
                 state.loadedOrder = action.payload
             },
-            setOpenOrders: (state, action) => {
+            setOpenOrders: (state, action:PayloadAction<{[key:string]:OpenOrdersObject}>) => {
                 state.openOrders = action.payload
             },
             setEditOrder: (state, action: PayloadAction<OpenOrdersObject>) => {
                 state.editOrder = action.payload
                 state.newOrderArray = action.payload.order
             },
-            setArrivedHandler: (state, action) => {
-                state.loadedOrder.order[action.payload.index].arrived = action.payload.value
+            setArrivedHandler: (state, action:PayloadAction<{ index: number, value:number | undefined }>) => {
+                state.loadedOrder!.order[action.payload.index].arrived = action.payload.value
             },
-            setBookedInState: (state, action) => {
+            setBookedInState: (state, action:PayloadAction<{ bookedIn:string, index:number }>) => {
                 if (action.payload.bookedIn === "false") {
-                    state.loadedOrder.order[action.payload.index].bookedIn = action.payload.bookedIn
-                    state.loadedOrder.arrived.push(state.loadedOrder.order[action.payload.index])
-                    state.loadedOrder.order.splice(action.payload.index, 1)
+                    state.loadedOrder!.order[action.payload.index].bookedIn = action.payload.bookedIn
+                    state.loadedOrder!.arrived.push(state.loadedOrder!.order[action.payload.index])
+                    state.loadedOrder!.order.splice(action.payload.index, 1)
                 }
                 if (action.payload.bookedIn === "partial") {
-                    state.loadedOrder.order[action.payload.index].qty = (state.loadedOrder.order[action.payload.index].qty - state.loadedOrder.order[action.payload.index].arrived)
-                    state.loadedOrder.arrived.push(state.loadedOrder.order[action.payload.index])
-                    state.loadedOrder.arrived[(state.loadedOrder.arrived.length - 1)].qty = state.loadedOrder.order[action.payload.index].arrived
-                    state.loadedOrder.order[action.payload.index].arrived = 0
+                    state.loadedOrder!.order[action.payload.index].qty = (state.loadedOrder!.order[action.payload.index].qty - state.loadedOrder!.order[action.payload.index].arrived!)
+                    state.loadedOrder!.arrived.push(state.loadedOrder!.order[action.payload.index])
+                    state.loadedOrder!.arrived[(state.loadedOrder!.arrived.length - 1)].qty = state.loadedOrder!.order[action.payload.index].arrived!
+                    state.loadedOrder!.order[action.payload.index].arrived = 0
                 }
             },
             setRemoveFromBookedInState: (state, action: PayloadAction<{ index: number, SKU: string }>) => {
-                let order = state.loadedOrder
+                let order = state.loadedOrder!
                 const i = order.order.map((item: orderObject) => item.SKU).indexOf(action.payload.SKU)
                 if (i > -1) {
-                    order.order[i].qty = (order.order[i].qty + order.arrived[action.payload.index].arrived)
+                    order.order[i].qty = (order.order[i].qty + order.arrived[action.payload.index].arrived!)
                     order.order[i].arrived = 0
                     order.arrived.splice(action.payload.index, 1)
                 } else {
@@ -202,13 +207,10 @@ export const shopOrdersSlice = createSlice({
                 }
                 fetch("/api/shop-orders/update-order", opts).then()
             },
-            setNewOrderArray: (state, action) => {
-                state.newOrderArray.push(action.payload)
-            },
-            setTotalPrice: (state, action) => {
+            setTotalPrice: (state, action:PayloadAction<number>) => {
                 state.totalPrice = action.payload
             },
-            setSupplierItems: (state, action) => {
+            setSupplierItems: (state, action:PayloadAction<orderObject[]>) => {
                 state.supplierItems = action.payload
             },
             setChangeOrderQty: (state, action: PayloadAction<{ item: orderObject, type: string, index: number, value: string }>) => {
@@ -216,7 +218,7 @@ export const shopOrdersSlice = createSlice({
                 if (action.payload.type === "tradePack") state.newOrderArray[action.payload.index].tradePack = parseFloat(action.payload.value)
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
             },
-            setChangeOrderArray: (state, action: PayloadAction<{ item: orderObject, type: string, index?: number}>) => {
+            setChangeOrderArray: (state, action: PayloadAction<{ item: orderObject, type: string, index?: number }>) => {
                 if (action.payload.type === "remove") {
                     state.newOrderArray.splice(action.payload.index!, 1)
                     state.supplierItems.push(action.payload.item)
@@ -231,13 +233,13 @@ export const shopOrdersSlice = createSlice({
                 state.radioButtons.lowStock = action.payload.lowStock
                 state.radioButtons.allItems = action.payload.allItems
             },
-            setThreshold: (state, action) => {
+            setThreshold: (state, action:PayloadAction<number>) => {
                 state.threshold = action.payload
             },
-            setLowStockArray: (state, action) => {
+            setLowStockArray: (state, action:PayloadAction<orderObject[]>) => {
                 state.lowStockArray = action.payload
             },
-            setRenderedArray: (state, action) => {
+            setRenderedArray: (state, action:PayloadAction<orderObject[]>) => {
                 state.renderedArray = action.payload
             },
             setInputChange: (state, action: PayloadAction<{ key: string, index: number, value: string }>) => {
@@ -250,22 +252,22 @@ export const shopOrdersSlice = createSlice({
                     if (action.payload.key === "tradePack") state.renderedArray[action.payload.index].tradePack = Number(action.payload.value)
                 }
             },
-            setChangeLowStockArray: (state, action) => {
+            setChangeLowStockArray: (state, action:PayloadAction<number>) => {
                 state.lowStockArray.splice(action.payload, 1)
             },
-            setCompletedOrders: (state, action) => {
+            setCompletedOrders: (state, action:PayloadAction<{[key:string]:OpenOrdersObject[]}>) => {
                 state.completedOrders = action.payload
             },
-            setOrderContents: (state, action) => {
+            setOrderContents: (state, action:PayloadAction<OpenOrdersObject>) => {
                 state.orderContents = action.payload
             },
-            setOrderInfoReset: (state, action) => {
+            setOrderInfoReset: (state) => {
                 state.editOrder = null
                 state.totalPrice = 0
                 state.newOrderArray = []
             },
-            setCompleteOrder: (state, action) => {
-                state.loadedOrder.complete = true
+            setCompleteOrder: (state) => {
+                state.loadedOrder!.complete = true
                 const opts = {
                     method: 'POST',
                     headers: {
@@ -277,12 +279,11 @@ export const shopOrdersSlice = createSlice({
                 fetch("/api/shop-orders/shop-stock-order", opts)
                     .then()
             },
-            setSubmittedOrder: (state, action) => {
+            setSubmittedOrder: (state, action:PayloadAction<linn.ItemStock[]>) => {
                 for (const item of action.payload) {
-                    let posNew = state.loadedOrder.arrived.map(order => order.SKU).indexOf(item.SKU)
-                    if (Number(state.loadedOrder.arrived[posNew].qty) <= Number(item["StockLevel"])) {
-                        console.log("Passed")
-                        state.loadedOrder.arrived[posNew].submitted = true
+                    let posNew = state.loadedOrder!.arrived.map(order => order.SKU).indexOf(item.SKU)
+                    if (Number(state.loadedOrder!.arrived[posNew].qty) <= Number(item["StockLevel"])) {
+                        state.loadedOrder!.arrived[posNew].submitted = true
                     }
                 }
                 const opts = {
@@ -300,7 +301,7 @@ export const shopOrdersSlice = createSlice({
     })
 ;
 
-function totalPriceCalc(array) {
+function totalPriceCalc(array:orderObject[]) {
     let totalPrice = 0
     for (let i = 0; i < array.length; i++) {
         let price = array[i].PURCHASEPRICE * (array[i].qty * array[i].tradePack)
@@ -317,7 +318,6 @@ export const {
     setEditOrder,
     setArrivedHandler,
     setBookedInState,
-    setNewOrderArray,
     setTotalPrice,
     setSupplierItems,
     setChangeOrderArray,

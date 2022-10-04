@@ -1,4 +1,4 @@
-.stockLists{
+.stock-lists{
     display:grid;
     max-width: 910px;
     margin: 5px auto;
@@ -10,13 +10,13 @@
     font-size: 0.9em;
 }
 
-.stockListsInput{
+.stock-lists-input{
     width: 35px;
     height: 20px;
     justify-self: center;
 }
 
-.stockListsTitles{
+.stock-lists-titles{
     display:grid;
     max-width: 910px;
     margin: 0 auto;
@@ -33,7 +33,7 @@
     height: 25px;
 }
 
-.brandTitles{
+.brand-titles{
     display: flex;
     align-items: center;
     max-width: 910px;
@@ -41,14 +41,14 @@
     background-color: var(--primary-color);
     height: 25px;
 }
-.brandTitles > div{
+.brand-titles > div{
     padding: 0 30px;
     font-weight: bold;
 }
-#saveButton{
+#save-button{
     float: right;
 }
-.stockCheckedTitles{
+.stock-checked-titles{
     display:flex;
     justify-content: center;
 }

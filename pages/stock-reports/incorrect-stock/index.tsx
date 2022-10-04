@@ -6,6 +6,10 @@ import {useDispatch} from "react-redux";
 import {setValidData} from "../../../store/stock-reports-slice";
 import IncorrectStockList from "./incorrect-stock-list";
 
+/**
+ * Incorrect Stock Tab
+ * Builds title bars for the incorrect stock page and calls components
+ */
 export default function IncorrectStock(){
 
     const dispatch = useDispatch()

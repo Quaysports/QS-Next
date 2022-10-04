@@ -7,6 +7,10 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {StockError} from "../../../server-modules/shop/shop";
 
+/**
+ * Incorrect Stock List Component
+ * Dynamically builds the rows and inputs the SKU, Title and input boxes for each item in the incorrect stock list
+ */
 export default function IncorrectStockList() {
 
     const incorrectStockState = useSelector(selectIncorrectStockState);
@@ -19,16 +23,16 @@ export default function IncorrectStockList() {
         let values = incorrectStockState[brand]
         incorrectStockArray.push(
             <div key={key}>
-                    <div className={styles.brandTitles}>
+                    <div className={styles["brand-titles"]}>
                         <div>{key !== "undefined" ? key:"Unbranded"}</div>
                     </div>
                     {values.map((item: StockError, index: number) => {
                         return (
-                            <div className={styles.stockLists} key={index}>
+                            <div className={styles["stock-lists"]} key={index}>
                                 <span/>
-                                <span className="stock-lists-cells">{item.SKU} </span>
-                                <span className="stock-lists-cells">{item.TITLE} </span>
-                                <input className={`${styles.stockListsInput} ${styles.stockListsCells}`}
+                                <span>{item.SKU} </span>
+                                <span>{item.TITLE} </span>
+                                <input className={styles["stock-lists-input"]}
                                        value={incorrectStockState[key][index].QTY | 0}
                                        onChange={(e) => {
                                            if (e.target.validity.patternMismatch) {

@@ -10,6 +10,7 @@ interface SubmitToLinnworksButtonsProps {
 
 /**
  * Submit To Linnworks Buttons Component
+ * Builds and contains all the functionality of submit and complete order buttons
  */
 export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtonsProps) {
 
@@ -18,7 +19,7 @@ export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtons
 
     async function submitToLinnworks() {
             let data = []
-            for (let item of loadedOrder.arrived) {
+            for (let item of loadedOrder!.arrived) {
                 if (item.qty > 0 && !item.submitted && !item.newProduct) {
                     data.push({SKU: item.SKU, QTY: item.tradePack * item.qty})
                 }
@@ -31,7 +32,7 @@ export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtons
                         'Content-Type': 'application/json',
                         'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
                     },
-                    body: JSON.stringify({QUERY:loadedOrder.id, DATA: data})
+                    body: JSON.stringify({QUERY:loadedOrder!.id, DATA: data})
                 }
                 await fetch("/api/shop-orders/adjust-stock", opts)
                     .then(res => res.json())
@@ -44,15 +45,15 @@ export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtons
 
 
     function completeOrder() {
-        if (loadedOrder.order.length > 0) {
+        if (loadedOrder!.order.length > 0) {
             dispatchNotification({
                 type: "confirm",
                 title: "Complete Order",
                 content: "Not all items in this order have been booked in, completing this will delete the rest of the order. Are you sure you want to continue?",
-                fn: () => {dispatch(setCompleteOrder({})); props.supplierFilter()}
+                fn: () => {dispatch(setCompleteOrder()); props.supplierFilter()}
             })
         } else {
-            dispatch(setCompleteOrder({}))
+            dispatch(setCompleteOrder())
             props.supplierFilter()
         }
     }
