@@ -1,5 +1,5 @@
 {
-  "excludeNotExported": true,
-  "mode": "file",
+  "entryPoints": ["./pages","./components","./server-modules","./store","./types"],
+  "entryPointStrategy": "expand",
   "out": "docs"
 }
