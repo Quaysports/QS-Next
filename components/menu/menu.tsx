@@ -4,9 +4,16 @@ import SettingsMenu from "./settings-menu";
 import MenuLayout from "../layouts/menu-layout";
 
 /**
- * Menubar component, pass in array of divs to render as tabs
+ * @param {ReactNode} children - Child JSX elements, should be a JSX array of spans
  */
-export default function Menu({children}:{children:ReactNode}) {
+interface Props {
+    children:ReactNode
+}
+
+/**
+ * Menubar component, pass in array of spans to render as tabs
+ */
+export default function Menu({children}:Props) {
 
     const [showAppsMenu, setShowAppsMenu] = useState<boolean>(false)
     const appsMenuHandler = () => setShowAppsMenu(!showAppsMenu)

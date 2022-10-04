@@ -4,7 +4,7 @@ import NewQuickLinkMenuPopup from "./new-quicklink-menu-popup";
 import SidebarButton from "../../../components/layouts/SidebarButton";
 
 /**
- *
+ * Sidebar button that creates a popup that allows you to create a new Quick Link menu.
  */
 export default function QuickLinkSidebarAddButton() {
     return (

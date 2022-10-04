@@ -7,7 +7,7 @@ import {Permissions} from "../../server-modules/users/user";
  * @param {boolean} showAppsMenu - Boolean to toggle menu display
  * @param {appsMenuHandler} appsMenuHandler - Handler to update display boolean
  */
-interface props {
+export interface Props {
     showAppsMenu:boolean;
     appsMenuHandler:()=>void
 }
@@ -15,7 +15,7 @@ interface props {
 /**
  * Apps menu component for Menu bar, contains shortcuts to pages
  */
-export default function AppsMenu({showAppsMenu, appsMenuHandler}:props) {
+export default function AppsMenu({showAppsMenu, appsMenuHandler}:Props) {
 
     const [permissions, setPermissions] = useState<Permissions | null>(null)
 

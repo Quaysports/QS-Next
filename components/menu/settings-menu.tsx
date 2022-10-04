@@ -6,7 +6,7 @@ import {dispatchNotification} from "../../server-modules/dispatch-notification";
  * @param {boolean} showSettingsMenu - Boolean toggle to show settings menu.
  * @param {settingsMenuHandler} settingsMenuHandler - Handler to toggle boolean to display menu.
  */
-interface props {
+interface Props {
     showSettingsMenu:boolean;
     settingsMenuHandler: ()=>void
 }
@@ -14,7 +14,7 @@ interface props {
 /**
  * Settings Menu component for Menu bar.
  */
-export default function SettingsMenu({showSettingsMenu, settingsMenuHandler}:props) {
+export default function SettingsMenu({showSettingsMenu, settingsMenuHandler}:Props) {
     if (showSettingsMenu) {
         return (
             <div key={25} id="settings-menu" onMouseLeave={settingsMenuHandler}>

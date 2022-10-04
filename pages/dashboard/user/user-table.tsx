@@ -11,14 +11,14 @@ import {ReactElement} from "react";
 /**
  * @param {User[]} userInfo - Array of user info from database
  */
-interface Props {
+export interface UserTableProps {
     userInfo: User[]
 }
 
 /**
  * User Table component. Takes user data from database and turns into table.
  */
-export default function UserTable({userInfo}: Props) {
+export default function UserTable({userInfo}: UserTableProps) {
     const dispatch = useDispatch()
 
     function updateUserData(index: string, user:User) {

@@ -7,14 +7,14 @@ import {User} from "../../../server-modules/users/user";
 /**
  * @param {string} index - Index of user in {@link User} array.
  */
-interface Props {
+export interface PermissionsPopupProps {
     index:string
 }
 
 /**
  * Change permissions component. Used in popup call.
  */
-export default function PermissionsPopup({index}:Props) {
+export default function PermissionsPopup({index}:PermissionsPopupProps) {
     const user = useSelector(selectUsers)[Number(index)]
     const dispatch = useDispatch()
 

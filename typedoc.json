@@ -1,5 +1,13 @@
 {
   "entryPoints": ["./pages","./components","./server-modules","./store","./types"],
   "entryPointStrategy": "expand",
-  "out": "docs"
+  "out": "docs",
+  "externalSymbolLinkMappings": {
+    "@types/react": {
+      "Component": "https://reactjs.org/docs/react-component.html"
+    },
+    "react": {
+      "Component": "https://reactjs.org/docs/react-component.html"
+    }
+  }
 }
