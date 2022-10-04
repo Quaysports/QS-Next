@@ -1,6 +1,6 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-import {QuickLinks} from "../../server-modules/shop/shop";
+import {QuickLinkItem, QuickLinks} from "../../server-modules/shop/shop";
 
 export interface quickLinksWrapper {
     quickLinks: quickLinksState
@@ -26,32 +26,32 @@ export const quickLinksSlice = createSlice({
             },
         },
         reducers: {
-            updateQuickLinks: (state, action) => {
+            updateQuickLinks: (state, action:PayloadAction<QuickLinks[]>) => {
                 state.quickLinksArray = action.payload
             },
-            addNewQuickLinkMenu:(state, action)=>{
+            addNewQuickLinkMenu:(state, action:PayloadAction<QuickLinks>)=>{
                 state.quickLinksArray.push(action.payload)
                 const opt = {method: 'POST', body: JSON.stringify(action.payload)}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
-            updateQuickLinkID: (state, action) => {
+            updateQuickLinkID: (state, action:PayloadAction<{id:number,data:string}>) => {
                 state.quickLinksArray[action.payload.id].id = action.payload.data
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.id])}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
 
-            deleteQuickLink: (state, action) => {
+            deleteQuickLink: (state, action:PayloadAction<number>) => {
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload])}
                 fetch('/api/shop-tills/delete-quick-links', opt).then(res => console.log(res))
                 state.quickLinksArray.splice(action.payload,1)
             },
 
-            deleteQuickLinkItem: (state, action) => {
+            deleteQuickLinkItem: (state, action:PayloadAction<{listIndex:number, itemIndex:number}>) => {
                 state.quickLinksArray[action.payload.listIndex].links[action.payload.itemIndex] = {SKU:""}
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.listIndex])}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
-            addItemToLinks: (state, action) => {
+            addItemToLinks: (state, action:PayloadAction<{id:number,index:number,data:QuickLinkItem}>) => {
                 state.quickLinksArray[action.payload.id].links[action.payload.index] = action.payload.data
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.id])}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))

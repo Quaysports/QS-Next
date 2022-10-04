@@ -1,6 +1,6 @@
 import styles from './shop-stock-take.module.css'
 import {useDispatch} from "react-redux";
-import {BrandItem, setStockTakeInfo} from "../../../store/stock-reports-slice";
+import {BrandItem, setStockTakeInfo, StockTake} from "../../../store/stock-reports-slice";
 import RegexInput from "../../../components/RegexInput";
 
 interface props {
@@ -11,9 +11,15 @@ interface props {
 export default function ShopStockTakeRow({index = null, item = null}: props) {
     const dispatch = useDispatch()
 
-    const updateSlice = (index:string, id:string, value:string | number | boolean) => dispatch(setStockTakeInfo({index: index, id: id, data: value}))
+    let loadedStockTake:StockTake = item?.stockTake ? item.stockTake : {checked:false, date:null, quantity:0}
 
-    const validationHandler = (value:string) => updateSlice(index!, "quantity", Number(value))
+    const updateSlice = (index:string, stockTake:StockTake) =>{
+        dispatch(setStockTakeInfo({index: Number(index), data: stockTake}))
+    }
+    const validationHandler = (value:string) =>{
+        loadedStockTake.quantity = Number(value)
+        updateSlice(index!, loadedStockTake)
+    }
 
     return (
         <>
@@ -43,7 +49,10 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                         ? <input
                             type={"checkbox"}
                             defaultChecked={item.stockTake?.checked}
-                            onChange={e => updateSlice(index!, "checked", e.target.checked)}/>
+                            onChange={e => {
+                                loadedStockTake.checked = e.target.checked
+                                updateSlice(index!, loadedStockTake)
+                            }}/>
                         : <input
                             type={"checkbox"}
                             checked={item.stockTake?.checked}

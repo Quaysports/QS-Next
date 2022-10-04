@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {StockError} from "../server-modules/shop/shop";
 
@@ -11,9 +11,9 @@ export interface BrandItem {
     stockTake?: StockTake
 }
 
-interface StockTake {
+export interface StockTake {
     checked?: boolean;
-    date?: Date | null;
+    date?: string | null;
     quantity?: number;
 }
 
@@ -49,47 +49,46 @@ export const stockReportsSlice = createSlice({
             },
         },
         reducers: {
-            setIncorrectStockInitialState: (state, action) => {
+            setIncorrectStockInitialState: (state, action:PayloadAction<{[key:string]:StockError[]}>) => {
                 state.incorrectStockReport = action.payload
             },
-            setIncorrectStockChecked: (state, action) => {
+            setIncorrectStockChecked: (state, action:PayloadAction<{brand:string,location:number,payload:boolean}>) => {
                 state.incorrectStockReport[action.payload.brand][action.payload.location].CHECKED = action.payload.payload
             },
-            setIncorrectStockSplice: (state, action) => {
+            setIncorrectStockSplice: (state, action:PayloadAction<{brand:string,index:number,amount:number}>) => {
                 state.incorrectStockReport[action.payload.brand].splice(action.payload.index, action.payload.amount)
             },
-            setIncorrectStockQty: (state, action) => {
+            setIncorrectStockQty: (state, action:PayloadAction<{brand:string,location:number,payload:number}>) => {
                 state.incorrectStockReport[action.payload.brand][action.payload.location].QTY = action.payload.payload
             },
 
-            setZeroStockInitialState: (state, action) => {
+            setZeroStockInitialState: (state, action:PayloadAction<{[key:string]:StockError[]}>) => {
                 state.zeroStockReport = action.payload
             },
-            setZeroStockChecked: (state, action) => {
+            setZeroStockChecked: (state, action:PayloadAction<{brand:string,location:number,payload:boolean}>) => {
                 state.incorrectStockReport[action.payload.brand][action.payload.location].CHECKED = action.payload.payload
             },
-            setZeroStockSplice: (state, action) => {
+            setZeroStockSplice: (state, action:PayloadAction<{brand:string,index:number,amount:number}>) => {
                 state.zeroStockReport[action.payload.brand].splice(action.payload.index, action.payload.amount)
             },
-            setZeroStockQty: (state, action) => {
+            setZeroStockQty: (state, action:PayloadAction<{brand:string,location:number,payload:number}>) => {
                 state.zeroStockReport[action.payload.brand][action.payload.location].QTY = action.payload.payload
             },
 
-            setValidData: (state, action) => {
+            setValidData: (state, action:PayloadAction<boolean>) => {
                 state.validData = action.payload;
             },
 
-            setBrands: (state, action) => {
+            setBrands: (state, action:PayloadAction<string[]>) => {
                 state.brands = action.payload
             },
 
-            setBrandItems: (state, action) => {
+            setBrandItems: (state, action:PayloadAction<BrandItem[]>) => {
                 state.brandItems = action.payload
             },
 
-            setStockTakeInfo: (state, action) => {
-                state.brandItems[action.payload.index].stockTake ??= {checked:false, date:null, quantity:0}
-                state.brandItems[action.payload.index].stockTake![action.payload.id as keyof StockTake] = action.payload.data
+            setStockTakeInfo: (state, action:PayloadAction<{index:number,data:StockTake}>) => {
+                state.brandItems[action.payload.index].stockTake = action.payload.data
                 let opts = {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(state.brandItems[action.payload.index])}
                 fetch("/api/items/update-item",opts).then(res=>console.log(res.statusText))
             }

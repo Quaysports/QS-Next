@@ -27,7 +27,11 @@ export default function ShopStockTakeTable(){
 
         const commitChecked = () =>{
             for(const index in activeItems){
-                if(activeItems[index].stockTake?.checked)dispatch(setStockTakeInfo({index:index,id:"date", data:(new Date).toString()}))
+                if(activeItems[index].stockTake?.checked){
+                    let stockTakeUpdate = {...activeItems[index].stockTake}
+                    stockTakeUpdate.date = (new Date).toString()
+                    dispatch(setStockTakeInfo({index:Number(index),data:stockTakeUpdate}))
+                }
             }
         }
 

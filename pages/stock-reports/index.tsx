@@ -2,6 +2,7 @@ import React from "react";
 import IncorrectStock from "./incorrect-stock/index"
 import {getIncorrectStock, StockError} from "../../server-modules/shop/shop"
 import {
+    BrandItem,
     setBrandItems,
     setBrands,
     setIncorrectStockInitialState,
@@ -45,21 +46,23 @@ export default function IncorrectStockLandingPage() {
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async(context)=>{
 
-    if(context.query.tab === "shop") store.dispatch(setBrands(
-        await getBrands({IDBFILTER:"domestic"})
-    ))
+    if(context.query.tab === "shop") {
+        let data = await getBrands({IDBFILTER: "domestic"})
+        if(data) store.dispatch(setBrands(data))
+    }
 
-    if(context.query.brand) store.dispatch(setBrandItems(
-        await getItems(
-            {"IDBEP.BRAND":context.query.brand, IDBFILTER:"domestic", ISCOMPOSITE:false},
-            {SKU:1, TITLE:1,EAN:1, STOCKTOTAL:1, stockTake:1})
-    ))
+    if(context.query.brand) {
+        let data =  await getItems(
+            {"IDBEP.BRAND": context.query.brand, IDBFILTER: "domestic", ISCOMPOSITE: false},
+            {SKU: 1, TITLE: 1, EAN: 1, STOCKTOTAL: 1, stockTake: 1})
+        if(data) store.dispatch(setBrandItems(data as BrandItem[]))
+    }
 
     if(context.query.tab === "incorrect-stock") {
         const data = await getIncorrectStock()
         if(data) {
-            let incorrectStock:{[key:string]:StockError[] | undefined} = {}
-            let zeroStock:{[key:string]:StockError[] | undefined} = {}
+            let incorrectStock:{[key:string]:StockError[]} = {}
+            let zeroStock:{[key:string]:StockError[]} = {}
             for (let i = 0; i < data.length; i++) {
                 if(!data[i].BRAND) continue;
                 if (data[i].PRIORITY) {

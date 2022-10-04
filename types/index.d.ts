@@ -38,7 +38,7 @@ declare namespace sbt {
 
     //master struct for item data
     interface Item {
-        _id?: ObjectId,
+        _id?: string,
         AMZPRICEINCVAT?: string,
         AMZPRIME?: boolean,
         BRAND?: string,
