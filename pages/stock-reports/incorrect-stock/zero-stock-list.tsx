@@ -9,6 +9,11 @@ import {StockError} from "../../../server-modules/shop/shop";
 interface Props {
     validDataHandler:(x:boolean)=>void
 }
+
+/**
+ * Zero Stock List Component
+ * Dynamically builds the rows and inputs the SKU, Title and input boxes for each item in the zero stock list
+ */
 export default function ZeroStockList({validDataHandler}:Props) {
 
     const zeroStockState = useSelector(selectZeroStockState);

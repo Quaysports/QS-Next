@@ -8,6 +8,10 @@ import styles from "./incorrect-stock-list.module.css";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 
+/**
+ * Update Incorrect Stock Component
+ * Builds the button and contains all the functionality to update stock on linnworks and cleans out the Mongo collection
+ */
 
 export default function UpdateIncorrectStock() {
     const dispatch = useDispatch()
@@ -65,7 +69,7 @@ export default function UpdateIncorrectStock() {
     return (
         <button
             onClick={() => runUpdate()}
-            id={styles.saveButton}>Save
+            id={styles["save-button"]}>Save
         </button>
     )
 }
