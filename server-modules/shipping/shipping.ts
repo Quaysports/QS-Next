@@ -1,13 +1,13 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 const objectId = require('mongodb').ObjectId;
 
-interface shipment {
+export interface Shipment {
     _id?: { $oid: string };
     id: number;
     bankCharges: number;
     confirmed: boolean;
     credit: number;
-    data: shipmentItem[];
+    data: ShipmentItem[];
     delivered: boolean;
     due: string;
     duty: number;
@@ -30,7 +30,7 @@ interface shipment {
     shippingCompany: string;
 }
 
-interface shipmentItem {
+export interface ShipmentItem {
         dutyValue: number
         code: string
         hscode: string
@@ -56,16 +56,16 @@ interface shipmentItem {
         height: string
 }
 
-interface shippingCompany{
+export interface ShippingCompany {
     _id: { $oid: string };
     company: string
 }
 
 export const get = async (query: {} | undefined) => {
     if (query) {
-        return await mongoI.find<shipment>("Shipping", query)
+        return await mongoI.find<Shipment>("Shipping", query)
     } else {
-        return await mongoI.find<shipment>("Shipping",
+        return await mongoI.find<Shipment>("Shipping",
             {delivered: false},
             {
                 id: 1,
@@ -81,23 +81,23 @@ export const get = async (query: {} | undefined) => {
 }
 
 export const getLast = async (id: {} | undefined) => {
-    return await mongoI.find<shipment>("Shipping", {}, id, {_id: -1}, 1)
+    return await mongoI.find<Shipment>("Shipping", {}, id, {_id: -1}, 1)
 }
 
 export const shippingCompanies = async () => {
-    return await mongoI.find<shippingCompany>("Shipping-Companies", {}, {}, {company: 1})
+    return await mongoI.find<ShippingCompany>("Shipping-Companies", {}, {}, {company: 1})
 }
 
 export const itemKeys = async () => {
-    return await mongoI.find<shipmentItem>("Shipping-Items", {}, {code: 1, desc: 1, sku: 1}, {sku: 1})
+    return await mongoI.find<ShipmentItem>("Shipping-Items", {}, {code: 1, desc: 1, sku: 1}, {sku: 1})
 }
 
 export const item = async (id: string) => {
     let query = {_id: objectId(id)};
-    return await mongoI.find<shipmentItem>("Shipping-Items", query)
+    return await mongoI.find<ShipmentItem>("Shipping-Items", query)
 }
 
-export const update = async (data:shipment) => {
+export const update = async (data:Shipment) => {
     if (data.data) {
         for (let v of data.data) {
             if (v.code && v.sku) {

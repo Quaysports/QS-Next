@@ -2,8 +2,14 @@ import SearchBar from "../../components/search-bar";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {useEffect, useState} from "react";
+import {StockForecastItem} from "../../server-modules/stock-forecast/process-data";
 
-export default function StockForecastMenuTabs({searchData, updateItemsHandler}){
+interface Props {
+    searchData:StockForecastItem[] | null;
+    updateItemsHandler:(items:StockForecastItem[])=>void
+}
+
+export default function StockForecastMenuTabs({searchData, updateItemsHandler}:Props){
 
     const router = useRouter()
 
@@ -28,7 +34,10 @@ export default function StockForecastMenuTabs({searchData, updateItemsHandler}){
             <span><Link href={{pathname:router.pathname, query:{...router.query, list:listToggle === 'true' ? 'false': 'true'}}}>List</Link></span>
             <span><Link href="/shipments">Shipments</Link></span>
             <span>Supplier Select</span>
-            <SearchBar arrHandler={x => updateItemsHandler(x)} EAN={false} searchableArray={searchData}/>
+            <SearchBar
+                resultHandler={result => updateItemsHandler(result as StockForecastItem[])}
+                EAN={false}
+                searchableArray={searchData ? searchData : []}/>
         </>
     )
 }

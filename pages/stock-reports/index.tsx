@@ -54,7 +54,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
             {"IDBEP.BRAND":context.query.brand, IDBFILTER:"domestic", ISCOMPOSITE:false},
             {SKU:1, TITLE:1,EAN:1, STOCKTOTAL:1, stockTake:1})
     ))
-    console.log(context.query.brand)
 
     if(context.query.tab === "incorrect-stock") {
         const data = await getIncorrectStock()

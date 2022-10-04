@@ -1,4 +1,4 @@
-import {createSlice, current} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {QuickLinks} from "../../server-modules/shop/shop";
 
@@ -39,17 +39,17 @@ export const quickLinksSlice = createSlice({
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.id])}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
+
             deleteQuickLink: (state, action) => {
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload])}
-                console.log(action.payload.id)
-                state.quickLinksArray.splice(action.payload.id,1)
-                console.dir(current(state))
-                fetch('/api/shop-tills/delete-quick-links', opt)
+                fetch('/api/shop-tills/delete-quick-links', opt).then(res => console.log(res))
+                state.quickLinksArray.splice(action.payload,1)
             },
+
             deleteQuickLinkItem: (state, action) => {
-                state.quickLinksArray[action.payload.listIndex].links.splice(action.payload.itemIndex,1)
+                state.quickLinksArray[action.payload.listIndex].links[action.payload.itemIndex] = {SKU:""}
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.listIndex])}
-                fetch('/api/shop-tills/update-quick-links', opt)
+                fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
             addItemToLinks: (state, action) => {
                 state.quickLinksArray[action.payload.id].links[action.payload.index] = action.payload.data

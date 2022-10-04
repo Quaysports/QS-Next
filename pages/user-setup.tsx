@@ -4,7 +4,7 @@ import {User} from "../server-modules/users/user";
 
 export default function UserSetup() {
 
-    const [user, setUser] = useState<User>(null)
+    const [user, setUser] = useState<User | null>(null)
 
     useEffect(() => {
         if (user === null) {

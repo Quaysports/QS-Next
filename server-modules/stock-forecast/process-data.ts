@@ -1,8 +1,9 @@
-import {onOrder} from "../../pages/stock-forecast";
+import {onOrder, StockForecastItemProjection} from "../../pages/stock-forecast";
 
-interface stockForecastItem {
-    hist?: {
-        perDay?: number;
+export interface StockForecastItem {
+    hist: {
+        perDay: number;
+        [key:number]:number;
     };
     stockOOS?: string;
     oneMonthOOS?: string;
@@ -14,12 +15,13 @@ interface stockForecastItem {
     MONTHSTOCKHIST?: any;
     onOrder?: onOrder;
     CHECK?: { SF?: { HIDE?: boolean } };
-    SKU?: string;
+    SKU: string;
+    TITLE: string;
     months: Months[];
 }
 
 interface DayBreakdown {
-    stock?: number;
+    stock: number;
     stock1?: number;
     stock4?:number;
     onOrderFlag?: boolean;
@@ -39,7 +41,7 @@ interface Months {
 }
 
 
-function dayInfoCalculation(item: stockForecastItem, monthData: Months, day: number, data, stock, hist: number) {
+function dayInfoCalculation(item: StockForecastItem, monthData: Months, day: number, data:StockForecastItemProjection, stock:number, hist: number) {
     let currentDay = new Date().getDate();
     let currentMonth = new Date().getMonth();
     let qtyOnOrder = 0
@@ -60,16 +62,16 @@ function dayInfoCalculation(item: stockForecastItem, monthData: Months, day: num
         monthData.dayBreakdown[day].stock4 = setStock(stock, 0, qtyOnOrder)
         monthData.dayBreakdown[day].stock1 = setStock(stock, 0, qtyOnOrder)
     } else {
-        monthData.dayBreakdown[day].stock = setStock(monthData.dayBreakdown[day - 1].stock, hist === 0 ? item.fourMonth : hist, qtyOnOrder)
+        monthData.dayBreakdown[day].stock = setStock(monthData.dayBreakdown[day - 1].stock!, hist === 0 ? item.fourMonth! : hist, qtyOnOrder)
         if (qtyOnOrder) monthData.dayBreakdown[day].restock = true;
-        if (monthData.dayBreakdown[day - 1].onOrderFlag || (qtyOnOrder && monthData.dayBreakdown[day - 1].stock <= 0)) monthData.dayBreakdown[day].onOrderFlag = true;
+        if (monthData.dayBreakdown[day - 1].onOrderFlag || (qtyOnOrder && monthData.dayBreakdown[day - 1].stock! <= 0)) monthData.dayBreakdown[day].onOrderFlag = true;
         if (day <= 90) {
-            monthData.dayBreakdown[day].stock4 = setStock(monthData.dayBreakdown[day - 1].stock4, item.fourMonth, qtyOnOrder)
-            monthData.dayBreakdown[day].stock1 = setStock(monthData.dayBreakdown[day - 1].stock1, item.oneMonth, qtyOnOrder)
+            monthData.dayBreakdown[day].stock4 = setStock(monthData.dayBreakdown[day - 1].stock4!, item.fourMonth!, qtyOnOrder)
+            monthData.dayBreakdown[day].stock1 = setStock(monthData.dayBreakdown[day - 1].stock1!, item.oneMonth!, qtyOnOrder)
         }
     }
 
-    function setStock(old, change, oo) {
+    function setStock(old:number, change:number, oo:number) {
         let newStock = old - change;
         if (newStock < 0) newStock = 0
         if (oo) newStock += oo
@@ -77,9 +79,10 @@ function dayInfoCalculation(item: stockForecastItem, monthData: Months, day: num
     }
 }
 
-export function processData(data) {
+export function processData(data:StockForecastItemProjection) {
     let item = timeSpan()
     item.SKU = data.SKU
+    item.TITLE = data.TITLE
     item.CHECK = data.CHECK
     item.CHECK ??= {}
     item.CHECK.SF ??= {}
@@ -97,23 +100,23 @@ export function processData(data) {
     let initialStock = data.STOCKTOTAL + item.onOrder?.late
 
     let cm = 0
+
     for (let month of item.months) {
         let hist = historicAvg(month, data.MONTHSTOCKHIST);
         let day = 0
-        item.hist ??= {perDay:0}
         item.hist.perDay += hist
         item.hist[month.month] = hist ? hist : Math.max(item.oneMonth, item.fourMonth)
         for (day; day < month.eom ; day++) {
 
             dayInfoCalculation(item, month, day, data, initialStock, hist);
 
-            if (month.dayBreakdown[day].stock4 <= 0 && item.fourMonthOOS === '') {
+            if (month.dayBreakdown[day].stock4! <= 0 && item.fourMonthOOS === '') {
                 item.fourMonthOOS = dateFromDayBreakDown(month.dayBreakdown[day])
             }
-            if (month.dayBreakdown[day].stock1 <= 0 && item.oneMonthOOS === '') {
+            if (month.dayBreakdown[day].stock1! <= 0 && item.oneMonthOOS === '') {
                 item.oneMonthOOS = dateFromDayBreakDown(month.dayBreakdown[day])
             }
-            if (month.dayBreakdown[day].stock <= 0 && item.stockOOS === '') {
+            if (month.dayBreakdown[day].stock! <= 0 && item.stockOOS === '') {
                 item.stockOOS = dateFromDayBreakDown(month.dayBreakdown[day])
             }
         }
@@ -121,26 +124,25 @@ export function processData(data) {
         month.style = `linear-gradient(90deg, ${createStyle(month.dayBreakdown, cm, month.eom)})`
         cm++
     }
-    item.hist.perDay = item.hist.perDay / item.months.length
+    if(item.hist.perDay > 0) item.hist.perDay = item.hist.perDay / item.months.length
 
     return item
 
-    function dateFromDayBreakDown(data) {
+    function dateFromDayBreakDown(data:DayBreakdown) {
         let date = new Date(data.year, data.month - 1, data.day)
         return date.toLocaleDateString()
     }
 }
 
-
-function historicAvg(date, hist) {
+function historicAvg(date:Months, hist:sbt.MonthStockHistory) {
     let cd = new Date();
     let years = 0
     let sales = 0
     for (let y in hist) {
         if (Number(y) === cd.getFullYear()) continue;
         years++
-        for (let m in hist[y]) {
-            if (date.month === Number(m)) sales += Number(hist[y][m])
+        for (const [month, value] of Object.entries(hist[y])) {
+            if (date.month === Number(month)) sales += Number(value)
         }
     }
     if (sales === 0 || years === 0) {
@@ -151,15 +153,16 @@ function historicAvg(date, hist) {
     }
 }
 
-function lastFourMonthAvg(hist) {
+function lastFourMonthAvg(hist:sbt.MonthStockHistory) {
     let cd = new Date()
     let sales = 0;
     let days = 0;
 
     for (let i = 0; i <= 3; i++) {
         if (hist?.[cd.getFullYear()]) {
-            if (hist[cd.getFullYear()][cd.getMonth() + 1]) {
-                sales += Number(hist[cd.getFullYear()][cd.getMonth() + 1])
+            const monthData = hist[cd.getFullYear()][cd.getMonth() + 1 as keyof sbt.MonthStockHistoryMonth]
+            if (monthData) {
+                sales += Number(monthData)
                 days += cd.getDate()
             }
         }
@@ -172,22 +175,24 @@ function lastFourMonthAvg(hist) {
     }
 }
 
-function lastMonthAvg(hist) {
+function lastMonthAvg(hist:sbt.MonthStockHistory) {
     let cd = new Date()
     let sales = 0;
     let days = 0;
     if (hist?.[cd.getFullYear()]) {
-        if (hist[cd.getFullYear()][cd.getMonth() + 1]) {
-            sales += Number(hist[cd.getFullYear()][cd.getMonth() + 1])
+        const stockThisMonth = hist[cd.getFullYear()][cd.getMonth() + 1 as keyof sbt.MonthStockHistoryMonth]
+        if (stockThisMonth) {
+            sales += Number(stockThisMonth)
             days += cd.getDate()
         }
         cd.setDate(0)
-        if (hist[cd.getFullYear()][cd.getMonth() + 1]) {
+        const stockLastMonth = hist[cd.getFullYear()][cd.getMonth() + 1 as keyof sbt.MonthStockHistoryMonth]
+        if (stockLastMonth) {
             let eom = cd.getDate()
             let daysTaken = eom - days
             days += daysTaken
             let per = (100 / eom) * daysTaken
-            sales += (Number(hist[cd.getFullYear()][cd.getMonth() + 1]) / 100) * per
+            sales += (Number(stockLastMonth) / 100) * per
         }
     }
     if (sales === 0 && days === 0) {
@@ -201,14 +206,15 @@ export function timeSpan() {
     let cd = new Date()
     cd.setDate(1)
     let monthDisplay = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    let data:stockForecastItem = {months: []}
+    let data:StockForecastItem = {SKU: "", TITLE: "", hist: {perDay: 0}, months: []}
     for (let i = 0; i < 24; i++) {
         let arr:DayBreakdown[] = []
         for (let ai = 0; ai < endOfMonth(cd); ai++) {
             arr.push({
+                stock: 0,
                 day: ai + 1,
                 month: cd.getMonth() + 1,
-                year: cd.getFullYear(),
+                year: cd.getFullYear()
             })
         }
         data.months.push({
@@ -223,20 +229,20 @@ export function timeSpan() {
     }
     return data;
 
-    function endOfMonth(cd) {
+    function endOfMonth(cd:Date) {
         let eom = new Date(cd.getFullYear(), cd.getMonth() + 1, 0)
         return eom.getDate()
     }
 }
 
-function createStyle(data, cm, eom) {
+function createStyle(data:DayBreakdown[], cm:number, eom:number) {
     let cd = new Date()
-    let arr = []
+    let arr:string[] = []
     for (let i in data) {
         if (data[i].stock > 0) arr[i] = 'var(--traffic-light-red)'
         if (data[i].stock > 0 && cm >= 9) arr[i] = 'var(--traffic-light-green)'
         if (data[i].stock > 0 && cm >= 6 && cm < 9) arr[i] = 'var(--traffic-light-orange)'
-        if (data[i].ooFlag) arr[i] = '#a6a6a6'
+        if (data[i].onOrderFlag) arr[i] = '#a6a6a6'
         if (data[i].stock1 === 0) arr[i] = '#ffffff'
         if (data[i].stock4 === 0) arr[i] = '#e6e6e6'
         if (data[i].stock === 0) arr[i] = 'transparent'

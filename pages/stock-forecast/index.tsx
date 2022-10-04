@@ -1,30 +1,35 @@
 import Menu from "../../components/menu/menu";
 import StockForecastMenuTabs from "./tabs";
 import StockForecastTable from "./stock-forecast-table";
-import {get} from "../../server-modules/shipping/shipping";
+import {get, Shipment} from "../../server-modules/shipping/shipping";
 import {useEffect, useState} from "react";
 import {getItems} from "../../server-modules/items/items";
-import {processData} from "../../server-modules/stock-forecast/process-data";
+import {processData, StockForecastItem} from "../../server-modules/stock-forecast/process-data";
 import {binarySearch} from "../../server-modules/core/core";
 import OneColumn from "../../components/layouts/one-column";
 import ColumnLayout from "../../components/layouts/column-layout";
 import {NextPageContext} from "next";
+import {NextParsedUrlQuery} from "next/dist/server/request-meta";
 
-export default function stockForecastLandingPage({filteredItems}) {
+interface Props {
+    filteredItems:StockForecastItemProjection[]
+}
 
-    const[items, setItems] = useState(filteredItems)
+export default function stockForecastLandingPage({filteredItems}:Props) {
 
-    const updateItemsHandler = (items)=> setItems(items)
+    const[items, setItems] = useState<StockForecastItem[] | null>(null)
+
+    const updateItemsHandler = (items:StockForecastItem[])=> setItems(items)
 
     useEffect(() => {
-        let processedItems = []
+        let processedItems:StockForecastItem[] = []
         for(let item of filteredItems) processedItems.push(processData(item))
         setItems(processedItems)
     }, [filteredItems])
 
     return (
         <OneColumn>
-            <Menu><StockForecastMenuTabs searchData={filteredItems} updateItemsHandler={updateItemsHandler}/></Menu>
+            <Menu><StockForecastMenuTabs searchData={items} updateItemsHandler={updateItemsHandler}/></Menu>
             <ColumnLayout scroll={true}>
                 <StockForecastTable items={items}/>
             </ColumnLayout>
@@ -32,7 +37,17 @@ export default function stockForecastLandingPage({filteredItems}) {
     )
 }
 
-
+export interface StockForecastItemProjection {
+    SKU:string;
+    SUPPLIER:string;
+    TITLE:string;
+    MONTHSTOCKHIST:sbt.MonthStockHistory;
+    ROLLINGAVG:string;
+    STOCKTOTAL:number;
+    IDBFILTER:string;
+    CHECK:sbt.Item["CHECK"]
+    onOrder?:onOrder
+}
 
 export async function getServerSideProps(context:NextPageContext) {
     const shipping = await get({delivered: false})
@@ -53,6 +68,7 @@ export async function getServerSideProps(context:NextPageContext) {
     const projection = {
         SKU: 1,
         SUPPLIER: 1,
+        TITLE:1,
         MONTHSTOCKHIST: 1,
         ROLLINGAVG: 1,
         STOCKTOTAL: 1,
@@ -61,10 +77,10 @@ export async function getServerSideProps(context:NextPageContext) {
     }
 
     const sort = {SKU: 1}
-    const items = await getItems(itemQuery, projection, sort)
+    const items = await getItems(itemQuery, projection, sort) as StockForecastItemProjection[] | undefined
 
-    addOnOrderToItems(shipping, items)
-    const filteredItems = filterDataBasedOnToggles(items, context.query)
+    addOnOrderToItems(shipping!, items!)
+    const filteredItems = filterDataBasedOnToggles(items!, context.query)
 
     return {
         props: {filteredItems}
@@ -88,11 +104,11 @@ export interface onOrder {
         }
     }
 }
-function addOnOrderToItems(shipments, items) {
+function addOnOrderToItems(shipments:Shipment[], items:StockForecastItemProjection[]) {
     for (const shipment of shipments) {
         if(shipment.delivered) continue
         for (let val of shipment.data) {
-            let item = binarySearch<{SKU:string,onOrder:any}>(items, "SKU", val.sku, 0, items.length - 1)
+            let item = binarySearch<StockForecastItemProjection>(items, "SKU", val.sku, 0, items.length - 1)
             if (!item) continue;
 
             let cd = new Date();
@@ -122,8 +138,8 @@ function addOnOrderToItems(shipments, items) {
  * @param items
  * @param pageQuery
  */
-function filterDataBasedOnToggles(items, pageQuery) {
-    let filter = []
+function filterDataBasedOnToggles(items:StockForecastItemProjection[], pageQuery:NextParsedUrlQuery) {
+    let filter:StockForecastItemProjection[] = []
     for (const v of items) {
         if (pageQuery.list === 'true') {
             if(v.CHECK?.SF?.LIST) filter.push(v)

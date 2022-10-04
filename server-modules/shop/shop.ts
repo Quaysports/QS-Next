@@ -27,7 +27,7 @@ export type QuickLinkItem = {
 }
 
 export const get = async (query: object) => {
-    return await mongoI.find<sbt.shopOrder>("Shop", query)
+    return await mongoI.find<sbt.TillOrder>("Shop", query)
 }
 
 export const reports = async () => {

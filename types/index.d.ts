@@ -66,7 +66,7 @@ declare namespace sbt {
         MCOVERRIDES?: { AMAZON: boolean, EBAY: boolean, MAGENTO: boolean }
         MD?: marginData,
         MINSTOCK?: number,
-        MONTHSTOCKHIST?: monthStockHistory,
+        MONTHSTOCKHIST?: MonthStockHistory,
         ONORDER?: onOrder[],
         PACKAGING?: { EDITABLE: boolean, ITEMS: string[] | string, LOCK: boolean },
         PACKGROUP?: string,
@@ -247,21 +247,23 @@ declare namespace sbt {
         TOTALPROFITLY?: number
     }
 
-    type monthStockHistory = {
-        [key: string]: {
-            1: string,
-            2: string,
-            3: string,
-            4: string,
-            5: string,
-            6: string,
-            7: string,
-            8: string,
-            9: string,
-            10: string,
-            11: string,
-            12: string
-        }
+    type MonthStockHistory = {
+        [key: string]: MonthStockHistoryMonth
+    }
+
+    type MonthStockHistoryMonth = {
+        1: string,
+        2: string,
+        3: string,
+        4: string,
+        5: string,
+        6: string,
+        7: string,
+        8: string,
+        9: string,
+        10: string,
+        11: string,
+        12: string
     }
 
     type onOrder = {
@@ -564,7 +566,7 @@ declare namespace linn {
 
 }
 
-declare namespace server{
+declare namespace server {
     export interface sessionObject {
 
     }
