@@ -46,6 +46,11 @@ export const quickLinksSlice = createSlice({
                 state.quickLinksArray.splice(action.payload,1)
             },
 
+            updateQuickLinkItemColour: (state, action:PayloadAction<{listIndex:number, itemIndex:number, colour:string}>) => {
+                state.quickLinksArray[action.payload.listIndex].links[action.payload.itemIndex].COLOUR = action.payload.colour
+                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.listIndex])}
+                fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
+            },
             deleteQuickLinkItem: (state, action:PayloadAction<{listIndex:number, itemIndex:number}>) => {
                 state.quickLinksArray[action.payload.listIndex].links[action.payload.itemIndex] = {SKU:""}
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.listIndex])}
@@ -60,7 +65,7 @@ export const quickLinksSlice = createSlice({
     })
 ;
 
-export const {updateQuickLinks, addNewQuickLinkMenu, updateQuickLinkID, deleteQuickLink,deleteQuickLinkItem, addItemToLinks} = quickLinksSlice.actions
+export const {updateQuickLinks, addNewQuickLinkMenu, updateQuickLinkID, deleteQuickLink, updateQuickLinkItemColour, deleteQuickLinkItem, addItemToLinks} = quickLinksSlice.actions
 
 export const selectQuickLinks = (state: quickLinksWrapper) => state.quickLinks.quickLinksArray
 

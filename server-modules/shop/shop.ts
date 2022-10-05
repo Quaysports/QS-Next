@@ -22,16 +22,17 @@ export interface StockError {
 }
 
 export type QuickLinks = {
-    _id?: string,
-    id: string,
-    links: QuickLinkItem[],
+    _id?: string
+    id: string
+    links: QuickLinkItem[]
     updates?: QuickLinkItem[]
 }
 
 export type QuickLinkItem = {
-    SKU: string | null,
-    TITLE?: string,
+    SKU: string | null
+    TITLE?: string
     SHOPPRICEINCVAT?: string
+    COLOUR?:string
 }
 
 export const get = async (query: object) => {
@@ -135,7 +136,7 @@ export const getQuickLinks = async () => {
         for (let index in quickLinks.links) {
             if(!quickLinks.links[index].SKU) continue
             let search = binarySearch<QuickLinkItem>(quickLinks.updates!, "SKU", quickLinks.links[index].SKU)
-            if (search) quickLinks.links[index] = search
+            if (search) quickLinks.links[index] = {...quickLinks.links[index],...search}
         }
         delete quickLinks.updates
     }

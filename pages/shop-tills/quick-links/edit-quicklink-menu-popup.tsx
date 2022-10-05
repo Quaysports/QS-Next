@@ -5,7 +5,7 @@ import {
     selectQuickLinks,
     updateQuickLinkID
 } from "../../../store/shop-tills/quicklinks-slice";
-import styles from "../shop-tills.module.css";
+import styles from "./quick-links.module.css";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
 /**
@@ -20,7 +20,7 @@ export default function EditQuickLinkMenuPopup({index}:Props){
     const links = useSelector(selectQuickLinks)
     const dispatch = useDispatch()
     return(
-        <div className={styles["new-quick-link-popup"]}>
+        <div className={styles["new-quick-link"]}>
             <div>Edit Quick link menu ID using the input <br/> or click delete to remove menu.</div>
             <input ref={inputRef} defaultValue={links[index]?.id}/>
             <div className={styles["dual-button-container"]}>

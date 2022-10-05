@@ -23,8 +23,10 @@ export default function ShopTills() {
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async(context)=>{
     if(context.query.tab === "quick-links"){
+        console.log("quick links tab!")
         const data = await getQuickLinks()
-        if(data) store.dispatch(updateQuickLinks(data))
+        console.dir(data)
+        if(data) await store.dispatch(updateQuickLinks(data))
     }
     return {props:{}}
 })

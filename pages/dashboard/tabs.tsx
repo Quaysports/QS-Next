@@ -17,15 +17,15 @@ export default function DashboardTabs() {
         if(!permissions) getSession().then(session=>setPermissions(session?.user.permissions))
     })
 
-    const activeTab = (id:string) => {
-        return router.query.tab === id ? "active-tab" : "";
+    function activeTab (id:string) {
+        return router.query?.tab === id ? "active-tab" : "";
     }
 
     return (
         <>
-            <span className={activeTab("home")}><Link href="/dashboard?tab=home">Home</Link></span>
-            {permissions?.users?.auth ? <span className={activeTab("user")}><Link href="/dashboard?tab=user">Users</Link></span> : null}
-            {permissions?.orderSearch?.auth ? <span className={activeTab("order-search")}><Link href="/dashboard?tab=order-search">Order Search</Link></span> : null}
+            <span className={activeTab("home")} data-testid={"home-tab"}><Link href="/dashboard?tab=home">Home</Link></span>
+            {permissions?.users?.auth ? <span className={activeTab("user")} data-testid={"user-tab"}><Link href="/dashboard?tab=user">Users</Link></span> : null}
+            {permissions?.orderSearch?.auth ? <span className={activeTab("order-search")} data-testid={"orders-search-tab"}><Link href="/dashboard?tab=order-search">Order Search</Link></span> : null}
             {permissions?.priceUpdates?.auth ? <span className={activeTab("price-updates")}><Link href="/dashboard?tab=price-updates">Price Updates</Link></span> : null}
             {permissions?.shop?.auth ? <span className={activeTab("shop")}><Link href="/dashboard?tab=shop">Shop</Link></span> : null}
             {permissions?.online?.auth ? <span className={activeTab("online")}><Link href="/dashboard?tab=online">Online</Link></span> : null}

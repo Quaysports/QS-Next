@@ -3,20 +3,24 @@
     height:100%;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
+    background: #d9d6d2;
 }
 
-.quick-link-table-button, .quick-link-table-add-button{
-    background:var(--primary-table-background);
-    box-shadow: var(--primary-box-shadow);
+.table-button, .table-add-button{
+    background:whitesmoke;
+    color:black;
+    box-shadow: 2px 2px 2px 2px lightgray;
     padding:var(--sidebar-padding);
     border-radius:5px;
     margin:var(--sidebar-margin);
     justify-content: center;
 }
-.quick-link-table-button{
+.table-button{
     display:grid;
     text-align: center;
-    grid-template-rows:50px 40px 1fr 20px;
+    grid-template-rows:50px 40px 1fr 25px;
+    grid-template-columns: 100%;
+    grid-gap:5px;
     align-items: center;
 }
 .title-text{
@@ -25,17 +29,17 @@
     overflow:hidden;
     text-overflow: ellipsis;
 }
-.quick-link-table-add-button{
+.table-add-button{
     display: flex;
     align-items: center;
     font-size: 50px;
 }
-.quick-link-sidebar-button{
+.sidebar-button{
     display:grid;
     padding:0;
     grid-template-columns: auto 1fr;
 }
-.quick-link-add-button{
+.add-button{
     text-align: center;
     background:var(--primary-table-background);
     box-shadow: var(--primary-box-shadow);
@@ -48,19 +52,19 @@
     line-height:18px;
 }
 
-.quick-link-sidebar-add-button{
+.sidebar-add-button{
     text-align: center;
 }
 
 .sidebar-button-title:hover,
 .sidebar-button-edit:hover,
-.quick-link-add-button:hover,
-.quick-link-table-add-button:hover{
+.add-button:hover,
+.table-add-button:hover{
     background:var(--primary-color)
 }
 
 
-.new-quick-link-popup{
+.new-quick-link{
     margin:10px;
     display:grid;
     grid-template-rows: auto auto auto;
@@ -68,11 +72,17 @@
     align-content: center;
     justify-content: center;
 }
-.new-quick-link-popup > button {
+.new-quick-link > button {
     margin-top:10px
 }
 
 .dual-button-container{
     display:flex;
     justify-content: space-evenly;
+    align-items: center;
+}
+
+.dual-button-container > button {
+    width:50px;
+    height: 20px;
 }

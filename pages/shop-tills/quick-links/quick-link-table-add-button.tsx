@@ -1,4 +1,4 @@
-import styles from '../shop-tills.module.css'
+import styles from './quick-links.module.css'
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import DatabaseSearchBar, {DatabaseSearchItem} from "../../../components/database-search-bar/database-search";
 import {addItemToLinks} from "../../../store/shop-tills/quicklinks-slice";
@@ -20,7 +20,7 @@ export default function QuickLinkTableAddButton({id, index}:Props){
     }
     return(
         <>
-            <div className={styles["quick-link-table-add-button"]} onClick={()=>dispatchNotification({
+            <div className={styles["table-add-button"]} onClick={()=>dispatchNotification({
                 type:"popup",
                 title:"Item Search",
                 content:<DatabaseSearchBar handler={handler}/>

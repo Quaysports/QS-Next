@@ -1,4 +1,4 @@
-import styles from '../shop-tills.module.css'
+import styles from './quick-links.module.css'
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import EditQuickLinkMenuPopup from "./edit-quicklink-menu-popup";
 import SidebarButton from "../../../components/layouts/SidebarButton";
@@ -18,7 +18,7 @@ interface Props {
 
 export default function QuickLinksSidebarButton({index, active, handler, text}:Props){
     return(
-        <SidebarButton active={active} className={styles["quick-link-sidebar-button"]}>
+        <SidebarButton active={active} className={styles["sidebar-button"]}>
             <div className={styles["sidebar-button-edit"]} onClick={()=>dispatchNotification({
                 type:"popup",
                 title:"New QuickLink Menu",
