@@ -23,8 +23,7 @@ export default function QuickLinksTable() {
         } else {
             buttons.push(<QuickLinkTableAddButton
                 key={index}
-                id={linksIndex}
-                index={Number(index)}/>)
+                itemIndex={Number(index)}/>)
         }
     }
 
