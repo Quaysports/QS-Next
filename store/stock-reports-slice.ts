@@ -3,12 +3,12 @@ import {HYDRATE} from "next-redux-wrapper";
 import {StockError} from "../server-modules/shop/shop";
 
 /**
- * @property {string} _id - MongoDB id.
- * @property {string} SKU - SKU.
- * @property {string} EAN - EAN.
- * @property {string} TITLE - Title.
- * @property {number} STOCKTOTAL - Linnworks Stock Level.
- * @property {StockTake} stockTake - Stock take object for update.
+ * @property {string} _id
+ * @property {string} SKU
+ * @property {string} EAN
+ * @property {string} TITLE
+ * @property {number} STOCKTOTAL
+ * @property {StockTake} [stockTake]
  */
 export interface BrandItem {
     _id: string
@@ -20,9 +20,9 @@ export interface BrandItem {
 }
 
 /**
- * @property {boolean} checked - Checked toggle filter for committing to Linnworks.
- * @property {Date} date - Date timestamp set on commit.
- * @property {number} quantity - Checked quantity for update.
+ * @property {boolean} [checked]
+ * @property {string | null} [date]
+ * @property {number} [quantity]
  */
 export interface StockTake {
     checked?: boolean;
@@ -30,6 +30,13 @@ export interface StockTake {
     quantity?: number;
 }
 
+/**
+ * @property {{ [key: string]: StockError[] }} incorrectStockReport
+ * @property {{ [key: string]: StockError[] }} zeroStockReport
+ * @property {string[]} brands
+ * @property {BrandItem[]} brandItems
+ * @property {boolean} validData
+ */
 export interface StockReportState {
     incorrectStockReport: { [key: string]: StockError[] };
     zeroStockReport: { [key: string]: StockError[] };

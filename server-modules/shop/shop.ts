@@ -4,6 +4,14 @@ import {binarySearch} from "../core/core";
 //import * as linn from "../linn-api/linn-api"
 //import * as eod from '../workers/shop-worker-modules/endOfDayReport'
 
+/**
+ * @property {string} [BRAND]
+ * @property {string} TITLE
+ * @property {string} SKU
+ * @property {boolean} CHECKED
+ * @property {number} QTY
+ * @property {boolean} PRIORITY
+ */
 export interface StockError {
     BRAND?: string
     TITLE: string

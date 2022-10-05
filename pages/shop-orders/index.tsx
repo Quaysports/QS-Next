@@ -1,30 +1,23 @@
 import * as React from 'react';
 import {useRouter} from "next/router";
 import {DeadStockReport, deadStockReport} from "../../server-modules/shop/shop";
-import {setDeadStock} from "../../store/shop-orders-slice";
+import {OpenOrdersObject, setCompletedOrders, setDeadStock} from "../../store/shop-orders-slice";
 import Orders from "./orders";
-import CompletedOrders from "./completed-orders/completed-orders";
+import CompletedOrders from "./completed-orders/index";
 import NewOrder from "./new-order/index";
-import DeadStock from "./dead-stock/dead-stock";
+import DeadStock from "./dead-stock/index";
 import Menu from "../../components/menu/menu";
 import ShopOrdersTabs from "./tabs";
-import {useEffect} from "react";
-import {useDispatch} from "react-redux";
 import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
-import {InferGetServerSidePropsType} from "next";
+import {getCompleteOrders, shopOrder} from "../../server-modules/shop/shop-order-tool";
+import {appWrapper} from "../../store/store";
 
 /**
  * Shop Orders Landing Page
  */
 
-export default function ShopOrdersLandingPage(props:InferGetServerSidePropsType<typeof getServerSideProps>) {
-
+export default function ShopOrdersLandingPage() {
     const router = useRouter()
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(setDeadStock(props.deadStock))
-    })
 
     return (
         <SidebarOneColumn>
@@ -37,24 +30,51 @@ export default function ShopOrdersLandingPage(props:InferGetServerSidePropsType<
     );
 }
 
-export async function getServerSideProps() {
-    const deadStock = await deadStockReport()
+export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
-    function compare( a:DeadStockReport, b:DeadStockReport ) {
-        if ( a.SOLDFLAG < b.SOLDFLAG ){
-            return 1;
+    if (context.query.tab === "dead-stock") {
+        const deadStock = await deadStockReport()
+
+        function compare(a: DeadStockReport, b: DeadStockReport) {
+            if (a.SOLDFLAG < b.SOLDFLAG) {
+                return 1;
+            }
+            if (a.SOLDFLAG > b.SOLDFLAG) {
+                return -1;
+            }
+            return 0;
         }
-        if ( a.SOLDFLAG > b.SOLDFLAG ){
-            return -1;
+
+        deadStock.sort(compare);
+
+        let tempObject: { [key: string]: DeadStockReport[] } = {}
+        for (const item of deadStock) {
+            tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
         }
-        return 0;
+        store.dispatch(setDeadStock(tempObject))
     }
 
-    deadStock.sort( compare );
+    if (context.query.tab === "completed-orders") {
+        const today = new Date()
+        const lastYear = new Date()
+        lastYear.setFullYear(today.getFullYear() - 1)
 
-    let tempObject:{[key:string]: DeadStockReport[]} = {}
-    for (const item of deadStock) {
-        tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
+        const start = {date: {$gt: lastYear.getTime()}}
+        const end = {date: {$lt: today.getTime()}}
+
+        let res = await getCompleteOrders(start, end)
+
+        let sortedData = res!.sort((a, b) => {
+            return a.supplier === b.supplier ? 0 : a.supplier > b.supplier ? 1 : -1
+        })
+        let tempObject: { [key: string]: shopOrder[] } = {}
+        for (let i = 0; i < sortedData!.length; i++) {
+            tempObject[sortedData![i].supplier] ?
+                tempObject[sortedData![i].supplier].push(sortedData![i]) :
+                tempObject[sortedData![i].supplier] = [sortedData![i]]
+        }
+        await store.dispatch(setCompletedOrders(tempObject as { [key: string]: OpenOrdersObject[] }))
     }
-    return {props: {deadStock: tempObject}}
-}
+
+    return {props: {}}
+})

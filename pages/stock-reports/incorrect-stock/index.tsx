@@ -24,7 +24,7 @@ export default function IncorrectStock(){
                 <span/>
                 <span>SKU</span>
                 <span>Title</span>
-                <span className={styles.stockCheckedTitles}>Stock</span>
+                <span data-testid={"stock"} className={styles.stockCheckedTitles}>Stock</span>
                 <span className={styles.stockCheckedTitles}>Checked</span>
             </div>
             <div>
