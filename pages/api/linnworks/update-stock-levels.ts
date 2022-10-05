@@ -12,8 +12,5 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         })
     }
 
-    console.log(updateData)
-    res.status(200).json(
-        await adjustStock(updateData, req.body.id)
-    )
+    res.status(200).json(await adjustStock(updateData, req.body.id))
 }

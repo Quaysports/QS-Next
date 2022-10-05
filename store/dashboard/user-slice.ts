@@ -29,16 +29,16 @@ export const userSlice = createSlice({
             setAllUserData:(state,action) => {state.usersArray = action.payload},
             setUserData:(state,action:PayloadAction<{index:number, user:User}>) => {
                 state.usersArray[action.payload.index] = action.payload.user
-                const opt = {method:'POST', body: JSON.stringify(state.usersArray[action.payload.index])}
+                const opt = {method:'POST', headers:{"Content-Type":"application/json"}, body: JSON.stringify(state.usersArray[action.payload.index])}
                 fetch('/api/user/update-user', opt).then(res=>console.log(res))
             },
             setUserPermissions:(state, action:PayloadAction<{index:number, key:string, data:{auth:boolean}}>)=> {
                 state.usersArray[action.payload.index].permissions[action.payload.key] = action.payload.data
-                const opt = {method:'POST', body: JSON.stringify(state.usersArray[action.payload.index])}
-                fetch('/api/user/update-user', opt)
+                const opt = {method:'POST', headers:{"Content-Type":"application/json"}, body: JSON.stringify(state.usersArray[action.payload.index])}
+                fetch('/api/user/update-user', opt).then(res=>console.log(res))
             },
             deleteUser:(state, action:PayloadAction<{index:number}>)=>{
-                const opt = {method:'POST', body: JSON.stringify(state.usersArray[action.payload.index])}
+                const opt = {method:'POST', headers:{"Content-Type":"application/json"}, body: JSON.stringify(state.usersArray[action.payload.index])}
                 fetch('/api/user/delete-user', opt).then(()=>window.location.reload())
             }
         },
