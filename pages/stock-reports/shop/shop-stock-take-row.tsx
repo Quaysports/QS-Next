@@ -11,7 +11,7 @@ interface props {
 export default function ShopStockTakeRow({index = null, item = null}: props) {
     const dispatch = useDispatch()
 
-    let loadedStockTake:StockTake = item?.stockTake ? item.stockTake : {checked:false, date:null, quantity:0}
+    let loadedStockTake:StockTake = item?.stockTake ? {...item.stockTake} : {checked:false, date:null, quantity:0}
 
     const updateSlice = (index:string, stockTake:StockTake) =>{
         dispatch(setStockTakeInfo({index: Number(index), data: stockTake}))

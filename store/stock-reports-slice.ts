@@ -2,6 +2,14 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {StockError} from "../server-modules/shop/shop";
 
+/**
+ * @property {string} _id - MongoDB id.
+ * @property {string} SKU - SKU.
+ * @property {string} EAN - EAN.
+ * @property {string} TITLE - Title.
+ * @property {number} STOCKTOTAL - Linnworks Stock Level.
+ * @property {StockTake} stockTake - Stock take object for update.
+ */
 export interface BrandItem {
     _id: string
     SKU: string;
@@ -11,6 +19,11 @@ export interface BrandItem {
     stockTake?: StockTake
 }
 
+/**
+ * @property {boolean} checked - Checked toggle filter for committing to Linnworks.
+ * @property {Date} date - Date timestamp set on commit.
+ * @property {number} quantity - Checked quantity for update.
+ */
 export interface StockTake {
     checked?: boolean;
     date?: string | null;

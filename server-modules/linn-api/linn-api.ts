@@ -102,7 +102,7 @@ export const completeTransfer = async (tranId: string) => {
 export const adjustStock = async (arr: any, id: string) => {
     return await postReq(
         '/api/Stock/UpdateStockLevelsBySKU',
-        `stockLevels=${JSON.stringify(arr)}&changeSource=Shop StockIn - ${id}`
+        `stockLevels=${JSON.stringify(arr)}&changeSource=${id}`
     ) as linn.ItemStock[]
 }
 

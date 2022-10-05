@@ -20,6 +20,6 @@ async function incorrectStockAdjustAndMongoCleanUp(id: string, arr: { SKU:string
         stockData.push(details)
         mongoCleanUp.push(item.SKU)
     }
-    await linn.adjustStock(stockData, id)
+    await linn.adjustStock(stockData, `Shop StockIn - ${id}`)
     return await mongoI.deleteMany("Shop-Stock-Report", mongoCleanUp)
 }

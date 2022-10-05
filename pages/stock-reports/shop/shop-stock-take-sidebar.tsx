@@ -7,6 +7,7 @@ import {useRouter} from "next/router";
 export default function ShopStockTakeSidebar(){
 
     const brands = useSelector(selectBrands)
+    console.log(brands)
     const router = useRouter()
     const [activeElement,setActiveElement] = useState("")
 
