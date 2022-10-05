@@ -13,7 +13,7 @@ export default function CompletedOrdersList({supplier}:Props) {
 
     let tempArray = [<option onClick={() => dispatch(setOrderContents(null))} key={0}>Select Order</option>]
     let i = 0
-    completedOrders![supplier].slice().reverse().forEach((value) => {
+    completedOrders?.[supplier].slice().reverse().forEach((value) => {
         tempArray.push(
             <option onClick={() => dispatch(setOrderContents(value))} key={value.id + i}>{value.id}</option>
         )

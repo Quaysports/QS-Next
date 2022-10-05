@@ -25,7 +25,7 @@ export default function QuickLinksSidebar({id, idHandler}:Props){
         let buttons = []
         for(let i in links){
             buttons.push(
-                <QuickLinksSidebarButton key={i} id={Number(i)} active={Number(i) === id} handler={idHandler} text={links[i].id}/>
+                <QuickLinksSidebarButton key={i} index={Number(i)} active={Number(i) === id} handler={idHandler} text={links[i].id}/>
             )
         }
         return buttons

@@ -4,15 +4,17 @@ import {appWrapper} from "../store/store";
 import {SessionProvider} from "next-auth/react";
 import UserSetup from './user-setup'
 import NotificationWrapper from "../components/notification/notification-wrapper";
+import {Provider} from "react-redux";
 
-export function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
+export default function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
+    const {store, props} = appWrapper.useWrappedStore(pageProps);
     return (
+        <Provider store={store}>
             <SessionProvider session={session}>
-                <UserSetup {...pageProps}/>
+                <UserSetup {...props.pageProps}/>
                 <NotificationWrapper />
-                <Component {...pageProps}></Component>
+                <Component {...props.pageProps}></Component>
             </SessionProvider>
+        </Provider>
     )
 }
-
-export default appWrapper.withRedux(App)

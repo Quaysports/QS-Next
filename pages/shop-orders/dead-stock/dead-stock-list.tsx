@@ -12,7 +12,6 @@ export default function DeadStockList({supplier}:Props) {
 
     const deadStockList = useSelector(selectDeadStock)
 
-
     function imageCheck(item:DeadStockReport){
         switch (item.SOLDFLAG) {
             case 3:
@@ -38,7 +37,7 @@ export default function DeadStockList({supplier}:Props) {
             <span/>
         </div>
     )
-    deadStockList[supplier!].forEach((value, key) => {
+    deadStockList?.[supplier]?.forEach((value, key) => {
         tempArray.push(<div key={key} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["dead-stock-list-grid"]}`}>
             <span/>
             <span>{value.SKU}</span>
