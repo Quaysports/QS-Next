@@ -4,20 +4,22 @@ import {useDispatch} from "react-redux";
 import {deleteQuickLinkItem, updateQuickLinkItemColour} from "../../../store/shop-tills/quicklinks-slice";
 import {QuickLinkItem} from "../../../server-modules/shop/shop";
 import {ChangeEvent} from "react";
+import {useRouter} from "next/router";
 
 interface Props {
-    listIndex:number;
     itemIndex:number;
     item:QuickLinkItem
 }
 
-export default function QuickLinkButton({listIndex, itemIndex, item}:Props) {
+export default function QuickLinkButton({itemIndex, item}:Props) {
 
+    const router = useRouter()
+    const linksIndex = Number(router.query.linksIndex)
     let dispatch = useDispatch()
 
-    const deleteItem = () => dispatch(deleteQuickLinkItem({listIndex:listIndex, itemIndex:itemIndex}))
+    const deleteItem = () => dispatch(deleteQuickLinkItem({linksIndex:linksIndex, itemIndex:itemIndex}))
     const colourHandler = (event:ChangeEvent<HTMLInputElement>)=> dispatch(updateQuickLinkItemColour({
-        listIndex:listIndex,
+        linksIndex:linksIndex,
         itemIndex:itemIndex,
         colour: event.target.value
     }))
@@ -29,7 +31,7 @@ export default function QuickLinkButton({listIndex, itemIndex, item}:Props) {
                 <div>{"£"+parseFloat(item?.SHOPPRICEINCVAT!).toFixed(2)}</div>
                 <div className={styles["title-text"]}>{item?.TITLE}</div>
                 <div className={styles["dual-button-container"]}>
-                    <input type={"color"} defaultValue={item?.COLOUR} onBlur={colourHandler}/>
+                    <input key={`${item?.SKU}-${item?.COLOUR}`} type={"color"} defaultValue={item?.COLOUR ? item.COLOUR: ""} onBlur={colourHandler}/>
                     <button onClick={()=>dispatchNotification({
                     type:"confirm",
                     title:"Remove Item",

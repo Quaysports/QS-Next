@@ -3,20 +3,22 @@ import {dispatchNotification} from "../../../server-modules/dispatch-notificatio
 import DatabaseSearchBar, {DatabaseSearchItem} from "../../../components/database-search-bar/database-search";
 import {addItemToLinks} from "../../../store/shop-tills/quicklinks-slice";
 import {useDispatch} from "react-redux";
+import {useRouter} from "next/router";
 
 interface Props {
     id:number;
     index:number;
 }
 
-export default function QuickLinkTableAddButton({id, index}:Props){
+export default function QuickLinkTableAddButton({index}:Props){
+
+    const router = useRouter()
+    const linksIndex = Number(router.query.linksIndex)
 
     const dispatch = useDispatch()
     const handler = (res:DatabaseSearchItem)=>{
         dispatchNotification({type:undefined})
-        dispatch(addItemToLinks({id:id, index:index, data:{SKU: res.SKU, SHOPPRICEINCVAT: "0", TITLE: res.TITLE}}))
-        console.log("handled!")
-        console.log(res)
+        dispatch(addItemToLinks({linksIndex:linksIndex, itemIndex:index, data:{SKU: res.SKU, SHOPPRICEINCVAT: "0", TITLE: res.TITLE}}))
     }
     return(
         <>

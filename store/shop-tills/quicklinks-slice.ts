@@ -34,9 +34,9 @@ export const quickLinksSlice = createSlice({
                 const opt = {method: 'POST', body: JSON.stringify(action.payload)}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
-            updateQuickLinkID: (state, action:PayloadAction<{id:number,data:string}>) => {
-                state.quickLinksArray[action.payload.id].id = action.payload.data
-                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.id])}
+            updateQuickLinkID: (state, action:PayloadAction<{linksIndex:number,data:string}>) => {
+                state.quickLinksArray[action.payload.linksIndex].id = action.payload.data
+                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.linksIndex])}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
 
@@ -46,19 +46,19 @@ export const quickLinksSlice = createSlice({
                 state.quickLinksArray.splice(action.payload,1)
             },
 
-            updateQuickLinkItemColour: (state, action:PayloadAction<{listIndex:number, itemIndex:number, colour:string}>) => {
-                state.quickLinksArray[action.payload.listIndex].links[action.payload.itemIndex].COLOUR = action.payload.colour
-                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.listIndex])}
+            updateQuickLinkItemColour: (state, action:PayloadAction<{linksIndex:number, itemIndex:number, colour:string}>) => {
+                state.quickLinksArray[action.payload.linksIndex].links[action.payload.itemIndex].COLOUR = action.payload.colour
+                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.linksIndex])}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
-            deleteQuickLinkItem: (state, action:PayloadAction<{listIndex:number, itemIndex:number}>) => {
-                state.quickLinksArray[action.payload.listIndex].links[action.payload.itemIndex] = {SKU:""}
-                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.listIndex])}
+            deleteQuickLinkItem: (state, action:PayloadAction<{linksIndex:number, itemIndex:number}>) => {
+                state.quickLinksArray[action.payload.linksIndex].links[action.payload.itemIndex] = {SKU:""}
+                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.linksIndex])}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
-            addItemToLinks: (state, action:PayloadAction<{id:number,index:number,data:QuickLinkItem}>) => {
-                state.quickLinksArray[action.payload.id].links[action.payload.index] = action.payload.data
-                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.id])}
+            addItemToLinks: (state, action:PayloadAction<{linksIndex:number,itemIndex:number,data:QuickLinkItem}>) => {
+                state.quickLinksArray[action.payload.linksIndex].links[action.payload.itemIndex] = action.payload.data
+                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.linksIndex])}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             }
         },

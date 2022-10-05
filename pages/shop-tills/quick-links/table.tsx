@@ -4,28 +4,26 @@ import {useSelector} from "react-redux";
 import {selectQuickLinks} from "../../../store/shop-tills/quicklinks-slice";
 import QuickLinkTableAddButton from "./quick-link-table-add-button";
 import ColumnLayout from "../../../components/layouts/column-layout";
+import {useRouter} from "next/router";
 
-interface Props {
-    id: number;
-}
+export default function QuickLinksTable() {
 
-export default function QuickLinksTable({id}: Props) {
-
+    const router = useRouter()
+    const linksIndex = Number(router.query.linksIndex)
     const links = useSelector(selectQuickLinks)
 
     const buttons = []
-    if (!links || !links[id]) return null
-    for (let index in links[id].links) {
-        if (links[id].links[index].SKU) {
+    if (!links || !links[linksIndex]) return null
+    for (let index in links[linksIndex].links) {
+        if (links[linksIndex].links[index].SKU) {
             buttons.push(<QuickLinkButton
                 key={index}
-                listIndex={id}
                 itemIndex={Number(index)}
-                item={links[id].links[index]}/>)
+                item={links[linksIndex].links[index]}/>)
         } else {
             buttons.push(<QuickLinkTableAddButton
                 key={index}
-                id={id}
+                id={linksIndex}
                 index={Number(index)}/>)
         }
     }

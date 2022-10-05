@@ -2,29 +2,29 @@ import styles from './quick-links.module.css'
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import EditQuickLinkMenuPopup from "./edit-quicklink-menu-popup";
 import SidebarButton from "../../../components/layouts/SidebarButton";
+import {useRouter} from "next/router";
 
 /**
  * @param {number} index - Index of element in the Quick Link array in
- * @param {boolean} active -
- * @param {handler} handler -
- * @param {string} text -
+ * @param {string} text - Button text
  */
 interface Props {
     index:number;
-    active:boolean;
-    handler:(id:number)=>void;
     text:string;
 }
 
-export default function QuickLinksSidebarButton({index, active, handler, text}:Props){
+export default function QuickLinksSidebarButton({index, text}:Props){
+    const router = useRouter()
+    const activeIndex = Number(router.query.linksIndex)
     return(
-        <SidebarButton active={active} className={styles["sidebar-button"]}>
+        <SidebarButton active={activeIndex === index} className={styles["sidebar-button"]}>
             <div className={styles["sidebar-button-edit"]} onClick={()=>dispatchNotification({
                 type:"popup",
                 title:"New QuickLink Menu",
-                content:<EditQuickLinkMenuPopup index={index}/>
+                content:<EditQuickLinkMenuPopup/>
             })}>&#9998;</div>
-            <div className={styles["sidebar-button-title"]} onClick={()=>handler(index)}>{text}</div>
+            <div className={styles["sidebar-button-title"]} onClick={()=>{
+                router.push({pathname:router.pathname,query:{...router.query, linksIndex:index}})}}>{text}</div>
         </SidebarButton>
     )
 }
