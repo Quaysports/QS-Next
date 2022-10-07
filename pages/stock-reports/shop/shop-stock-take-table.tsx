@@ -24,7 +24,8 @@ export default function ShopStockTakeTable() {
             if (!activeItems[index].stockTake?.checked || activeItems[index].stockTake?.date) continue;
 
             if(activeItems[index].stockTake!.quantity){
-                linnUpdate.push({SKU:activeItems[index].SKU, QTY:activeItems[index].stockTake!.quantity!})
+                let change = activeItems[index].stockTake!.quantity! - activeItems[index].STOCKTOTAL
+                linnUpdate.push({SKU:activeItems[index].SKU, QTY:change})
             }
 
             let stockTakeUpdate = {...activeItems[index].stockTake}
