@@ -32,7 +32,6 @@ export default function ShopOrdersLandingPage() {
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
-    if (context.query.tab === "dead-stock") {
         const deadStock = await deadStockReport()
 
         function compare(a: DeadStockReport, b: DeadStockReport) {
@@ -52,7 +51,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
             tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
         }
         store.dispatch(setDeadStock(tempObject))
-    }
+
 
     if (context.query.tab === "completed-orders") {
         const today = new Date()
