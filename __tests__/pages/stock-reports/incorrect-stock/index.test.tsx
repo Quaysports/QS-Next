@@ -1,7 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react'
+import {fireEvent,render, screen} from "./new-index"
 import '@testing-library/jest-dom'
 import IncorrectStock from "../../../../pages/stock-reports/incorrect-stock";
-import {renderWithProviders} from "./new-index.test";
 
 global.fetch = jest.fn(() =>
     Promise.resolve({
@@ -9,47 +8,12 @@ global.fetch = jest.fn(() =>
     })
 ) as jest.Mock;
 
-const mockDispatch = jest.fn()
-jest.mock("react-redux", () => ({
-    useSelector: (reducer: any) => {
-        if (reducer.name === "selectIncorrectStockState") {
-            return ({
-                Shimano: [{
-                    BRAND: "Shimano",
-                    TITLE: "Fishing Stuff",
-                    SKU: "SKU-1",
-                    CHECKED: true,
-                    QTY: 2,
-                    PRIORITY: true
-                }]
-            })
-        }
-
-        if (reducer.name === "selectZeroStockState") {
-            return ({
-                Mainline: [{
-                    BRAND: "Mainline",
-                    TITLE: "Fishing Things",
-                    SKU: "SKU-2",
-                    CHECKED: true,
-                    QTY: 4,
-                    PRIORITY: false
-                }]
-            })
-        }
-        if (reducer.name === "selectValidData") {
-            return true
-
-        }
-    },
-    useDispatch: () => mockDispatch
-}))
-
 const mockNotification = jest.fn()
 jest.mock("../../../../server-modules/dispatch-notification", () => ({dispatchNotification: (info:any) => mockNotification(info)}))
 
 test("renders IncorrectStockList and ZeroStockList components", () => {
-    renderWithProviders(<IncorrectStock/>,{})
+
+    render(<IncorrectStock/>)
     expect(screen.queryByTestId("incorrect-list-wrapper")).toBeInTheDocument()
     expect(screen.queryByTestId("zero-list-wrapper")).toBeInTheDocument()
     expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
@@ -65,7 +29,6 @@ test("Save button checks data is invalid before notification pop up", () => {
     render(<IncorrectStock/>)
     const button = screen.getByRole('button', {name: "Save"})
     fireEvent.click(button)
-    expect(mockDispatch).toHaveBeenCalledTimes(2)
     expect(mockNotification).toHaveBeenCalledWith({
             type: "alert",
             title: "Error",
@@ -87,8 +50,8 @@ test("Save button checks data is valid before API call and notification pop up",
     })
     expect(mockDispatch).toHaveBeenCalledTimes(4)
     expect(mockNotification).toHaveBeenCalledWith({
-            type: "alert",
-            title: "Stock Update",
-            content: "2 items updated"
-        })
+        type: "alert",
+        title: "Stock Update",
+        content: "2 items updated"
+    })
 })

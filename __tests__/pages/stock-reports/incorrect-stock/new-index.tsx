@@ -11,6 +11,7 @@ import shopOrdersReducer from "../../../../store/shop-orders-slice";
 import userReducer from "../../../../store/dashboard/user-slice";
 import quickLinksReducer from "../../../../store/shop-tills/quicklinks-slice";
 import itemDatabaseReducer from "../../../../store/item-database/item-database-slice";
+
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
     preloadedState?: PreloadedState<RootState>
     store?: AppStore
@@ -24,7 +25,7 @@ const rootReducer = combineReducers({
     itemDatabase: itemDatabaseReducer
 })
 
-export function renderWithProviders(
+function renderWithProviders(
     ui: React.ReactElement,
     {
         preloadedState = {},
@@ -33,8 +34,10 @@ export function renderWithProviders(
     }: ExtendedRenderOptions = {}
 ) {
     function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
-        return <Provider store={store}>{children}</Provider>
+        return <Provider store={store}>{children}</Provider> as JSX.Element
     }
 
     return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }
+export * from '@testing-library/react'
+export {renderWithProviders as render}
