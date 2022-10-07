@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch --verbose false"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
+    "@types/jest": "^29.1.1",
     "axios": "^0.27.2",
     "mongodb": "^4.8.1",
     "next": "12.2.5",
