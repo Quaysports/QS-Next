@@ -1,19 +1,59 @@
-import {fireEvent,render, screen} from "./new-index"
+import {fireEvent, render, screen} from "./new-index"
 import '@testing-library/jest-dom'
 import IncorrectStock from "../../../../pages/stock-reports/incorrect-stock";
 
-global.fetch = jest.fn(() =>
+global.fetch = jest.fn((body:any) =>
     Promise.resolve({
         json: () => Promise.resolve({acknowledged: true, deletedCount: 2}),
     })
 ) as jest.Mock;
 
 const mockNotification = jest.fn()
-jest.mock("../../../../server-modules/dispatch-notification", () => ({dispatchNotification: (info:any) => mockNotification(info)}))
+jest.mock("../../../../server-modules/dispatch-notification", () => ({dispatchNotification: (info: any) => mockNotification(info)}))
 
-test("renders IncorrectStockList and ZeroStockList components", () => {
+test("does not render IncorrectStockList and ZeroStockList components", () => {
+    const initialState = {
+        incorrectStockReport: {},
+        zeroStockReport: {},
+        brands: [],
+        brandItems: [],
+        validData: true,
+    }
 
-    render(<IncorrectStock/>)
+    render(<IncorrectStock/>, {preloadedState: {stockReports: initialState}})
+    expect(screen.queryByTestId("incorrect-list-wrapper")).not.toBeInTheDocument()
+    expect(screen.queryByTestId("zero-list-wrapper")).not.toBeInTheDocument()
+    expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
+})
+
+test("renders IncorrectStockList and ZeroStockList components with data", () => {
+    const initialState = {
+        incorrectStockReport: {
+            Shimano: [{
+                BRAND: "Shimano",
+                TITLE: "Fishing Stuff",
+                SKU: "SKU-1",
+                CHECKED: false,
+                QTY: 3,
+                PRIORITY: true
+            }]
+        },
+        zeroStockReport: {
+            Mainline: [{
+                BRAND: "Mainline",
+                TITLE: "Fishing Things",
+                SKU: "SKU-2",
+                CHECKED: false,
+                QTY: 3,
+                PRIORITY: false
+            }]
+        },
+        brands: [],
+        brandItems: [],
+        validData: true,
+    }
+
+    render(<IncorrectStock/>, {preloadedState: {stockReports: initialState}})
     expect(screen.queryByTestId("incorrect-list-wrapper")).toBeInTheDocument()
     expect(screen.queryByTestId("zero-list-wrapper")).toBeInTheDocument()
     expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
@@ -26,13 +66,22 @@ test("renders IncorrectStockList and ZeroStockList components", () => {
 })
 
 test("Save button checks data is invalid before notification pop up", () => {
-    render(<IncorrectStock/>)
+
+    const initialState = {
+        incorrectStockReport: {},
+        zeroStockReport: {},
+        brands: [],
+        brandItems: [],
+        validData: false,
+    }
+
+    render(<IncorrectStock/>, {preloadedState: {stockReports: initialState}})
     const button = screen.getByRole('button', {name: "Save"})
     fireEvent.click(button)
     expect(mockNotification).toHaveBeenCalledWith({
-            type: "alert",
-            title: "Error",
-            content: "Please enter only numbers in stock levels"
+        type: "alert",
+        title: "Error",
+        content: "Please enter only numbers in stock levels"
     })
 })
 
