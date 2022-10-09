@@ -50,11 +50,19 @@ export default function UpdateIncorrectStock() {
             fetch("/api/incorrect-stock/incorrect-stock-adjust-and-mongo-clean-up", opts)
                 .then(res => res.json())
                 .then(res => {
-                    dispatchNotification({
-                        type: "alert",
-                        title: "Stock Update",
-                        content: `${res.deletedCount} items updated`
-                    })
+                     if(res.acknowledged) {
+                         dispatchNotification({
+                             type: "alert",
+                             title: "Stock Update",
+                             content: `${res.deletedCount} items updated`
+                         })
+                     } else {
+                         dispatchNotification({
+                             type: "alert",
+                             title: "Stock Update",
+                             content: `Update failed, please contact IT`
+                         })
+                     }
                 })
         } else {
             dispatchNotification({type: "alert", title: "Error", content: "Please enter only numbers in stock levels"})

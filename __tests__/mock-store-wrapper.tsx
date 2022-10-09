@@ -5,12 +5,12 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import type { PreloadedState } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 
-import type { AppStore, RootState } from '../../../../store/store'
-import stockReportReducer from '../../../../store/stock-reports-slice'
-import shopOrdersReducer from "../../../../store/shop-orders-slice";
-import userReducer from "../../../../store/dashboard/user-slice";
-import quickLinksReducer from "../../../../store/shop-tills/quicklinks-slice";
-import itemDatabaseReducer from "../../../../store/item-database/item-database-slice";
+import type { AppStore, RootState } from '../store/store'
+import stockReportReducer from '../store/stock-reports-slice'
+import shopOrdersReducer from "../store/shop-orders-slice";
+import userReducer from "../store/dashboard/user-slice";
+import quickLinksReducer from "../store/shop-tills/quicklinks-slice";
+import itemDatabaseReducer from "../store/item-database/item-database-slice";
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
     preloadedState?: PreloadedState<RootState>
