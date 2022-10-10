@@ -43,7 +43,6 @@ export interface StockReportState {
     brands: string[];
     brandItems: BrandItem[];
     validData: boolean;
-    checkState: boolean;
 }
 
 export interface StockReportWrapper {
@@ -55,8 +54,7 @@ const initialState: StockReportState = {
     zeroStockReport: {},
     brands: [],
     brandItems: [],
-    validData: true,
-    checkState: true
+    validData: true
 };
 
 export const stockReportsSlice = createSlice({
