@@ -1,10 +1,9 @@
-import {fireEvent, render, screen} from "../../../mock-store-wrapper"
+import {render, screen, waitFor} from "../../../mock-store-wrapper";
 import '@testing-library/jest-dom'
 import IncorrectStock from "../../../../pages/stock-reports/incorrect-stock";
-import {waitFor} from "@testing-library/react";
-
-
-//TODO add tests to check checkbox functionality and input validity checks
+import IncorrectStockLandingPage, {getServerSideProps} from "../../../../pages/stock-reports";
+import {GetServerSidePropsContext} from "next";
+import {ParsedUrlQuery} from "querystring";
 
 
 global.fetch = jest.fn(() =>
@@ -13,12 +12,36 @@ global.fetch = jest.fn(() =>
     })
 ) as jest.Mock;
 
-const mockNotification = jest.fn()
-jest.mock("../../../../server-modules/dispatch-notification", () => ({dispatchNotification: (info: any) => {
-    mockNotification(info)
-    }}))
+jest.mock("next/router", () => ({
+    useRouter() {
+        return {
+            route: "/",
+            pathname: "",
+            query: {tab: "incorrect-stock"},
+            asPath: "",
+        };
+    },
+}));
 
-test("does not render IncorrectStockList and ZeroStockList components", () => {
+const mockNotification = jest.fn()
+jest.mock("../../../../server-modules/dispatch-notification", () => ({
+    dispatchNotification: (info: any) => {
+        mockNotification(info)
+    }
+}))
+
+const mockIncorrectStock = jest.fn()
+jest.mock("../../../../server-modules/shop/shop", () => ({
+    getIncorrectStock: () =>  mockIncorrectStock()
+}))
+
+jest.mock("../../../../server-modules/items/items",()=>({
+    getItems(){jest.fn()},
+    getBrands(){jest.fn()}
+}))
+
+test("database function is called and does not render IncorrectStockList and ZeroStockList components", async () => {
+
     const initialState = {
         incorrectStockReport: {},
         zeroStockReport: {},
@@ -26,8 +49,12 @@ test("does not render IncorrectStockList and ZeroStockList components", () => {
         brandItems: [],
         validData: true,
     }
+    render(<IncorrectStockLandingPage/>, {preloadedState: {stockReports: initialState}})
 
-    render(<IncorrectStock/>, {preloadedState: {stockReports: initialState}})
+    const context = {query:{tab:"incorrect-stock"}} as unknown as GetServerSidePropsContext
+    await getServerSideProps(context)
+
+    expect(mockIncorrectStock).toBeCalledTimes(1)
     expect(screen.queryByTestId("incorrect-list-wrapper")).not.toBeInTheDocument()
     expect(screen.queryByTestId("zero-list-wrapper")).not.toBeInTheDocument()
     expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
@@ -60,7 +87,7 @@ test("renders IncorrectStockList and ZeroStockList components with data", () => 
         validData: true,
     }
 
-    render(<IncorrectStock/>, {preloadedState: {stockReports: initialState}})
+    render(<IncorrectStockLandingPage/>, {preloadedState: {stockReports: initialState}})
     expect(screen.queryByTestId("incorrect-list-wrapper")).toBeInTheDocument()
     expect(screen.queryByTestId("zero-list-wrapper")).toBeInTheDocument()
     expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
@@ -82,9 +109,10 @@ test("Save button checks data is invalid before notification pop up", () => {
         validData: false,
     }
 
-    render(<IncorrectStock/>, {preloadedState: {stockReports: initialState}})
-    const button = screen.getByRole('button', {name: "Save"})
-    fireEvent.click(button)
+    render(<IncorrectStockLandingPage/>, {preloadedState: {stockReports: initialState}})
+
+    screen.getByRole('button', {name: "Save"}).click()
+
     expect(mockNotification).toHaveBeenCalledWith({
         type: "alert",
         title: "Error",
@@ -92,7 +120,7 @@ test("Save button checks data is invalid before notification pop up", () => {
     })
 })
 
-test("Save button checks data is valid before API call and notification pop up", async() => {
+test("Save button checks data is valid before API call and notification pop up", async () => {
     const initialState = {
         incorrectStockReport: {
             Shimano: [{
@@ -134,17 +162,44 @@ test("Save button checks data is valid before API call and notification pop up",
         brandItems: [],
         validData: true,
     }
-    const wrapper = render(<IncorrectStock/>,{preloadedState: {stockReports: initialState}})
-    const button = screen.getByRole('button', {name: "Save"})
-    fireEvent.click(button)
+    const wrapper = render(<IncorrectStockLandingPage/>, {preloadedState: {stockReports: initialState}})
+
+    screen.getByRole('button', {name: "Save"}).click()
+
     expect(wrapper.store?.getState()).not.toContain({
-        "stockReports": {"incorrectStockReport": {"Shimano": [{"BRAND": "Shimano", "CHECKED": true, "PRIORITY": true, "QTY": 3, "SKU": "SKU-1", "TITLE": "Fishing Stuff"}], "Mainline": []}, "zeroStockReport": {"Shimano": [], "Mainline": [{"BRAND": "Mainline", "CHECKED": true, "PRIORITY": false, "QTY": 3, "SKU": "SKU-2", "TITLE": "Fishing Things"}]}}
+        "stockReports": {
+            "incorrectStockReport": {
+                "Shimano": [{
+                    "BRAND": "Shimano",
+                    "CHECKED": true,
+                    "PRIORITY": true,
+                    "QTY": 3,
+                    "SKU": "SKU-1",
+                    "TITLE": "Fishing Stuff"
+                }], "Mainline": []
+            },
+            "zeroStockReport": {
+                "Shimano": [],
+                "Mainline": [{
+                    "BRAND": "Mainline",
+                    "CHECKED": true,
+                    "PRIORITY": false,
+                    "QTY": 3,
+                    "SKU": "SKU-2",
+                    "TITLE": "Fishing Things"
+                }]
+            }
+        }
     });
     await waitFor(() => {
-        expect( mockNotification).toHaveBeenCalledWith({
+        expect(mockNotification).toHaveBeenCalledWith({
             type: "alert",
             title: "Stock Update",
             content: "2 items updated"
         })
     })
 })
+
+test("")
+
+//TODO add tests to check checkbox functionality and input validity checks
