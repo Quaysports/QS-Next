@@ -1,7 +1,7 @@
 import StockReportTabs from "../../../pages/stock-reports/tabs";
 import {render, screen} from "../../mock-store-wrapper";
 
-test("All tabs are rendered", () => {
+test("All tabs are rendered with links", () => {
     render(<StockReportTabs/>)
 
     const links = screen.getAllByRole("link") as HTMLLinkElement[]

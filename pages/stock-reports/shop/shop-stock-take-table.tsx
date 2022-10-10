@@ -93,6 +93,7 @@ export default function ShopStockTakeTable() {
 
     for (const index in activeItems) {
         elements.push(<ShopStockTakeRow key={activeItems[index].SKU} index={index} item={activeItems[index]}/>)
+        console.log(activeItems[index])
     }
 
     return (
