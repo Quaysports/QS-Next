@@ -1,4 +1,8 @@
-import {BrandItem, selectBrandItems, setStockTakeInfo} from "../../../store/stock-reports-slice";
+import {
+    BrandItem,
+    selectBrandItems,
+    setStockTakeInfo, StockTake, updateStockTakes
+} from "../../../store/stock-reports-slice";
 import {useDispatch, useSelector} from "react-redux";
 import ShopStockTakeRow from "./shop-stock-take-row";
 import SearchBar, {SearchItem} from "../../../components/search-bar";
@@ -18,6 +22,23 @@ export default function ShopStockTakeTable() {
 
     const handler = (arr: SearchItem[]) => setActiveItems(arr as BrandItem[])
 
+    const checkAll = () => {
+        let bulkUpdate:StockTake[] = []
+
+        let count = brandItems.reduce((acc,item)=>{
+            item.stockTake?.checked ? acc++ : acc--
+            return acc
+        },0)
+
+        for(let item of brandItems){
+            let stockTake = {...item.stockTake}
+            stockTake ??= {checked:false, date:null, quantity:0}
+            if(!stockTake?.date) stockTake.checked = count <= 0;
+            bulkUpdate.push(stockTake)
+        }
+        dispatch(updateStockTakes(bulkUpdate))
+    }
+
     const commitChecked = () => {
         const linnUpdate:{SKU:string, QTY:number}[] = []
         for (const index in activeItems) {
@@ -36,7 +57,7 @@ export default function ShopStockTakeTable() {
         let opts = {
             method:"POST",
             headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({id:"test", data:linnUpdate})}
+            body:JSON.stringify({id:"Stock Take Update", data:linnUpdate})}
 
         fetch("/api/linnworks/update-stock-levels", opts).then(res=>console.log(res))
     }
@@ -47,6 +68,9 @@ export default function ShopStockTakeTable() {
         <div key={"top-bar"} className={styles["top-bar"]}>
             <SearchBar resultHandler={handler} searchableArray={brandItems} EAN={true}/>
             <div><CSVButton objectArray={csvObject}/></div>
+            <div>
+                <button onClick={checkAll}>Check All</button>
+            </div>
             <div>
                 <button onClick={() => commitChecked()}>Commit</button>
             </div>

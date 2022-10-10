@@ -48,14 +48,14 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                     <div>{!item.stockTake?.date
                         ? <input
                             type={"checkbox"}
-                            defaultChecked={item.stockTake?.checked}
+                            checked={item.stockTake?.checked ? item.stockTake?.checked : false}
                             onChange={e => {
                                 loadedStockTake.checked = e.target.checked
                                 updateSlice(index!, loadedStockTake)
                             }}/>
                         : <input
                             type={"checkbox"}
-                            checked={item.stockTake?.checked}
+                            checked={item.stockTake?.checked ? item.stockTake?.checked : false}
                             readOnly={true}/>}
                     </div>
                 </div>}
