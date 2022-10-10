@@ -1,9 +1,6 @@
-import {render, screen, waitFor} from "../../mock-store-wrapper";
+import {render, screen, waitFor, fireEvent} from "../../mock-store-wrapper";
 import '@testing-library/jest-dom'
 import IncorrectStock from "../../../pages/stock-reports/incorrect-stock";
-import {getServerSideProps} from "../../../pages/stock-reports";
-import {GetServerSidePropsContext} from "next";
-import {fireEvent} from "@testing-library/dom";
 
 
 global.fetch = jest.fn(() =>
@@ -74,6 +71,7 @@ test("Renders IncorrectStockList and ZeroStockList components with data", () => 
     }
 
     render(<IncorrectStock/>, {preloadedState: {stockReports: initialState}})
+
     expect(screen.queryByTestId("incorrect-list-wrapper")).toBeInTheDocument()
     expect(screen.queryByTestId("zero-list-wrapper")).toBeInTheDocument()
     expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
