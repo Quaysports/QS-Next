@@ -26,21 +26,21 @@ jest.mock("../../../server-modules/items/items",()=>({
     getBrands: () =>  mockBrands()
 }))
 
-test("incorrect stock function is called on server side props", async () => {
+test("Incorrect stock function is called on server side props", async () => {
     render(<StockReports/>)
     const context = {query:{tab:"incorrect-stock"}} as unknown as GetServerSidePropsContext
     await getServerSideProps(context)
     expect(mockIncorrectStock).toBeCalledTimes(1)
 })
 
-test("get brands is called on server side props", async () => {
+test("Get brands is called on server side props", async () => {
     render(<StockReports/>)
     const context = {query:{tab:"shop"}} as unknown as GetServerSidePropsContext
     await getServerSideProps(context)
     expect(mockBrands).toBeCalledTimes(1)
 })
 
-test("get items is called on server side props", async () => {
+test("Get items is called on server side props", async () => {
     render(<StockReports/>)
     const context = {query:{brand:"Shimano"}} as unknown as GetServerSidePropsContext
     await getServerSideProps(context)

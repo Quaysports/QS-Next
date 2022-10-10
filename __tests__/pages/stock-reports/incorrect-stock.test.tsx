@@ -30,7 +30,7 @@ jest.mock("../../../server-modules/dispatch-notification", () => ({
     }
 }))
 
-test("database function is called and does not render IncorrectStockList and ZeroStockList components", async () => {
+test("Database function is called and does not render IncorrectStockList and ZeroStockList components", async () => {
 
     const initialState = {
         incorrectStockReport: {},
@@ -46,7 +46,7 @@ test("database function is called and does not render IncorrectStockList and Zer
     expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
 })
 
-test("renders IncorrectStockList and ZeroStockList components with data", () => {
+test("Renders IncorrectStockList and ZeroStockList components with data", () => {
     const initialState = {
         incorrectStockReport: {
             Shimano: [{
@@ -186,7 +186,7 @@ test("Save button checks data is valid before API call and notification pop up",
     })
 })
 
-test("input pattern validation works", () => {
+test("Input pattern validation works", () => {
     const pattern = /^[0-9]+$/
     expect(pattern.test("234")).toBeTruthy()
 
