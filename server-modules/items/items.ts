@@ -1,4 +1,5 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
+
 const fs = require("fs");
 
 export const dbUpdateImage = async (item: { _id?: string; SKU: string; IMAGES: { [p: string]: { filename: string } }; }) => {
@@ -178,7 +179,5 @@ export const getBrandLabelImages = async () => {
 }
 
 export const getBrands = async (filter = {}) => {
-    let result = await mongoI.findDistinct("Items", "IDBEP.BRAND", filter)
-    console.log(result)
-     return result
+    return await mongoI.findDistinct("Items", "IDBEP.BRAND", filter)
 }

@@ -50,14 +50,14 @@ export const unsetData = async (collection: string, filter: object, data: object
   }
 }
 
-export const bulkUpdateItems = async (merge: Map<string, sbt.Item>, websocket?: (type: string, message: object, socket?: string) => void, socket?: string) => {
+export const bulkUpdateItems = async (items:sbt.Item[]) => {
   const client = await connect()
   let bulkUpdateOps: mongoDB.AnyBulkWriteOperation<mongoDB.Document>[][] = []
   let index = 0
   let counter = 0;
 
-  for (const [_, item] of merge) {
-    let updateQuery = item._id ? { _id: item._id } : { SKU: item.SKU }
+  for (const item of items) {
+    let updateQuery = { SKU: item.SKU }
     if (item._id) delete item._id
     if (!bulkUpdateOps[index]) bulkUpdateOps[index] = []
     bulkUpdateOps[index].push({
@@ -71,22 +71,16 @@ export const bulkUpdateItems = async (merge: Map<string, sbt.Item>, websocket?: 
     if (counter % 1000 === 0) index++
   }
 
-  let page = 0
   let updatedItems = 0
+
   for (const bulk of bulkUpdateOps) {
-    let start = new Date();
-    console.log("Saving page " + page + "/" + bulkUpdateOps.length);
     try {
       const db = client.db(process.env.DB_NAME);
       let result = await db.collection("Items").bulkWrite(bulk)
-      console.log("DB write took " + (((new Date()).getTime() - start.getTime()) / 1000) + "s");
-      console.log(`${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`);
       if (result) updatedItems += result.modifiedCount
-      if (websocket && socket) websocket('loading', { P: page + 1, T: bulkUpdateOps.length }, socket)
     } catch (e) {
       console.error(e)
     }
-    page++
   }
 
   await client.close()
