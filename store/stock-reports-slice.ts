@@ -69,8 +69,22 @@ export const stockReportsSlice = createSlice({
             },
         },
         reducers: {
-            setIncorrectStockInitialState: (state, action: PayloadAction<{ [key: string]: StockError[] }>) => {
-                state.incorrectStockReport = action.payload
+            setIncorrectStockInitialState: (state, action: PayloadAction<StockError[]>) => {
+                const data = action.payload
+                let incorrectStock:{[key:string]:StockError[]} = {}
+                let zeroStock:{[key:string]:StockError[]} = {}
+                for (let i = 0; i < data.length; i++) {
+                    if(!data[i].BRAND) continue;
+                    if (data[i].PRIORITY) {
+                        incorrectStock[data[i].BRAND!] ??= []
+                        incorrectStock[data[i].BRAND!]!.push(data[i])
+                    } else {
+                        zeroStock[data[i].BRAND!] ??= []
+                        zeroStock[data[i].BRAND!]!.push(data[i])
+                    }
+                }
+                state.incorrectStockReport = incorrectStock
+                state.zeroStockReport = zeroStock
             },
             setIncorrectStockChecked: (state, action: PayloadAction<{ brand: string, location: number, payload: boolean }>) => {
                 state.incorrectStockReport[action.payload.brand][action.payload.location].CHECKED = action.payload.payload

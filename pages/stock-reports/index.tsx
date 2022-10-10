@@ -18,7 +18,7 @@ import ColumnLayout from "../../components/layouts/column-layout";
 import {appWrapper} from "../../store/store";
 import {getBrands, getItems} from "../../server-modules/items/items";
 
-export default function IncorrectStockLandingPage() {
+export default function StockReports() {
 
     const router = useRouter()
 
@@ -61,20 +61,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
     if(context.query.tab === "incorrect-stock") {
         const data = await getIncorrectStock()
         if(data) {
-            let incorrectStock:{[key:string]:StockError[]} = {}
-            let zeroStock:{[key:string]:StockError[]} = {}
-            for (let i = 0; i < data.length; i++) {
-                if(!data[i].BRAND) continue;
-                if (data[i].PRIORITY) {
-                    incorrectStock[data[i].BRAND!] ??= []
-                    incorrectStock[data[i].BRAND!]!.push(data[i])
-                } else {
-                    zeroStock[data[i].BRAND!] ??= []
-                    zeroStock[data[i].BRAND!]!.push(data[i])
-                }
-            }
-            store.dispatch(setIncorrectStockInitialState(incorrectStock))
-            store.dispatch(setZeroStockInitialState(zeroStock))
+            store.dispatch(setIncorrectStockInitialState(data))
         }
     }
 

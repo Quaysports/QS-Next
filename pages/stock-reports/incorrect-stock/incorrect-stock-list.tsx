@@ -58,7 +58,7 @@ export default function IncorrectStockList() {
                             />
                             <input
                                 type={"checkbox"}
-                                defaultChecked={false}
+                                checked={item.CHECKED}
                                 onChange={(e) => dispatch(setIncorrectStockChecked({
                                     payload: e.target.checked,
                                     brand: key,

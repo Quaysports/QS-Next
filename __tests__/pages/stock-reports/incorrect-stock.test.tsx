@@ -1,9 +1,9 @@
-import {render, screen, waitFor} from "../../../mock-store-wrapper";
+import {render, screen, waitFor} from "../../mock-store-wrapper";
 import '@testing-library/jest-dom'
-import IncorrectStock from "../../../../pages/stock-reports/incorrect-stock";
-import IncorrectStockLandingPage, {getServerSideProps} from "../../../../pages/stock-reports";
+import IncorrectStock from "../../../pages/stock-reports/incorrect-stock";
+import {getServerSideProps} from "../../../pages/stock-reports";
 import {GetServerSidePropsContext} from "next";
-import {ParsedUrlQuery} from "querystring";
+import {fireEvent} from "@testing-library/dom";
 
 
 global.fetch = jest.fn(() =>
@@ -24,20 +24,10 @@ jest.mock("next/router", () => ({
 }));
 
 const mockNotification = jest.fn()
-jest.mock("../../../../server-modules/dispatch-notification", () => ({
+jest.mock("../../../server-modules/dispatch-notification", () => ({
     dispatchNotification: (info: any) => {
         mockNotification(info)
     }
-}))
-
-const mockIncorrectStock = jest.fn()
-jest.mock("../../../../server-modules/shop/shop", () => ({
-    getIncorrectStock: () =>  mockIncorrectStock()
-}))
-
-jest.mock("../../../../server-modules/items/items",()=>({
-    getItems(){jest.fn()},
-    getBrands(){jest.fn()}
 }))
 
 test("database function is called and does not render IncorrectStockList and ZeroStockList components", async () => {
@@ -49,12 +39,8 @@ test("database function is called and does not render IncorrectStockList and Zer
         brandItems: [],
         validData: true,
     }
-    render(<IncorrectStockLandingPage/>, {preloadedState: {stockReports: initialState}})
+    render(<IncorrectStock/>, {preloadedState: {"stockReports": initialState}})
 
-    const context = {query:{tab:"incorrect-stock"}} as unknown as GetServerSidePropsContext
-    await getServerSideProps(context)
-
-    expect(mockIncorrectStock).toBeCalledTimes(1)
     expect(screen.queryByTestId("incorrect-list-wrapper")).not.toBeInTheDocument()
     expect(screen.queryByTestId("zero-list-wrapper")).not.toBeInTheDocument()
     expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
@@ -87,7 +73,7 @@ test("renders IncorrectStockList and ZeroStockList components with data", () => 
         validData: true,
     }
 
-    render(<IncorrectStockLandingPage/>, {preloadedState: {stockReports: initialState}})
+    render(<IncorrectStock/>, {preloadedState: {stockReports: initialState}})
     expect(screen.queryByTestId("incorrect-list-wrapper")).toBeInTheDocument()
     expect(screen.queryByTestId("zero-list-wrapper")).toBeInTheDocument()
     expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
@@ -99,7 +85,7 @@ test("renders IncorrectStockList and ZeroStockList components with data", () => 
     expect(screen.getByTestId("zero-list-SKU").textContent).toBe("SKU-2")
 })
 
-test("Save button checks data is invalid before notification pop up", () => {
+test("Save button checks data is invalid before notification pop up", async () => {
 
     const initialState = {
         incorrectStockReport: {},
@@ -109,9 +95,9 @@ test("Save button checks data is invalid before notification pop up", () => {
         validData: false,
     }
 
-    render(<IncorrectStockLandingPage/>, {preloadedState: {stockReports: initialState}})
+    render(<IncorrectStock/>, {preloadedState: {stockReports: initialState}})
 
-    screen.getByRole('button', {name: "Save"}).click()
+    await waitFor(() => screen.getByRole('button', {name: "Save"}).click())
 
     expect(mockNotification).toHaveBeenCalledWith({
         type: "alert",
@@ -162,9 +148,9 @@ test("Save button checks data is valid before API call and notification pop up",
         brandItems: [],
         validData: true,
     }
-    const wrapper = render(<IncorrectStockLandingPage/>, {preloadedState: {stockReports: initialState}})
+    const wrapper = render(<IncorrectStock/>, {preloadedState: {"stockReports": initialState}})
 
-    screen.getByRole('button', {name: "Save"}).click()
+    await waitFor(() => screen.getByRole('button', {name: "Save"}).click())
 
     expect(wrapper.store?.getState()).not.toContain({
         "stockReports": {
@@ -200,6 +186,38 @@ test("Save button checks data is valid before API call and notification pop up",
     })
 })
 
-test("")
+test("input pattern validation works", () => {
+    const pattern = /^[0-9]+$/
+    expect(pattern.test("234")).toBeTruthy()
 
-//TODO add tests to check checkbox functionality and input validity checks
+    const initialState = {
+        incorrectStockReport: {
+            Shimano: [{
+                BRAND: "Shimano",
+                TITLE: "Fishing Stuff",
+                SKU: "SKU-1",
+                CHECKED: false,
+                QTY: 3,
+                PRIORITY: true
+            }]
+        },
+        zeroStockReport: {
+            Mainline: [{
+                BRAND: "Mainline",
+                TITLE: "Fishing Things",
+                SKU: "SKU-2",
+                CHECKED: false,
+                QTY: 3,
+                PRIORITY: false
+            }]
+        },
+        brands: [],
+        brandItems: [],
+        validData: true,
+    }
+    render(<IncorrectStock/>, {preloadedState: {"stockReports": initialState}})
+
+    const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
+    fireEvent.change(input, {target:{value:"f"}})
+    expect(input.validity.patternMismatch).toBeTruthy()
+})
