@@ -38,6 +38,9 @@ jest.mock("../../../server-modules/shop/shop-order-tool", () => ({
     getCompleteOrders: () => mockCompleteOrders()
 }));
 
+afterEach(() => {
+    jest.clearAllMocks();
+});
 
 test("Complete orders function is not called on server side props when tab is 'dead-stock'", async () => {
     await waitFor(() => render(<ShopOrdersLandingPage/>))

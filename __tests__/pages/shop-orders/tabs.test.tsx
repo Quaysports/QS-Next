@@ -22,6 +22,10 @@ jest.mock("../../../server-modules/dispatch-notification", () => ({
     }
 }))
 
+afterEach(() => {
+    jest.clearAllMocks();
+});
+
 test("All tabs are rendered with clickable links", () => {
     render(<ShopOrdersTabs/>)
     const orders = screen.getByText('Orders')
@@ -74,4 +78,3 @@ test("Notification is being called correctly", () => {
     expect(mockNotification).toHaveBeenCalledTimes(1)
     expect(mockPush).toHaveBeenCalledTimes(0)
 })
-//TODO test the edit order functionality
