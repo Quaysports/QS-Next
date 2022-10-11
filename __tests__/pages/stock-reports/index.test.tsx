@@ -1,6 +1,6 @@
 import {GetServerSidePropsContext} from "next";
 import StockReports, {getServerSideProps} from "../../../pages/stock-reports";
-import {render} from "../../mock-store-wrapper";
+import {render} from "../../../__mocks__/mock-store-wrapper";
 
 jest.mock("next/router", () => ({
     useRouter() {

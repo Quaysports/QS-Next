@@ -59,13 +59,13 @@ export default function ShopStockTakeTable() {
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({id:"Stock Take Update", data:linnUpdate})}
 
-        fetch("/api/linnworks/update-stock-levels", opts).then(res=>console.log(res))
+        fetch("/api/linnworks/update-stock-levels", opts).then(res=>console.dir(res))
     }
 
     const csvObject: { SKU: string, TITLE: string, Stock: number, Actual: string }[] = []
 
     let elements = [
-        <div key={"top-bar"} className={styles["top-bar"]}>
+        <div data-testid={"table-top-row"} key={"top-bar"} className={styles["top-bar"]}>
             <SearchBar resultHandler={handler} searchableArray={brandItems} EAN={true}/>
             <div><CSVButton objectArray={csvObject}/></div>
             <div>
@@ -93,7 +93,6 @@ export default function ShopStockTakeTable() {
 
     for (const index in activeItems) {
         elements.push(<ShopStockTakeRow key={activeItems[index].SKU} index={index} item={activeItems[index]}/>)
-        console.log(activeItems[index])
     }
 
     return (

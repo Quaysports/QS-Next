@@ -1,7 +1,6 @@
-import {render, screen} from "../../mock-store-wrapper";
+import {render, screen} from "../../../__mocks__/mock-store-wrapper";
 import ShopOrdersTabs from "../../../pages/shop-orders/tabs";
 import {fireEvent} from "@testing-library/dom";
-import {useRouter} from "next/router";
 
 const mockPush = jest.fn()
 jest.mock("next/router", () => ({

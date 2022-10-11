@@ -1,5 +1,5 @@
 import StockReportTabs from "../../../pages/stock-reports/tabs";
-import {render, screen} from "../../mock-store-wrapper";
+import {render, screen} from "../../../__mocks__/mock-store-wrapper";
 
 test("All tabs are rendered with links", () => {
     render(<StockReportTabs/>)

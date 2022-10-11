@@ -1,12 +1,11 @@
 import React from "react";
 import IncorrectStock from "./incorrect-stock/index"
-import {getIncorrectStock, StockError} from "../../server-modules/shop/shop"
+import {getIncorrectStock} from "../../server-modules/shop/shop"
 import {
     BrandItem,
     setBrandItems,
     setBrands,
-    setIncorrectStockInitialState,
-    setZeroStockInitialState,
+    setIncorrectStockInitialState
 } from "../../store/stock-reports-slice";
 import Menu from "../../components/menu/menu";
 import {useRouter} from "next/router";
@@ -55,6 +54,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
         let data =  await getItems(
             {"IDBEP.BRAND": context.query.brand, IDBFILTER: "domestic", ISCOMPOSITE: false},
             {SKU: 1, TITLE: 1, EAN: 1, STOCKTOTAL: 1, stockTake: 1})
+        console.log(data)
         if(data) store.dispatch(setBrandItems(data as BrandItem[]))
     }
 

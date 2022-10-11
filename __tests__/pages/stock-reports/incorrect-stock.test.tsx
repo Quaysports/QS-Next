@@ -1,4 +1,4 @@
-import {render, screen, waitFor, fireEvent} from "../../mock-store-wrapper";
+import {render, screen, waitFor, fireEvent} from "../../../__mocks__/mock-store-wrapper";
 import '@testing-library/jest-dom'
 import IncorrectStock from "../../../pages/stock-reports/incorrect-stock";
 

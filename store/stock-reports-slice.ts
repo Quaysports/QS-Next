@@ -130,7 +130,7 @@ export const stockReportsSlice = createSlice({
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(state.brandItems)
                 }
-                fetch("/api/items/bulk-update-items", opts).then(res => console.log(res.statusText))
+                fetch("/api/items/bulk-update-items", opts)
             },
 
             setStockTakeInfo: (state, action: PayloadAction<{ index: number, data: StockTake }>) => {

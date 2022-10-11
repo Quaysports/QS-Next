@@ -32,7 +32,7 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                     <div className={styles.center}>Update</div>
                     <div className={styles.center}>Checked</div>
                 </div>
-                : <div className={styles.row}>
+                : <div className={styles.row} data-testid={item.SKU}>
                     <div>{item.SKU}</div>
                     <div>{item.EAN}</div>
                     <div>{item.TITLE}</div>
