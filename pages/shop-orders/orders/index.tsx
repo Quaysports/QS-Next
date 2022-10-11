@@ -78,5 +78,3 @@ export default function Orders() {
         </>
     );
 }
-
-//TODO When submitting the order to linnworks post to /Shop/AdjustStock with the Query prefix being StockIn - "insert date here"

@@ -21,7 +21,7 @@ export default function OrderInformation(props: OrderInformationProps) {
     const loadedOrder = useSelector(selectLoadedOrder)
     const dispatch = useDispatch()
 
-    async function deleteOrder(order:OpenOrdersObject) {
+    function deleteOrder(order:OpenOrdersObject) {
         dispatchNotification({
             type: "confirm",
             title: "Warning",
@@ -41,6 +41,7 @@ export default function OrderInformation(props: OrderInformationProps) {
         }
         fetch("/api/shop-orders/delete-order", opts)
             .then(res => {
+                console.dir(res)
                 !res.ok ?
                     dispatchNotification({
                         type: "alert",
