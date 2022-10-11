@@ -22,10 +22,7 @@ export default function QuickLinkButton({itemIndex, item}: Props) {
     let dispatch = useDispatch()
 
     const [inputColour, setInputColour] = useState<string | undefined>(item?.COLOUR ? item?.COLOUR : "")
-    useEffect(()=>{
-        setInputColour(item?.COLOUR ? item?.COLOUR : "")
-        console.log(itemIndex, inputColour)
-    },[item])
+    useEffect(()=>{setInputColour(item?.COLOUR ? item?.COLOUR : "")},[item])
 
     const deleteItem = () => dispatch(deleteQuickLinkItem({linksIndex: linksIndex, itemIndex: itemIndex}))
 

@@ -11,14 +11,7 @@ global.fetch = jest.fn(() =>
 
 
 jest.mock("next/router", () => ({
-    useRouter() {
-        return {
-            route: "/",
-            pathname: "",
-            query: {tab:"home"},
-            asPath: "",
-        };
-    },
+    useRouter: () => ({query: {tab:"home"}}),
 }));
 
 jest.mock("../../../server-modules/users/user",()=>({
