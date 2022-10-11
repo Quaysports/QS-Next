@@ -21,30 +21,31 @@ export interface UserTableProps {
 export default function UserTable({userInfo}: UserTableProps) {
     const dispatch = useDispatch()
 
-    function updateUserData(index: string, user:User) {
-        console.log(user)
-        dispatch(setUserData({index: Number(index), user:user}))
+    function updateUserData(index: string, user: User) {
+        dispatch(setUserData({index: Number(index), user: user}))
     }
 
-    
-    const userArray:ReactElement[] = [<div key="title" className={style["user-table-row"]}>
-        <span></span>
-        <span><button
-            className={style["add-user-button"]}
-            onClick={() => {
-                dispatchNotification({type: "popup", title: 'User Permissions', content: <CreateUser/>});
-        }}>Add User
-        </button></span>
-        <span>Username</span>
-        <span>Role</span>
-        <span>Rota</span>
-        <span>Holiday</span>
-        <span>Password</span>
-        <span>Pin</span>
-        <span>User Colour</span>
-    </div>]
 
-    const selectOptions = (values:string[]) => {
+    const userArray: ReactElement[] = [
+        <div key="title" className={style["user-table-row"]}>
+            <span></span>
+            <span><button
+                className={style["add-user-button"]}
+                onClick={() => {
+                    dispatchNotification({type: "popup", title: 'User Permissions', content: <CreateUser/>});
+                }}>Add User
+        </button></span>
+            <span>Username</span>
+            <span>Role</span>
+            <span>Rota</span>
+            <span>Holiday</span>
+            <span>Password</span>
+            <span>Pin</span>
+            <span>User Colour</span>
+        </div>
+    ]
+
+    const selectOptions = (values: string[]) => {
         const options = []
         for (const value of values) options.push(<option key={options.length} value={value}>{value}</option>)
         return options
@@ -55,13 +56,13 @@ export default function UserTable({userInfo}: UserTableProps) {
     for (const [index, user] of Object.entries(userInfo)) {
 
         let loadedUser = {...user}
-        const pinHandler = (value:string) => {
+        const pinHandler = (value: string) => {
             loadedUser.pin = value
             updateUserData(index, loadedUser)
         }
-        
+
         userArray.push(
-            <div key={index} className={style["user-table-row"]}>
+            <div key={index} data-testid={"user-table-row"} className={style["user-table-row"]}>
                 <span><button onClick={() => {
                     dispatchNotification({
                         type: "confirm",
@@ -79,9 +80,10 @@ export default function UserTable({userInfo}: UserTableProps) {
                     });
                 }}>Permissions</button></span>
 
-                <span><input type="text" defaultValue={user.username} onBlur={(e) =>{
+                <span><input type="text" defaultValue={user.username} onBlur={(e) => {
                     loadedUser.username = e.target.value
-                    updateUserData(index, loadedUser)}
+                    updateUserData(index, loadedUser)
+                }
                 }/></span>
 
                 <span><select defaultValue={user.role} onChange={(e) => {
@@ -98,18 +100,20 @@ export default function UserTable({userInfo}: UserTableProps) {
                     {selectOptions(['online', 'shop'])}
                 </select></span>
 
-                <span><input type="number" defaultValue={user.holiday} onBlur={(e) =>{
+                <span><input type="number" defaultValue={user.holiday} onBlur={(e) => {
                     loadedUser.holiday = e.target.value
                     updateUserData(index, loadedUser)
                 }}/></span>
-                <span><input type="text" defaultValue={user.password} onBlur={(e) =>{
+                <span><input type="text" defaultValue={user.password} onBlur={(e) => {
                     loadedUser.password = e.target.value
                     updateUserData(index, loadedUser)
                 }}/></span>
                 <span>
-                    <RegexInput type={"pin"} value={user.pin ? user.pin : ""} errorMessage={"Pin must contain only numbers and be exactly four digits long."} handler={pinHandler}/>
+                    <RegexInput type={"pin"} value={user.pin ? user.pin : ""}
+                                errorMessage={"Pin must contain only numbers and be exactly four digits long."}
+                                handler={pinHandler}/>
                 </span>
-                <span><input type="color" defaultValue={user.colour} onBlur={(e) =>{
+                <span><input type="color" defaultValue={user.colour} onBlur={(e) => {
                     loadedUser.colour = e.target.value
                     updateUserData(index, loadedUser)
                 }}/></span>

@@ -75,7 +75,6 @@ const hydrateBrandandBrandItems = {
 test("Table loads when brandItems[] in slice contains items.", async () => {
 
     render(<ShopStockTake/>,{preloadedState:{"stockReports":hydrateBrandandBrandItems}})
-    await waitFor(()=> screen.getByTestId("table-top-row"))
 
     expect(screen.getByTestId("AKA-AFLC13")).toBeInTheDocument()
     expect(screen.getByTestId("AKA-AFLC13").childNodes[0]).toHaveTextContent("AKA-AFLC13")
@@ -89,7 +88,6 @@ test("Table loads when brandItems[] in slice contains items.", async () => {
 test("Loaded brand items correctly hide input if stockTake.date is not null", async () => {
 
     render(<ShopStockTake/>,{preloadedState:{"stockReports":hydrateBrandandBrandItems}})
-    await waitFor(()=> screen.getByTestId("table-top-row"))
 
     expect(screen.getByTestId("AKA-AFLC13").childNodes[4].childNodes.length === 0)
     expect(screen.getByTestId("AKA-AFLC8").childNodes[4].childNodes[0]).toHaveAttribute("pattern")
@@ -97,18 +95,17 @@ test("Loaded brand items correctly hide input if stockTake.date is not null", as
 
 test("Check all button calculates and checks inputs correctly.", async()=>{
     render(<ShopStockTake/>,{preloadedState:{"stockReports":hydrateBrandandBrandItems}})
-    await waitFor(()=> screen.getByTestId("table-top-row"))
 
     let checkBox1 = screen.getByTestId("AKA-AFLC13").childNodes[5].childNodes[0] as HTMLInputElement
     let checkBox2 = screen.getByTestId("AKA-AFLC8").childNodes[5].childNodes[0] as HTMLInputElement
 
-    await waitFor(()=>screen.getByRole("button", {name:"Check All"}).click())
+    await waitFor(()=> screen.getByRole("button", {name:"Check All"}).click())
     await waitFor(()=> expect(checkBox2).toBeChecked())
 
     expect(checkBox1.checked).toEqual(true)
     expect(checkBox2.checked).toEqual(true)
 
-    await waitFor(()=>screen.getByRole("button", {name:"Check All"}).click())
+    await waitFor(()=> screen.getByRole("button", {name:"Check All"}).click())
     await waitFor(()=> expect(checkBox2).not.toBeChecked())
 
     expect(checkBox1.checked).toEqual(true)
@@ -117,15 +114,14 @@ test("Check all button calculates and checks inputs correctly.", async()=>{
 
 test("Commit button correctly disables inputs after click", async()=>{
     render(<ShopStockTake/>,{preloadedState:{"stockReports":hydrateBrandandBrandItems}})
-    await waitFor(()=> screen.getByTestId("table-top-row"))
 
     let input = screen.getByTestId("AKA-AFLC8").childNodes[4].childNodes[0] as HTMLInputElement
     let checkBox = screen.getByTestId("AKA-AFLC8").childNodes[5].childNodes[0] as HTMLInputElement
 
-    await waitFor(()=>checkBox.click())
-    await waitFor(()=>expect(checkBox).toBeChecked())
+    await waitFor(()=> checkBox.click())
+    await waitFor(()=> expect(checkBox).toBeChecked())
 
-    await waitFor(()=>screen.getByRole("button", {name:"Commit"}).click())
+    await waitFor(()=> screen.getByRole("button", {name:"Commit"}).click())
     await waitFor(()=> expect(input).not.toBeInTheDocument())
 
 })

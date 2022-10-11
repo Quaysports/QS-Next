@@ -39,7 +39,8 @@ export const userSlice = createSlice({
             },
             deleteUser:(state, action:PayloadAction<{index:number}>)=>{
                 const opt = {method:'POST', headers:{"Content-Type":"application/json"}, body: JSON.stringify(state.usersArray[action.payload.index])}
-                fetch('/api/user/delete-user', opt).then(()=>window.location.reload())
+                state.usersArray.splice(action.payload.index, 1)
+                fetch('/api/user/delete-user', opt).then((res)=>console.log(res))
             }
         },
     })
