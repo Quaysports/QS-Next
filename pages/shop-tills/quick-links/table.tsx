@@ -30,7 +30,7 @@ export default function QuickLinksTable() {
     return (
         <>
             <ColumnLayout scroll={true}>
-                <div className={styles.table}>{buttons}</div>
+                <div data-testid={"quicklinks-table"} className={styles.table}>{buttons}</div>
             </ColumnLayout>
         </>
     )

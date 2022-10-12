@@ -84,6 +84,6 @@
 }
 
 .dual-button-container > button {
-    width:50px;
+    width:auto;
     height: 20px;
 }
