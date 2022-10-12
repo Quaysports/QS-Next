@@ -9,7 +9,7 @@ import {
     setBookedInState,
     setEditOrder,
 } from "../../../store/shop-orders-slice";
-import {Router, useRouter} from "next/router";
+import {useRouter} from "next/router";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
 /**

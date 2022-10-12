@@ -4,13 +4,13 @@ import {DeadStockReport} from "../server-modules/shop/shop";
 
 /**
  * @property {string} _id
- * @property {string} arrived
- * @property {orderObject[]} complete
+ * @property {orderObject[]} arrived
+ * @property {string} complete
  * @property {number} date
  * @property {string} id
  * @property {number} price
- * @property {string} order
- * @property {orderObject[]} supplier
+ * @property {orderObject[]} order
+ * @property {string} supplier
  *
  */
 export interface OpenOrdersObject {

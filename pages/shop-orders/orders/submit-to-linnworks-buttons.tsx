@@ -58,9 +58,6 @@ export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtons
         }
     }
 
-
-
-
     return (
         <span className={styles["primary-buttons"]}>
                     <button onClick={submitToLinnworks}>Submit To Linnworks</button>
