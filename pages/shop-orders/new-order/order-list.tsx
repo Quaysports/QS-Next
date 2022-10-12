@@ -153,7 +153,7 @@ export default function OrderList(props: OrderListProps) {
             <div>
                 <button
                     onClick={() => {
-                        dispatch(setChangeOrderArray({item: newProduct, type: "add"}));
+                        dispatch(setChangeOrderArray({item: newProduct, type: "new"}));
                         dispatchNotification({type: undefined});
                     }}>Submit
                 </button>

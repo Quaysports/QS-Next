@@ -68,13 +68,13 @@ export default function StockList() {
         dispatch(setInputChange({key: key, index: index, value: value}))
     }
 
-    function addToOrderHandler(item: orderObject, index: number) {
+    function addToOrderHandler(item: orderObject) {
         let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
         if (radioButtons.allItems) {
-            dispatch(setChangeOrderArray({item: renderedArray[index], type: "add", index: fullStockIndex}))
+            dispatch(setChangeOrderArray({type: "add", index: fullStockIndex}))
         }
         if (radioButtons.lowStock) {
-            dispatch(setChangeOrderArray({item: lowStockArray[index], type: "add", index: fullStockIndex}))
+            dispatch(setChangeOrderArray({type: "add", index: fullStockIndex}))
         }
     }
 
@@ -101,7 +101,7 @@ export default function StockList() {
             <div key={item.SKU}
                  className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["low-stock-list-grid"]}`}>
                 <button onClick={() => {
-                    addToOrderHandler(item, index)
+                    addToOrderHandler(item)
                 }}>⇅
                 </button>
                 <span className={"center-align"}>{item.STOCKTOTAL} </span>

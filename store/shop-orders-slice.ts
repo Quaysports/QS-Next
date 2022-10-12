@@ -218,14 +218,17 @@ export const shopOrdersSlice = createSlice({
                 if (action.payload.type === "tradePack") state.newOrderArray[action.payload.index].tradePack = parseFloat(action.payload.value)
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
             },
-            setChangeOrderArray: (state, action: PayloadAction<{ item: orderObject, type: string, index?: number }>) => {
+            setChangeOrderArray: (state, action: PayloadAction<{ item?: orderObject, type: string, index?: number }>) => {
                 if (action.payload.type === "remove") {
                     state.newOrderArray.splice(action.payload.index!, 1)
-                    state.supplierItems.push(action.payload.item)
+                    state.supplierItems.push(action.payload.item!)
                 }
                 if (action.payload.type === "add") {
-                    state.newOrderArray.push(action.payload.item)
-                    if (action.payload.index) state.supplierItems.splice(action.payload.index, 1)
+                    let item = state.supplierItems.splice(action.payload.index!,1)
+                    state.newOrderArray.push(item[0])
+                }
+                if (action.payload.type === "new"){
+                    state.newOrderArray.push(action.payload.item!)
                 }
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
             },

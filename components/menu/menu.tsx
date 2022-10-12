@@ -3,8 +3,9 @@ import AppsMenu from "./apps-menu";
 import SettingsMenu from "./settings-menu";
 import MenuLayout from "../layouts/menu-layout";
 
+
 /**
- * @param {ReactNode} children - Child JSX elements, should be a JSX array of spans
+ * @property {ReactNode} children - Child JSX elements, should be a JSX array of spans
  */
 interface Props {
     children:ReactNode
