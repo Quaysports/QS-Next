@@ -1,7 +1,12 @@
 import * as React from 'react';
 import {useRouter} from "next/router";
-import {DeadStockReport, deadStockReport} from "../../server-modules/shop/shop";
-import {OpenOrdersObject, setCompletedOrders, setDeadStock} from "../../store/shop-orders-slice";
+import {deadStockReport} from "../../server-modules/shop/shop";
+import {
+    setCompletedOrders,
+    setDeadStock, setNewOrderArray,
+    setOpenOrders,
+    setSideBarContent, setSupplierItems, setTotalPrice
+} from "../../store/shop-orders-slice";
 import Orders from "./orders";
 import CompletedOrders from "./completed-orders/index";
 import NewOrder from "./new-order/index";
@@ -9,7 +14,12 @@ import DeadStock from "./dead-stock/index";
 import Menu from "../../components/menu/menu";
 import ShopOrdersTabs from "./tabs";
 import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
-import {getCompleteOrders, shopOrder} from "../../server-modules/shop/shop-order-tool";
+import {
+    getCompleteOrders,
+    getOpenOrders, getSupplierItems,
+    getSuppliersAndLowStock, orderObject,
+    shopOrder,
+} from "../../server-modules/shop/shop-order-tool";
 import {appWrapper} from "../../store/store";
 
 /**
@@ -32,26 +42,60 @@ export default function ShopOrdersLandingPage() {
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
-        const deadStock = await deadStockReport()
+    const deadStock = await deadStockReport()
+    store.dispatch(setDeadStock(deadStock))
+    const orders = await getOpenOrders()
 
-        function compare(a: DeadStockReport, b: DeadStockReport) {
-            if (a.SOLDFLAG < b.SOLDFLAG) {
-                return 1;
-            }
-            if (a.SOLDFLAG > b.SOLDFLAG) {
-                return -1;
-            }
-            return 0;
+    if (context.query.tab === "new-order") {
+
+        let lowStock = await getSuppliersAndLowStock()
+
+        let tempArray = lowStock.map(item => ({[item.SUPPLIER]: item.LOWSTOCKCOUNT}))
+        store.dispatch(setSideBarContent({content: tempArray, title: "Suppliers"}))
+
+        let supplier = ""
+
+        if (context.query.editOrder) {
+            store.dispatch(setNewOrderArray(orders[Number(context.query.editOrder)]))
+            let tempArray = [{[orders[Number(context.query.editOrder)].supplier]: "Order Edit"}]
+            store.dispatch(setSideBarContent({content: tempArray, title: "Suppliers"}))
+            supplier = orders[Number(context.query.editOrder)].supplier
         }
-
-        deadStock.sort(compare);
-
-        let tempObject: { [key: string]: DeadStockReport[] } = {}
-        for (const item of deadStock) {
-            tempObject[item.SUPPLIER] ? tempObject[item.SUPPLIER].push(item) : tempObject[item.SUPPLIER] = [item]
+        if (context.query.index) {
+            supplier = lowStock[Number(context.query.index)].SUPPLIER
         }
-        store.dispatch(setDeadStock(tempObject))
+        if(context.query.index || context.query.editOrder){
 
+            const supplierItems = await getSupplierItems(supplier) as unknown as orderObject[]
+            let itemsTempObject: { [key: string]: orderObject[] } = {}
+            itemsTempObject[supplier] = []
+            for (let i = 0; i < supplierItems.length; i++) {
+                supplierItems[i].SUPPLIER = supplier
+                supplierItems[i].bookedIn = "false"
+                supplierItems[i].newProduct = false
+                supplierItems[i].lowStock = false
+                supplierItems[i].arrived = 0
+                supplierItems[i].tradePack = 1
+                supplierItems[i].qty = 1
+                supplierItems[i].submitted = false
+                if (Number(supplierItems[i].STOCKTOTAL) < supplierItems[i].MINSTOCK) supplierItems[i].lowStock = true;
+                let item = deadStock.find((element) => element.SKU === supplierItems[i].SKU)
+                if (item) {
+                    supplierItems[i].deadStock = true
+                    supplierItems[i].SOLDFLAG = item.SOLDFLAG
+                } else {
+                    supplierItems[i].deadStock = false
+                    supplierItems[i].SOLDFLAG = 0
+                }
+                itemsTempObject[supplier].push(supplierItems[i]);
+            }
+            store.dispatch(setSupplierItems(itemsTempObject[supplier]))
+        }
+        let totalPrice = 0
+        //if editing order, finds the order and set it to the newOrder array
+
+        store.dispatch(setTotalPrice(totalPrice))
+    }
 
     if (context.query.tab === "completed-orders") {
         const today = new Date()
@@ -61,19 +105,28 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
         const start = {date: {$gt: lastYear.getTime()}}
         const end = {date: {$lt: today.getTime()}}
 
-        let res = await getCompleteOrders(start, end)
+        let completedOrders = await getCompleteOrders(start, end)
 
-        let sortedData = res!.sort((a, b) => {
-            return a.supplier === b.supplier ? 0 : a.supplier > b.supplier ? 1 : -1
+        let ordersMap: Map<string, shopOrder[]> = new Map()
+        completedOrders.forEach((item) => {
+            // @ts-ignore
+            ordersMap.has(item.supplier) ? ordersMap.get(item.supplier).push(item!) : ordersMap.set(item.supplier, [item])
+        } )
+        let tempArray: {[key:string]:shopOrder[]}[]= []
+        let sideBarArray: { [key: string]: number }[] = []
+        ordersMap.forEach((item, key) => {
+            tempArray.push({[key]:item})
+            sideBarArray.push({[key]: item.length})
         })
-        let tempObject: { [key: string]: shopOrder[] } = {}
-        for (let i = 0; i < sortedData!.length; i++) {
-            tempObject[sortedData![i].supplier] ?
-                tempObject[sortedData![i].supplier].push(sortedData![i]) :
-                tempObject[sortedData![i].supplier] = [sortedData![i]]
-        }
-        await store.dispatch(setCompletedOrders(tempObject as { [key: string]: OpenOrdersObject[] }))
+        store.dispatch(setCompletedOrders(tempArray))
+        store.dispatch(setSideBarContent({content: sideBarArray, title: "Completed Orders"}))
+
     }
 
+    if (context.query.tab === "orders") {
+        store.dispatch(setOpenOrders(orders))
+        let tempArray = orders.map((item,index) => ({[(index + 1).toString() + " - " + item.supplier]: item.id}))
+        store.dispatch(setSideBarContent({content: tempArray, title: "Orders"}))
+    }
     return {props: {}}
 })

@@ -1,8 +1,6 @@
 import React, {Fragment} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    orderObject,
-    selectEditOrder,
     selectNewOrderArray,
     selectTotalPrice,
     setChangeOrderArray,
@@ -12,54 +10,38 @@ import {
 import styles from "../shop-orders.module.css"
 import {useRouter} from "next/router";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
-
-/**
- * @property {string} supplier
- */
-export interface OrderListProps {
-    supplier: string
-}
+import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 
 /**
  * Order List Component
  */
-export default function OrderList(props: OrderListProps) {
+export default function OrderList() {
 
     const newOrderArray = useSelector(selectNewOrderArray)
     const totalPrice = useSelector(selectTotalPrice)
-    const editOrder = useSelector(selectEditOrder)
     const dispatch = useDispatch()
     const router = useRouter()
 
     function saveOrder() {
-        if(editOrder){
-            dispatchNotification({
-                type: "confirm",
-                title: "Save order",
-                content: `Save changes to ${props.supplier} order?`,
-                fn: saveConfirmed
-            })
-        } else {
-            dispatchNotification({
-                type: "confirm",
-                title: "Save order",
-                content: `Create new ${props.supplier} order?`,
-                fn: saveConfirmed
-            })
-        }
+        dispatchNotification({
+            type: "confirm",
+            title: "Save order",
+            content: `Create new ${newOrderArray.order[0].SUPPLIER} order?`,
+            fn: saveConfirmed
+        })
     }
 
     function saveConfirmed() {
         const date = new Date();
 
         let newOrder = {
-            id: `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
-            supplier: props.supplier,
-            date: editOrder ? editOrder.date : date.getTime(),
+            id: newOrderArray.id ? newOrderArray.id : `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
+            supplier: newOrderArray.order[0].SUPPLIER,
+            date: newOrderArray.date ? newOrderArray.date : date.getTime(),
             complete: false,
-            arrived: [],
+            arrived: newOrderArray.arrived,
             price: totalPrice,
-            order: newOrderArray,
+            order: newOrderArray.order,
         }
 
         let options = {
@@ -76,11 +58,7 @@ export default function OrderList(props: OrderListProps) {
                 res.json()
                     .then((res) => {
                         if (res.acknowledged) {
-                            if(editOrder){
-                                dispatchNotification({type: "alert", title: "Success!", content: "Order changes saved"})
-                            } else {
-                                dispatchNotification({type: "alert", title: "Success!", content: "New order created"})
-                            }
+                            dispatchNotification({type: "alert", title: "Success!", content: "New order created"})
                             dispatch(setOrderInfoReset())
                             router.push("/shop-orders?tab=orders")
                         } else {
@@ -94,10 +72,9 @@ export default function OrderList(props: OrderListProps) {
             })
     }
 
-
     function currentOrderList() {
         return (<Fragment>
-                {newOrderArray.map((item, index) => {
+                {newOrderArray.order.map((item, index) => {
                     return (
                         <div key={item.SKU}
                              className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["order-list-grid"]}`}>

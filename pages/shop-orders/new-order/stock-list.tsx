@@ -3,7 +3,6 @@ import {Fragment, useEffect, useState} from "react";
 import SearchBar, {SearchItem} from "../../../components/search-bar/index";
 import Image from "next/image";
 import {
-    orderObject,
     selectLowStockArray,
     selectRadioButtons,
     selectRenderedArray,
@@ -18,6 +17,7 @@ import {
 } from "../../../store/shop-orders-slice";
 import {useDispatch, useSelector} from "react-redux";
 import styles from '../shop-orders.module.css'
+import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 
 
 /**

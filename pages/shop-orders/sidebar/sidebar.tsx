@@ -4,29 +4,27 @@ import {useSelector} from "react-redux";
 import {selectSideBarContent} from "../../../store/shop-orders-slice";
 import SidebarLayout from "../../../components/layouts/sidebar-layout";
 import SidebarButton from "../../../components/layouts/SidebarButton";
-
-export interface SideBarProps {
-    supplierFilter : (x:string) => void
-}
+import {useEffect} from "react";
+import {useRouter} from "next/router";
 
 /**
  * Side Bar Component
  */
-export default function SideBar(props:SideBarProps) {
+export default function SideBar() {
 
     const sideBarContent = useSelector(selectSideBarContent)
+    const router = useRouter()
+
+    useEffect(() => {})
 
     function buildSideBar(){
         let elementArray = []
-        let i = 0
-        for(const key of Object.keys(sideBarContent.content)){
+        for(const i in sideBarContent.content){
             elementArray.push(
-                <SidebarButton className={`${styles["sidebar-rows"]} ${"button"}`} key={i} onClick={() =>  props.supplierFilter(key)
-                }>
-                    {key}({sideBarContent.content[key].toString()})
+                <SidebarButton className={`${styles["sidebar-rows"]} ${"button"}`} key={i} onClick={()=>router.push({query:{...router.query, index:i}})}>
+                    {Object.keys(sideBarContent.content[i])}({Object.values(sideBarContent.content[i])})
                 </SidebarButton>
             )
-            i++
         }
         return elementArray
     }

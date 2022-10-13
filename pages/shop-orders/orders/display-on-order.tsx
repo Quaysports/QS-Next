@@ -4,10 +4,9 @@ import styles from "../shop-orders.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import {
     OpenOrdersObject,
-    selectLoadedOrder,
+    selectOpenOrders,
     setArrivedHandler,
     setBookedInState,
-    setEditOrder,
 } from "../../../store/shop-orders-slice";
 import {useRouter} from "next/router";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
@@ -17,9 +16,10 @@ import {dispatchNotification} from "../../../server-modules/dispatch-notificatio
  */
 export default function DisplayOnOrder() {
 
-    const loadedOrder = useSelector(selectLoadedOrder)
-    const dispatch = useDispatch()
     const router = useRouter()
+    const orders = useSelector(selectOpenOrders)
+    const loadedOrder = orders? orders[Number(router.query.index)] : null
+    const dispatch = useDispatch()
     const [saveOrder, setSaveOrder] = useState<boolean>(false)
 
     function arrivedHandler(quantity:string, item:OpenOrdersObject, index:number) {
@@ -28,8 +28,7 @@ export default function DisplayOnOrder() {
 
     function editOrder(order:OpenOrdersObject) {
         if(order.order.length > 0) {
-            dispatch(setEditOrder(order))
-            router.push("/shop-orders?tab=new-order")
+            router.push({pathname:"/shop-orders", query:{tab:"new-order", editOrder:router.query.index}})
         }
     }
 

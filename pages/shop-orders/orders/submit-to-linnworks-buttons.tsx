@@ -1,20 +1,23 @@
 import * as React from "react"
 import styles from "../shop-orders.module.css"
 import {useDispatch, useSelector} from "react-redux";
-import {selectLoadedOrder, setCompleteOrder, setSubmittedOrder} from "../../../store/shop-orders-slice";
+import {
+    selectOpenOrders,
+    setCompleteOrder,
+    setSubmittedOrder
+} from "../../../store/shop-orders-slice";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
-
-export interface SubmitToLinnworksButtonsProps {
-    supplierFilter: () => void
-}
+import {useRouter} from "next/router";
 
 /**
  * Submit To Linnworks Buttons Component
  * Builds and contains all the functionality of submit and complete order buttons
  */
-export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtonsProps) {
+export default function SubmitToLinnworksButtons() {
 
-    const loadedOrder = useSelector(selectLoadedOrder)
+    const router = useRouter()
+    const orders = useSelector(selectOpenOrders)
+    const loadedOrder = orders ? orders[Number(router.query.index)] : null
     const dispatch = useDispatch()
 
     async function submitToLinnworks() {
@@ -50,11 +53,11 @@ export default function SubmitToLinnworksButtons(props: SubmitToLinnworksButtons
                 type: "confirm",
                 title: "Complete Order",
                 content: "Not all items in this order have been booked in, completing this will delete the rest of the order. Are you sure you want to continue?",
-                fn: () => {dispatch(setCompleteOrder()); props.supplierFilter()}
+                fn: () => {dispatch(setCompleteOrder()); router.push("/shop-orders?tab=orders")}
             })
         } else {
             dispatch(setCompleteOrder())
-            props.supplierFilter()
+            router.push({pathname:"/shop-orders", query:{tab:"orders"}})
         }
     }
 

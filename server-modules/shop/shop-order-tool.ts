@@ -3,51 +3,62 @@ import * as linn from "../linn-api/linn-api";
 
 /**
  * @property {string} _id
- * @property {orderItem[]} arrived
+ * @property {orderObject[]} arrived
  * @property {boolean} complete
  * @property {number} date
  * @property {string} id
  * @property {number} price
- * @property {orderItem[]} order
+ * @property {orderObject[]} order
  * @property {string} supplier
  */
 export interface shopOrder {
     _id?: string
-    arrived: orderItem[] | []
+    arrived: orderObject[] | []
     complete: boolean
     date: number
     id: string
     price: number
-    order: orderItem[] | []
+    order: orderObject[] | []
     supplier: string
 }
+
 /**
- * @property {{BRAND:string}} IDBEP
+ * @property {{BRAND: string}} IDBEP
  * @property {number} MINSTOCK
  * @property {string} SKU
  * @property {string} STOCKTOTAL
  * @property {string} TITLE
+ * @property {string} SUPPLIER
  * @property {string} _id
- * @property {string} bookedIn
+ * @property {string} [bookedIn]
  * @property {number} qty
  * @property {number} tradePack
- * @property {number} arrived
- * @property {number} purchasePrice
- * @property {boolean} deadStock
+ * @property {number} [arrived]
+ * @property {number} PURCHASEPRICE
+ * @property {boolean} [deadStock]
+ * @property {boolean} [newProduct]
+ * @property {boolean} [lowStock]
+ * @property {boolean} submitted
+ * @property {number} SOLDFLAG
  */
-interface orderItem {
+export interface orderObject {
     IDBEP: { BRAND: string }
     MINSTOCK: number
     SKU: string
     STOCKTOTAL: string
     TITLE: string
+    SUPPLIER: string
     _id: string
-    bookedIn: string
+    bookedIn?: string
     qty: number
     tradePack: number
-    arrived: number
-    purchasePrice: number
-    deadStock: boolean
+    arrived?: number
+    PURCHASEPRICE: number
+    deadStock?: boolean
+    newProduct?: boolean
+    lowStock?: boolean
+    submitted: boolean
+    SOLDFLAG: number
 }
 
 export const getLowStock = async () => {
@@ -61,7 +72,13 @@ export const shopStockOrder = async (order:shopOrder) => {
 }
 
 export const getCompleteOrders = async (start:object = {}, end:object = {}, supplier:object = {}) => {
-    return await mongoI.find<shopOrder>("Shop-Orders", {$and: [start, end, supplier, {complete: {$eq: true}}]})
+    const result =  await mongoI.find<shopOrder>("Shop-Orders", {$and: [start, end, supplier, {complete: {$eq: true}}]}, {}, {SUPPLIER:1})
+    return result ? result : []
+}
+
+export const getOpenOrders = async () => {
+    const result = await mongoI.find<shopOrder>("New-Shop-Orders", {complete: false})
+    return result ? result : []
 }
 
 export const updateStock = async (skus:string) => {
@@ -111,7 +128,8 @@ export const getSuppliersAndLowStock = async () => {
     const query = [
         {
             '$match': {
-                'IDBFILTER': 'domestic'
+                'IDBFILTER': 'domestic',
+                'LISTINGVARIATION' : false
             }
         }, {
             '$group': {
@@ -134,9 +152,14 @@ export const getSuppliersAndLowStock = async () => {
                 'SUPPLIER': '$_id',
                 'LOWSTOCKCOUNT': 1
             }
+        }, {
+            '$sort':{
+                'SUPPLIER':1
+            }
         }
     ]
-    return await mongoI.findAggregate<SupplierLowStock>("Items", query)
+    const result = await mongoI.findAggregate<SupplierLowStock>("Items", query)
+    return result ? result : []
 }
 
 /**
@@ -157,5 +180,6 @@ export interface SupplierItem {
     PURCHASEPRICE:number
 }
 export const getSupplierItems = async (supplier:string) => {
-    return await mongoI.find<SupplierItem>("Items", {SUPPLIER: supplier, IDBFILTER: "domestic"}, {SKU: 1, TITLE: 1, "IDBEP.BRAND": 1, MINSTOCK: 1, STOCKTOTAL: 1, PURCHASEPRICE:1},{SKU:1})
+    let result = await mongoI.find<SupplierItem>("Items", {SUPPLIER: supplier, IDBFILTER: "domestic"}, {SKU: 1, TITLE: 1, "IDBEP.BRAND": 1, MINSTOCK: 1, STOCKTOTAL: 1, PURCHASEPRICE:1},{SKU:1})
+    return result ? result : []
 }

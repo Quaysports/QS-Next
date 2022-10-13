@@ -138,5 +138,5 @@ test("Quicklink table renders properly when listIndex is in route.", async () =>
 test("Quicklink table add buttons call search and change on return search data.", async () => {
     render(<QuickLinksTable/>, {preloadedState: {"quickLinks": quickLinks}})
     const table = await screen.findByTestId("quicklinks-table")
-    await waitFor(()=> table.childNodes[1].click())
+    await waitFor(()=> (table.childNodes[1] as HTMLDivElement).click())
 })

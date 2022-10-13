@@ -3,6 +3,9 @@ import {render, screen, waitFor} from "../../../__mocks__/mock-store-wrapper";
 import {ShopOrdersState} from "../../../store/shop-orders-slice";
 import "@testing-library/jest-dom"
 import SubmitToLinnworksButtons from "../../../pages/shop-orders/orders/submit-to-linnworks-buttons";
+import DisplayOnOrder from "../../../pages/shop-orders/orders/display-on-order";
+import * as redux from "react-redux";
+import {fireEvent} from "@testing-library/dom";
 
 afterEach(() => {
     jest.clearAllMocks();
@@ -27,7 +30,8 @@ let initialState: ShopOrdersState = {
             PURCHASEPRICE: 2,
             newProduct: false,
             submitted: false,
-            SOLDFLAG: 3
+            SOLDFLAG: 3,
+            arrived: 0
         }],
         complete: false,
         date: 12345,
@@ -36,7 +40,7 @@ let initialState: ShopOrdersState = {
         order: [{
             IDBEP: {BRAND: "Brand"},
             MINSTOCK: 2,
-            SKU: "SKU-1",
+            SKU: "SKU-2",
             STOCKTOTAL: "3",
             TITLE: "Some Title",
             SUPPLIER: "Some Supplier",
@@ -46,7 +50,23 @@ let initialState: ShopOrdersState = {
             PURCHASEPRICE: 2,
             newProduct: false,
             submitted: false,
-            SOLDFLAG: 3
+            SOLDFLAG: 3,
+            arrived: 0
+        }, {
+            IDBEP: {BRAND: "Another Brand"},
+            MINSTOCK: 4,
+            SKU: "SKU-3",
+            STOCKTOTAL: "7",
+            TITLE: "Another Title",
+            SUPPLIER: "Another Supplier",
+            _id: "sdg",
+            qty: 3,
+            tradePack: 2,
+            PURCHASEPRICE: 3,
+            newProduct: true,
+            submitted: false,
+            SOLDFLAG: 6,
+            arrived: 0
         }],
         supplier: "Some Supplier"
     },
@@ -65,9 +85,23 @@ let initialState: ShopOrdersState = {
     completedOrders: null,
     orderContents: null
 }
+const mockRouter = jest.fn()
+jest.mock('next/router', ()=> ({
+    useRouter: () => ({push: (path:string) => mockRouter(path)})
+}))
+
+jest.mock('react-redux', () => {
+    return {
+        __esModule: true,
+        ...jest.requireActual('react-redux')
+    };
+});
+const dispatchSpy = jest.spyOn(redux, "useDispatch")
+const mockDispatch = jest.fn()
 
 let mockDeleteButtonCall = jest.fn()
 const mockLinnworksCall = jest.fn()
+
 global.fetch = jest.fn(async (req) =>{
     if(req === "/api/shop-orders/adjust-stock") {
         return {json: async () => ([{SKU: "SKU-1", StockLevel: 5}] as linn.ItemStock[])}
@@ -152,4 +186,18 @@ test("Complete order button calls fetch api but not notification ", async () => 
     expect(mockNotification).toHaveBeenCalledTimes(0)
 })
 
-test("")
+test("Edit order button calls function and reroutes to correct URL", async () => {
+    dispatchSpy.mockReturnValue(mockDispatch)
+    render(<DisplayOnOrder/>, {preloadedState: {"shopOrders": initialState}})
+    await waitFor(() => screen.getByText("Edit Order").click())
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalledWith({payload: initialState.loadedOrder, type: "shopOrders/setEditOrder"}))
+    expect(mockRouter).toHaveBeenCalledWith("/shop-orders?tab=new-order")
+})
+
+test("new products list correctly against old products and on change events work", async () => {
+    dispatchSpy.mockReturnValue(mockDispatch)
+    render(<DisplayOnOrder/>, {preloadedState: {"shopOrders": initialState}})
+    expect(screen.getByText("New Products")).toBeInTheDocument()
+    expect(screen.getByText("SKU-3")).toBeInTheDocument()
+    fireEvent.change(screen.getByRole("textbox", {level: 0}), {value: "1"})
+})

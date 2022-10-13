@@ -1,5 +1,4 @@
 import styles from "../shop-orders.module.css";
-import * as React from "react";
 import {useSelector} from "react-redux";
 import {selectOrderContents} from "../../../store/shop-orders-slice";
 

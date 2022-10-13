@@ -2,23 +2,19 @@ import * as React from 'react';
 import {Fragment} from "react";
 import styles from "../shop-orders.module.css"
 import {useDispatch, useSelector} from "react-redux";
-import {OpenOrdersObject, selectLoadedOrder, setLoadedOrder} from "../../../store/shop-orders-slice";
+import {OpenOrdersObject, selectOpenOrders, setLoadedOrder} from "../../../store/shop-orders-slice";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import CSVButton from "../../../components/csv-button";
-
-/**
- * @property {supplierFilter} supplierFilter
- */
-export interface OrderInformationProps{
-    supplierFilter: () => void;
-}
+import {useRouter} from "next/router";
 
 /**
  * Order Information Component
  */
-export default function OrderInformation(props: OrderInformationProps) {
+export default function OrderInformation() {
 
-    const loadedOrder = useSelector(selectLoadedOrder)
+    const router = useRouter()
+    const orders = useSelector(selectOpenOrders)
+    const loadedOrder = orders ? orders[Number(router.query.index)] : null
     const dispatch = useDispatch()
 
     function deleteOrder(order:OpenOrdersObject) {
@@ -52,7 +48,8 @@ export default function OrderInformation(props: OrderInformationProps) {
                         type: "alert",
                         title: "Success",
                         content: `${order.supplier}(${order.id}) has been deleted`
-                    }); props.supplierFilter()
+                    });
+                router.push({pathname:"/shop-orders", query:{tab:"orders"}})
                 dispatch(setLoadedOrder(null))
             })
     }

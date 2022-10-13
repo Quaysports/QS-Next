@@ -1,16 +1,14 @@
 import {DeadStockReport} from "../../../server-modules/shop/shop";
 import Image from "next/image";
 import styles from "../shop-orders.module.css";
-import * as React from "react";
 import {useSelector} from "react-redux";
 import {selectDeadStock} from "../../../store/shop-orders-slice";
+import {useRouter} from "next/router";
 
-interface Props {
-    supplier:string
-}
-export default function DeadStockList({supplier}:Props) {
+export default function DeadStockList() {
 
     const deadStockList = useSelector(selectDeadStock)
+    const router = useRouter()
 
     function imageCheck(item:DeadStockReport){
         switch (item.SOLDFLAG) {
@@ -37,13 +35,17 @@ export default function DeadStockList({supplier}:Props) {
             <span/>
         </div>
     )
-    deadStockList?.[supplier]?.forEach((value, key) => {
-        tempArray.push(<div key={key} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["dead-stock-list-grid"]}`}>
-            <span/>
-            <span>{value.SKU}</span>
-            <span>{value.TITLE}</span>
-            <span>{imageCheck(value)}</span>
-        </div>)
+    console.log(deadStockList)
+    Object.values(deadStockList[Number(router.query.index)]).forEach((value, key) => {
+        for(let i = 0; i < value.length; i++) {
+            tempArray.push(<div key={key}
+                                className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["dead-stock-list-grid"]}`}>
+                <span/>
+                <span>{value[i].SKU}</span>
+                <span>{value[i].TITLE}</span>
+                <span>{imageCheck(value[i])}</span>
+            </div>)
+        }
     })
     return (
         <div className={styles["shop-orders-table-containers"]}>{tempArray}</div>
