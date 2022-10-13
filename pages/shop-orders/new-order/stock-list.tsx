@@ -19,7 +19,6 @@ import {useDispatch, useSelector} from "react-redux";
 import styles from '../shop-orders.module.css'
 import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 
-
 /**
  * Stock List Component
  */
@@ -69,12 +68,14 @@ export default function StockList() {
     }
 
     function addToOrderHandler(item: orderObject) {
+        let renderedArrayIndex = renderedArray.findIndex(product => product.SKU === item.SKU)
         let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
+
         if (radioButtons.allItems) {
-            dispatch(setChangeOrderArray({type: "add", index: fullStockIndex}))
+            dispatch(setChangeOrderArray({item:renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
         }
         if (radioButtons.lowStock) {
-            dispatch(setChangeOrderArray({type: "add", index: fullStockIndex}))
+            dispatch(setChangeOrderArray({item:renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
         }
     }
 
@@ -83,16 +84,13 @@ export default function StockList() {
             case 3:
                 return (<Image src="/dead-stock-icon-green.webp" width="22px" height="22px"
                                alt={"dead-stock-icon"}/>)
-
             case 6:
                 return (<Image src="/dead-stock-icon-orange.webp" width="22px" height="22px"
                                alt={"dead-stock-icon"}/>)
-
             case 10:
                 return (<Image src="/dead-stock-icon-red.webp" width="22px" height="22px"
                                alt={"dead-stock-icon"}/>)
         }
-
     }
 
     function buildListRow(item: orderObject, index: number, allItems: boolean) {

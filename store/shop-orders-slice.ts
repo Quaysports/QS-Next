@@ -215,6 +215,8 @@ export const shopOrdersSlice = createSlice({
                 }
                 if (action.payload.type === "add") {
                     let item = state.supplierItems.splice(action.payload.index!, 1)
+                    item[0].qty = action.payload.item!.qty
+                    item[0].tradePack = action.payload.item!.tradePack
                     state.newOrderArray.order.push(item[0])
                 }
                 if (action.payload.type === "new") {
@@ -236,14 +238,8 @@ export const shopOrdersSlice = createSlice({
                 state.renderedArray = action.payload
             },
             setInputChange: (state, action: PayloadAction<{ key: string, index: number, value: string }>) => {
-                if (state.radioButtons.lowStock) {
-                    if (action.payload.key === "qty") state.lowStockArray[action.payload.index].qty = Number(action.payload.value)
-                    if (action.payload.key === "tradePack") state.lowStockArray[action.payload.index].tradePack = Number(action.payload.value)
-                }
-                if (state.radioButtons.allItems) {
                     if (action.payload.key === "qty") state.renderedArray[action.payload.index].qty = Number(action.payload.value)
                     if (action.payload.key === "tradePack") state.renderedArray[action.payload.index].tradePack = Number(action.payload.value)
-                }
             },
             setChangeLowStockArray: (state, action: PayloadAction<number>) => {
                 state.lowStockArray.splice(action.payload, 1)
