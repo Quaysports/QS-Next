@@ -13,12 +13,12 @@ import * as linn from "../linn-api/linn-api";
  */
 export interface shopOrder {
     _id?: string
-    arrived: orderObject[] | []
+    arrived: orderObject[]
     complete: boolean
     date: number
     id: string
     price: number
-    order: orderObject[] | []
+    order: orderObject[]
     supplier: string
 }
 

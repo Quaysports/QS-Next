@@ -20,9 +20,10 @@ export default function SideBar() {
     function buildSideBar(){
         let elementArray = []
         for(const i in sideBarContent.content){
+            let sideBarText = `${Object.keys(sideBarContent.content[i])}(${Object.values(sideBarContent.content[i])})`
             elementArray.push(
-                <SidebarButton className={`${styles["sidebar-rows"]} ${"button"}`} key={i} onClick={()=>router.push({query:{...router.query, index:i}})}>
-                    {Object.keys(sideBarContent.content[i])}({Object.values(sideBarContent.content[i])})
+                <SidebarButton className={`${styles["sidebar-rows"]} ${"button"}`} key={"sidebar" + i} onClick={()=>router.push({query:{...router.query, index:i}})}>
+                    {sideBarText}
                 </SidebarButton>
             )
         }

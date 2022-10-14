@@ -145,7 +145,7 @@ export const shopOrdersSlice = createSlice({
                 })
 
                 state.sideBarContent = sideBarArray
-                state.sideBarTitle = "Dead Stock"
+                state.sideBarTitle = "Suppliers"
                 state.deadStock = deadStockArray
             },
             setSideBarContent: (state, action: PayloadAction<{ content: { [key: string]: string | number }[], title: string }>) => {
@@ -158,33 +158,34 @@ export const shopOrdersSlice = createSlice({
             setOpenOrders: (state, action: PayloadAction<shopOrder[] | null>) => {
                 state.openOrders = action.payload
             },
-            setArrivedHandler: (state, action: PayloadAction<{ index: number, value: number }>) => {
-                state.loadedOrder!.order[action.payload.index].arrived = action.payload.value
+            setArrivedHandler: (state, action: PayloadAction<{order:string, index: number, value: number }>) => {
+                state.openOrders![Number(action.payload.order)].order[action.payload.index].arrived = action.payload.value
             },
-            setBookedInState: (state, action: PayloadAction<{ bookedIn: string, index: number }>) => {
+            setBookedInState: (state, action: PayloadAction<{ bookedIn: string, index: number, order: string}>) => {
+                let openOrder = state.openOrders![Number(action.payload.order)]
                 if (action.payload.bookedIn === "false") {
-                    state.loadedOrder!.order[action.payload.index].bookedIn = action.payload.bookedIn
-                    state.loadedOrder!.arrived.push(state.loadedOrder!.order[action.payload.index])
-                    state.loadedOrder!.order.splice(action.payload.index, 1)
+                    openOrder.order[action.payload.index].bookedIn = action.payload.bookedIn
+                    openOrder.arrived.push(openOrder.order[action.payload.index])
+                    openOrder.order.splice(action.payload.index, 1)
                 }
                 if (action.payload.bookedIn === "partial") {
-                    state.loadedOrder!.order[action.payload.index].qty = (state.loadedOrder!.order[action.payload.index].qty - state.loadedOrder!.order[action.payload.index].arrived!)
-                    state.loadedOrder!.arrived.push(state.loadedOrder!.order[action.payload.index])
-                    state.loadedOrder!.arrived[(state.loadedOrder!.arrived.length - 1)].qty = state.loadedOrder!.order[action.payload.index].arrived!
-                    state.loadedOrder!.order[action.payload.index].arrived = 0
+                    openOrder.order[action.payload.index].qty = (openOrder.order[action.payload.index].qty - openOrder.order[action.payload.index].arrived!)
+                    openOrder.arrived.push(openOrder.order[action.payload.index])
+                    openOrder.arrived[(openOrder.arrived.length - 1)].qty = openOrder.order[action.payload.index].arrived!
+                    openOrder.order[action.payload.index].arrived = 0
                 }
             },
-            setRemoveFromBookedInState: (state, action: PayloadAction<{ index: number, SKU: string }>) => {
-                let order = state.loadedOrder!
-                const i = order.order.map((item: orderObject) => item.SKU).indexOf(action.payload.SKU)
+            setRemoveFromBookedInState: (state, action: PayloadAction<{ index: number, SKU: string, order: string}>) => {
+                let openOrder =  state.openOrders![Number(action.payload.order)]
+                const i = openOrder.order.map((item: orderObject) => item.SKU).indexOf(action.payload.SKU)
                 if (i > -1) {
-                    order.order[i].qty = (order.order[i].qty + order.arrived[action.payload.index].arrived!)
-                    order.order[i].arrived = 0
-                    order.arrived.splice(action.payload.index, 1)
+                    openOrder.order[i].qty = (openOrder.order[i].qty + openOrder.arrived[action.payload.index].arrived!)
+                    openOrder.order[i].arrived = 0
+                    openOrder.arrived.splice(action.payload.index, 1)
                 } else {
-                    order.arrived[action.payload.index].arrived = 0
-                    order.order.push(order.arrived[action.payload.index])
-                    order.arrived.splice(action.payload.index, 1)
+                    openOrder.arrived[action.payload.index].arrived = 0
+                    openOrder.order.push(openOrder.arrived[action.payload.index])
+                    openOrder.arrived.splice(action.payload.index, 1)
                 }
                 const opts = {
                     method: 'POST',
@@ -192,7 +193,7 @@ export const shopOrdersSlice = createSlice({
                         'Content-Type': 'application/json',
                         'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
                     },
-                    body: JSON.stringify(state.loadedOrder)
+                    body: JSON.stringify(openOrder)
                 }
                 fetch("/api/shop-orders/update-order", opts).then()
             },
@@ -246,8 +247,12 @@ export const shopOrdersSlice = createSlice({
             setCompletedOrders: (state, action: PayloadAction<{[key: string]: shopOrder[]}[]>) => {
                 state.completedOrders = action.payload
             },
-            setOrderContents: (state, action: PayloadAction<OpenOrdersObject | null>) => {
-                state.orderContents = action.payload
+            setOrderContents: (state, action: PayloadAction<{index: string, id:string}>) => {
+                Object.values(state.completedOrders![Number(action.payload.index)]).forEach((value) => {
+                    for (let i = 0; i < value.length; i++) {
+                        if(value[i].id === action.payload.id) state.orderContents = value[i]
+                    }
+                })
             },
             setOrderInfoReset: (state) => {
                 state.totalPrice = 0

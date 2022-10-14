@@ -22,8 +22,8 @@ export default function DisplayOnOrder() {
     const dispatch = useDispatch()
     const [saveOrder, setSaveOrder] = useState<boolean>(false)
 
-    function arrivedHandler(quantity:string, item:OpenOrdersObject, index:number) {
-        dispatch(setArrivedHandler({index: index, value: Number(quantity)}))
+    function arrivedHandler(quantity:string, index:number) {
+        dispatch(setArrivedHandler({order: router.query.index as string, index: index, value: Number(quantity)}))
     }
 
     function editOrder(order:OpenOrdersObject) {
@@ -44,7 +44,7 @@ export default function DisplayOnOrder() {
 
         if ((order.order[index].qty - order.order[index].arrived!) === 0) {
             setSaveOrder(true)
-            dispatch(setBookedInState({bookedIn: "false", index: index}))
+            dispatch(setBookedInState({bookedIn: "false", index: index, order: router.query.index as string}))
             return
         }
 
@@ -52,7 +52,7 @@ export default function DisplayOnOrder() {
             let conf = window.confirm("Did only part of the order arrive?")
             if (conf) {
                 setSaveOrder(true)
-                dispatch(setBookedInState({bookedIn: "partial", index: index}))
+                dispatch(setBookedInState({bookedIn: "partial", index: index, order: router.query.index as string}))
             }
         }
     }
@@ -97,7 +97,7 @@ export default function DisplayOnOrder() {
                         <span>{loadedOrder!.order[i].TITLE} </span>
                         <input value={loadedOrder!.order[i].arrived}
                                onChange={(e) => {
-                                   arrivedHandler(e.target.value, loadedOrder!, i)
+                                   arrivedHandler(e.target.value, i)
                                }}/>
                     </div>)
             } else {
@@ -112,7 +112,7 @@ export default function DisplayOnOrder() {
                         <span>{loadedOrder!.order[i].TITLE} </span>
                         <input value={loadedOrder!.order[i].arrived}
                                onChange={(e) => {
-                                   arrivedHandler(e.target.value, loadedOrder!, i)
+                                   arrivedHandler(e.target.value, i)
                                }}/>
                     </div>
                 )
