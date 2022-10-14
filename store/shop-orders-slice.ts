@@ -48,7 +48,6 @@ export interface ShopOrdersState {
     deadStock: { [key: string]: DeadStockReport[] }[];
     sideBarContent: { [key: string]: string | number }[]
     sideBarTitle: string
-    loadedOrder: OpenOrdersObject | null
     openOrders: shopOrder[] | null
     newOrderArray: OpenOrdersObject
     totalPrice: number
@@ -84,7 +83,6 @@ const initialState: ShopOrdersState = {
     deadStock: [],
     sideBarContent: [],
     sideBarTitle: "",
-    loadedOrder: null,
     openOrders: null,
     newOrderArray: {
         _id: null,
@@ -151,9 +149,6 @@ export const shopOrdersSlice = createSlice({
             setSideBarContent: (state, action: PayloadAction<{ content: { [key: string]: string | number }[], title: string }>) => {
                 state.sideBarContent = action.payload.content;
                 state.sideBarTitle = action.payload.title
-            },
-            setLoadedOrder: (state, action: PayloadAction<OpenOrdersObject | null>) => {
-                state.loadedOrder = action.payload
             },
             setOpenOrders: (state, action: PayloadAction<shopOrder[] | null>) => {
                 state.openOrders = action.payload
@@ -267,24 +262,26 @@ export const shopOrdersSlice = createSlice({
                     supplier: null
                 }
             },
-            setCompleteOrder: (state) => {
-                state.loadedOrder!.complete = true
+            setCompleteOrder: (state, action:PayloadAction<string>) => {
+                const openOrder = state.openOrders![Number(action.payload)]
+                openOrder.complete = true
                 const opts = {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
                     },
-                    body: JSON.stringify(current(state.loadedOrder))
+                    body: JSON.stringify(current(openOrder))
                 }
                 fetch("/api/shop-orders/shop-stock-order", opts)
                     .then()
             },
-            setSubmittedOrder: (state, action: PayloadAction<linn.ItemStock[]>) => {
-                for (const item of action.payload) {
-                    let posNew = state.loadedOrder!.arrived.map(order => order.SKU).indexOf(item.SKU)
-                    if (Number(state.loadedOrder!.arrived[posNew].qty) <= Number(item["StockLevel"])) {
-                        state.loadedOrder!.arrived[posNew].submitted = true
+            setSubmittedOrder: (state, action: PayloadAction<{res:linn.ItemStock[], order: string}>) => {
+                const openOrder = state.openOrders![Number(action.payload.order)]
+                for (const item of action.payload.res) {
+                    let posNew = openOrder.arrived.map(order => order.SKU).indexOf(item.SKU)
+                    if (Number(openOrder.arrived[posNew].qty) <= Number(item["StockLevel"])) {
+                        openOrder.arrived[posNew].submitted = true
                     }
                 }
                 const opts = {
@@ -293,7 +290,7 @@ export const shopOrdersSlice = createSlice({
                         'Content-Type': 'application/json',
                         'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
                     },
-                    body: JSON.stringify(current(state.loadedOrder))
+                    body: JSON.stringify(current(openOrder))
                 }
                 fetch('/api/shop-orders/shop-stock-order', opts)
                     .then()
@@ -329,7 +326,6 @@ function totalPriceCalc(order: OpenOrdersObject) {
 export const {
     setDeadStock,
     setSideBarContent,
-    setLoadedOrder,
     setOpenOrders,
     setArrivedHandler,
     setBookedInState,
@@ -356,7 +352,6 @@ export const selectDeadStock = (state: ShopOrdersWrapper) => state.shopOrders.de
 export const selectSideBarContent = (state: ShopOrdersWrapper) => {
     return {content: state.shopOrders.sideBarContent, title: state.shopOrders.sideBarTitle}
 }
-export const selectLoadedOrder = (state: ShopOrdersWrapper) => state.shopOrders.loadedOrder
 export const selectOpenOrders = (state: ShopOrdersWrapper) => state.shopOrders.openOrders
 export const selectNewOrderArray = (state: ShopOrdersWrapper) => state.shopOrders.newOrderArray
 export const selectTotalPrice = (state: ShopOrdersWrapper) => state.shopOrders.totalPrice

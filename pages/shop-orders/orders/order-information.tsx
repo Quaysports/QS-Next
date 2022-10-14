@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Fragment} from "react";
 import styles from "../shop-orders.module.css"
-import {useDispatch, useSelector} from "react-redux";
-import {OpenOrdersObject, selectOpenOrders, setLoadedOrder} from "../../../store/shop-orders-slice";
+import {useSelector} from "react-redux";
+import {OpenOrdersObject, selectOpenOrders} from "../../../store/shop-orders-slice";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import CSVButton from "../../../components/csv-button";
 import {useRouter} from "next/router";
@@ -15,7 +15,6 @@ export default function OrderInformation() {
     const router = useRouter()
     const orders = useSelector(selectOpenOrders)
     const loadedOrder = orders ? orders[Number(router.query.index)] : null
-    const dispatch = useDispatch()
 
     function deleteOrder(order:OpenOrdersObject) {
         dispatchNotification({
@@ -50,7 +49,6 @@ export default function OrderInformation() {
                         content: `${order.supplier}(${order.id}) has been deleted`
                     });
                 router.push({pathname:"/shop-orders", query:{tab:"orders"}})
-                dispatch(setLoadedOrder(null))
             })
     }
 
