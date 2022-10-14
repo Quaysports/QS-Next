@@ -10,7 +10,9 @@ export default function DeadStockList() {
     const deadStockList = useSelector(selectDeadStock)
     const router = useRouter()
 
-    function imageCheck(item:DeadStockReport){
+    if (!router.query.index) return null
+
+    function imageCheck(item: DeadStockReport) {
         switch (item.SOLDFLAG) {
             case 3:
                 return (<Image src="/dead-stock-icon-green.webp" width="22px" height="22px"
@@ -35,9 +37,9 @@ export default function DeadStockList() {
             <span/>
         </div>
     )
-    console.log(deadStockList)
+
     Object.values(deadStockList[Number(router.query.index)]).forEach((value, key) => {
-        for(let i = 0; i < value.length; i++) {
+        for (let i = 0; i < value.length; i++) {
             tempArray.push(<div key={key}
                                 className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["dead-stock-list-grid"]}`}>
                 <span/>
@@ -47,7 +49,9 @@ export default function DeadStockList() {
             </div>)
         }
     })
+
     return (
         <div className={styles["shop-orders-table-containers"]}>{tempArray}</div>
     )
+
 }

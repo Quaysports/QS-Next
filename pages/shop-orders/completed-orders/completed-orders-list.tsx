@@ -9,23 +9,22 @@ export default function CompletedOrdersList() {
     const completedOrders = useSelector(selectCompletedOrders)
     const router = useRouter()
 
+    if (!router.query.index) return null
+
     let tempArray = [<option onClick={() => dispatch(setOrderContents(null))} key={0}>Select Order</option>]
-    console.log(Object.keys(completedOrders![Number(router.query.index)]))
-    Object.values(completedOrders![Number(router.query.index)]).forEach((value,index) => {
-        for(let i = 0; i < value.length; i++) {
+
+    Object.values(completedOrders![Number(router.query.index)]).forEach((value) => {
+        for (let i = 0; i < value.length; i++) {
             tempArray.push(
                 <option onClick={() => dispatch(setOrderContents(value[i]))}
                         key={value[i].id! + i}>{value[i].id}</option>
             )
         }
     })
-    if(router.query.index) {
-        return (
-            <div className={styles["shop-orders-table-containers"]}>
-                Completed Order: <select>{tempArray}</select>
-            </div>
-        )
-    } else {
-        return null
-    }
+
+    return (
+        <div className={styles["shop-orders-table-containers"]}>
+            Completed Order: <select>{tempArray}</select>
+        </div>
+    )
 }

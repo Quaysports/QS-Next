@@ -109,8 +109,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
 
         let ordersMap: Map<string, shopOrder[]> = new Map()
         completedOrders.forEach((item) => {
-            // @ts-ignore
-            ordersMap.has(item.supplier) ? ordersMap.get(item.supplier).push(item!) : ordersMap.set(item.supplier, [item])
+            ordersMap.has(item.supplier) ? ordersMap.get(item.supplier)!.push(item!) : ordersMap.set(item.supplier, [item])
         } )
         let tempArray: {[key:string]:shopOrder[]}[]= []
         let sideBarArray: { [key: string]: number }[] = []

@@ -136,8 +136,7 @@ export const shopOrdersSlice = createSlice({
                 let deadStockArray: { [key: string]: DeadStockReport[] }[] = []
                 const tempMap: Map<string, DeadStockReport[]> = new Map()
                 for (const item of action.payload) {
-                    // @ts-ignore
-                    tempMap.has(item.SUPPLIER) ? tempMap.get(item.SUPPLIER).push(item): tempMap.set(item.SUPPLIER, [item])
+                    tempMap.has(item.SUPPLIER) ? tempMap.get(item.SUPPLIER)!.push(item): tempMap.set(item.SUPPLIER, [item])
                 }
                 let sideBarArray: {[key:string]:number}[] = []
                 tempMap.forEach((item, key) => {
