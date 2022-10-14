@@ -1,7 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {StockError} from "../server-modules/shop/shop";
-import {binarySearch} from "../server-modules/core/core";
 
 /**
  * @property {string} _id
@@ -72,10 +71,10 @@ export const stockReportsSlice = createSlice({
         reducers: {
             setIncorrectStockInitialState: (state, action: PayloadAction<StockError[]>) => {
                 const data = action.payload
-                let incorrectStock:{[key:string]:StockError[]} = {}
-                let zeroStock:{[key:string]:StockError[]} = {}
+                let incorrectStock: { [key: string]: StockError[] } = {}
+                let zeroStock: { [key: string]: StockError[] } = {}
                 for (let i = 0; i < data.length; i++) {
-                    if(!data[i].BRAND) continue;
+                    if (!data[i].BRAND) continue;
                     if (data[i].PRIORITY) {
                         incorrectStock[data[i].BRAND!] ??= []
                         incorrectStock[data[i].BRAND!]!.push(data[i])
@@ -123,7 +122,7 @@ export const stockReportsSlice = createSlice({
             },
 
             updateStockTakes: (state, action: PayloadAction<StockTake[]>) => {
-                for(const i in state.brandItems){
+                for (const i in state.brandItems) {
                     state.brandItems[i].stockTake = {...state.brandItems[i].stockTake, ...action.payload[i]}
                 }
                 let opts = {
@@ -145,16 +144,16 @@ export const stockReportsSlice = createSlice({
             },
 
             unFlagCommit: (state, action: PayloadAction<number>) => {
-                state.brandItems[action.payload].stockTake = {...state.brandItems[action.payload].stockTake, ...{date:null}}
+                state.brandItems[action.payload].stockTake = {...state.brandItems[action.payload].stockTake, ...{date: null}}
             },
 
-            setStockLevel: (state, action:PayloadAction<linn.ItemStock[]>) => {
+            setStockLevel: (state, action: PayloadAction<linn.ItemStock[]>) => {
                 let updateArr = []
-                for(const item of action.payload){
-                    let sliceItem = binarySearch<BrandItem>(state.brandItems, "SKU", item.SKU)
-                    if(sliceItem) {
-                        sliceItem.STOCKTOTAL = item.StockLevel
-                        updateArr.push(sliceItem)
+                for (const item of action.payload) {
+                    for (const brandItem of state.brandItems) {
+                        if (brandItem.SKU !== item.SKU) continue;
+                        brandItem.STOCKTOTAL = item.StockLevel
+                        updateArr.push(brandItem)
                     }
                 }
                 let opts = {
