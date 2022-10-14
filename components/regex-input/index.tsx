@@ -62,6 +62,7 @@ export default function RegexInput({type, value, errorMessage, handler}: Props) 
                 defaultValue={value}
                 onChange={validateInput}
                 onBlur={(e) => {
+                    validateInput(e)
                     if (valid) handler(e.target.value)
                 }}/>
         </>

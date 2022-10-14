@@ -42,7 +42,6 @@ export default function ShopStockTakeTable() {
     const commitChecked = () => {
         const linnUpdate:{SKU:string, QTY:number}[] = []
         for (const index in activeItems) {
-            console.log(activeItems[index].stockTake)
             if (!activeItems[index].stockTake?.checked || activeItems[index].stockTake?.date) continue;
 
             if(activeItems[index].stockTake!.quantity || activeItems[index].stockTake!.quantity === 0){
@@ -63,7 +62,6 @@ export default function ShopStockTakeTable() {
 
         fetch("/api/linnworks/update-stock-levels", opts).then(async res => {
             let json = await res.json()
-            console.dir(json)
             dispatch(setStockLevel(json))
         })
     }

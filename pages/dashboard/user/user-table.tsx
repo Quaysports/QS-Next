@@ -5,7 +5,7 @@ import {useDispatch} from "react-redux";
 import {User} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
-import RegexInput from "../../../components/RegexInput";
+import RegexInput from "../../../components/regex-input";
 import {ReactElement} from "react";
 
 /**

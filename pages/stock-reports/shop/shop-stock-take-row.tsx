@@ -1,7 +1,7 @@
 import styles from './shop-stock-take.module.css'
 import {useDispatch} from "react-redux";
 import {BrandItem, setStockTakeInfo, StockTake, unFlagCommit} from "../../../store/stock-reports-slice";
-import RegexInput from "../../../components/RegexInput";
+import RegexInput from "../../../components/regex-input";
 
 interface props {
     item?: BrandItem | null;

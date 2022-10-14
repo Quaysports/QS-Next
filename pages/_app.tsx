@@ -5,6 +5,7 @@ import {SessionProvider} from "next-auth/react";
 import UserSetup from './user-setup'
 import NotificationWrapper from "../components/notification/notification-wrapper";
 import {Provider} from "react-redux";
+import ActivityTracker from "../components/activity-tracker";
 
 export default function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
     const {store, props} = appWrapper.useWrappedStore(pageProps);
@@ -13,6 +14,7 @@ export default function App({Component, pageProps:{session, ...pageProps}}: AppP
             <SessionProvider session={session}>
                 <UserSetup {...props.pageProps}/>
                 <NotificationWrapper />
+                <ActivityTracker />
                 <Component {...props.pageProps}></Component>
             </SessionProvider>
         </Provider>
