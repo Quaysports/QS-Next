@@ -48,6 +48,7 @@ export default function QuickLinkTableAddButton({itemIndex}: Props) {
                 onClick={() => dispatchNotification({
                     type: "popup",
                     title: "Item Search",
+                    fn:handler,
                     content: <DatabaseSearchBar handler={handler}/>
                 })}>
                 <div>+</div>

@@ -26,7 +26,6 @@
 }
 .title-text{
     font-size: 0.8em;
-    color:gray;
     overflow:hidden;
     text-overflow: ellipsis;
 }

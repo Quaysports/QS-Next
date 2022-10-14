@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {StockError} from "../server-modules/shop/shop";
+import {binarySearch} from "../server-modules/core/core";
 
 /**
  * @property {string} _id
@@ -142,6 +143,28 @@ export const stockReportsSlice = createSlice({
                 }
                 fetch("/api/items/update-item", opts).then(res => console.log(res.statusText))
             },
+
+            unFlagCommit: (state, action: PayloadAction<number>) => {
+                state.brandItems[action.payload].stockTake = {...state.brandItems[action.payload].stockTake, ...{date:null}}
+            },
+
+            setStockLevel: (state, action:PayloadAction<linn.ItemStock[]>) => {
+                let updateArr = []
+                for(const item of action.payload){
+                    let sliceItem = binarySearch<BrandItem>(state.brandItems, "SKU", item.SKU)
+                    if(sliceItem) {
+                        sliceItem.STOCKTOTAL = item.StockLevel
+                        updateArr.push(sliceItem)
+                    }
+                }
+                let opts = {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(updateArr)
+                }
+                fetch("/api/items/bulk-update-items", opts)
+
+            }
         },
     })
 ;
@@ -149,7 +172,7 @@ export const stockReportsSlice = createSlice({
 export const {
     setIncorrectStockInitialState, setIncorrectStockChecked, setIncorrectStockSplice, setIncorrectStockQty,
     setZeroStockInitialState, setZeroStockChecked, setZeroStockSplice, setZeroStockQty, setValidData, setBrandItems,
-    updateStockTakes, setBrands, setStockTakeInfo
+    updateStockTakes, setBrands, setStockTakeInfo, unFlagCommit, setStockLevel
 } = stockReportsSlice.actions;
 
 

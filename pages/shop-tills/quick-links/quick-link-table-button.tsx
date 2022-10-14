@@ -26,11 +26,14 @@ export default function QuickLinkButton({itemIndex, item}: Props) {
 
     const deleteItem = () => dispatch(deleteQuickLinkItem({linksIndex: linksIndex, itemIndex: itemIndex}))
 
-    const colourHandler = (event: ChangeEvent<HTMLInputElement>) => dispatch(updateQuickLinkItemColour({
-        linksIndex: linksIndex,
-        itemIndex: itemIndex,
-        colour: event.target.value
-    }))
+    const colourHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log("colour handler", event.target.value)
+        dispatch(updateQuickLinkItemColour({
+            linksIndex: linksIndex,
+            itemIndex: itemIndex,
+            colour: event.target.value
+        }))
+    }
 
     const dragStartHandler = (event: DragEvent<HTMLDivElement>)=>event.dataTransfer.setData("draggedId", `${itemIndex}`)
     const dragLeaveHandler = (event: DragEvent<HTMLDivElement>) => event.currentTarget.style.boxShadow = ""

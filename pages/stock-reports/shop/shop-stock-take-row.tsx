@@ -1,6 +1,6 @@
 import styles from './shop-stock-take.module.css'
 import {useDispatch} from "react-redux";
-import {BrandItem, setStockTakeInfo, StockTake} from "../../../store/stock-reports-slice";
+import {BrandItem, setStockTakeInfo, StockTake, unFlagCommit} from "../../../store/stock-reports-slice";
 import RegexInput from "../../../components/RegexInput";
 
 interface props {
@@ -16,6 +16,7 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
     const updateSlice = (index:string, stockTake:StockTake) =>{
         dispatch(setStockTakeInfo({index: Number(index), data: stockTake}))
     }
+
     const validationHandler = (value:string) =>{
         loadedStockTake.quantity = Number(value)
         updateSlice(index!, loadedStockTake)
@@ -31,6 +32,7 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                     <div>Stock</div>
                     <div className={styles.center}>Update</div>
                     <div className={styles.center}>Checked</div>
+                    <div></div>
                 </div>
                 : <div className={styles.row} data-testid={item.SKU}>
                     <div>{item.SKU}</div>
@@ -57,6 +59,9 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                             type={"checkbox"}
                             checked={item.stockTake?.checked ? item.stockTake?.checked : false}
                             readOnly={true}/>}
+                    </div>
+                    <div>
+                        <button onClick={()=>dispatch(unFlagCommit(Number(index)))}>&#9100;</button>
                     </div>
                 </div>}
         </>

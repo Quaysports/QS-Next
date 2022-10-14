@@ -40,9 +40,9 @@ export default function DatabaseSearchBar({handler}: Props) {
                 body: JSON.stringify({type: searchType, id: currentSearchValue})
             }
             fetch("/api/items/search", opts).then(res => {
-                res.json().then(json =>
+                res.json().then(json => {
                     setSearchResults(searchArray(currentSearchValue, json))
-                )
+                })
             })
         } else {
             setSearchResults([])
@@ -128,7 +128,7 @@ export default function DatabaseSearchBar({handler}: Props) {
             />
             <input
                 className={styles["search-bar-input"]}
-                list="search-options"
+                data-testid="search-input"
                 onFocus={() => {
                     setTriggerUpdate(!triggerUpdate)
                 }}

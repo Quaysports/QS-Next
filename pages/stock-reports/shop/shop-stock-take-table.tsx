@@ -1,6 +1,6 @@
 import {
     BrandItem,
-    selectBrandItems,
+    selectBrandItems, setStockLevel,
     setStockTakeInfo, StockTake, updateStockTakes
 } from "../../../store/stock-reports-slice";
 import {useDispatch, useSelector} from "react-redux";
@@ -42,15 +42,17 @@ export default function ShopStockTakeTable() {
     const commitChecked = () => {
         const linnUpdate:{SKU:string, QTY:number}[] = []
         for (const index in activeItems) {
+            console.log(activeItems[index].stockTake)
             if (!activeItems[index].stockTake?.checked || activeItems[index].stockTake?.date) continue;
 
-            if(activeItems[index].stockTake!.quantity){
+            if(activeItems[index].stockTake!.quantity || activeItems[index].stockTake!.quantity === 0){
                 let change = activeItems[index].stockTake!.quantity! - activeItems[index].STOCKTOTAL
                 linnUpdate.push({SKU:activeItems[index].SKU, QTY:change})
             }
 
             let stockTakeUpdate = {...activeItems[index].stockTake}
             stockTakeUpdate.date = (new Date).toString()
+
             dispatch(setStockTakeInfo({index: Number(index), data: stockTakeUpdate}))
         }
 
@@ -59,7 +61,11 @@ export default function ShopStockTakeTable() {
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({id:"Stock Take Update", data:linnUpdate})}
 
-        fetch("/api/linnworks/update-stock-levels", opts).then(res=>console.dir(res))
+        fetch("/api/linnworks/update-stock-levels", opts).then(async res => {
+            let json = await res.json()
+            console.dir(json)
+            dispatch(setStockLevel(json))
+        })
     }
 
     const csvObject: { SKU: string, TITLE: string, Stock: number, Actual: string }[] = []
