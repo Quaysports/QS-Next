@@ -25,6 +25,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
     "@types/node": "^18.7.15",
     "eslint": "8.22.0",
     "eslint-config-next": "12.2.5",
