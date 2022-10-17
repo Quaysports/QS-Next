@@ -30,7 +30,7 @@ export default function DeadStockList() {
 
     let tempArray = []
     tempArray.push(
-        <div className={`${styles["shop-orders-table"]} ${styles["dead-stock-list-grid"]}`}>
+        <div key={"title"} className={`${styles["shop-orders-table"]} ${styles["dead-stock-list-grid"]}`}>
             <span/>
             <span>SKU</span>
             <span>Title</span>
@@ -40,7 +40,7 @@ export default function DeadStockList() {
 
     Object.values(deadStockList[Number(router.query.index)]).forEach((value, key) => {
         for (let i = 0; i < value.length; i++) {
-            tempArray.push(<div key={key}
+            tempArray.push(<div key={value[i].SKU}
                                 className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["dead-stock-list-grid"]}`}>
                 <span/>
                 <span>{value[i].SKU}</span>

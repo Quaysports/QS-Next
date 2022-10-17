@@ -43,6 +43,7 @@ export default function ShopOrdersLandingPage() {
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
     const deadStock = await deadStockReport()
+    console.log(deadStock)
     store.dispatch(setDeadStock(deadStock))
     const orders = await getOpenOrders()
 

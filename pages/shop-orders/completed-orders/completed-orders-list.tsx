@@ -11,20 +11,19 @@ export default function CompletedOrdersList() {
 
     if (!router.query.index) return null
 
-    let tempArray = [<option onClick={() => dispatch(setOrderContents(null))} key={0}>Select Order</option>]
+    let tempArray = [<option key={0}>Select Order</option>]
 
     Object.values(completedOrders![Number(router.query.index)]).forEach((value) => {
         for (let i = 0; i < value.length; i++) {
             tempArray.push(
-                <option onClick={() => dispatch(setOrderContents(value[i]))}
-                        key={value[i].id! + i}>{value[i].id}</option>
+                <option key={value[i].id! + i}>{value[i].id}</option>
             )
         }
     })
 
     return (
         <div className={styles["shop-orders-table-containers"]}>
-            Completed Order: <select>{tempArray}</select>
+            Completed Order: <select onChange={(e) => dispatch(setOrderContents({index: router.query.index! as string, id:e.target.value}))}>{tempArray}</select>
         </div>
     )
 }

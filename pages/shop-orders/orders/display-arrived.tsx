@@ -20,7 +20,7 @@ export default function DisplayArrived() {
     const loadedOrder = orders ? orders[Number(router.query.index)] : null
 
     async function removeFromBookedInHandler(order:OpenOrdersObject, index:number, SKU:string) {
-        dispatch(setRemoveFromBookedInState({index:index, SKU:SKU}))
+        dispatch(setRemoveFromBookedInState({index:index, SKU:SKU, order: router.query.index as string}))
     }
 
     function arrivedTableCells() {

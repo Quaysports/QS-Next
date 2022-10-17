@@ -21,30 +21,36 @@ export default function SubmitToLinnworksButtons() {
     const dispatch = useDispatch()
 
     async function submitToLinnworks() {
-            let data = []
-            for (let item of loadedOrder!.arrived) {
-                if (item.qty > 0 && !item.submitted && !item.newProduct) {
-                    data.push({SKU: item.SKU, QTY: item.tradePack * item.qty})
-                }
-            }
-
-            if (data.length > 0) {
-                const opts = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
-                    },
-                    body: JSON.stringify({QUERY:loadedOrder!.id, DATA: data})
-                }
-                await fetch("/api/shop-orders/adjust-stock", opts)
-                    .then(res => res.json())
-                    .then(res => {dispatch(setSubmittedOrder(res))})
-
-                } else {
-                dispatchNotification({type:"alert", title: "Error", content:"Nothing to book in! Check for zero ordered quantities"})
+        let data = []
+        for (let item of loadedOrder!.arrived) {
+            if (item.qty > 0 && !item.submitted && !item.newProduct) {
+                data.push({SKU: item.SKU, QTY: item.tradePack * item.qty})
             }
         }
+
+        if (data.length > 0) {
+            const opts = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+                },
+                body: JSON.stringify({QUERY: loadedOrder!.id, DATA: data})
+            }
+            await fetch("/api/shop-orders/adjust-stock", opts)
+                .then(res => res.json())
+                .then(res => {
+                    dispatch(setSubmittedOrder({res:res, order: router.query.index as string}))
+                })
+
+        } else {
+            dispatchNotification({
+                type: "alert",
+                title: "Error",
+                content: "Nothing to book in! Check for zero ordered quantities"
+            })
+        }
+    }
 
 
     function completeOrder() {
@@ -53,18 +59,21 @@ export default function SubmitToLinnworksButtons() {
                 type: "confirm",
                 title: "Complete Order",
                 content: "Not all items in this order have been booked in, completing this will delete the rest of the order. Are you sure you want to continue?",
-                fn: () => {dispatch(setCompleteOrder()); router.push("/shop-orders?tab=orders")}
+                fn: () => {
+                    dispatch(setCompleteOrder(router.query.index as string));
+                    router.push("/shop-orders?tab=orders")
+                }
             })
         } else {
-            dispatch(setCompleteOrder())
-            router.push({pathname:"/shop-orders", query:{tab:"orders"}})
+            dispatch(setCompleteOrder(router.query.index as string))
+            router.push({pathname: "/shop-orders", query: {tab: "orders"}})
         }
     }
 
     return (
         <span className={styles["primary-buttons"]}>
-                    <button onClick={submitToLinnworks}>Submit To Linnworks</button>
-                    <button onClick={completeOrder}>Complete Order</button>
-                </span>
+            <button onClick={completeOrder}>Complete Order</button>
+            <button onClick={submitToLinnworks}>Submit To Linnworks</button>
+        </span>
     )
 }
