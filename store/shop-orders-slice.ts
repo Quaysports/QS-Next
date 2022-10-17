@@ -30,7 +30,6 @@ export interface OpenOrdersObject {
  * @property {Object<string, DeadStockReport[]>} deadStock
  * @property {Object<string, string | number> } sideBarContent
  * @property {string} sideBarTitle
- * @property {OpenOrdersObject} loadedOrder
  * @property {Object<string, OpenOrdersObject>} openOrders
  * @property {OpenOrdersObject} editOrder
  * @property {orderObject[]} newOrderArray

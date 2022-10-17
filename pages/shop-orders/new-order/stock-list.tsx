@@ -38,6 +38,7 @@ export default function StockList() {
         supplierItems.forEach((value) => {
             if (value.lowStock) tempArray.push(value)
         })
+        tempArray.sort((a,b) => {return a.STOCKTOTAL < b.STOCKTOTAL ? -1 : (a.STOCKTOTAL > b.STOCKTOTAL ? 1 : 0)})
         dispatch(setLowStockArray(tempArray))
         if (radioButtons.lowStock) {
             dispatch(setRenderedArray(tempArray))

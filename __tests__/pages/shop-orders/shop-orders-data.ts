@@ -4,7 +4,7 @@ export const mockDeadStockState: ShopOrdersState = {
     deadStock: [],
     sideBarContent: [],
     sideBarTitle: "",
-    loadedOrder: {
+    openOrders: [{
         _id: "Anything",
         arrived: [],
         complete: false,
@@ -13,8 +13,7 @@ export const mockDeadStockState: ShopOrdersState = {
         price: 5,
         order: [],
         supplier: "Some Supplier"
-    },
-    openOrders: null,
+    }],
     newOrderArray: {
         _id: null,
         arrived: [],
@@ -42,7 +41,7 @@ export const mockOrdersState: ShopOrdersState = {
     deadStock: [],
     sideBarContent: [],
     sideBarTitle: "",
-    loadedOrder: {
+    openOrders: [{
         _id: "Anything",
         arrived: [{
             IDBEP: {BRAND: "Brand"},
@@ -96,8 +95,7 @@ export const mockOrdersState: ShopOrdersState = {
             arrived: 0
         }],
         supplier: "Some Supplier"
-    },
-    openOrders: null,
+    }],
     newOrderArray: {
         _id: null,
         arrived: [],
@@ -148,5 +146,115 @@ export const mockDeadStockReport =
         TITLE: "Drennan Products",
         SOLDFLAG: 3
     }]
+
+export const mockCompletedOrders = [{
+    _id: "Anything-1",
+    arrived: [{
+        IDBEP: {BRAND: "Wychwood"},
+        MINSTOCK: 2,
+        SKU: "SKU-1",
+        STOCKTOTAL: "3",
+        TITLE: "Wychwood Stuff",
+        SUPPLIER: "Leeda",
+        _id: "sdg5",
+        qty: 2,
+        tradePack: 1,
+        PURCHASEPRICE: 2,
+        newProduct: false,
+        submitted: true,
+        SOLDFLAG: 3,
+        arrived: 0
+    }, {
+        IDBEP: {BRAND: "Leeda"},
+        MINSTOCK: 2,
+        SKU: "SKU-2",
+        STOCKTOTAL: "3",
+        TITLE: "Leeda Stuff",
+        SUPPLIER: "Leeda",
+        _id: "sdg6",
+        qty: 2,
+        tradePack: 1,
+        PURCHASEPRICE: 2,
+        newProduct: false,
+        submitted: true,
+        SOLDFLAG: 3,
+        arrived: 0
+    }, {
+        IDBEP: {BRAND: "HTO"},
+        MINSTOCK: 4,
+        SKU: "SKU-3",
+        STOCKTOTAL: "7",
+        TITLE: "HTO Stuff",
+        SUPPLIER: "Leeda",
+        _id: "sdg7",
+        qty: 3,
+        tradePack: 2,
+        PURCHASEPRICE: 3,
+        newProduct: true,
+        submitted: true,
+        SOLDFLAG: 6,
+        arrived: 0
+    }],
+    complete: true,
+    date: 12345,
+    id: "Some ID",
+    price: 5,
+    order: [],
+    supplier: "Leeda"
+}, {
+    _id: "Anything-2",
+    arrived: [{
+        IDBEP: {BRAND: "Fox Rage"},
+        MINSTOCK: 2,
+        SKU: "SKU-5",
+        STOCKTOTAL: "3",
+        TITLE: "Fox Rage Stuff",
+        SUPPLIER: "Fox",
+        _id: "sdg2",
+        qty: 2,
+        tradePack: 1,
+        PURCHASEPRICE: 2,
+        newProduct: false,
+        submitted: true,
+        SOLDFLAG: 3,
+        arrived: 0
+    }, {
+        IDBEP: {BRAND: "Matrix"},
+        MINSTOCK: 2,
+        SKU: "SKU-6",
+        STOCKTOTAL: "3",
+        TITLE: "Matrix Stuff",
+        SUPPLIER: "Fox",
+        _id: "sdg1",
+        qty: 5,
+        tradePack: 1,
+        PURCHASEPRICE: 2,
+        newProduct: false,
+        submitted: true,
+        SOLDFLAG: 3,
+        arrived: 0
+    }, {
+        IDBEP: {BRAND: "Fox"},
+        MINSTOCK: 4,
+        SKU: "SKU-7",
+        STOCKTOTAL: "7",
+        TITLE: "Fox Stuff",
+        SUPPLIER: "Fox",
+        _id: "sdg",
+        qty: 3,
+        tradePack: 2,
+        PURCHASEPRICE: 3,
+        newProduct: true,
+        submitted: true,
+        SOLDFLAG: 6,
+        arrived: 0
+    }],
+    complete: true,
+    date: 12345,
+    id: "Some ID",
+    price: 5,
+    order: [],
+    supplier: "Fox"
+}]
 
 
