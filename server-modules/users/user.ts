@@ -56,6 +56,18 @@ export const login = async (user: string, password: string) => {
     }
 }
 
+export const pinLogin = async (pin: string) => {
+    console.log(pin)
+    const result = await mongoI.findOne<User>("Users",
+        {pin: {$eq: pin}},
+        {username: 1, role: 1, rota: 1, permissions: 1, theme:1})
+    if (result) {
+        return {...result, auth: true}
+    } else {
+        return {auth: false}
+    }
+}
+
 export const getUsers = async (query?: object) => {
     return await mongoI.find<User>("Users", query)
 }
