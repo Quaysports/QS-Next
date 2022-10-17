@@ -148,60 +148,6 @@ export const mockDeadStockReport =
     }]
 
 export const mockCompletedOrders = [{
-    _id: "Anything-1",
-    arrived: [{
-        IDBEP: {BRAND: "Wychwood"},
-        MINSTOCK: 2,
-        SKU: "SKU-1",
-        STOCKTOTAL: "3",
-        TITLE: "Wychwood Stuff",
-        SUPPLIER: "Leeda",
-        _id: "sdg5",
-        qty: 2,
-        tradePack: 1,
-        PURCHASEPRICE: 2,
-        newProduct: false,
-        submitted: true,
-        SOLDFLAG: 3,
-        arrived: 0
-    }, {
-        IDBEP: {BRAND: "Leeda"},
-        MINSTOCK: 2,
-        SKU: "SKU-2",
-        STOCKTOTAL: "3",
-        TITLE: "Leeda Stuff",
-        SUPPLIER: "Leeda",
-        _id: "sdg6",
-        qty: 2,
-        tradePack: 1,
-        PURCHASEPRICE: 2,
-        newProduct: false,
-        submitted: true,
-        SOLDFLAG: 3,
-        arrived: 0
-    }, {
-        IDBEP: {BRAND: "HTO"},
-        MINSTOCK: 4,
-        SKU: "SKU-3",
-        STOCKTOTAL: "7",
-        TITLE: "HTO Stuff",
-        SUPPLIER: "Leeda",
-        _id: "sdg7",
-        qty: 3,
-        tradePack: 2,
-        PURCHASEPRICE: 3,
-        newProduct: true,
-        submitted: true,
-        SOLDFLAG: 6,
-        arrived: 0
-    }],
-    complete: true,
-    date: 12345,
-    id: "Some ID",
-    price: 5,
-    order: [],
-    supplier: "Leeda"
-}, {
     _id: "Anything-2",
     arrived: [{
         IDBEP: {BRAND: "Fox Rage"},
@@ -255,6 +201,60 @@ export const mockCompletedOrders = [{
     price: 5,
     order: [],
     supplier: "Fox"
-}]
+}, {
+    _id: "Anything-1",
+    arrived: [{
+        IDBEP: {BRAND: "Wychwood"},
+        MINSTOCK: 2,
+        SKU: "SKU-1",
+        STOCKTOTAL: "3",
+        TITLE: "Wychwood Stuff",
+        SUPPLIER: "Leeda",
+        _id: "Leeda order 1",
+        qty: 2,
+        tradePack: 1,
+        PURCHASEPRICE: 2,
+        newProduct: false,
+        submitted: true,
+        SOLDFLAG: 3,
+        arrived: 0
+    }, {
+        IDBEP: {BRAND: "Leeda"},
+        MINSTOCK: 2,
+        SKU: "SKU-2",
+        STOCKTOTAL: "3",
+        TITLE: "Leeda Stuff",
+        SUPPLIER: "Leeda",
+        _id: "Leeda order 2",
+        qty: 2,
+        tradePack: 1,
+        PURCHASEPRICE: 2,
+        newProduct: false,
+        submitted: true,
+        SOLDFLAG: 3,
+        arrived: 0
+    }, {
+        IDBEP: {BRAND: "HTO"},
+        MINSTOCK: 4,
+        SKU: "SKU-3",
+        STOCKTOTAL: "7",
+        TITLE: "HTO Stuff",
+        SUPPLIER: "Leeda",
+        _id: "Leeda order 3",
+        qty: 3,
+        tradePack: 2,
+        PURCHASEPRICE: 3,
+        newProduct: true,
+        submitted: true,
+        SOLDFLAG: 6,
+        arrived: 0
+    }],
+    complete: true,
+    date: 12345,
+    id: "Some ID-123",
+    price: 5,
+    order: [],
+    supplier: "Leeda"
+}, ]
 
 
