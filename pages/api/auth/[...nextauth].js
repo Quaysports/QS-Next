@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import {login} from '../../../server-modules/users/user'
+import {login, pinLogin} from '../../../server-modules/users/user'
 
 export const authOptions = {
     providers: [
@@ -13,12 +13,17 @@ export const authOptions = {
                     type: 'username',
                     placeholder: 'default',
                 },
-                password: { label: 'Password', type: 'password' }
+                password: { label: 'Password', type: 'password' },
+                pin:{ label: 'Pin', type: 'pin' },
             },
             async authorize(credentials) {
-                const user = await login(credentials.username, credentials.password)
+
+                const user = credentials.pin
+                    ? await pinLogin(credentials.pin)
+                    : await login(credentials.username, credentials.password)
+
                 if (!user.auth) {
-                    throw new Error(user.exception);
+                    return null
                 } else {
                     return user;
                 }
@@ -27,7 +32,7 @@ export const authOptions = {
     ],
     secret: process.env.JWT_SECRET,
     page:{
-        signIn: '/login'
+        error:'/login/index'
     },
     callbacks: {
         async jwt({ token, user, account }) {
@@ -61,6 +66,7 @@ export const authOptions = {
         },
 
     },
+
 }
 
 export default NextAuth(authOptions);

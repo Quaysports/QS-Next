@@ -10,6 +10,7 @@
     "test": "jest --watch --verbose false"
   },
   "dependencies": {
+    "@next-auth/mongodb-adapter": "^1.1.0",
     "@reduxjs/toolkit": "^1.8.5",
     "@types/jest": "^29.1.1",
     "axios": "^0.27.2",
