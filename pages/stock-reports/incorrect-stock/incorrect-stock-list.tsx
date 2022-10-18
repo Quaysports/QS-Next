@@ -40,8 +40,7 @@ export default function IncorrectStockList() {
                                            e.target.style.borderColor = "var(--secondary-color)"
                                            e.target.reportValidity()
                                            dispatch(setValidData(false))
-                                       }
-                                       if (!e.target.validity.patternMismatch) {
+                                       } else {
                                            let value = e.target.value
                                            if (value === "") value = "0"
                                            dispatch(setIncorrectStockQty({

@@ -19,24 +19,24 @@ export interface UserTheme {
 
 export interface Permissions {
     [x: string]: any;
-    webpages?: { auth: boolean, label: "Webpages" };
-    stockTakeList?: { auth: boolean, label: "Stock Take List" };
-    stockTransfer?: { auth: boolean, label: "Stock Transfer" };
-    marginCalculator?: { auth: boolean, label: "Margin Calculator" };
-    shipments?: { auth: boolean, label: "Shipments" };
-    stockForecast?: { auth: boolean, label: "Stock Forecast" };
-    itemDatabase?: { auth: boolean, label: "Item Database" };
-    stockReports?: { auth: boolean, label: "Incorrect Stock" };
-    shopOrders?: { auth: boolean, label: "Shop Orders" };
-    shopTills?: { auth: boolean, label: "Shop Tills" };
-    users?: { auth: boolean, label: "Users" };
-    orderSearch?: { auth: boolean, label: "Order Search" };
-    priceUpdates?: { auth: boolean, label: "Price Updates" };
-    shop?: { auth: boolean, label: "Shop" };
-    baitOrdering?: { auth: boolean, label: "Bait Orders" };
-    online?: { auth: boolean, label: "Online" };
-    rotas?: { auth: boolean, label: "Rotas" };
-    holidays?: { auth: boolean, label: "Holidays" };
+    webpages?: { auth: boolean};
+    stockTakeList?: { auth: boolean};
+    stockTransfer?: { auth: boolean};
+    marginCalculator?: { auth: boolean};
+    shipments?: { auth: boolean};
+    stockForecast?: { auth: boolean};
+    itemDatabase?: { auth: boolean};
+    stockReports?: { auth: boolean};
+    shopOrders?: { auth: boolean};
+    shopTills?: { auth: boolean};
+    users?: { auth: boolean};
+    orderSearch?: { auth: boolean};
+    priceUpdates?: { auth: boolean};
+    shop?: { auth: boolean};
+    baitOrdering?: { auth: boolean};
+    online?: { auth: boolean};
+    rotas?: { auth: boolean};
+    holidays?: { auth: boolean};
 }
 
 export const auth = async (code: string) => {

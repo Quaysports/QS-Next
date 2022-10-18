@@ -140,7 +140,7 @@ export const stockReportsSlice = createSlice({
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(state.brandItems[action.payload.index])
                 }
-                fetch("/api/items/update-item", opts).then(res => console.log(res.statusText))
+                fetch("/api/items/update-item", opts)
             },
 
             unFlagCommit: (state, action: PayloadAction<number>) => {

@@ -24,6 +24,9 @@ export default function Dashboard() {
 }
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async(context)=>{
-    if(context.query.tab === "user") store.dispatch(setAllUserData(await getUsers()))
+    if(context.query.tab === "user"){
+        const data = await getUsers()
+        store.dispatch(setAllUserData(data))
+    }
     return {props:{}}
 })
