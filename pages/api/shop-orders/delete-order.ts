@@ -34,6 +34,5 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 }
 
 export const deleteOrder = async (order:shopOrder) => {
-    console.log(order)
     return await mongoI.deleteOne("New-Shop-Orders", {date: order.date})
 }

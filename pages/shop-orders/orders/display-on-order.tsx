@@ -28,7 +28,7 @@ export default function DisplayOnOrder() {
 
     function editOrder(order:OpenOrdersObject) {
         if(order.order.length > 0) {
-            router.push({pathname:"/shop-orders", query:{tab:"new-order", editOrder:router.query.index}})
+            router.push({pathname:"/shop-orders", query:{tab:"new-order", editOrder:router.query.index, brand: "All Items"}})
         }
     }
 

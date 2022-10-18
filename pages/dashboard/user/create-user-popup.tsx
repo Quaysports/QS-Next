@@ -22,7 +22,7 @@ export default function CreateUser(){
             <input placeholder="Username..." onBlur={(e)=>userTemplate.username = e.target.value}/>
             <button onClick={async()=>{
                 const opt = {method:'POST', headers:{"Content-Type":"application/json"}, body: JSON.stringify(userTemplate)}
-                await fetch('/api/user/update-user', opt).then(res=>console.log(res))
+                await fetch('/api/user/update-user', opt)
                 window.location.reload()
             }}>Submit</button>
         </div>

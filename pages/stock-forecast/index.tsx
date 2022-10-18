@@ -16,7 +16,6 @@ interface Props {
 }
 
 export default function StockForecastLandingPage({filteredItems}:Props) {
-    console.log(filteredItems)
 
     const[items, setItems] = useState<StockForecastItem[] | null>(null)
 

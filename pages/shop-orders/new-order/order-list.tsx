@@ -4,13 +4,13 @@ import {
     selectNewOrderArray,
     selectTotalPrice,
     setChangeOrderArray,
-    setChangeOrderQty,
     setOrderInfoReset,
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
 import {useRouter} from "next/router";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 import {orderObject} from "../../../server-modules/shop/shop-order-tool";
+import CurrentOrderList from "./build-order-list";
 
 /**
  * Order List Component
@@ -70,39 +70,6 @@ export default function OrderList() {
                         }
                     })
             })
-    }
-
-    function currentOrderList() {
-        return (<Fragment>
-                {newOrderArray.order.map((item, index) => {
-                    return (
-                        <div key={item.SKU}
-                             className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["order-list-grid"]}`}>
-                            <button onClick={() => {
-                                dispatch(setChangeOrderArray({item: item, type: "remove", index: index}))
-                            }}>⇅
-                            </button>
-                            <span className={"center-align"}>{item.STOCKTOTAL} </span>
-                            <span className={"center-align"}>{item.MINSTOCK} </span>
-                            <span>{item.SKU} </span>
-                            <span>{item.TITLE} </span>
-                            <input defaultValue={item.qty ? item.qty : 1} onChange={(e) => {
-                                changeInputAmountHandler(item, index, e.target.value, "qty")
-                            }}/>
-                            <input defaultValue={item.tradePack ? item.tradePack : 1} onChange={(e) => {
-                                changeInputAmountHandler(item, index, e.target.value, "tradePack")
-                            }}/>
-                            <span
-                                className={"center-align"}>£{item.PURCHASEPRICE ? item.PURCHASEPRICE.toFixed(2) : 0}</span>
-                        </div>
-                    )
-
-                })}</Fragment>
-        )
-    }
-
-    function changeInputAmountHandler(item: orderObject, index: number, value: string, type: string) {
-        dispatch(setChangeOrderQty({item: item, index: index, value: value, type: type}))
     }
 
     let newProduct: orderObject = {
@@ -170,7 +137,7 @@ export default function OrderList() {
                 <span className={"center-align"}>P/Price</span>
                 <span/>
             </div>
-            {currentOrderList()}
+            <CurrentOrderList/>
         </div>
     )
 

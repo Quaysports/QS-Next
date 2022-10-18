@@ -22,7 +22,6 @@ export default function UpdateIncorrectStock() {
 
     const runUpdate = ()=> {
         if (validDataState) {
-            console.log("data valid!")
             let tempArray = []
             for (const brand in zeroStockState) {
                 for (let i = 0; i < zeroStockState[brand].length; i++) {

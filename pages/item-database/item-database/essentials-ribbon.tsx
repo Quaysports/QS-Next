@@ -85,7 +85,6 @@ export default function EssentialsRibbon(){
             return [<option>No associated brands</option>]
         }
     }
-    console.log(item)
 
     return(
         <div className={styles["item-details-essentials"]}>

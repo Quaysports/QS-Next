@@ -49,7 +49,6 @@ export default function LoginLandingPage() {
     }
 
     const pinHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value)
         let pinValidation = new RegExp("^[0-9]{4}$")
         let numberValidation = new RegExp("^[0-9]+$")
 
@@ -65,7 +64,6 @@ export default function LoginLandingPage() {
         }
 
         if (pinValidation.test(event.target.value) && event.target.value.length === 4) {
-            console.log("pass!")
             validateInput(event.target, true, "")
             handlePin(event.target.value)
         } else {

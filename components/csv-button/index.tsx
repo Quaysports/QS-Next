@@ -24,7 +24,6 @@ export default function CSVButton({fileName = (new Date()).toString(), objectArr
             str += "\n"
         }
 
-        console.log(str)
         let blob = new Blob([str], {
             type: 'application/html;charset=utf-8;'
         });

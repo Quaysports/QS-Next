@@ -53,6 +53,5 @@ function buildList(items:StockForecastItem[]){
             </div>
         )
     }
-    console.log(items)
     return elementArray
 }

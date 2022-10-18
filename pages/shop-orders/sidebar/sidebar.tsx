@@ -15,14 +15,16 @@ export default function SideBar() {
     const sideBarContent = useSelector(selectSideBarContent)
     const router = useRouter()
 
-    useEffect(() => {})
+    useEffect(() => {
+    })
 
-    function buildSideBar(){
+    function buildSideBar() {
         let elementArray = []
-        for(const i in sideBarContent.content){
+        for (const i in sideBarContent.content) {
             let sideBarText = `${Object.keys(sideBarContent.content[i])}(${Object.values(sideBarContent.content[i])})`
             elementArray.push(
-                <SidebarButton className={`${styles["sidebar-rows"]} ${"button"}`} key={"sidebar" + i} onClick={()=>router.push({query:{...router.query, index:i}})}>
+                <SidebarButton className={`${styles["sidebar-rows"]} ${"button"}`} key={"sidebar" + i}
+                               onClick={() => router.push({query: {...router.query, index: i, brand: "All Items"}})}>
                     {sideBarText}
                 </SidebarButton>
             )

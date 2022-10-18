@@ -1,16 +1,9 @@
 import * as React from 'react';
-import {Fragment, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import SearchBar, {SearchItem} from "../../../components/search-bar/index";
-import Image from "next/image";
 import {
-    selectLowStockArray,
     selectRadioButtons,
-    selectRenderedArray,
     selectSupplierItems,
-    selectThreshold,
-    setChangeOrderArray,
-    setInputChange,
-    setLowStockArray,
     setRadioButtons,
     setRenderedArray,
     setThreshold
@@ -18,6 +11,8 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import styles from '../shop-orders.module.css'
 import {orderObject} from "../../../server-modules/shop/shop-order-tool";
+import BuildList from "./build-stock-list";
+import {useRouter} from "next/router";
 
 /**
  * Stock List Component
@@ -25,125 +20,85 @@ import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 export default function StockList() {
 
     const dispatch = useDispatch()
-    const threshold = useSelector(selectThreshold)
+    const router = useRouter()
     const radioButtons = useSelector(selectRadioButtons)
     const supplierItems = useSelector(selectSupplierItems)
-    const lowStockArray = useSelector(selectLowStockArray)
-    const renderedArray = useSelector(selectRenderedArray)
     const [rerender, setRerender] = useState<boolean>(false)
     const [searchableArray, setSearchableArray] = useState<orderObject[]>([])
+    const [brandList, setBrandList] = useState<string[]>([])
 
     useEffect(() => {
-        let tempArray:orderObject[] = []
+        let tempArray: orderObject[] = []
+        let lowStockBrandArray: orderObject[] = []
+        let brandArray: orderObject[] = []
+        let newBrandList: string[] = ["All Items"]
+
         supplierItems.forEach((value) => {
-            if (value.lowStock) tempArray.push(value)
+            console.log(value)
+            if (router.query.brand !== "All Items") {
+                if (value.IDBEP.BRAND === router.query.brand) {
+                    if (value.lowStock) {
+                        tempArray.push(value)
+                        lowStockBrandArray.push(value)
+                    }
+                    brandArray.push(value)
+                }
+            } else if (value.lowStock) tempArray.push(value)
+            if (!newBrandList.includes(value.IDBEP.BRAND)) {
+                console.log(value)
+                newBrandList.push(value.IDBEP.BRAND)
+            }
         })
-        tempArray.sort((a,b) => {return a.STOCKTOTAL < b.STOCKTOTAL ? -1 : (a.STOCKTOTAL > b.STOCKTOTAL ? 1 : 0)})
-        dispatch(setLowStockArray(tempArray))
+        setBrandList(newBrandList)
+
+
+        tempArray.sort((a, b) => {
+            return a.STOCKTOTAL < b.STOCKTOTAL ? -1 : (a.STOCKTOTAL > b.STOCKTOTAL ? 1 : 0)
+        })
+        brandArray ? brandArray.sort((a, b) => {
+            return a.STOCKTOTAL < b.STOCKTOTAL ? -1 : (a.STOCKTOTAL > b.STOCKTOTAL ? 1 : 0)
+        }) : null
+
         if (radioButtons.lowStock) {
-            dispatch(setRenderedArray(tempArray))
-            setSearchableArray(tempArray)
+            if (router.query.brand !== "All Items") {
+                dispatch(setRenderedArray(lowStockBrandArray))
+                setSearchableArray(lowStockBrandArray)
+            } else {
+                dispatch(setRenderedArray(tempArray))
+                setSearchableArray(tempArray)
+            }
         } else {
-            dispatch(setRenderedArray(supplierItems))
-            setSearchableArray(supplierItems)
+            if (router.query.brand !== "All Items") {
+                dispatch(setRenderedArray(brandArray))
+                setSearchableArray(brandArray)
+            } else {
+                dispatch(setRenderedArray(supplierItems))
+                setSearchableArray(supplierItems)
+            }
         }
     }, [supplierItems, rerender])
 
     function radioButtonsHandler(checked: boolean, box: string) {
         if (box === "lowStock" && checked) {
             dispatch(setRadioButtons({lowStock: true, allItems: false}))
-            dispatch(setRenderedArray(lowStockArray))
             dispatch(setThreshold(50))
             setRerender(!rerender)
         }
         if (box === "allItems" && checked) {
             dispatch(setRadioButtons({lowStock: false, allItems: true}))
-            dispatch(setRenderedArray(supplierItems))
             dispatch(setThreshold(50))
             setRerender(!rerender)
         }
     }
 
-    function inputChangeHandler(value: string, key: string, index:number) {
-        dispatch(setInputChange({key: key, index: index, value: value}))
-    }
-
-    function addToOrderHandler(item: orderObject) {
-        let renderedArrayIndex = renderedArray.findIndex(product => product.SKU === item.SKU)
-        let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
-
-        if (radioButtons.allItems) {
-            dispatch(setChangeOrderArray({item:renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
-        }
-        if (radioButtons.lowStock) {
-            dispatch(setChangeOrderArray({item:renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
-        }
-    }
-
-    function imageCheck(item: orderObject) {
-        switch (item.SOLDFLAG) {
-            case 3:
-                return (<Image src="/dead-stock-icon-green.webp" width="22px" height="22px"
-                               alt={"dead-stock-icon"}/>)
-            case 6:
-                return (<Image src="/dead-stock-icon-orange.webp" width="22px" height="22px"
-                               alt={"dead-stock-icon"}/>)
-            case 10:
-                return (<Image src="/dead-stock-icon-red.webp" width="22px" height="22px"
-                               alt={"dead-stock-icon"}/>)
-        }
-    }
-
-    function buildListRow(item: orderObject, index: number, allItems: boolean) {
-        let tempArray = []
-        tempArray.push(
-            <div key={item.SKU}
-                 className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["low-stock-list-grid"]}`}>
-                <button onClick={() => {
-                    addToOrderHandler(item)
-                }}>⇅
-                </button>
-                <span className={"center-align"}>{item.STOCKTOTAL} </span>
-                <span className={"center-align"}>{item.MINSTOCK} </span>
-                <span>{item.SKU} </span>
-                <span>{item.TITLE} </span>
-                <input defaultValue={renderedArray[index].qty} onChange={(e) => {
-                    inputChangeHandler(e.target.value, "qty", index)
-                }}/>
-                <input defaultValue={renderedArray[index].tradePack} onChange={(e) => {
-                    inputChangeHandler(e.target.value, "tradePack", index)
-                }}/>
-                <span className={"center-align"}>£{item.PURCHASEPRICE.toFixed(2)}</span>
-                <span className={styles["dead-stock-image-parent"]}>{item.deadStock ? imageCheck(item) : null}
-                    </span>
-            </div>
-        )
-        if (allItems) {
-            tempArray.push(<button key={item.SKU + "button"} onClick={() => {
-                dispatch(setThreshold((threshold + 50)));
-            }}>Load more items</button>)
-        }
-        return <Fragment key={item.SKU + 10}>{tempArray}</Fragment>
-    }
-
-    function buildList() {
-        let tempArray = []
-        for (let i = 0; i < renderedArray.length; i++) {
-            let allItems = false
-            if (i === threshold && i < renderedArray.length) allItems = true
-            tempArray.push(buildListRow(renderedArray[i], i, allItems))
-
-            if (i === threshold) break
-        }
-        return <>{tempArray}</>
-    }
-
     function buildSearchBar() {
         if (radioButtons.allItems) {
-            return <SearchBar resultHandler={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
+            return <SearchBar resultHandler={(x) => setNewRenderedArray(x)} EAN={false}
+                              searchableArray={searchableArray}/>
         }
         if (radioButtons.lowStock) {
-            return <SearchBar resultHandler={(x) => setNewRenderedArray(x)} EAN={false} searchableArray={searchableArray}/>
+            return <SearchBar resultHandler={(x) => setNewRenderedArray(x)} EAN={false}
+                              searchableArray={searchableArray}/>
         }
         return null
     }
@@ -153,8 +108,21 @@ export default function StockList() {
         dispatch(setRenderedArray(filteredArray as orderObject[]))
     }
 
+    function buildBrandFilters() {
+        let tempArray: JSX.Element[] = []
+        console.log(brandList)
+        if (brandList.length > 2) {
+            for (const brand of brandList) {
+                tempArray.push(<option key={brand}>{brand}</option>)
+            }
+            return <>{tempArray}</>
+        } else {
+            return null
+        }
+    }
+
     return (
-        <div className={styles["shop-orders-table-containers"]} id={styles["stock-list-table"]}>
+        <div className={styles["shop-orders-table-containers"]}>
             <div className={styles["table-title-container"]}>
                 <span>Low Stock List</span>
                 <span className={styles["primary-buttons"]}>
@@ -164,10 +132,17 @@ export default function StockList() {
                                                                              onChange={(e) => radioButtonsHandler(e.target.checked, "lowStock")}/>
                     <label htmlFor={"all-items"}>All Items</label><input type={"radio"} checked={radioButtons.allItems}
                                                                          id={"all-items"} name="display-toggle"
-                                                                         onChange={(e) => radioButtonsHandler(e.target.checked, "allItems")}/></span>
+                                                                         onChange={(e) => radioButtonsHandler(e.target.checked, "allItems")}/>
+                </span>
+                <span id={styles["brand-filter-select"]}>{brandList.length > 2 ? <select onChange={e => router.push({
+                    query: {
+                        ...router.query,
+                        brand: e.target.value
+                    }
+                })}>{buildBrandFilters()}</select> : null}</span>
             </div>
             <div className={styles["search-bar-wrapper"]}>{buildSearchBar()}</div>
-            <div className={`${styles["shop-orders-table"]} ${styles["low-stock-list-grid"]}`}>
+            <div className={`${styles["shop-orders-table"]} ${styles["new-order-list-grid"]}`}>
                 <span/>
                 <span className={"center-align"}>Stock</span>
                 <span className={"center-align"}>Min</span>
@@ -179,7 +154,7 @@ export default function StockList() {
                 <span/>
             </div>
             <div>
-                {buildList()}
+                <BuildList/>
             </div>
         </div>
     );

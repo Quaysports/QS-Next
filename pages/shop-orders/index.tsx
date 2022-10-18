@@ -43,7 +43,6 @@ export default function ShopOrdersLandingPage() {
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
     const deadStock = await deadStockReport()
-    console.log(deadStock)
     store.dispatch(setDeadStock(deadStock))
     const orders = await getOpenOrders()
 
@@ -56,6 +55,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
 
         let supplier = ""
 
+        //if editing order, finds the order and set it to the newOrder array
         if (context.query.editOrder) {
             store.dispatch(setNewOrderArray(orders[Number(context.query.editOrder)]))
             let tempArray = [{[orders[Number(context.query.editOrder)].supplier]: "Order Edit"}]
@@ -92,10 +92,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
             }
             store.dispatch(setSupplierItems(itemsTempObject[supplier]))
         }
-        let totalPrice = 0
-        //if editing order, finds the order and set it to the newOrder array
-
-        store.dispatch(setTotalPrice(totalPrice))
     }
 
     if (context.query.tab === "completed-orders") {

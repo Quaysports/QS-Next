@@ -88,7 +88,7 @@
 .order-list-grid{
     grid-template-columns: 27px 40px 40px 190px 1fr 40px 65px 70px;
 }
-.low-stock-list-grid{
+.new-order-list-grid{
     grid-template-columns: 27px 40px 40px 190px 1fr 40px 65px 70px 40px;
 }
 .dead-stock-list-grid{
@@ -163,6 +163,11 @@
     left: 0;
     top: 0;
     background-color: rgba(45,45,45,0.95);
+}
+
+#brand-filter-select{
+    float: right;
+    margin: 0 20px;
 }
 
 /*----------------------------------search bar wrapper----------------------------------------------*/

@@ -53,7 +53,6 @@ export interface ShopOrdersState {
     supplierItems: orderObject[]
     radioButtons: radioButtonsObject
     renderedArray: orderObject[]
-    lowStockArray: orderObject[]
     threshold: number
     completedOrders: {[key: string]: OpenOrdersObject[]} [] | null
     orderContents: OpenOrdersObject | null
@@ -100,7 +99,6 @@ const initialState: ShopOrdersState = {
         allItems: false
     },
     renderedArray: [],
-    lowStockArray: [],
     threshold: 50,
     completedOrders: null,
     orderContents: null
@@ -195,6 +193,12 @@ export const shopOrdersSlice = createSlice({
                 state.totalPrice = action.payload
             },
             setSupplierItems: (state, action: PayloadAction<orderObject[]>) => {
+                if(state.newOrderArray.order.length > 0){
+                    for(const product of state.newOrderArray.order){
+                        let index = action.payload.findIndex((item) => item.SKU === product.SKU)
+                        action.payload.splice(index, 1)
+                    }
+                }
                 state.supplierItems = action.payload
             },
             setChangeOrderQty: (state, action: PayloadAction<{ item: orderObject, type: string, index: number, value: string }>) => {
@@ -225,18 +229,12 @@ export const shopOrdersSlice = createSlice({
             setThreshold: (state, action: PayloadAction<number>) => {
                 state.threshold = action.payload
             },
-            setLowStockArray: (state, action: PayloadAction<orderObject[]>) => {
-                state.lowStockArray = action.payload
-            },
             setRenderedArray: (state, action: PayloadAction<orderObject[]>) => {
                 state.renderedArray = action.payload
             },
             setInputChange: (state, action: PayloadAction<{ key: string, index: number, value: string }>) => {
                     if (action.payload.key === "qty") state.renderedArray[action.payload.index].qty = Number(action.payload.value)
                     if (action.payload.key === "tradePack") state.renderedArray[action.payload.index].tradePack = Number(action.payload.value)
-            },
-            setChangeLowStockArray: (state, action: PayloadAction<number>) => {
-                state.lowStockArray.splice(action.payload, 1)
             },
             setCompletedOrders: (state, action: PayloadAction<{[key: string]: shopOrder[]}[]>) => {
                 state.completedOrders = action.payload
@@ -333,7 +331,6 @@ export const {
     setChangeOrderArray,
     setRadioButtons,
     setThreshold,
-    setLowStockArray,
     setRenderedArray,
     setInputChange,
     setChangeOrderQty,
@@ -357,7 +354,6 @@ export const selectTotalPrice = (state: ShopOrdersWrapper) => state.shopOrders.t
 export const selectSupplierItems = (state: ShopOrdersWrapper) => state.shopOrders.supplierItems
 export const selectRadioButtons = (state: ShopOrdersWrapper) => state.shopOrders.radioButtons
 export const selectThreshold = (state: ShopOrdersWrapper) => state.shopOrders.threshold
-export const selectLowStockArray = (state: ShopOrdersWrapper) => state.shopOrders.lowStockArray
 export const selectRenderedArray = (state: ShopOrdersWrapper) => state.shopOrders.renderedArray
 export const selectCompletedOrders = (state: ShopOrdersWrapper) => state.shopOrders.completedOrders
 export const selectOrderContents = (state: ShopOrdersWrapper) => state.shopOrders.orderContents

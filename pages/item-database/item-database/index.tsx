@@ -13,9 +13,6 @@ import {useRouter} from "next/router";
 export default function ItemDatabaseLandingPage() {
 
     const item = useSelector(selectItem)
-    useEffect(()=>{
-        console.log(item)
-    },[item])
 
     const router = useRouter()
 
