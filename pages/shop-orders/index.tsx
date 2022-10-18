@@ -55,7 +55,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
 
         let supplier = ""
 
-        //if editing order, finds the order and set it to the newOrder array
         if (context.query.editOrder) {
             store.dispatch(setNewOrderArray(orders[Number(context.query.editOrder)]))
             let tempArray = [{[orders[Number(context.query.editOrder)].supplier]: "Order Edit"}]
@@ -115,11 +114,12 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
             sideBarArray.push({[key]: item.length})
         })
         store.dispatch(setCompletedOrders(tempArray))
-        store.dispatch(setSideBarContent({content: sideBarArray, title: "Completed Orders"}))
+        store.dispatch(setSideBarContent({content: sideBarArray, title: "Suppliers"}))
 
     }
 
     if (context.query.tab === "orders") {
+        console.log("orders!")
         store.dispatch(setOpenOrders(orders))
         let tempArray = orders.map((item,index) => ({[(index + 1).toString() + " - " + item.supplier]: item.id}))
         store.dispatch(setSideBarContent({content: tempArray, title: "Orders"}))

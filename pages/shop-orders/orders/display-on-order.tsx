@@ -49,8 +49,8 @@ export default function DisplayOnOrder() {
         }
 
         if ((order.order[index].qty - order.order[index].arrived!) > 0) {
-            let conf = window.confirm("Did only part of the order arrive?")
-            if (conf) {
+            dispatchNotification({type: "confirm", title:"Partial Order Arrived", content:"Did only part of the order arrive?", fn:() => partialBookIn() })
+            function partialBookIn() {
                 setSaveOrder(true)
                 dispatch(setBookedInState({bookedIn: "partial", index: index, order: router.query.index as string}))
             }

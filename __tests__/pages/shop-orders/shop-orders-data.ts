@@ -1,52 +1,13 @@
 import {ShopOrdersState} from "../../../store/shop-orders-slice";
+import {shopOrder} from "../../../server-modules/shop/shop-order-tool";
 
-export const mockDeadStockState: ShopOrdersState = {
-    deadStock: [],
-    sideBarContent: [],
-    sideBarTitle: "",
-    openOrders: [{
-        _id: "Anything",
-        arrived: [],
-        complete: false,
-        date: 12345,
-        id: "Some ID",
-        price: 5,
-        order: [],
-        supplier: "Some Supplier"
-    }],
-    newOrderArray: {
-        _id: null,
-        arrived: [],
-        complete: false,
-        date: null,
-        id: null,
-        price: null,
-        order: [],
-        supplier: null
-    },
-    totalPrice: 0,
-    supplierItems: [],
-    radioButtons: {
-        lowStock: true,
-        allItems: false
-    },
-    renderedArray: [],
-    lowStockArray: [],
-    threshold: 50,
-    completedOrders: null,
-    orderContents: null
-}
-
-export const mockOrdersState: ShopOrdersState = {
-    deadStock: [],
-    sideBarContent: [],
-    sideBarTitle: "",
-    openOrders: [{
+export const mockOrdersState: shopOrder[] =
+     [{
         _id: "Anything",
         arrived: [{
             IDBEP: {BRAND: "Brand"},
             MINSTOCK: 2,
-            SKU: "SKU-1",
+            SKU: "SWIFT-SKU-1",
             STOCKTOTAL: "3",
             TITLE: "Some Title",
             SUPPLIER: "Some Supplier",
@@ -61,12 +22,12 @@ export const mockOrdersState: ShopOrdersState = {
         }],
         complete: false,
         date: 12345,
-        id: "Some ID",
+        id: "99-33-44",
         price: 5,
         order: [{
             IDBEP: {BRAND: "Brand"},
             MINSTOCK: 2,
-            SKU: "SKU-2",
+            SKU: "SWIFT-SKU-2",
             STOCKTOTAL: "3",
             TITLE: "Some Title",
             SUPPLIER: "Some Supplier",
@@ -81,7 +42,7 @@ export const mockOrdersState: ShopOrdersState = {
         }, {
             IDBEP: {BRAND: "Another Brand"},
             MINSTOCK: 4,
-            SKU: "SKU-3",
+            SKU: "SWIFT-SKU-3",
             STOCKTOTAL: "7",
             TITLE: "Another Title",
             SUPPLIER: "Another Supplier",
@@ -94,30 +55,62 @@ export const mockOrdersState: ShopOrdersState = {
             SOLDFLAG: 6,
             arrived: 0
         }],
-        supplier: "Some Supplier"
-    }],
-    newOrderArray: {
-        _id: null,
-        arrived: [],
+        supplier: "Swift"
+    },{
+        _id: "Anything",
+        arrived: [{
+            IDBEP: {BRAND: "Brand"},
+            MINSTOCK: 2,
+            SKU: "WYCHWOOD-SKU-1",
+            STOCKTOTAL: "3",
+            TITLE: "Some Title",
+            SUPPLIER: "Some Supplier",
+            _id: "sdg",
+            qty: 2,
+            tradePack: 1,
+            PURCHASEPRICE: 2,
+            newProduct: false,
+            submitted: false,
+            SOLDFLAG: 3,
+            arrived: 0
+        }],
         complete: false,
-        date: null,
-        id: null,
-        price: null,
-        order: [],
-        supplier: null
-    },
-    totalPrice: 0,
-    supplierItems: [],
-    radioButtons: {
-        lowStock: true,
-        allItems: false
-    },
-    renderedArray: [],
-    lowStockArray: [],
-    threshold: 50,
-    completedOrders: null,
-    orderContents: null
-}
+        date: 12345,
+        id: "22-43-45",
+        price: 5,
+        order: [{
+            IDBEP: {BRAND: "Brand"},
+            MINSTOCK: 2,
+            SKU: "WYCHWOOD-SKU-2",
+            STOCKTOTAL: "3",
+            TITLE: "Some Title",
+            SUPPLIER: "Some Supplier",
+            _id: "sdg",
+            qty: 2,
+            tradePack: 1,
+            PURCHASEPRICE: 2,
+            newProduct: false,
+            submitted: false,
+            SOLDFLAG: 3,
+            arrived: 0
+        }, {
+            IDBEP: {BRAND: "Another Brand"},
+            MINSTOCK: 4,
+            SKU: "WYCHWOOD-SKU-3",
+            STOCKTOTAL: "7",
+            TITLE: "Another Title",
+            SUPPLIER: "Another Supplier",
+            _id: "sdg",
+            qty: 3,
+            tradePack: 2,
+            PURCHASEPRICE: 3,
+            newProduct: true,
+            submitted: false,
+            SOLDFLAG: 6,
+            arrived: 0
+        }],
+        supplier: "Wychwood"
+    }]
 
 export const mockDeadStockReport =
     [{
