@@ -15,7 +15,8 @@ interface Props {
     filteredItems:StockForecastItemProjection[]
 }
 
-export default function stockForecastLandingPage({filteredItems}:Props) {
+export default function StockForecastLandingPage({filteredItems}:Props) {
+    console.log(filteredItems)
 
     const[items, setItems] = useState<StockForecastItem[] | null>(null)
 
@@ -83,7 +84,7 @@ export async function getServerSideProps(context:NextPageContext) {
     const filteredItems = filterDataBasedOnToggles(items!, context.query)
 
     return {
-        props: {filteredItems}
+        props: {filteredItems:filteredItems}
     }
 }
 

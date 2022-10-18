@@ -7,7 +7,7 @@ export async function middleware(request:NextRequest) {
     function rootRedirect(){ return NextResponse.redirect(new URL('/', request.url)) }
 
     const user = await getToken({ req: request, secret: process.env.JWT_SECRET })  as unknown as User
-    console.log(user)
+
     if(!user) return NextResponse.redirect(new URL('/login', request.url))
     switch(request.nextUrl.pathname) {
         case '/item-database':          return user.permissions.itemDatabase?.auth ?        null: rootRedirect();

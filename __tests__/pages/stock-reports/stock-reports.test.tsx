@@ -36,38 +36,47 @@ let incorrectStock: StockError[] = [{
     PRIORITY: false
 }]
 jest.mock("../../../server-modules/shop/shop", () => ({
-    getIncorrectStock: () => incorrectStock
+    getIncorrectStock: () => {
+        mockIncorrectStock()
+        return incorrectStock
+    }
 }))
 
 jest.mock("../../../server-modules/items/items", () => ({
-    getItems: () => [{
-        _id: '61bc9d799b9e0cb72301fec4',
-        SKU: 'AKA-AFLC13',
-        EAN: '8032895083969',
-        STOCKTOTAL: 9,
-        TITLE: 'AKASHI Fluorocarbon 13.2lb Line 100m',
-        stockTake: {
-            checked: true,
-            date: 'Fri Sep 30 2022 15:52:08 GMT+0100 (British Summer Time)',
-            quantity: 10
-        }
-    },
-        {
-            _id: '61bc9d7e9b9e0cb723020bff',
-            SKU: 'AKA-AFLC8',
-            EAN: '8032895083952',
-            STOCKTOTAL: 2,
-            TITLE: 'AKASHI Fluorocarbon 8.8lb Line 100m',
+    getItems: () => {
+        mockItems()
+        return [{
+            _id: '61bc9d799b9e0cb72301fec4',
+            SKU: 'AKA-AFLC13',
+            EAN: '8032895083969',
+            STOCKTOTAL: 9,
+            TITLE: 'AKASHI Fluorocarbon 13.2lb Line 100m',
             stockTake: {
-                checked: false,
-                date: null,
-                quantity: 0
+                checked: true,
+                date: 'Fri Sep 30 2022 15:52:08 GMT+0100 (British Summer Time)',
+                quantity: 10
             }
-        }],
-    getBrands: () => ['AFW', 'AKASHI', 'AXIA', ]
+        },
+            {
+                _id: '61bc9d7e9b9e0cb723020bff',
+                SKU: 'AKA-AFLC8',
+                EAN: '8032895083952',
+                STOCKTOTAL: 2,
+                TITLE: 'AKASHI Fluorocarbon 8.8lb Line 100m',
+                stockTake: {
+                    checked: false,
+                    date: null,
+                    quantity: 0
+                }
+            }]
+    },
+    getBrands: () => {
+        mockBrands()
+        return ['AFW', 'AKASHI', 'AXIA',]
+    }
 }))
 
-let fetchReq:StockError | undefined = undefined
+let fetchReq: StockError | undefined = undefined
 global.fetch = jest.fn(async (url, options) => {
     fetchReq = JSON.parse(options.body).data
     switch (url) {
@@ -80,6 +89,9 @@ global.fetch = jest.fn(async (url, options) => {
     }
 }) as jest.Mock;
 
+afterEach(()=>{
+    jest.clearAllMocks()
+})
 
 describe("Stock Report serverSideProps tests", () => {
     test("Incorrect stock function is called on server side props", async () => {
@@ -131,12 +143,6 @@ describe("Incorrect Stock tab tests", () => {
         })
     })
 
-    test("Database function is called and does not render IncorrectStockList and ZeroStockList components", async () => {
-        expect(screen.queryByTestId("incorrect-list-wrapper")).toBeFalsy()
-        expect(screen.queryByTestId("zero-list-wrapper")).toBeFalsy()
-        expect(screen.getByRole("button", {name: "Save"})).toBeInTheDocument()
-    })
-
     test("Renders IncorrectStockList and ZeroStockList components with data", async () => {
 
         await waitFor(async () => {
@@ -183,11 +189,18 @@ describe("Incorrect Stock tab tests", () => {
 
         await waitFor(() => screen.getByRole('button', {name: "Save"}).click())
         expect(await screen.findByText("1 items updated")).toBeInTheDocument()
-        expect(fetchReq).toEqual([{"BRAND": "Shimano", "CHECKED": true, "PRIORITY": true, "QTY": 5, "SKU": "SKU-1", "TITLE": "Fishing Stuff"}])
+        expect(fetchReq).toEqual([{
+            "BRAND": "Shimano",
+            "CHECKED": true,
+            "PRIORITY": true,
+            "QTY": 5,
+            "SKU": "SKU-1",
+            "TITLE": "Fishing Stuff"
+        }])
     })
 })
 
-describe("Stock Take tab tests", ()=>{
+describe("Stock Take tab tests", () => {
 
     test("Page loads correctly on Shop tab router query.", async () => {
 
@@ -213,14 +226,14 @@ describe("Stock Take tab tests", ()=>{
             await getServerSideProps(context)
         })
 
-        await waitFor(()=> screen.getByText("AFW").click())
+        await waitFor(() => screen.getByText("AFW").click())
 
-        expect(mockRouter).toHaveBeenCalledWith({pathname: undefined, query:{brand:"AFW", tab:"shop"}})
+        expect(mockRouter).toHaveBeenCalledWith({pathname: undefined, query: {brand: "AFW", tab: "shop"}})
     });
 
     test("Table loads when brandItems[] in slice contains items.", async () => {
 
-        query = {tab: "shop", brand:"AKASHI"}
+        query = {tab: "shop", brand: "AKASHI"}
         await waitFor(async () => {
             render(<StockReports/>)
             const context = {query: query} as unknown as GetServerSidePropsContext
@@ -233,12 +246,12 @@ describe("Stock Take tab tests", ()=>{
         expect(screen.getByTestId("AKA-AFLC13").childNodes[2]).toHaveTextContent("AKASHI Fluorocarbon 13.2lb Line 100m")
         expect(screen.getByTestId("AKA-AFLC13").childNodes[3]).toHaveTextContent("9")
         expect(screen.getByTestId("AKA-AFLC13").childNodes[4]).toHaveTextContent("10")
-        expect(screen.getByTestId("AKA-AFLC13").childNodes[5].childNodes[0]).toHaveAttribute("type","checkbox")
+        expect(screen.getByTestId("AKA-AFLC13").childNodes[5].childNodes[0]).toHaveAttribute("type", "checkbox")
     })
 
     test("Loaded brand items correctly hide input if stockTake.date is not null", async () => {
 
-        query = {tab: "shop", brand:"AKASHI"}
+        query = {tab: "shop", brand: "AKASHI"}
         await waitFor(async () => {
             render(<StockReports/>)
             const context = {query: query} as unknown as GetServerSidePropsContext
@@ -249,9 +262,9 @@ describe("Stock Take tab tests", ()=>{
         expect(screen.getByTestId("AKA-AFLC8").childNodes[4].childNodes[0]).toHaveAttribute("pattern")
     })
 
-    test("Check all button calculates and checks inputs correctly.", async()=>{
+    test("Check all button calculates and checks inputs correctly.", async () => {
 
-        query = {tab: "shop", brand:"AKASHI"}
+        query = {tab: "shop", brand: "AKASHI"}
         await waitFor(async () => {
             render(<StockReports/>)
             const context = {query: query} as unknown as GetServerSidePropsContext
@@ -261,22 +274,22 @@ describe("Stock Take tab tests", ()=>{
         let checkBox1 = screen.getByTestId("AKA-AFLC13").childNodes[5].childNodes[0] as HTMLInputElement
         let checkBox2 = screen.getByTestId("AKA-AFLC8").childNodes[5].childNodes[0] as HTMLInputElement
 
-        await waitFor(()=> screen.getByRole("button", {name:"Check All"}).click())
-        await waitFor(()=> expect(checkBox2).toBeChecked())
+        await waitFor(() => screen.getByRole("button", {name: "Check All"}).click())
+        await waitFor(() => expect(checkBox2).toBeChecked())
 
         expect(checkBox1.checked).toEqual(true)
         expect(checkBox2.checked).toEqual(true)
 
-        await waitFor(()=> screen.getByRole("button", {name:"Check All"}).click())
-        await waitFor(()=> expect(checkBox2).not.toBeChecked())
+        await waitFor(() => screen.getByRole("button", {name: "Check All"}).click())
+        await waitFor(() => expect(checkBox2).not.toBeChecked())
 
         expect(checkBox1.checked).toEqual(true)
         expect(checkBox2.checked).toEqual(false)
     })
 
-    test("Commit button correctly disables inputs after click", async()=>{
+    test("Commit button correctly disables inputs after click", async () => {
 
-        query = {tab: "shop", brand:"AKASHI"}
+        query = {tab: "shop", brand: "AKASHI"}
         render(<StockReports/>)
         const context = {query: query} as unknown as GetServerSidePropsContext
         await waitFor(async () => getServerSideProps(context))
@@ -284,13 +297,13 @@ describe("Stock Take tab tests", ()=>{
         let input = screen.getByTestId("AKA-AFLC8").childNodes[4].childNodes[0] as HTMLInputElement
         let checkBox = (await screen.findByTestId("AKA-AFLC8")).childNodes[5].childNodes[0] as HTMLInputElement
 
-        await waitFor(async ()=>{
+        await waitFor(async () => {
             checkBox.click()
             expect(checkBox).toBeChecked()
         })
 
-        await waitFor(async ()=>{
-            screen.getByRole("button", {name:"Commit"}).click()
+        await waitFor(async () => {
+            screen.getByRole("button", {name: "Commit"}).click()
             expect(input).not.toBeInTheDocument()
             expect(screen.getByTestId("AKA-AFLC8").childNodes[3].childNodes[0]).toHaveTextContent("0")
         })

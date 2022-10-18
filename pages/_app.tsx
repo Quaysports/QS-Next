@@ -12,10 +12,10 @@ export default function App({Component, pageProps:{session, ...pageProps}}: AppP
     return (
         <Provider store={store}>
             <SessionProvider session={session}>
-                <UserSetup {...props.pageProps}/>
+                <UserSetup {...props}/>
                 <NotificationWrapper />
                 <ActivityTracker />
-                <Component {...props.pageProps}></Component>
+                <Component {...props}></Component>
             </SessionProvider>
         </Provider>
     )
