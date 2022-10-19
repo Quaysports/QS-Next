@@ -59,6 +59,7 @@ export interface orderObject {
     lowStock?: boolean
     submitted: boolean
     SOLDFLAG: number
+    onOrder?: boolean
 }
 
 export const getLowStock = async () => {

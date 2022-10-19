@@ -19,9 +19,9 @@ export const binarySearch = function <T>(arr:T[], key:keyof T, x:T[keyof T], sta
     if (start > end || arr.length === 0) return null;
 
     let mid = Math.floor((start + end) / 2);
-    if (arr[mid][key] === x) return arr[mid];
+    if (arr[mid]?.[key] === x) return arr[mid];
 
-    return arr[mid][key] > x
+    return arr[mid] && arr[mid][key] > x
         ? binarySearch(arr, key, x, start, mid - 1)
         : binarySearch(arr, key, x, mid + 1, end);
 }

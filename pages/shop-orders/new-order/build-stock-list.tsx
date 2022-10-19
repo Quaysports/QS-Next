@@ -10,7 +10,7 @@ import * as React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Image from "next/image";
 
-export default function BuildList() {
+export default function BuildStockList() {
 
     const supplierItems = useSelector(selectSupplierItems)
     const radioButtons = useSelector(selectRadioButtons)
@@ -20,9 +20,11 @@ export default function BuildList() {
 
     function buildListRow(item: orderObject, index: number, allItems: boolean) {
         let tempArray = []
+        console.log(item)
         tempArray.push(
             <div key={item.SKU}
-                 className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["new-order-list-grid"]}`}>
+                 className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["new-order-list-grid"]}`}
+                 style={item.onOrder ? {backgroundColor: "var(--traffic-light-orange)"} : undefined}>
                 <button onClick={() => {
                     addToOrderHandler(item)
                 }}>⇅
@@ -50,7 +52,7 @@ export default function BuildList() {
         return <Fragment key={item.SKU + 10}>{tempArray}</Fragment>
     }
 
-    function inputChangeHandler(value: string, key: string, index:number) {
+    function inputChangeHandler(value: string, key: string, index: number) {
         dispatch(setInputChange({key: key, index: index, value: value}))
     }
 
@@ -59,10 +61,10 @@ export default function BuildList() {
         let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
 
         if (radioButtons.allItems) {
-            dispatch(setChangeOrderArray({item:renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
+            dispatch(setChangeOrderArray({item: renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
         }
         if (radioButtons.lowStock) {
-            dispatch(setChangeOrderArray({item:renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
+            dispatch(setChangeOrderArray({item: renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
         }
     }
 

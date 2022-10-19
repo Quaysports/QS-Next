@@ -11,8 +11,8 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import styles from '../shop-orders.module.css'
 import {orderObject} from "../../../server-modules/shop/shop-order-tool";
-import BuildList from "./build-stock-list";
 import {useRouter} from "next/router";
+import BuildStockList from "./build-stock-list";
 
 /**
  * Stock List Component
@@ -34,7 +34,6 @@ export default function StockList() {
         let newBrandList: string[] = ["All Items"]
 
         supplierItems.forEach((value) => {
-            console.log(value)
             if (router.query.brand !== "All Items") {
                 if (value.IDBEP.BRAND === router.query.brand) {
                     if (value.lowStock) {
@@ -45,7 +44,6 @@ export default function StockList() {
                 }
             } else if (value.lowStock) tempArray.push(value)
             if (!newBrandList.includes(value.IDBEP.BRAND)) {
-                console.log(value)
                 newBrandList.push(value.IDBEP.BRAND)
             }
         })
@@ -154,7 +152,7 @@ export default function StockList() {
                 <span/>
             </div>
             <div>
-                <BuildList/>
+                <BuildStockList/>
             </div>
         </div>
     );

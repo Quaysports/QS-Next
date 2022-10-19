@@ -3,7 +3,7 @@ import {useRouter} from "next/router";
 import {deadStockReport} from "../../server-modules/shop/shop";
 import {
     setCompletedOrders,
-    setDeadStock, setNewOrderArray,
+    setDeadStock, setNewOrderArray, setOnOrderSKUs,
     setOpenOrders,
     setSideBarContent, setSupplierItems, setTotalPrice
 } from "../../store/shop-orders-slice";
@@ -49,6 +49,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     if (context.query.tab === "new-order") {
 
         let lowStock = await getSuppliersAndLowStock()
+        store.dispatch(setOnOrderSKUs(orders))
 
         let tempArray = lowStock.map(item => ({[item.SUPPLIER]: item.LOWSTOCKCOUNT}))
         store.dispatch(setSideBarContent({content: tempArray, title: "Suppliers"}))
@@ -78,6 +79,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
                 supplierItems[i].tradePack = 1
                 supplierItems[i].qty = 1
                 supplierItems[i].submitted = false
+                supplierItems[i].onOrder = false
                 if (Number(supplierItems[i].STOCKTOTAL) < supplierItems[i].MINSTOCK) supplierItems[i].lowStock = true;
                 let item = deadStock.find((element) => element.SKU === supplierItems[i].SKU)
                 if (item) {
