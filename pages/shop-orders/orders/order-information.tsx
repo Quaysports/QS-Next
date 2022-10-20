@@ -36,7 +36,6 @@ export default function OrderInformation() {
         }
         fetch("/api/shop-orders/delete-order", opts)
             .then(res => {
-                console.dir(res)
                 !res.ok ?
                     dispatchNotification({
                         type: "alert",
@@ -48,7 +47,7 @@ export default function OrderInformation() {
                         title: "Success",
                         content: `${order.supplier}(${order.id}) has been deleted`
                     });
-                router.push({pathname:"/shop-orders", query:{tab:"orders"}})
+                router.push({pathname: "/shop-orders", query: {tab: "orders"}})
             })
     }
 

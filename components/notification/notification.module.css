@@ -1,6 +1,6 @@
 /*------------------- fullscreen dim style -------------------*/
 .fullscreen-dim{
-    position: absolute;
+    position: fixed;
     background:rgba(45,45,45,0.8);
     z-index : 50;
     display:flex;
@@ -57,8 +57,6 @@
 
 .confirm-title, .confirm-text {
     padding-bottom: 8px;
-
-
     margin-bottom:8px
 }
 
@@ -97,4 +95,16 @@
 }
 .alert-buttons button{
     min-width: 80px;
+}
+
+/*-------------------- tooltip style----------------*/
+
+.tooltip-frame{
+    position:fixed;
+    padding: var(--table-padding);
+    z-index:5;
+    border-radius: var(--primary-border-radius);
+    border: 1px solid var(--primary-background);
+    box-shadow: var(--primary-box-shadow);
+    background-color: var(--primary-table-cell-background);
 }

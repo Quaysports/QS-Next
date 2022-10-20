@@ -9,6 +9,7 @@ import {Fragment} from "react";
 import * as React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Image from "next/image";
+import {dispatchNotification} from "../../../server-modules/dispatch-notification";
 
 export default function BuildStockList() {
 
@@ -20,7 +21,6 @@ export default function BuildStockList() {
 
     function buildListRow(item: orderObject, index: number, allItems: boolean) {
         let tempArray = []
-        console.log(item)
         tempArray.push(
             <div key={item.SKU}
                  className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["new-order-list-grid"]}`}
@@ -71,14 +71,17 @@ export default function BuildStockList() {
     function imageCheck(item: orderObject) {
         switch (item.SOLDFLAG) {
             case 3:
-                return (<Image src="/dead-stock-icon-green.webp" width="22px" height="22px"
-                               alt={"dead-stock-icon"}/>)
+                return (<Image onMouseOver={(e) => dispatchNotification({type: "tooltip", content:"Not sold for between 3-6 months", e:e})} onMouseLeave={() => dispatchNotification({type: undefined})}
+                               src="/dead-stock-icon-green.webp" width="22px" height="22px"
+                               alt={"None sold for between 3-6 months"}/>)
             case 6:
-                return (<Image src="/dead-stock-icon-orange.webp" width="22px" height="22px"
-                               alt={"dead-stock-icon"}/>)
+                return (<Image onMouseOver={(e) => dispatchNotification({type: "tooltip", content: "Not sold for between 6-10 months", e:e})} onMouseLeave={() => dispatchNotification({type: undefined})}
+                               src="/dead-stock-icon-orange.webp" width="22px" height="22px"
+                               alt={"None sold for between 6-10 months"}/>)
             case 10:
-                return (<Image src="/dead-stock-icon-red.webp" width="22px" height="22px"
-                               alt={"dead-stock-icon"}/>)
+                return (<Image onMouseOver={(e) => dispatchNotification({type: "tooltip", content: "Not sold for over 10 months", e:e})} onMouseLeave={() => dispatchNotification({type: undefined})}
+                               src="/dead-stock-icon-red.webp" width="22px" height="22px"
+                               alt={"None sold for over 10 months"}/>)
         }
     }
 

@@ -54,19 +54,31 @@ export default function SubmitToLinnworksButtons() {
 
 
     function completeOrder() {
-        if (loadedOrder!.order.length > 0) {
+        let notSubmitted: boolean = false
+        for(const item of loadedOrder!.arrived){
+            if(!item.submitted) notSubmitted = true
+        }
+        if(notSubmitted){
             dispatchNotification({
-                type: "confirm",
-                title: "Complete Order",
-                content: "Not all items in this order have been booked in, completing this will delete the rest of the order. Are you sure you want to continue?",
-                fn: () => {
-                    dispatch(setCompleteOrder(router.query.index as string));
-                    router.push("/shop-orders?tab=orders")
-                }
+                type: "alert",
+                title: "Items Not Submitted",
+                content: "Some items that have arrived have not been submitted to Linnworks, either submit them or remove them from arrived list"
             })
         } else {
-            dispatch(setCompleteOrder(router.query.index as string))
-            router.push({pathname: "/shop-orders", query: {tab: "orders"}})
+            if (loadedOrder!.order.length > 0) {
+                dispatchNotification({
+                    type: "confirm",
+                    title: "Confirm Complete Order",
+                    content: "Not all items in this order have been booked in, completing this will delete the rest of the order. Are you sure you want to continue?",
+                    fn: () => {
+                        dispatch(setCompleteOrder(router.query.index as string));
+                        router.push({pathname: "/shop-orders", query: {tab: "orders"}})
+                    }
+                })
+            } else {
+                dispatch(setCompleteOrder(router.query.index as string))
+                router.push({pathname: "/shop-orders", query: {tab: "orders"}})
+            }
         }
     }
 

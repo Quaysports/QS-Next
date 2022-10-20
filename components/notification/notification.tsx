@@ -1,4 +1,6 @@
 import style from './notification.module.css'
+import {MouseEvent, useEffect, useRef, useState} from "react";
+
 
 /**
  * Notification options:
@@ -12,6 +14,7 @@ export interface Options {
     title?:string;
     content?:JSX.Element | JSX.Element[] | string;
     fn?:()=>void;
+    e?:MouseEvent<HTMLElement, MouseEvent>;
 }
 
 /**
@@ -24,7 +27,26 @@ interface Props {options:Options, close:()=>void}
 /**
  * Returns a popup, confirm, or alert depending on the type of notification passed to it
  */
-export default function Notification({options = {type:undefined}, close}:Props){
+export default function Notification(this: any, {options = {type:undefined}, close}:Props){
+
+    const tooltip = useRef<any>()
+
+    const [left, setLeft] = useState<number>(0)
+    const [top, setTop] = useState<number>(0)
+
+    useEffect(()=>{
+        if(options.e && tooltip.current) {
+            let styleLeft = options.e.clientX + 40;
+            let styleTop = options.e.clientY + 10;
+            let xBound = window.innerWidth - (tooltip.current.offsetWidth + styleLeft)
+            let yBound = window.innerHeight - (tooltip.current.offsetHeight + styleTop)
+            if (xBound < 10) styleLeft = (options.e.clientX - 40) - tooltip.current.offsetWidth
+            if (yBound < 10) styleTop = (options.e.clientY - 10) - tooltip.current.offsetHeight
+            setLeft(styleLeft)
+            setTop(styleTop)
+        }
+    })
+
     switch(options.type){
         case "popup": return(
             <div className={style['fullscreen-dim']}>
@@ -55,6 +77,13 @@ export default function Notification({options = {type:undefined}, close}:Props){
                         <button onClick={()=> close()}>Ok</button>
                     </div>
                 </div>
+            </div>
+        )
+        case "tooltip":
+            return (
+            <div ref={tooltip} className={style["tooltip-frame"]} style={{left: left , top: top}}>
+                <div className={style["tooltip-title"]}>{options.title}</div>
+                <div className={style["tooltip-text"]}>{options.content}</div>
             </div>
         )
         default: return null
