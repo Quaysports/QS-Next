@@ -49,7 +49,7 @@ export default function Notification(this: any, {options = {type:undefined}, clo
 
     switch(options.type){
         case "popup": return(
-            <div className={style['fullscreen-dim']}>
+            <div key={new Date().toString()} className={style['fullscreen-dim']}>
                 <div className={style['popup-frame']}>
                     <div className={style['popup-title']}><span>{options.title}</span><button onClick={()=>close()}>X</button></div>
                     {options.content}
@@ -57,7 +57,7 @@ export default function Notification(this: any, {options = {type:undefined}, clo
             </div>
         )
         case "confirm": return(
-            <div className={style['fullscreen-dim']}>
+            <div  key={new Date().toString()} className={style['fullscreen-dim']}>
                 <div className={style['confirm-frame']}>
                     <div className={style['confirm-title']}>{options.title}</div>
                     <div className={style['confirm-text']}>{options.content}</div>
@@ -69,7 +69,7 @@ export default function Notification(this: any, {options = {type:undefined}, clo
             </div>
         )
         case "alert": return(
-            <div className={style['fullscreen-dim']}>
+            <div key={new Date().toString()} className={style['fullscreen-dim']}>
                 <div className={style['alert-frame']}>
                     <div className={style['alert-title']}>{options.title}</div>
                     <div className={style['alert-text']}>{options.content}</div>
@@ -81,7 +81,7 @@ export default function Notification(this: any, {options = {type:undefined}, clo
         )
         case "tooltip":
             return (
-            <div ref={tooltip} className={style["tooltip-frame"]} style={{left: left , top: top}}>
+            <div key={new Date().toString()} ref={tooltip} className={style["tooltip-frame"]} style={{left: left , top: top}}>
                 <div className={style["tooltip-title"]}>{options.title}</div>
                 <div className={style["tooltip-text"]}>{options.content}</div>
             </div>

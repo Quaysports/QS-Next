@@ -23,12 +23,20 @@ export default function OrderList() {
     const router = useRouter()
 
     function saveOrder() {
-        dispatchNotification({
-            type: "confirm",
-            title: "Save order",
-            content: `Create new ${newOrderArray.order[0].SUPPLIER} order?`,
-            fn: saveConfirmed
-        })
+        if(newOrderArray.order.length < 1){
+            dispatchNotification({
+                type: "alert",
+                title: "No Items In Order",
+                content: "There are no items in the order to save"
+            })
+        } else {
+            dispatchNotification({
+                type: "confirm",
+                title: "Save Order",
+                content: `Create new ${newOrderArray.order[0].SUPPLIER} order?`,
+                fn: saveConfirmed
+            })
+        }
     }
 
     function saveConfirmed() {
@@ -91,7 +99,7 @@ export default function OrderList() {
         submitted: false
     }
     let tempArray = [
-        <div id={styles["add-new-item-container"]}>
+        <div key={new Date().toString()} id={styles["add-new-item-container"]}>
             <div>SKU:<input onChange={(e) => newProduct.SKU = e.target.value}/></div>
             <div>Title:<input onChange={(e) => newProduct.TITLE = e.target.value}/></div>
             <div>

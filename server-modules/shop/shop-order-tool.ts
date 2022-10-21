@@ -73,7 +73,7 @@ export const shopStockOrder = async (order:shopOrder) => {
 }
 
 export const getCompleteOrders = async (start:object = {}, end:object = {}, supplier:object = {}) => {
-    const result =  await mongoI.find<shopOrder>("Shop-Orders", {$and: [start, end, supplier, {complete: {$eq: true}}]}, {}, {supplier:1})
+    const result =  await mongoI.find<shopOrder>("New-Shop-Orders", {$and: [start, end, supplier, {complete: {$eq: true}}]}, {}, {supplier:1})
     return result ? result : []
 }
 
