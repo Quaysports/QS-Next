@@ -34,11 +34,19 @@ export default function DisplayOnOrder() {
 
     function bookedInHandler(order:OpenOrdersObject, index:number) {
         if (order.order[index].arrived! <= 0) {
-            dispatchNotification({type: "alert", title:"None Arrived", content:"Please increase the amount that has arrived"})
+            dispatchNotification({
+                type: "alert",
+                title: "None Arrived",
+                content: "Please increase the amount that has arrived"
+            })
             return
         }
         if ((order.order[index].qty - order.order[index].arrived!) < 0) {
-            dispatchNotification({type: "alert", title:"Too Many Arrived", content:"More have arrived than were ordered, please increase the order amount or check the amount that have arrived"})
+            dispatchNotification({
+                type: "alert",
+                title: "Too Many Arrived",
+                content: "More have arrived than were ordered, please increase the order amount or check the amount that have arrived"
+            })
             return
         }
 
@@ -49,7 +57,13 @@ export default function DisplayOnOrder() {
         }
 
         if ((order.order[index].qty - order.order[index].arrived!) > 0) {
-            dispatchNotification({type: "confirm", title:"Partial Order Arrived", content:"Did only part of the order arrive?", fn:() => partialBookIn() })
+            dispatchNotification({
+                type: "confirm",
+                title: "Partial Order Arrived",
+                content: "Did only part of the order arrive?",
+                fn: () => partialBookIn()
+            })
+
             function partialBookIn() {
                 setSaveOrder(true)
                 dispatch(setBookedInState({bookedIn: "partial", index: index, order: router.query.index as string}))
@@ -91,14 +105,15 @@ export default function DisplayOnOrder() {
                          className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`}
                          style={backgroundColorCheck(loadedOrder!.order[i].bookedIn)}>
                         <button onClick={() => bookedInHandler(loadedOrder!, i)}>⇅</button>
-                        <span className={styles["center-align"]}>{loadedOrder!.order[i].qty ??= 0}</span>
-                        <span className={styles["center-align"]}>{loadedOrder!.order[i].tradePack ??= 0}</span>
-                        <span>{loadedOrder!.order[i].SKU} </span>
-                        <span>{loadedOrder!.order[i].TITLE} </span>
                         <input value={loadedOrder!.order[i].arrived}
                                onChange={(e) => {
                                    arrivedHandler(e.target.value, i)
                                }}/>
+                        <span className={"center-align"}>{loadedOrder!.order[i].qty ??= 0}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].tradePack ??= 0}</span>
+                        <span>{loadedOrder!.order[i].SKU} </span>
+                        <span>{loadedOrder!.order[i].TITLE} </span>
+
                     </div>)
             } else {
                 tempArray.push(
@@ -106,14 +121,15 @@ export default function DisplayOnOrder() {
                          className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`}
                          style={backgroundColorCheck(loadedOrder!.order[i].bookedIn)}>
                         <button onClick={() => bookedInHandler(loadedOrder!, i)}>⇅</button>
-                        <span className={styles["center-align"]}>{loadedOrder!.order[i].qty ??= 0}</span>
-                        <span className={styles["center-align"]}>{loadedOrder!.order[i].tradePack ??= 0}</span>
-                        <span>{loadedOrder!.order[i].SKU} </span>
-                        <span>{loadedOrder!.order[i].TITLE} </span>
                         <input value={loadedOrder!.order[i].arrived}
                                onChange={(e) => {
                                    arrivedHandler(e.target.value, i)
                                }}/>
+                        <span className={"center-align"}>{loadedOrder!.order[i].qty ??= 0}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].tradePack ??= 0}</span>
+                        <span>{loadedOrder!.order[i].SKU} </span>
+                        <span>{loadedOrder!.order[i].TITLE} </span>
+
                     </div>
                 )
             }
@@ -132,11 +148,11 @@ export default function DisplayOnOrder() {
                 </div>
                 <div className={`${styles["shop-orders-table"]} ${styles["open-orders-grid"]}`}>
                     <span/>
-                    <span className={styles["center-align"]}>Ordered</span>
-                    <span className={styles["center-align"]}>T/P Size</span>
+                    <span className={"center-align"}>Arrived</span>
+                    <span className={"center-align"}>Ordered</span>
+                    <span className={"center-align"}>T/P Size</span>
                     <span>SKU</span>
                     <span>Title</span>
-                    <span className={styles["center-align"]}>Arrived</span>
                 </div>
                 {onOrderTableCells()}
             </div>

@@ -28,12 +28,12 @@ export default function DisplayArrived() {
         for (let i = 0; i < loadedOrder!.arrived.length; i++) {
             tempArray.push(
                 <div key={i} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`} style={loadedOrder!.arrived[i].submitted ? {backgroundColor:"var(--traffic-light-green)"} : {backgroundColor:"var(--primary-table-cell-background)"}} >
-                    {!loadedOrder!.arrived[i].submitted ? <button onClick={() => removeFromBookedInHandler(loadedOrder!, i, loadedOrder!.arrived[i].SKU)}>⇅</button>: <span/>}
-                    <span className={styles["center-align"]}>{loadedOrder!.arrived[i].qty ? loadedOrder!.arrived[i].qty : 0} </span>
-                    <span className={styles["center-align"]}>{loadedOrder!.arrived[i].tradePack ??= 0}</span>
+                    {!loadedOrder!.arrived[i].submitted ? <button data-testid={"arrived-button"} onClick={() => removeFromBookedInHandler(loadedOrder!, i, loadedOrder!.arrived[i].SKU)}>⇅</button>: <span/>}
+                    <span className={"center-align"}>{loadedOrder!.arrived[i].arrived} </span>
+                    <span className={"center-align"}>{loadedOrder!.arrived[i].qty ? loadedOrder!.arrived[i].qty : 0} </span>
+                    <span className={"center-align"}>{loadedOrder!.arrived[i].tradePack ??= 0}</span>
                     <span>{loadedOrder!.arrived[i].SKU} </span>
                     <span>{loadedOrder!.arrived[i].TITLE} </span>
-                    <span>{loadedOrder!.arrived[i].arrived} </span>
                 </div>
             )
         }
@@ -48,11 +48,12 @@ export default function DisplayArrived() {
                 </div>
                 <div className={`${styles["shop-orders-table"]} ${styles["open-orders-grid"]}`}>
                     <span/>
-                    <span className={styles["center-align"]}>Ordered</span>
-                    <span className={styles["center-align"]}>T/P Size</span>
+                    <span className={"center-align"}>Arrived</span>
+                    <span className={"center-align"}>Ordered</span>
+                    <span className={"center-align"}>T/P Size</span>
                     <span>SKU</span>
                     <span>Title</span>
-                    <span className={styles["center-align"]}>Arrived</span>
+
                 </div>
                 {arrivedTableCells()}
             </div>

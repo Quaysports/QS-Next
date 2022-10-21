@@ -83,7 +83,7 @@
 /*------------------------------------Table grid sizes----------------------------------------*/
 
 .open-orders-grid{
-    grid-template-columns: 27px 60px 65px 190px 1fr 45px;
+    grid-template-columns: 27px 60px 60px 65px 190px 1fr;
 }
 .order-list-grid{
     grid-template-columns: 27px 40px 40px 190px 1fr 40px 65px 70px;
