@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {useRouter} from "next/router";
-import {deadStockReport} from "../../server-modules/shop/shop";
+import {DeadStockReport, deadStockReport} from "../../server-modules/shop/shop";
 import {
     setCompletedOrders,
     setDeadStock, setNewOrderArray, setOnOrderSKUs,
     setOpenOrders,
-    setSideBarContent, setSupplierItems, setTotalPrice
+    setSideBarContent, setSupplierItems
 } from "../../store/shop-orders-slice";
 import Orders from "./orders";
 import CompletedOrders from "./completed-orders/index";
@@ -42,7 +42,7 @@ export default function ShopOrdersLandingPage() {
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
-    const deadStock = await deadStockReport()
+    const deadStock:DeadStockReport[] = await deadStockReport()
     store.dispatch(setDeadStock(deadStock))
     const orders = await getOpenOrders()
 

@@ -273,6 +273,9 @@ export const deadStockReport = async ():Promise<DeadStockReport[]> => {
             }
         ]
         let deadReport = await mongoI.findAggregate<{_id:string, items:string[]}>("Shop-Reports", query)
+
+        if(!deadReport || deadReport.length === 0) return []
+
         return await mongoI.find<{ SUPPLIER: string, SKU: string, TITLE: string, SOLDFLAG?:number }>("Items", {
             SKU: {$nin: deadReport![0].items},
             STOCKTOTAL: {$gt: 0},

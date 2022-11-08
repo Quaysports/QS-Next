@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import React, {ChangeEvent, FocusEvent, MouseEventHandler, useEffect, useState} from "react";
+import Image from "next/image";
+import React, {ChangeEvent, FocusEvent, useEffect, useState} from "react";
 import {signIn} from 'next-auth/react'
 import styles from './login.module.css'
 import {useRouter} from "next/router";
@@ -78,14 +78,22 @@ export default function LoginLandingPage() {
     return (
         <div>
             <form className={styles["login-form"]} onSubmit={e => handleSubmit(e)} autoComplete={"off"}>
-                <Image src="/logo.png" width="300px" height="300px" alt="Logo"/>
+                <Image
+                    src="/logo.png"
+                    width="300"
+                    height="300"
+                    alt="Logo"
+                    style={{
+                        maxWidth: "100%",
+                        height: "auto"
+                    }} />
                 <div className={message ? styles.message : `${styles.message} ${styles.hidden}`}>{message}</div>
                 {local
                     ? <LocalLoginForm pinHandler={pinHandler} reset={reset}/>
                     : <RemoteLoginForm pinHandler={pinHandler} reset={reset}/>}
             </form>
         </div>
-    )
+    );
 }
 
 interface Props {
@@ -104,14 +112,14 @@ function LocalLoginForm({pinHandler, reset}: Props) {
     const pinActive = () => tab === "pin" || tab === undefined ? styles.active : ""
     const passwordActive = () => tab === "password" ? styles.active : ""
 
-    return (<>
+    return <>
         <div className={styles["login-type"]}>
             {tab === "password" ?
-                <Link href={"/login?tab=pin"}>
+                <Link href={"/login?tab=pin"} legacyBehavior>
                     <label className={pinActive()} onClick={() => reset(undefined)}>Switch to Pin</label>
                 </Link> : null}
             {tab === "pin" || tab === undefined ?
-                <Link href={"/login?tab=password"}>
+                <Link href={"/login?tab=password"} legacyBehavior>
                     <label className={passwordActive()} onClick={() => reset(undefined)}>Switch to Password</label>
                 </Link> : null}
         </div>
@@ -141,7 +149,7 @@ function LocalLoginForm({pinHandler, reset}: Props) {
             <button type="submit">Login</button>
         </> : null
         }
-    </>)
+    </>;
 }
 
 

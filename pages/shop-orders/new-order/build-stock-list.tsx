@@ -71,17 +71,47 @@ export default function BuildStockList() {
     function imageCheck(item: orderObject) {
         switch (item.SOLDFLAG) {
             case 3:
-                return (<Image onMouseOver={(e) => dispatchNotification({type: "tooltip", content:"Not sold for between 3-6 months", e:e})} onMouseLeave={() => dispatchNotification({type: undefined})}
-                               src="/dead-stock-icon-green.webp" width="22px" height="22px"
-                               alt={"None sold for between 3-6 months"}/>)
+                return (
+                    <Image
+                        onMouseOver={(e) => dispatchNotification({type: "tooltip", content:"Not sold for between 3-6 months", e:e})}
+                        onMouseLeave={() => dispatchNotification({type: undefined})}
+                        src="/dead-stock-icon-green.webp"
+                        width="22"
+                        height="22"
+                        alt={"None sold for between 3-6 months"}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
+                );
             case 6:
-                return (<Image onMouseOver={(e) => dispatchNotification({type: "tooltip", content: "Not sold for between 6-10 months", e:e})} onMouseLeave={() => dispatchNotification({type: undefined})}
-                               src="/dead-stock-icon-orange.webp" width="22px" height="22px"
-                               alt={"None sold for between 6-10 months"}/>)
+                return (
+                    <Image
+                        onMouseOver={(e) => dispatchNotification({type: "tooltip", content: "Not sold for between 6-10 months", e:e})}
+                        onMouseLeave={() => dispatchNotification({type: undefined})}
+                        src="/dead-stock-icon-orange.webp"
+                        width="22"
+                        height="22"
+                        alt={"None sold for between 6-10 months"}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
+                );
             case 10:
-                return (<Image onMouseOver={(e) => dispatchNotification({type: "tooltip", content: "Not sold for over 10 months", e:e})} onMouseLeave={() => dispatchNotification({type: undefined})}
-                               src="/dead-stock-icon-red.webp" width="22px" height="22px"
-                               alt={"None sold for over 10 months"}/>)
+                return (
+                    <Image
+                        onMouseOver={(e) => dispatchNotification({type: "tooltip", content: "Not sold for over 10 months", e:e})}
+                        onMouseLeave={() => dispatchNotification({type: undefined})}
+                        src="/dead-stock-icon-red.webp"
+                        width="22"
+                        height="22"
+                        alt={"None sold for over 10 months"}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
+                );
         }
     }
 

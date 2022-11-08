@@ -10,7 +10,7 @@ export const getLinnSuppliers = async (id: string) => {
     return await postReq(
         '/api/Inventory/GetStockSupplierStat',
         ('inventoryItemId=' + id).replace(/"/g, '')
-    )
+    );
 }
 
 
@@ -19,7 +19,7 @@ export const getLinnQuery = async <T>(query: string) => {
     return await postReq(
         '/api/Dashboards/ExecuteCustomScriptQuery',
         'script=' + encodeURIComponent(query.replace(/ +(?= )/g, ''))
-    ) as linn.Query<T>
+    ) as linn.Query<T>;
 }
 
 export const updateLinnItem = async (path: string, updateData: string) => {
@@ -40,7 +40,7 @@ export const getLinnItemDesc = async (query: string) => {
     return await postReq(
         '/api/Inventory/GetInventoryItemDescriptions',
         ('inventoryItemId=' + query).replace(/"/g, '')
-    )
+    );
 }
 
 export const getPostalServices = async () => {
@@ -68,7 +68,7 @@ export const addItemToTransfer = async (tranId: string, itemId: string) => {
     return await postReq(
         '/api/WarehouseTransfer/AddItemToTransfer',
         ('fkTransferId=' + tranId + '&pkStockItemId=' + itemId).replace(/"/g, '')
-    ) as linn.AddToTransfer
+    ) as linn.AddToTransfer;
 }
 
 export const remItemFromTransfer = async (tranId: string, itemId: string) => {
@@ -89,7 +89,7 @@ export const getActiveTransfer = async (tranId: string) => {
     return await postReq(
         '/api/WarehouseTransfer/GetTransferWithItems',
         ('pkTransferId=' + tranId).replace(/"/g, '')
-    ) as linn.Transfer
+    ) as linn.Transfer;
 }
 
 export const completeTransfer = async (tranId: string) => {

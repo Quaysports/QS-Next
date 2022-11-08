@@ -15,16 +15,43 @@ export default function DeadStockList() {
     function imageCheck(item: DeadStockReport) {
         switch (item.SOLDFLAG) {
             case 3:
-                return (<Image src="/dead-stock-icon-green.webp" width="22px" height="22px"
-                               alt={"dead-stock-icon"}/>)
+                return (
+                    <Image
+                        src="/dead-stock-icon-green.webp"
+                        width="22"
+                        height="22"
+                        alt={"dead-stock-icon"}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
+                );
 
             case 6:
-                return (<Image src="/dead-stock-icon-orange.webp" width="22px" height="22px"
-                               alt={"dead-stock-icon"}/>)
+                return (
+                    <Image
+                        src="/dead-stock-icon-orange.webp"
+                        width="22"
+                        height="22"
+                        alt={"dead-stock-icon"}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
+                );
 
             case 10:
-                return (<Image src="/dead-stock-icon-red.webp" width="22px" height="22px"
-                               alt={"dead-stock-icon"}/>)
+                return (
+                    <Image
+                        src="/dead-stock-icon-red.webp"
+                        width="22"
+                        height="22"
+                        alt={"dead-stock-icon"}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
+                );
         }
     }
 
@@ -38,7 +65,7 @@ export default function DeadStockList() {
         </div>
     )
 
-    Object.values(deadStockList[Number(router.query.index)]).forEach((value, key) => {
+    Object.values(deadStockList[Number(router.query.index)]).forEach((value) => {
         for (let i = 0; i < value.length; i++) {
             tempArray.push(<div key={value[i].SKU}
                                 className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["dead-stock-list-grid"]}`}>

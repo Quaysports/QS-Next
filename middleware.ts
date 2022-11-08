@@ -6,7 +6,7 @@ export async function middleware(request:NextRequest) {
 
     function rootRedirect(){ return NextResponse.redirect(new URL('/', request.url)) }
 
-    const user = await getToken({ req: request, secret: process.env.JWT_SECRET })  as unknown as User
+    const user = await getToken({ req: request, secret: process.env.JWT_SECRET})  as unknown as User
 
     if(!user) return NextResponse.redirect(new URL('/login', request.url))
     switch(request.nextUrl.pathname) {

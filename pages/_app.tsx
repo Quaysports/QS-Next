@@ -9,6 +9,7 @@ import ActivityTracker from "../components/activity-tracker";
 
 export default function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
     const {store, props} = appWrapper.useWrappedStore(pageProps);
+    console.dir(props, {depth:2})
     return (
         <Provider store={store}>
             <SessionProvider session={session}>
