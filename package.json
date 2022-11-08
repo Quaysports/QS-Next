@@ -15,11 +15,8 @@
     "@types/jest": "^29.1.1",
     "axios": "^0.27.2",
     "mongodb": "^4.8.1",
-    "next": "12.2.5",
     "next-auth": "^4.10.3",
     "next-redux-wrapper": "^8.0.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
     "react-redux": "^8.0.2"
   },
   "devDependencies": {
@@ -28,9 +25,12 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/node": "^18.7.15",
     "eslint": "8.22.0",
-    "eslint-config-next": "12.2.5",
+    "eslint-config-next": "^13.0.2",
     "jest": "^29.1.2",
     "jest-environment-jsdom": "^29.1.2",
+    "next": "^13.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typedoc": "^0.23.15"
   }
 }

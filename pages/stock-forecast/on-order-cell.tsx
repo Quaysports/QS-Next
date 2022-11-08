@@ -8,6 +8,8 @@ interface Props {
 
 export default function OnOrderCell({item}: Props) {
 
+    if(!item) return null
+
     function createContent(item: StockForecastItem) {
         let tooltipText = []
         for (let y in item.onOrder) {

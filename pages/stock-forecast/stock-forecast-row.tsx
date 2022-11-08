@@ -34,7 +34,7 @@ export default function ItemRow() {
 
     const dispatch = useDispatch()
     const items = useSelector(selectRenderedItems)
-    if (!items) return null
+    if (!items || items.length == 0) return null
 
     const handleCheckChange = (e: ChangeEvent<HTMLInputElement>, item: StockForecastItem, type: keyof StockForecastChecks) => {
         dispatch(itemCheckboxChange({type:type, index:item.rowId, check:e.target.checked}))
@@ -50,11 +50,11 @@ export default function ItemRow() {
         }
 
         elementArray.push(
-            <div id={item.rowId.toString()} key={item.SKU+"-"+Date.now()} className={styles["row"]}>
+            <div id={item?.rowId.toString()} key={item?.SKU+"-"+Date.now()} className={styles["row"]}>
                 <div className={styles.details}>
                     <div><input
                         type={"checkbox"}
-                        checked={item.CHECK?.SF?.HIDE}
+                        checked={item?.CHECK?.SF?.HIDE}
                         onChange={e => handleCheckChange(e, item, "HIDE")}/></div>
                     <div><input
                         type={"checkbox"}

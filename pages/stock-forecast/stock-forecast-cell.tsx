@@ -7,6 +7,9 @@ interface Props {
     index:number
 }
 export default function StockForecastCell({item, index}:Props){
+
+    if(!item) return null
+
     return(
         <div
             className={styles["month-cell"]}

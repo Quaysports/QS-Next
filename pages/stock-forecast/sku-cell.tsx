@@ -9,6 +9,8 @@ interface Props {
 
 export default function SkuCell({item}: Props) {
 
+    if(!item) return null
+
     const divRef = useRef(null)
 
     return <div

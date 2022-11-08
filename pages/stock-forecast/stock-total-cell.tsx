@@ -8,6 +8,8 @@ interface Props {
 
 export default function StockTotalCell({item}: Props) {
 
+    if(!item) return null
+
     function createContent(item: StockForecastItem) {
         let hist = 0
         if (item.hist) {
