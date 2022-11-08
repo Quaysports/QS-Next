@@ -6,6 +6,7 @@ import {userSlice} from "./dashboard/user-slice";
 import {quickLinksSlice} from "./shop-tills/quicklinks-slice";
 import {itemDatabaseSlice} from "./item-database/item-database-slice";
 import {forecastSlice} from "./stock-forecast-slice";
+import {marginCalculatorSlice} from "./margin-calculator-slice";
 
 const rootReducer = combineReducers({
     [shopOrdersSlice.name]: shopOrdersSlice.reducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     [userSlice.name]:userSlice.reducer,
     [quickLinksSlice.name]: quickLinksSlice.reducer,
     [itemDatabaseSlice.name]: itemDatabaseSlice.reducer,
-    [forecastSlice.name]:forecastSlice.reducer
+    [forecastSlice.name]:forecastSlice.reducer,
+    [marginCalculatorSlice.name]: marginCalculatorSlice.reducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {

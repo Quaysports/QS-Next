@@ -24,7 +24,7 @@ export default function ColumnLayout({children, background = true, scroll = fals
 
     if (scroll) {
         styleOverrides.overflowY = "auto"
-        styleOverrides.maxHeight = "calc(100vh - 52px)"
+        styleOverrides.maxHeight = "calc(100vh - 30px)"
     }
     if (maxWidth) {
         styleOverrides.margin = "var(--sidebar-margin) auto"

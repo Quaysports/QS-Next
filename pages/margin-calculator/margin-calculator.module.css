@@ -1,0 +1,70 @@
+.table {
+    display:grid;
+    padding:10px;
+    grid-gap:10px;
+    grid-template-columns: repeat(14, auto);
+    white-space: nowrap;
+}
+
+.sub-table {
+    background: var(--table-background-color);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+
+.row {
+    display:grid;
+    border-radius: inherit;
+    background: var(--primary-table-cell-background);
+
+}
+
+.row:nth-child(even){
+    background: var(--primary-table-cell-background-alt);
+}
+
+.title{
+    background: var(--primary-table-title);
+    position:sticky;
+    top:0;
+}
+
+.row > div {
+    padding:2px 5px;
+    height: 28px;
+    line-height: 22px;
+    border-right:1px solid black;
+}
+
+.row > div:last-child {
+    border-right:none;
+}
+
+.row select, .row input {
+    width:100%;
+    background-color: var(--primary-table-background);
+    color: white;
+    text-align: justify;
+}
+
+.info-grid{
+    grid-template-columns: 30px 30px auto;
+}
+.costs-grid {
+    grid-template-columns: repeat(8, 100px);
+}
+.ebay-grid {
+    grid-template-columns: repeat(4, 100px);
+}
+.amazon-grid {
+    grid-template-columns: repeat(6, 100px);
+}
+.magento-grid {
+    grid-template-columns: repeat(2, 100px);
+}
+.shop-grid {
+    grid-template-columns: repeat(2, 100px);
+}
+.misc-grid {
+    grid-template-columns: 300px;
+}

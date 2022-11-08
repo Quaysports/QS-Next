@@ -29,8 +29,10 @@
     --primary-active-text: #ffffff;
     --primary-inactive-text: #dcd2ca;
 
+    --primary-table-title: #404040;
     --primary-table-background:#484848;
     --primary-table-cell-background:#606060 ;
+    --primary-table-cell-background-alt: #6A6A6A;
     --primary-background: #2d2d2d;
 
     --primary-box-shadow: 1px 1px 2px 1px #1c1c1c;
