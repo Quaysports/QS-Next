@@ -32,6 +32,14 @@ export const getItems = async (query:object = {}, projection:object = {}, sort:o
     return await mongoI.find<sbt.Item>("Items", query, projection, sort)
 }
 
+export const getDefaultSuppliers = async (filter: object = {}) => {
+    return await mongoI.findDistinct("Items", "SUPPLIER", filter)
+}
+
+export const getAllSuppliers = async (filter: object = {}) => {
+    return await mongoI.findDistinct("Items", "SUPPLIERS", filter)
+}
+
 export const searchItems = async (query: { opts?: {LISTINGVARIATION?:boolean}; type: string; id: string; }) => {
 
     interface dbQueryTitle {

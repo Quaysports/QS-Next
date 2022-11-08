@@ -1,5 +1,6 @@
 import {useEffect} from "react";
 import {useRouter} from "next/router";
+import {signOut} from "next-auth/react";
 
 export default function ActivityTracker(){
 
@@ -7,18 +8,18 @@ export default function ActivityTracker(){
     let lastActive= Date.now()
 
     useEffect(()=>{
-        const interval = setInterval(()=>{
-            let now = Date.now()
-            if(now > lastActive + 900000) console.log("logout!")
-            else console.log("no logout!")
-        }, 5000)
-        return () => {
-            clearInterval(interval)
-        };
+        if(router.pathname !== "/login" && process.env.NODE_ENV !== "development") {
+            const interval = setInterval(() => {
+                let now = Date.now()
+                if (now > lastActive + 900000) signOut()
+            }, 5000)
+            return () => {
+                clearInterval(interval)
+            };
+        }
     }, [])
 
     const handler = ()=>{
-        if(router.pathname === "/login" || process.env.NODE_ENV === "development") return
         lastActive = Date.now()
     }
 

@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {getSession, signOut} from "next-auth/react";
+import {signOut, useSession} from "next-auth/react";
 import style from './customisation-popup.module.css'
 import {User} from "../../server-modules/users/user";
-
 
 /**
  * Renders a form that allows the user to change the primary colour of the website
@@ -11,21 +10,25 @@ export default function CustomisationPopup() {
 
     const [user,setUser] = useState<User | undefined>(undefined)
     const [primaryColor, setPrimaryColor] = useState("#586221")
+    const session = useSession().data
 
     useEffect(() => {
-        if(user === null) getSession().then(session=>setUser(session?.user))
-        if (user?.theme?.['--primary-color']) setPrimaryColor(user.theme['--primary-color'])
-    })
+        !user
+            ? setUser(session?.user)
+            : setPrimaryColor(user.theme['--primary-color'])
+    },[session, user])
 
     async function handleColorChange(key:string, e:React.FocusEvent<HTMLInputElement>) {
-        const data = {...{username: user?.username}, ...{theme: {[key]: e.target.value}}}
-        const opts = {method: "POST", body: JSON.stringify(data)}
+        if(!user) return
+        const newUserData = {...user, ...{theme:{[key]:e.target.value}}}
+        const opts = {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(newUserData)}
         await fetch('/api/user/update-user', opts)
+        setUser(newUserData)
     }
 
     async function resetTheme() {
         const data = {...{username: user?.username}, ...{theme: {}}}
-        const opts = {method: "POST", body: JSON.stringify(data)}
+        const opts = {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(data)}
         await fetch('/api/user/update-user', opts)
     }
 
@@ -34,10 +37,9 @@ export default function CustomisationPopup() {
             <p>Re-login required to apply colour changes!</p>
             <div className={style["colours-table"]}>
                 <input
-                    key={primaryColor}
                     type="color"
                     defaultValue={primaryColor}
-                    onChange={(e)=>document.documentElement.style.setProperty('--primary-color', e.target.value)}
+                    onChange={(e) => document.documentElement.style.setProperty('--primary-color', e.target.value)}
                     onBlur={(e) => handleColorChange('--primary-color', e)}/>
                 <label>Primary Colour</label>
             </div>
@@ -45,14 +47,12 @@ export default function CustomisationPopup() {
                 <button onClick={async () => {
                     await signOut();
                     window.location.reload()
-                }}>Re-login
-                </button>
+                }}>Re-login</button>
                 <button onClick={async () => {
                     await resetTheme()
                     await signOut();
                     window.location.reload()
-                }}>Reset Theme
-                </button>
+                }}>Reset Theme</button>
             </div>
         </div>
 

@@ -10,6 +10,7 @@
 }
 ::-webkit-scrollbar-track {
     background: var(--primary-background);
+    border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb {
     background-color: rgba(155, 155, 155, 0.5);
@@ -108,8 +109,11 @@ input:focus-visible{
     outline: none
 }
 
-input{
+input[type="checkbox"]{
     accent-color: var(--primary-color);
+}
+input[type="radio"]{
+    accent-color: var(--primary-background);
 }
 /*-------------------------------Select default styles----------------------------------*/
 

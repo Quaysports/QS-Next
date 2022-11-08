@@ -49,6 +49,8 @@ export default function SearchBar({resultHandler, searchableArray, EAN}:Props) {
     }
 
     function searchArray(value:string) {
+        if(!value || value === "") resultHandler(searchableArray);
+        if(value.length < 2) return;
         let startsWith = []
         let contains = []
         for (let i = 0; i < searchableArray.length; i++) {

@@ -1,91 +1,101 @@
 import Menu from "../../components/menu/menu";
 import StockForecastMenuTabs from "./tabs";
-import StockForecastTable from "./stock-forecast-table";
 import {get, Shipment} from "../../server-modules/shipping/shipping";
-import {useEffect, useState} from "react";
-import {getItems} from "../../server-modules/items/items";
-import {processData, StockForecastItem} from "../../server-modules/stock-forecast/process-data";
+import {getItems, getAllSuppliers} from "../../server-modules/items/items";
+import {StockForecastItem} from "../../server-modules/stock-forecast/process-data";
 import {binarySearch} from "../../server-modules/core/core";
 import OneColumn from "../../components/layouts/one-column";
 import ColumnLayout from "../../components/layouts/column-layout";
-import {NextPageContext} from "next";
 import {NextParsedUrlQuery} from "next/dist/server/request-meta";
+import styles from "./stock-forecast.module.css";
+import ItemRow from "./stock-forecast-row";
+import InfiniteScroll from "../../components/infinite-scroll";
+import {appWrapper} from "../../store/store";
+import {
+    incrementThreshold, selectInitialItems, selectMaxThreshold, selectRenderedItems,
+    selectThreshold, setInitialItems, setSearchItems, setSuppliers
+} from "../../store/stock-forecast-slice";
+import {useDispatch, useSelector} from "react-redux";
 
-interface Props {
-    filteredItems:StockForecastItemProjection[]
-}
+export default function StockForecastLandingPage() {
 
-export default function StockForecastLandingPage({filteredItems}:Props) {
+    const initialItems = useSelector(selectInitialItems)
+    const threshold = useSelector(selectThreshold)
+    const maxThreshold = useSelector(selectMaxThreshold)
 
-    const[items, setItems] = useState<StockForecastItem[] | null>(null)
+    const dispatch = useDispatch()
 
-    const updateItemsHandler = (items:StockForecastItem[])=> setItems(items)
 
-    useEffect(() => {
-        let processedItems:StockForecastItem[] = []
-        for(let item of filteredItems) processedItems.push(processData(item))
-        setItems(processedItems)
-    }, [filteredItems])
+    const updateItemsHandler = (items: StockForecastItem[]) => dispatch(setSearchItems(items))
+
+    const scrollHandler = () => dispatch(incrementThreshold())
 
     return (
         <OneColumn>
-            <Menu><StockForecastMenuTabs searchData={items} updateItemsHandler={updateItemsHandler}/></Menu>
-            <ColumnLayout scroll={true}>
-                <StockForecastTable items={items}/>
+            <Menu>
+                <StockForecastMenuTabs
+                    searchData={initialItems}
+                    updateItemsHandler={updateItemsHandler}/>
+            </Menu>
+            <ColumnLayout scroll={true} stickyTop={true}>
+                <div className={styles.table}>
+                    <InfiniteScroll
+                        threshold={threshold}
+                        maxThreshold={maxThreshold}
+                        scrollHandler={scrollHandler}
+                        selector={selectRenderedItems}>
+                        <ItemRow/>
+                    </InfiniteScroll>
+                </div>
             </ColumnLayout>
         </OneColumn>
     )
 }
 
-export interface StockForecastItemProjection {
-    SKU:string;
-    SUPPLIER:string;
-    TITLE:string;
-    MONTHSTOCKHIST:sbt.MonthStockHistory;
-    ROLLINGAVG:string;
-    STOCKTOTAL:number;
-    IDBFILTER:string;
-    CHECK:sbt.Item["CHECK"]
-    onOrder?:onOrder
-}
+export const getServerSideProps = appWrapper.getServerSideProps(
+    store =>
+        async (context) => {
+            const shipping = await get({delivered: false})
+            const domestic = context.query.domestic
+            const show = context.query.show
+            const list = context.query.list
+            let selectedSuppliers = typeof context.query.suppliers  === "string"
+                ? [context.query.suppliers]
+                : context.query.suppliers
+            console.log(selectedSuppliers)
 
-export async function getServerSideProps(context:NextPageContext) {
-    const shipping = await get({delivered: false})
-    const domestic = context.query.domestic
+            const baseQuery = [
+                {ISCOMPOSITE: false},
+                {MONTHSTOCKHIST: {$exists: true}},
+                {IDBFILTER: domestic === 'true' ? {'$eq': "domestic"} : {'$ne': "domestic"}},
+                !show ? {"CHECK.SF.HIDE": {'$ne': true}} : {},
+                list ? {"CHECK.SF.LIST": {'$eq': true}} : {},
+            ]
 
-    const itemQuery = {
-        $and: [
-            {ISCOMPOSITE: false},
-            {
-                MONTHSTOCKHIST: {
-                    $exists: true
-                }
-            },
-            {IDBFILTER: domestic === 'true' ? {'$eq': "domestic"} : {'$ne': "domestic"}}
-        ]
-    }
+            const itemQuery = {$and: [...baseQuery, selectedSuppliers ? {SUPPLIERS:{'$in':selectedSuppliers}} : {}]}
+            const supplierQuery = {$and: baseQuery}
 
-    const projection = {
-        SKU: 1,
-        SUPPLIER: 1,
-        TITLE:1,
-        MONTHSTOCKHIST: 1,
-        ROLLINGAVG: 1,
-        STOCKTOTAL: 1,
-        IDBFILTER: 1,
-        CHECK: 1
-    }
+            const projection = {
+                SKU: 1,
+                SUPPLIER: 1,
+                TITLE: 1,
+                MONTHSTOCKHIST: 1,
+                ROLLINGAVG: 1,
+                STOCKTOTAL: 1,
+                IDBFILTER: 1,
+                CHECK: 1
+            }
 
-    const sort = {SKU: 1}
-    const items = await getItems(itemQuery, projection, sort) as StockForecastItemProjection[] | undefined
+            const sort = {SKU: 1}
+            const items = await getItems(itemQuery, projection, sort) as StockForecastItem[] | undefined
+            const suppliers = await getAllSuppliers(supplierQuery)
+            suppliers ? store.dispatch(setSuppliers(suppliers)) : store.dispatch(setSuppliers([]))
 
-    addOnOrderToItems(shipping!, items!)
-    const filteredItems = filterDataBasedOnToggles(items!, context.query)
+            addOnOrderToItems(shipping, items)
+            store.dispatch(setInitialItems(await filterDataBasedOnToggles(items!, context.query)))
 
-    return {
-        props: {filteredItems:filteredItems}
-    }
-}
+            return {props:{}}
+        })
 
 /**
  * Merges any shipment data into item data under .onOrder,
@@ -96,19 +106,21 @@ export async function getServerSideProps(context:NextPageContext) {
  */
 
 export interface onOrder {
-    late:number,
-    total:number,
-    [key:number]:{
-        [key:number]:{
-            [key:number]:number
+    late: number,
+    total: number,
+
+    [key: number]: {
+        [key: number]: {
+            [key: number]: number
         }
     }
 }
-function addOnOrderToItems(shipments:Shipment[], items:StockForecastItemProjection[]) {
+
+function addOnOrderToItems(shipments: Shipment[] = [], items: StockForecastItem[] = []) {
     for (const shipment of shipments) {
-        if(shipment.delivered) continue
+        if (shipment.delivered) continue
         for (let val of shipment.data) {
-            let item = binarySearch<StockForecastItemProjection>(items, "SKU", val.sku, 0, items.length - 1)
+            let item = binarySearch<StockForecastItem>(items, "SKU", val.sku, 0, items.length - 1)
             if (!item) continue;
 
             let cd = new Date();
@@ -116,7 +128,7 @@ function addOnOrderToItems(shipments:Shipment[], items:StockForecastItemProjecti
             let year = date.getFullYear();
             let month = date.getMonth() + 1;
             let day = date.getDate();
-            item.onOrder ??= {late:0,total:0}
+            item.onOrder ??= {late: 0, total: 0}
             if (date < cd) item.onOrder.late += parseFloat(val.qty);
 
             item.onOrder[year] ??= {}
@@ -138,11 +150,12 @@ function addOnOrderToItems(shipments:Shipment[], items:StockForecastItemProjecti
  * @param items
  * @param pageQuery
  */
-function filterDataBasedOnToggles(items:StockForecastItemProjection[], pageQuery:NextParsedUrlQuery) {
-    let filter:StockForecastItemProjection[] = []
+
+async function filterDataBasedOnToggles(items: StockForecastItem[], pageQuery: NextParsedUrlQuery) {
+    let filter: StockForecastItem[] = []
     for (const v of items) {
         if (pageQuery.list === 'true') {
-            if(v.CHECK?.SF?.LIST) filter.push(v)
+            if (v.CHECK?.SF?.LIST) filter.push(v)
             continue
         }
 

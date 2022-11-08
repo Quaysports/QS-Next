@@ -82,7 +82,7 @@ export default function Notification(this: any, {options = {type:undefined}, clo
         case "tooltip":
             return (
             <div key={new Date().toString()} ref={tooltip} className={style["tooltip-frame"]} style={{left: left , top: top}}>
-                <div className={style["tooltip-title"]}>{options.title}</div>
+                {options.title ? <div className={style["tooltip-title"]}>{options.title}</div> : null}
                 <div className={style["tooltip-text"]}>{options.content}</div>
             </div>
         )

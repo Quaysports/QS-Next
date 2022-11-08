@@ -6,9 +6,8 @@ import RodLocationsLandingPage from "./rod-locations";
 import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
 import SearchbarSidebarOneColumn from "../../components/layouts/searchbar-sidebar-one-column";
 import {appWrapper} from "../../store/store";
-import {getSuppliers} from "../../server-modules/shop/shop-order-tool";
 import {setItem, setSuppliers} from "../../store/item-database/item-database-slice";
-import {getItem, getItems} from "../../server-modules/items/items";
+import {getItem, getItems, getDefaultSuppliers} from "../../server-modules/items/items";
 import {InferGetServerSidePropsType} from "next";
 
 export type rodLocationObject = {
@@ -49,7 +48,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     let sku = context.query.sku
     let item = await getItem({SKU: sku})
     store.dispatch(setItem(item))
-    let suppliers = await getSuppliers()
+    let suppliers = await getDefaultSuppliers()
     store.dispatch(setSuppliers(suppliers))
 
     let query = {"BRANDLABEL.loc": {$exists: true, $ne: ""}}

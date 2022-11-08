@@ -106,10 +106,6 @@ export const adjustStock =  async (arr:{SKU:string,QTY:string}[], id:string) => 
     return await linn.adjustStock(stockData, id)
 }
 
-export const getSuppliers = async () => {
-    return await mongoI.findDistinct("Items", "SUPPLIER", {})
-}
-
 export const getBrandsForSupplier = async (supplier:string) => {
     return await mongoI.findDistinct("Items", "IDBEP.BRAND", {SUPPLIER:supplier})
 }

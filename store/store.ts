@@ -5,13 +5,15 @@ import {shopOrdersSlice} from "./shop-orders-slice";
 import {userSlice} from "./dashboard/user-slice";
 import {quickLinksSlice} from "./shop-tills/quicklinks-slice";
 import {itemDatabaseSlice} from "./item-database/item-database-slice";
+import {forecastSlice} from "./stock-forecast-slice";
 
 const rootReducer = combineReducers({
     [shopOrdersSlice.name]: shopOrdersSlice.reducer,
     [stockReportsSlice.name]: stockReportsSlice.reducer,
     [userSlice.name]:userSlice.reducer,
     [quickLinksSlice.name]: quickLinksSlice.reducer,
-    [itemDatabaseSlice.name]: itemDatabaseSlice.reducer
+    [itemDatabaseSlice.name]: itemDatabaseSlice.reducer,
+    [forecastSlice.name]:forecastSlice.reducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {

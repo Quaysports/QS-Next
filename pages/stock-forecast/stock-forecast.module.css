@@ -1,10 +1,80 @@
+.table{
+    margin-top:10px;
+    display:grid;
+    grid-template-rows: auto 1fr;
+    height: calc(100% - 10px);
+    font-size: 0.9em;
+}
 
-.forecast-row{
+.title-row{
+    position:sticky;
+    top:0;
+    text-align: center;
+    background: var(--primary-table-background);
+}
+
+.row{
     display: grid;
-    grid-template-columns: 20px 20px 250px 100px 100px repeat(24, 1fr);
+    grid-template-columns: 490px 1fr;
     line-height: 26px;
 }
 
-.forecast-row > div {
+.details{
+    display: grid;
+    grid-template-columns: 20px 20px 200px 100px 100px
+}
+.details-cell{
+    text-align: center;
+}
+.months{
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    color:transparent;
+}
+.months:hover {
+    color:white;
+}
+.sku-cell{
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.row > div {
     border-bottom:1px solid var(--primary-inactive-text)
+}
+
+.month-cell{
+    text-align: center;
+    border-left: 1px solid white;
+    min-width:50px;
+}
+
+.title-row > div > .month-cell {
+    color:white;
+}
+
+.popup {
+    display:grid;
+    grid-template-columns: 300px;
+
+
+}
+.popup > div {
+    line-height: 1.5em;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40%;
+    border-top: 1px solid var(--primary-background);
+    padding-top: 5px;
+    margin-top: 5px;
+    height: 35px;
+    align-items: center;
+}
+
+.list{
+    max-height: calc(100vh - 215px);
+    overflow-y:auto;
 }

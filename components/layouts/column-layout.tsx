@@ -12,12 +12,13 @@ interface Props {
     background?: boolean;
     scroll?:boolean;
     maxWidth?:string;
+    stickyTop?:boolean
 }
 
 /**
  * Layout component for basic column, child elements are the columns contents.
  */
-export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined}:Props) {
+export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined, stickyTop = false}:Props) {
 
     const styleOverrides: CSSProperties = {overflowY: undefined, margin: undefined, maxHeight: undefined, maxWidth: undefined}
 
@@ -28,6 +29,9 @@ export default function ColumnLayout({children, background = true, scroll = fals
     if (maxWidth) {
         styleOverrides.margin = "var(--sidebar-margin) auto"
         styleOverrides.maxWidth = maxWidth
+    }
+    if(stickyTop){
+        styleOverrides.paddingTop = 0
     }
 
     return (

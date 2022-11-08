@@ -101,10 +101,17 @@
 
 .tooltip-frame{
     position:fixed;
-    padding: var(--table-padding);
     z-index:5;
     border-radius: var(--primary-border-radius);
     border: 1px solid var(--primary-background);
     box-shadow: var(--primary-box-shadow);
     background-color: var(--primary-table-cell-background);
+}
+.tooltip-text{
+    padding: var(--table-padding);
+}
+.tooltip-title{
+    padding:2px 5px;
+    background:var(--primary-table-background);
+    border-bottom:1px solid white;
 }

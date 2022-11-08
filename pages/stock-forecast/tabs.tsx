@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import {useEffect, useState} from "react";
 import {StockForecastItem} from "../../server-modules/stock-forecast/process-data";
+import {dispatchNotification} from "../../server-modules/dispatch-notification";
+import SupplierSelect from "./supplier-select-popup";
 
 interface Props {
     searchData:StockForecastItem[] | null;
@@ -33,7 +35,9 @@ export default function StockForecastMenuTabs({searchData, updateItemsHandler}:P
                 : <span><Link href={{pathname:router.pathname, query:{...router.query, domestic:true}}}>Domestic</Link></span>}
             <span><Link href={{pathname:router.pathname, query:{...router.query, list:listToggle === 'true' ? 'false': 'true'}}}>List</Link></span>
             <span><Link href="/shipments">Shipments</Link></span>
-            <span>Supplier Select</span>
+            <span onClick={async()=>{
+                dispatchNotification({type:"popup", title:"Supplier Select", content:<SupplierSelect/>})
+            }}>Supplier Select</span>
             <SearchBar
                 resultHandler={result => updateItemsHandler(result as StockForecastItem[])}
                 EAN={false}
