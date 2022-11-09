@@ -1,5 +1,12 @@
+.filters{
+    display:grid;
+    grid-gap:5px;
+    grid-template-rows: auto
+}
+
 .table {
     display:grid;
+    font-size:0.9em;
     padding:10px;
     grid-gap:10px;
     grid-template-columns: repeat(14, auto);
@@ -10,34 +17,51 @@
     background: var(--table-background-color);
     border-radius: var(--primary-border-radius);
     box-shadow: var(--primary-box-shadow);
+    padding:2px;
+}
+
+.header {
+    display:grid;
+    height:28px;
+    align-content: center;
+    justify-content: center;
 }
 
 .row {
-    display:grid;
-    border-radius: inherit;
+    height:24px;
+    margin: 2px 0;
     background: var(--primary-table-cell-background);
-
 }
 
-.row:nth-child(even){
+.row:nth-child(odd){
     background: var(--primary-table-cell-background-alt);
 }
 
 .title{
     background: var(--primary-table-title);
+    border-radius: 0;
     position:sticky;
     top:0;
 }
 
+.row input[type="checkbox"]{
+    margin:0;
+}
 .row > div {
-    padding:2px 5px;
-    height: 28px;
-    line-height: 22px;
-    border-right:1px solid black;
+    display:grid;
+    border-right:1px solid rgba(0,0,0,20%);
+    justify-content: center;
+    align-content: center;
 }
 
 .row > div:last-child {
     border-right:none;
+}
+
+.row > span {
+    display:grid;
+    padding:0 10px;
+    align-content: center;
 }
 
 .row select, .row input {
@@ -48,23 +72,31 @@
 }
 
 .info-grid{
-    grid-template-columns: 30px 30px auto;
+    display:grid;
+    grid-template-columns: 30px 30px 250px;
 }
 .costs-grid {
-    grid-template-columns: repeat(8, 100px);
+    display:grid;
+    grid-template-columns: repeat(3, 100px) 200px repeat(4, 100px);
 }
 .ebay-grid {
+    display:grid;
     grid-template-columns: repeat(4, 100px);
 }
 .amazon-grid {
-    grid-template-columns: repeat(6, 100px);
+    display:grid;
+    grid-template-columns: repeat(4, 100px) 32px 100px;
 }
+
 .magento-grid {
+    display:grid;
     grid-template-columns: repeat(2, 100px);
 }
 .shop-grid {
+    display:grid;
     grid-template-columns: repeat(2, 100px);
 }
 .misc-grid {
+    display:grid;
     grid-template-columns: 300px;
 }

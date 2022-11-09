@@ -1,23 +1,31 @@
 import styles from "./margin-calculator.module.css";
+import Image from "next/image";
 import {useSelector} from "react-redux";
-import {MarginItem, selectMarginData, selectTableToggles} from "../../store/margin-calculator-slice";
+import {
+    MarginItem,
+    selectRenderedItems,
+    selectTableToggles
+} from "../../store/margin-calculator-slice";
 
 export default function AmazonTable() {
 
-    const items = useSelector(selectMarginData)
+    const items = useSelector(selectRenderedItems)
 
     const toggles = useSelector(selectTableToggles)
     if(!toggles.AmazonTable) return null
 
     function createTable(){
-        const elements = [<TitleRow key={"title-row"}/>]
+        const elements = [
+            <div key={"header"} className={styles.header}>Amazon</div>,
+            <TitleRow key={"title-row"}/>
+        ]
 
         for(let item of items) elements.push(<AmazonRow key={item.SKU} item={item}/>)
 
         return elements
     }
 
-    return <div className={`${styles.row} ${styles["sub-table"]}`}>
+    return <div className={styles["sub-table"]}>
         {createTable()}
     </div>;
 }
@@ -28,7 +36,7 @@ function TitleRow(){
         <div>Test</div>
         <div>Result</div>
         <div>Amz Margin</div>
-        <div>P?</div>
+        <div><Image alt={"prime"} src={"/prime-logo.svg"} width={"20"} height={"20"}/></div>
         <div>Prime Margin</div>
     </div>
 }

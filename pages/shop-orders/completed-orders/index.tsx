@@ -14,7 +14,7 @@ export default function CompletedOrders() {
     return (
         <>
             <SideBar/>
-            <ColumnLayout background={false}>
+            <ColumnLayout scroll={true} background={false}>
                 {router.query.index ?
                     <>
                     <CompletedOrdersList/>

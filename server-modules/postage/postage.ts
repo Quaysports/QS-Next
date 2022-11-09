@@ -20,6 +20,10 @@ export const init = async () => {
     data = new Map(result.map(postage=>{return [postage.POSTID, postage]}))
 }
 
+export const get = async ()=> {
+    return await mongoI.find<postalData>("Postage")
+}
+
 export const update = async (data:postalData) => {
     if (data._id !== undefined) delete data._id;
     await mongoI.setData("Postage", {POSTALFORMAT: data.POSTALFORMAT}, data)

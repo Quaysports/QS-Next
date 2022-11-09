@@ -1,16 +1,38 @@
 import styles from "./margin-calculator.module.css";
-import {MarginItem, selectMarginData, selectTableToggles} from "../../store/margin-calculator-slice";
-import {useSelector} from "react-redux";
+import {
+    incrementThreshold,
+    MarginItem, selectMaxThreshold,
+    selectRenderedItems,
+    selectTableToggles, selectThreshold
+} from "../../store/margin-calculator-slice";
+import {useDispatch, useSelector} from "react-redux";
+import useIntersectObserver from "../../components/hooks/use-intersection-observer";
+import {useEffect, useRef} from "react";
 
 export default function InfoTable(){
 
-    const items = useSelector(selectMarginData)
+    const dispatch = useDispatch()
+    const items = useSelector(selectRenderedItems)
+    const maxThreshold = useSelector(selectMaxThreshold)
+    const threshold = useSelector(selectThreshold)
+    const observableList = useRef<HTMLDivElement>(null)
+    const intersectionElement = useRef<HTMLDivElement | null>(null)
+
+    const scrollHandler = ()=> dispatch(incrementThreshold())
+    useIntersectObserver(intersectionElement, observableList, threshold, maxThreshold, items, scrollHandler)
+
+    useEffect(()=>{
+        intersectionElement.current = document!.getElementById("column-layout") as HTMLDivElement
+    },[])
 
     const toggles = useSelector(selectTableToggles)
     if(!toggles.InfoTable) return null
 
     function createTable(){
-        const elements = [<TitleRow key={"title-row"}/>]
+        const elements = [
+            <div key={"header"} className={styles.header}>Info</div>,
+            <TitleRow key={"title-row"}/>
+        ]
 
         for(let item of items) elements.push(<InfoRow key={item.SKU} item={item}/>)
 
@@ -18,7 +40,8 @@ export default function InfoTable(){
     }
 
 
-    return <div className={`${styles.row} ${styles["sub-table"]}`}>
+
+    return <div ref={observableList} className={styles["sub-table"]}>
         {createTable()}
     </div>
 }
@@ -35,6 +58,6 @@ function InfoRow({item}:{item:MarginItem}){
     return <div key={item.SKU} className={`${styles.row} ${styles["info-grid"]}`}>
         <div></div>
         <div><input type={"checkbox"} defaultChecked={item.HIDE}/></div>
-        <div>{item.SKU}</div>
+        <span>{item.SKU}</span>
     </div>
 }

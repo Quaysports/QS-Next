@@ -36,6 +36,8 @@
     padding: var(--sidebar-padding);
     border-radius: 5px;
     margin: var(--sidebar-margin);
+    max-height: calc(100vh - 50px);
+    overflow-y: auto;
 }
 
 .sidebar-button{

@@ -1,23 +1,30 @@
 import styles from "./margin-calculator.module.css";
 import {useSelector} from "react-redux";
-import {MarginItem, selectMarginData, selectTableToggles} from "../../store/margin-calculator-slice";
+import {
+    MarginItem,
+    selectRenderedItems,
+    selectTableToggles
+} from "../../store/margin-calculator-slice";
 
 export default function ShopTable() {
 
-    const items = useSelector(selectMarginData)
+    const items = useSelector(selectRenderedItems)
 
     const toggles = useSelector(selectTableToggles)
     if(!toggles.ShopTable) return null
 
     function createTable(){
-        const elements = [<TitleRow key={"title-row"}/>]
+        const elements = [
+            <div key={"header"} className={styles.header}>Shop</div>,
+            <TitleRow key={"title-row"}/>
+        ]
 
         for(let item of items) elements.push(<ShopRow key={item.SKU} item={item}/>)
 
         return elements
     }
 
-    return <div className={`${styles.row} ${styles["sub-table"]}`}>
+    return <div className={styles["sub-table"]}>
         {createTable()}
     </div>;
 }

@@ -25,7 +25,7 @@ export const init = async () => {
     }
 }
 
-export const get = async (id: string) => {
+export const get = async (id?: string) => {
     return await mongoI.find<packagingData>("Packaging", id ? {ID: id} : {})
 }
 

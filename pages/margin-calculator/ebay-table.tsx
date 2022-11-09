@@ -1,23 +1,31 @@
 import styles from "./margin-calculator.module.css";
 import {useSelector} from "react-redux";
-import {MarginItem, selectMarginData, selectTableToggles} from "../../store/margin-calculator-slice";
+import {
+    MarginItem,
+    selectRenderedItems,
+    selectTableToggles
+} from "../../store/margin-calculator-slice";
+import styler from "./margin-styler";
 
 export default function EbayTable() {
 
-    const items = useSelector(selectMarginData)
+    const items = useSelector(selectRenderedItems)
 
     const toggles = useSelector(selectTableToggles)
     if(!toggles.EbayTable) return null
 
     function createTable(){
-        const elements = [<TitleRow key={"title-row"}/>]
+        const elements = [
+            <div key={"header"} className={styles.header}>Ebay</div>,
+            <TitleRow key={"title-row"}/>
+        ]
 
         for(let item of items) elements.push(<EbayRow key={item.SKU} item={item}/>)
 
         return elements
     }
 
-    return <div className={`${styles.row} ${styles["sub-table"]}`}>
+    return <div className={styles["sub-table"]}>
         {createTable()}
     </div>;
 }
@@ -36,6 +44,6 @@ function EbayRow({item}:{item:MarginItem}){
         <div><input defaultValue={item.EBAYPRICEINCVAT}/></div>
         <div></div>
         <div></div>
-        <div>£{item.MD.EBAYUKPAVC?.toFixed(2)}</div>
+        <div style={{color:styler("+-", item.MD.EBAYUKPAVC!)}}>£{item.MD.EBAYUKPAVC?.toFixed(2)}</div>
     </div>
 }

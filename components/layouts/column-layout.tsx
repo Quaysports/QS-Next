@@ -24,7 +24,7 @@ export default function ColumnLayout({children, background = true, scroll = fals
 
     if (scroll) {
         styleOverrides.overflowY = "auto"
-        styleOverrides.maxHeight = "calc(100vh - 30px)"
+        styleOverrides.height = "calc(100vh - 30px)"
     }
     if (maxWidth) {
         styleOverrides.margin = "var(--sidebar-margin) auto"
@@ -38,6 +38,7 @@ export default function ColumnLayout({children, background = true, scroll = fals
         <>
             {children ?
                 <div
+                    id={"column-layout"}
                     className={`${styles["column-layout"]} ${background ? styles["column-layout-background"] : ""}`}
                     style={styleOverrides}>
                     {children}

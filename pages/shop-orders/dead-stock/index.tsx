@@ -9,7 +9,7 @@ export default function DeadStock() {
     return (
         <>
             <SideBar/>
-            <ColumnLayout background={false}>
+            <ColumnLayout scroll={true} background={false}>
                 <DeadStockList/>
             </ColumnLayout>
         </>

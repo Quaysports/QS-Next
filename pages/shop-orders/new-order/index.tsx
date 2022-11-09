@@ -11,7 +11,7 @@ export default function NewOrder() {
     return (
         <>
             <SideBar/>
-            <ColumnLayout background={false}><OrderList/><StockList/></ColumnLayout>
+            <ColumnLayout scroll={true} background={false}><OrderList/><StockList/></ColumnLayout>
         </>
     );
 }
