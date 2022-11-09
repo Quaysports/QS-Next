@@ -18,7 +18,7 @@ import * as Postage from "../../server-modules/postage/postage"
 import {
     MarginItem,
     selectMarginData,
-    selectRenderedItems, setFees,
+    setFees,
     setMarginData, setPackaging, setPostage,
     setSearchItems
 } from "../../store/margin-calculator-slice";
@@ -113,12 +113,16 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
         MCOVERRIDES: 1
     }
     const items = await getItems(query, projection, {SKU: 1}) as MarginItem[]
+    if(items) store.dispatch(setMarginData(items))
 
-    store.dispatch(setMarginData(items))
+    const fees = await Fees.get()
+    if(fees) store.dispatch(setFees(fees))
 
-    store.dispatch(setFees(await Fees.get()))
-    store.dispatch(setPostage(await Postage.get()))
-    store.dispatch(setPackaging(await Packaging.get()))
+    const postage = await Postage.get()
+    if(postage) store.dispatch(setPostage(postage))
+
+    let packaging = await Packaging.get()
+    if(packaging) store.dispatch(setPackaging(packaging))
 
     return {props: {}}
 })

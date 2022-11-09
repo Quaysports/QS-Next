@@ -1,4 +1,4 @@
-import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 
 export interface MarginItem {
@@ -33,9 +33,9 @@ export interface marginCalculatorWrapper {
 
 export interface marginCalculatorState {
     marginData: MarginItem[]
-    fees:Fees | undefined
-    postage: { [key:string]:PostalData } | undefined
-    packaging: { [key:string]:PackagingData } | undefined
+    fees:Fees | null
+    postage: { [key:string]:PostalData } | null
+    packaging: { [key:string]:PackagingData } | null
     totalStockVal: number
     tables:MarginTables
     searchItems: MarginItem[]
@@ -85,9 +85,9 @@ interface PackagingData {
 
 const initialState: marginCalculatorState = {
     marginData: [],
-    fees: undefined,
-    postage: undefined,
-    packaging: undefined,
+    fees: null,
+    postage: null,
+    packaging: null,
     totalStockVal: 0,
     tables: {
         InfoTable: true,
@@ -121,14 +121,14 @@ export const marginCalculatorSlice = createSlice({
                 for(const item of state.marginData) state.totalStockVal += item.STOCKVAL
                 state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
-            setFees: (state, action: PayloadAction<Fees | undefined>) => {state.fees = action.payload},
-            setPostage: (state, action: PayloadAction<PostalData[] | undefined>) => {
+            setFees: (state, action: PayloadAction<Fees>) => {state.fees = action.payload},
+            setPostage: (state, action: PayloadAction<PostalData[]>) => {
                 if(!action.payload) return
                 let idMappedObj:{ [key:string]:PostalData } = {}
                 for(let value of action.payload) idMappedObj[value.POSTID] = value
                 state.postage = idMappedObj
             },
-            setPackaging: (state, action: PayloadAction<PackagingData[] | undefined>) => {
+            setPackaging: (state, action: PayloadAction<PackagingData[]>) => {
                 if(!action.payload) return
                 let idMappedObj:{ [key:string]:PackagingData } = {}
                 for(let value of action.payload) idMappedObj[value.ID] = value
@@ -158,7 +158,7 @@ export const selectMarginData = (state: marginCalculatorWrapper) => state.margin
 export const selectFees = (state: marginCalculatorWrapper) => state.marginCalculator.fees
 export const selectPostage = (state: marginCalculatorWrapper) => state.marginCalculator.postage
 export const selectPackaging = (state: marginCalculatorWrapper) => state.marginCalculator.packaging
-export const selectTotalStockValData = (state: marginCalculatorWrapper) => state.marginCalculator.totalStockVal?.toFixed(2)
+export const selectTotalStockValData = (state: marginCalculatorWrapper) => state.marginCalculator.totalStockVal
 export const selectTableToggles = (state: marginCalculatorWrapper) => state.marginCalculator.tables
 export const selectRenderedItems = (state: marginCalculatorWrapper) => state.marginCalculator.renderedItems
 export const selectThreshold = (state: marginCalculatorWrapper) => state.marginCalculator.threshold
