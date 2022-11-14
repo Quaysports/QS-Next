@@ -22,9 +22,16 @@
 
 .header {
     display:grid;
+    grid-template-columns: 1fr 1fr;
+    padding:0 5px;
+    grid-gap:10px;
     height:28px;
     align-content: center;
     justify-content: center;
+}
+.header > div:nth-child(even) {
+    display:grid;
+    justify-content: right;
 }
 
 .row {
@@ -60,14 +67,18 @@
 
 .row > span {
     display:grid;
+    border-right:1px solid rgba(0,0,0,20%);
     padding:0 10px;
     align-content: center;
 }
 
+.row > span:last-child{
+    border-right:none;
+}
+
 .row select, .row input {
+    padding-left:5px;
     width:100%;
-    background-color: var(--primary-table-background);
-    color: white;
     text-align: justify;
 }
 
@@ -81,22 +92,64 @@
 }
 .ebay-grid {
     display:grid;
-    grid-template-columns: repeat(4, 100px);
+    grid-template-columns: repeat(3, 100px) 130px;
 }
+.ebay-grid-collapsed {
+    display:grid;
+    grid-template-columns: 100px 130px;
+}
+
 .amazon-grid {
     display:grid;
-    grid-template-columns: repeat(4, 100px) 32px 100px;
+    grid-template-columns: repeat(3, 100px) 130px 32px 130px;
+}
+.amazon-grid-collapsed {
+    display:grid;
+    grid-template-columns: 100px 130px 32px 130px;
 }
 
 .magento-grid {
     display:grid;
-    grid-template-columns: repeat(2, 100px);
+    grid-template-columns: 100px 130px;
 }
 .shop-grid {
     display:grid;
-    grid-template-columns: repeat(2, 100px);
+    grid-template-columns: 100px 130px;
 }
 .misc-grid {
     display:grid;
     grid-template-columns: 300px;
+}
+
+.red-text{
+    color:#ff7878;
+}
+
+.green-text{
+    color: #87ee87;
+}
+
+.gray-text{
+    color:lightgray;
+}
+
+.listing-error{
+    background: #ff6e68;
+    border: 1px solid red;
+}
+.listing-pending{
+    background: #ffe551;
+    border: 1px solid goldenrod;
+}
+.listing-success{
+    background: #a2ffa2;
+    border: 1px solid green;
+}
+.price-mismatch{
+    border: 1px solid red;
+    background: #ecebeb;
+}
+.tooltip{
+    display:grid;
+    grid-gap:5px;
 }

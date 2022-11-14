@@ -16,19 +16,34 @@ import * as Packaging from "../../server-modules/packaging/packaging"
 import * as Postage from "../../server-modules/postage/postage"
 
 import {
+    incrementThreshold,
     MarginItem,
-    selectMarginData,
+    selectMarginData, selectMaxThreshold, selectThreshold,
     setFees,
     setMarginData, setPackaging, setPostage,
     setSearchItems
 } from "../../store/margin-calculator-slice";
 import MarginCalculatorMenuTabs from "./tabs";
 import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useRef} from "react";
+import useIntersectObserver from "../../components/hooks/use-intersection-observer";
 
 export default function marginCalculatorLandingPage() {
 
     const dispatch = useDispatch()
     const items = useSelector(selectMarginData)
+
+    const maxThreshold = useSelector(selectMaxThreshold)
+    const threshold = useSelector(selectThreshold)
+    const observedElement = useRef<HTMLDivElement>(null)
+    const intersectionElement = useRef<HTMLDivElement | null>(null)
+
+    const scrollHandler = ()=> dispatch(incrementThreshold())
+    useIntersectObserver(intersectionElement, observedElement, threshold, maxThreshold, items, scrollHandler)
+
+    useEffect(()=>{
+        intersectionElement.current = document!.getElementById("column-layout") as HTMLDivElement
+    },[])
 
     const updateItemsHandler = (items: MarginItem[]) => {
         document.getElementById("column-layout")?.scroll(0,0)
@@ -50,6 +65,7 @@ export default function marginCalculatorLandingPage() {
                         <MagentoTable/>
                         <ShopTable/>
                         <MiscTable/>
+                        <div style={{gridColumn:"1/7"}} ref={observedElement}></div>
                     </div>
                 </ColumnLayout>
             </OneColumn>

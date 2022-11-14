@@ -63,7 +63,7 @@ declare namespace sbt {
         LINNID?: string,
         LISTINGVARIATION?: boolean,
         MARGINNOTE?: string,
-        MCOVERRIDES?: { AMAZON: boolean, EBAY: boolean, MAGENTO: boolean }
+        MCOVERRIDES?: { [key: string]: boolean }
         MD?: marginData,
         MINSTOCK?: number,
         MONTHSTOCKHIST?: MonthStockHistory,

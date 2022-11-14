@@ -1,10 +1,11 @@
-import styles from "./margin-calculator.module.css";
+import styles from "../margin-calculator.module.css";
 import {useSelector} from "react-redux";
 import {
-    MarginItem,
     selectRenderedItems,
     selectTableToggles
-} from "../../store/margin-calculator-slice";
+} from "../../../store/margin-calculator-slice";
+import TitleRow from "./title-row";
+import ItemRow from "./item-row";
 
 export default function MiscTable() {
 
@@ -19,7 +20,7 @@ export default function MiscTable() {
             <TitleRow key={"title-row"}/>
         ]
 
-        for (let item of items) elements.push(<MiscRow key={item.SKU} item={item}/>)
+        for (let item of items) elements.push(<ItemRow key={item.SKU} item={item}/>)
 
         return elements
     }
@@ -27,16 +28,4 @@ export default function MiscTable() {
     return <div className={styles["sub-table"]}>
         {createTable()}
     </div>;
-}
-
-function TitleRow() {
-    return <div className={`${styles.title} ${styles.row} ${styles["misc-grid"]}`}>
-        <div>Notes</div>
-    </div>
-}
-
-function MiscRow({item}: { item: MarginItem }) {
-    return <div key={item.SKU} className={`${styles.row} ${styles["misc-grid"]}`}>
-        <span><input type={"text"} defaultValue={item.MARGINNOTE}/></span>
-    </div>
 }
