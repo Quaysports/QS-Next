@@ -14,6 +14,8 @@ export default function ItemRow({item, test}: { item: MarginItem, test: boolean}
     const [inputClass, setInputClass] = useState("")
 
     useEffect(() => {
+        if(!inputRef.current) return
+        inputRef.current.value = item.EBAYPRICEINCVAT
         setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "EBAY",)])
     }, [item])
 

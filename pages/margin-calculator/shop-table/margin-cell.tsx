@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import styles from "../margin-calculator.module.css";
 import {generateMarginText, textColourStyler} from "../margin-styler";
 import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {toCurrency} from "../utils";
 
 export default function MarginCell({item}: { item: MarginItem }) {
 
@@ -27,11 +28,6 @@ export default function MarginCell({item}: { item: MarginItem }) {
 }
 
 function buildMarginTooltip(item: MarginItem) {
-
-    function toCurrency(value?: number) {
-        return value ? `£${value.toFixed(2)}` : "£0.00"
-    }
-
     return <div className={styles.tooltip}>
             <div>Selling Price: £{item.SHOPPRICEINCVAT}</div>
             <div>------- Minus -------</div>

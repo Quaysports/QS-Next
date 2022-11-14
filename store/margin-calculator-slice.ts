@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 
 export interface MarginItem {
@@ -183,17 +183,44 @@ export const marginCalculatorSlice = createSlice({
                 state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
             },
             updateMarginData: (state, action: PayloadAction<MarginItem>) => {
-                console.dir(action.payload)
                 if (state.searchItems.length > 0) {
                     for (let index in state.searchItems) {
-                        if (state.searchItems[index].SKU === action.payload.SKU) state.searchItems[index] = action.payload
+                        if (state.searchItems[index].SKU === action.payload.SKU) {
+                            state.searchItems[index] = action.payload
+                        }
                     }
-                    state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
                 }
                 for (let index in state.marginData) {
-                    if (state.marginData[index].SKU === action.payload.SKU) state.marginData[index] = action.payload
-                    state.renderedItems = state.marginData.slice(0, state.maxThreshold)
+                    if (state.marginData[index].SKU === action.payload.SKU) {
+                        state.marginData[index] = action.payload
+                    }
                 }
+                state.searchItems.length > 0
+                    ? state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
+                    : state.renderedItems = state.marginData.slice(0, state.maxThreshold)
+            },
+            updateMCOverrides:(state, action:PayloadAction<{item: MarginItem, key:keyof MarginItem["MCOVERRIDES"], value:boolean}>)=>{
+                if (state.searchItems.length > 0) {
+                    for (let index in state.searchItems) {
+                        if (state.searchItems[index].SKU === action.payload.item.SKU){
+                            state.searchItems[index].MCOVERRIDES[action.payload.key] = action.payload.value
+                        }
+                    }
+                }
+                for (let index in state.marginData) {
+                    if (state.marginData[index].SKU === action.payload.item.SKU) {
+                        state.marginData[index].MCOVERRIDES[action.payload.key] = action.payload.value
+                        const opt = {
+                            method: 'POST',
+                            headers: {"Content-Type": "application/json",},
+                            body: JSON.stringify(current(state.marginData[index]))
+                        }
+                        fetch('/api/items/update-item', opt).then(res=>console.log(res))
+                    }
+                }
+                state.renderedItems = state.searchItems.length > 0
+                    ? state.searchItems.slice(0, state.maxThreshold)
+                    : state.marginData.slice(0, state.maxThreshold)
             },
             incrementThreshold: (state) => {
                 state.maxThreshold += state.threshold
@@ -226,6 +253,7 @@ export const {
     setPostage,
     setPackaging,
     updateMarginData,
+    updateMCOverrides,
     sortMarginData,
     toggleTable,
     incrementThreshold,

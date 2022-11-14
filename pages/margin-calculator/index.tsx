@@ -76,11 +76,13 @@ export default function marginCalculatorLandingPage() {
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
     const domestic = context.query.domestic
+    const show = context.query.show
 
     let query: MarginQuery = {
         $and: [
             {LISTINGVARIATION: false},
             {IDBFILTER: {$ne: true}},
+            {},
             {}
         ]
     }
@@ -98,7 +100,9 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
         query.$and.push({IDBFILTER: {$ne: 'bait'}})
     }
 
-    console.dir(query, {depth:5})
+
+    if(!show || show === "false") { query.$and.push({HIDE:{$ne:true}}) }
+
 
     const projection = {
         SKU: 1,
@@ -148,6 +152,7 @@ interface MarginQuery {
     $and: [
         { LISTINGVARIATION: boolean },
         { IDBFILTER: IDBFilter },
+        { HIDE?: {$ne:true} },
         { $or?: any[] }
     ]
 }

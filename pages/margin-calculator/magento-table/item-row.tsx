@@ -12,6 +12,8 @@ export default function ItemRow({item}:{item:MarginItem}){
     const [inputClass, setInputClass] = useState("")
 
     useEffect(()=>{
+        if(!inputRef.current) return
+        inputRef.current.value = item.QSPRICEINCVAT
         setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "MAGENTO", )])
     },[item])
 

@@ -1,0 +1,37 @@
+.wrapper{
+    display:grid;
+    grid-gap:10px;
+    grid-template-rows: 1fr 20px 20px;
+}
+.table {
+    display:grid;
+    grid-gap:5px;
+}
+.row {
+    display:grid;
+    grid-gap:10px;
+    grid-template-columns: repeat(6, 85px);
+    align-items:center;
+    justify-items: center;
+}
+
+.row div {
+    display: grid;
+}
+
+.row input {
+    justify-self: center;
+    align-self: center;
+}
+
+.Confirmed, .green-text{
+    color: #87ee87;
+}
+
+.Error, .red-text {
+    color:#ff7878;
+}
+
+.Pending{
+    color: #ffe551;
+}

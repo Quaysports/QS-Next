@@ -1,12 +1,12 @@
 import {MarginItem, updateMarginData} from "../../store/margin-calculator-slice";
 import {useDispatch} from "react-redux";
 
-const useUpdateItemAndCalculateMargins = ():(item:MarginItem, key:keyof MarginItem, value:any) => Promise<void> => {
+const useUpdateItemAndCalculateMargins = ():(item:MarginItem, key?:keyof MarginItem, value?:any) => Promise<void> => {
     const dispatch = useDispatch()
 
-    async function update(item:MarginItem, key:keyof MarginItem, value:any) {
+    async function update(item:MarginItem, key?:keyof MarginItem, value?:any) {
 
-        let itemClone = {...item, ...{[key]:value}}
+        let itemClone = key && value ? {...item, ...{[key]:value}} : {...item}
 
         const opt = {
             method: 'POST',
@@ -17,10 +17,16 @@ const useUpdateItemAndCalculateMargins = ():(item:MarginItem, key:keyof MarginIt
             body: JSON.stringify(itemClone)
         }
 
-        let update = await fetch('/api/items/update-item', opt)
-        console.log("Item Update", update)
-        let marginUpdate = await fetch('http://192.168.1.120:3001/Margin/Update', opt).then((res)=>{return res.json()})
-        console.log("Margin Calculation", marginUpdate)
+        await fetch('/api/items/update-item', opt)
+        let marginUpdate = {
+            ...itemClone,
+            ...await fetch('http://192.168.1.120:3001/Margin/Update', opt).then((res)=>{
+                return res.json()
+            })
+        }
+
+        console.log(marginUpdate)
+
         dispatch(updateMarginData(marginUpdate))
     }
 

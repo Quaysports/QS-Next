@@ -27,7 +27,7 @@ export function MarginTestTitle(){
             <input
                 type="number"
                 placeholder={"Target %..."}
-                onChange={e => dispatch(setMarginTest({type:"Amazon",value:Number(e.target.value)}))}/>
+                onChange={e => dispatch(setMarginTest({type:"Ebay",value:Number(e.target.value)}))}/>
         </div>
         <div>
             Result

@@ -11,9 +11,11 @@ export default function ItemRow({item}: { item: MarginItem }) {
 
     const [inputClass, setInputClass] = useState("")
 
-    useEffect(() => setInputClass(
-        styles[inputStatusColour(inputRef.current?.value, item, "SHOP",)]
-    ), [item])
+    useEffect(() => {
+        if(!inputRef.current) return
+        inputRef.current.value = item.SHOPPRICEINCVAT
+        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "SHOP",)])
+    }, [item])
 
     return <div key={item.SKU} className={`${styles.row} ${styles["shop-grid"]}`}>
         <div>
