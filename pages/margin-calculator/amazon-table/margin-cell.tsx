@@ -8,7 +8,12 @@ import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 export default function MarginCell({item}:{item:MarginItem}){
 
     const [textClass, setTextClass] = useState("")
-    useEffect(()=>{setTextClass(styles[textColourStyler(item.MD.AMAZPAVC)])},[item])
+    const [marginText, setMarginText] = useState<string>("")
+
+    useEffect(()=>{
+        setTextClass(styles[textColourStyler(item.MD.AMAZPAVC)])
+        setMarginText(generateMarginText(item.PURCHASEPRICE, item.MD.AMAZPAVC))
+    },[item])
 
     if(!item) return null
 
@@ -19,7 +24,7 @@ export default function MarginCell({item}:{item:MarginItem}){
             dispatchNotification({type:"tooltip",title:"Amazon Margin Breakdown", content:buildMarginTooltip(item),e:e})
         }}
         onMouseLeave={()=>dispatchNotification({type:undefined})}
-    >{ generateMarginText(item.PURCHASEPRICE, item.MD.AMAZPAVC )}</span>
+    >{marginText}</span>
 }
 
 export function PrimeMarginCell({item}:{item:MarginItem}){

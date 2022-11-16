@@ -8,8 +8,11 @@ import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 export default function MarginCell({item}: { item: MarginItem }) {
 
     const [textClass, setTextClass] = useState("")
+    const [marginText, setMarginText] = useState<string>("")
+
     useEffect(() => {
         setTextClass(styles[textColourStyler(item.MD.QSPAVC)])
+        setMarginText(generateMarginText(item.PURCHASEPRICE, item.MD.QSPAVC))
     }, [item])
 
     if(!item) return null
@@ -26,7 +29,7 @@ export default function MarginCell({item}: { item: MarginItem }) {
             })
         }}
         onMouseLeave={() => dispatchNotification({type: undefined})}
-    >{generateMarginText(item.PURCHASEPRICE, item.MD.QSPAVC)}</span>
+    >{marginText}</span>
 }
 
 function buildMarginTooltip(item: MarginItem) {

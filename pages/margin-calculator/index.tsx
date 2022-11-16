@@ -82,6 +82,9 @@ export default function marginCalculatorLandingPage() {
                     <div className={styles.table}>
                         <InfoTable/>
                         <CostsTable/>
+                        <EbayTable/>
+                        <AmazonTable/>
+                        <MagentoTable/>
                         <ShopTable/>
                         <MiscTable/>
                         <div style={{gridColumn:"1/7"}} ref={observedElement}></div>
@@ -91,15 +94,6 @@ export default function marginCalculatorLandingPage() {
         </div>
     )
 }
-
-/*
-
-
-                        <EbayTable/>
-                        <AmazonTable/>
-                        <MagentoTable/>
-
- */
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
