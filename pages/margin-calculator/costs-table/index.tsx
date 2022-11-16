@@ -22,7 +22,7 @@ export default function CostsTable() {
             <TitleRow key={"title-row"}/>
         ]
 
-        for(let item of items)elements.push(<ItemRow key={item.SKU} item={item}/>)
+        for(let item of items)elements.push(<ItemRow key={item.SKU+"-costs"} item={item}/>)
 
         return elements
     }

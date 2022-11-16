@@ -12,20 +12,17 @@ const useUpdateItemAndCalculateMargins = ():(item:MarginItem, key?:keyof MarginI
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "token": "9b9983e5-30ae-4581-bdc1-3050f8ae91cc"
             },
             body: JSON.stringify(itemClone)
         }
 
         await fetch('/api/items/update-item', opt)
+        let result = await fetch('/api/margin/update', opt)
+
         let marginUpdate = {
             ...itemClone,
-            ...await fetch('http://192.168.1.120:3001/Margin/Update', opt).then((res)=>{
-                return res.json()
-            })
+            ...await result.json()
         }
-
-        console.log(marginUpdate)
 
         dispatch(updateMarginData(marginUpdate))
     }
