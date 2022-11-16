@@ -57,7 +57,7 @@ export default function marginCalculatorLandingPage() {
     const intersectionElement = useRef<HTMLDivElement | null>(null)
 
     const scrollHandler = ()=> dispatch(incrementThreshold())
-    useIntersectObserver(intersectionElement, observedElement, threshold, maxThreshold, items, scrollHandler)
+    //useIntersectObserver(intersectionElement, observedElement, threshold, maxThreshold, items, scrollHandler)
 
     useEffect(()=>{
         intersectionElement.current = document!.getElementById("column-layout") as HTMLDivElement
