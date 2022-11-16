@@ -148,7 +148,7 @@ export const marginCalculatorSlice = createSlice({
             setMarginData: (state, action: PayloadAction<MarginItem[]>) => {
                 state.marginData = action.payload
                 state.searchItems = action.payload
-                //for (const item of state.marginData) state.totalStockVal += item.STOCKVAL
+                for (const item of state.marginData) state.totalStockVal += item.STOCKVAL
                 state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
             setFees: (state, action: PayloadAction<Fees>) => {

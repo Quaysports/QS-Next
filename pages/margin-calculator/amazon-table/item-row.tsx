@@ -17,8 +17,8 @@ export default function ItemRow({item, displayTest}: { item: MarginItem, display
 
     useEffect(() => {
         if(!inputRef.current) return
-        inputRef.current.value = item.AMZPRICEINCVAT
-        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "AMAZON",)])
+        //inputRef.current.value = item.AMZPRICEINCVAT
+        //setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "AMAZON",)])
     }, [item])
 
     return <div key={item.SKU}
