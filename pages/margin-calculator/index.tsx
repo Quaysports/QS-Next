@@ -25,7 +25,7 @@ import {
 } from "../../store/margin-calculator-slice";
 import MarginCalculatorMenuTabs from "./tabs";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import useIntersectObserver from "../../components/hooks/use-intersection-observer";
 
 /* ToDO:
@@ -50,6 +50,7 @@ export default function marginCalculatorLandingPage() {
 
     const dispatch = useDispatch()
     const items = useSelector(selectMarginData)
+    const [loading, setLoading] = useState<boolean>(true)
 
     const maxThreshold = useSelector(selectMaxThreshold)
     const threshold = useSelector(selectThreshold)
@@ -57,16 +58,19 @@ export default function marginCalculatorLandingPage() {
     const intersectionElement = useRef<HTMLDivElement | null>(null)
 
     const scrollHandler = ()=> dispatch(incrementThreshold())
-    //useIntersectObserver(intersectionElement, observedElement, threshold, maxThreshold, items, scrollHandler)
+    useIntersectObserver(intersectionElement, observedElement, threshold, maxThreshold, items, scrollHandler)
 
     useEffect(()=>{
         intersectionElement.current = document!.getElementById("column-layout") as HTMLDivElement
-    },[])
+        setLoading(true)
+    },[items])
 
     const updateItemsHandler = (items: MarginItem[]) => {
         document.getElementById("column-layout")?.scroll(0,0)
         dispatch(setSearchItems(items))
     }
+
+    if(!loading) return null
 
     return (
         <div>
@@ -75,7 +79,7 @@ export default function marginCalculatorLandingPage() {
                     <MarginCalculatorMenuTabs searchData={items} updateItemsHandler={updateItemsHandler}/>
                 </Menu>
                 <ColumnLayout background={false} scroll={true} stickyTop={true}>
-                    {items ? <div className={styles.table}>
+                    <div className={styles.table}>
                         <InfoTable/>
                         <CostsTable/>
                         <EbayTable/>
@@ -84,7 +88,7 @@ export default function marginCalculatorLandingPage() {
                         <ShopTable/>
                         <MiscTable/>
                         <div style={{gridColumn:"1/7"}} ref={observedElement}></div>
-                    </div> : null}
+                    </div>
                 </ColumnLayout>
             </OneColumn>
         </div>
