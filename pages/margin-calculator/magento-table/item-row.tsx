@@ -16,8 +16,8 @@ export default function ItemRow({item}:{item:MarginItem}){
 
     useEffect(()=>{
         if(!inputRef.current) return
-        //inputRef.current.value = item.QSPRICEINCVAT
-        //setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "MAGENTO", )])
+        inputRef.current.value = item.QSPRICEINCVAT
+        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "MAGENTO", )])
     },[item])
 
     return <div key={item.SKU} className={`${styles.row} ${styles["magento-grid"]}`}>
