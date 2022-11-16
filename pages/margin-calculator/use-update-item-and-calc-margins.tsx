@@ -8,8 +8,6 @@ const useUpdateItemAndCalculateMargins = ():(item:MarginItem, key?:keyof MarginI
 
         let itemClone = key && value !== undefined ? {...item, ...{[key]:value}} : {...item}
 
-        console.log(itemClone)
-
         const opt = {
             method: 'POST',
             headers: {
@@ -25,6 +23,8 @@ const useUpdateItemAndCalculateMargins = ():(item:MarginItem, key?:keyof MarginI
             ...itemClone,
             ...await result.json()
         }
+
+        console.log(marginUpdate)
 
         dispatch(updateMarginData(marginUpdate))
     }
