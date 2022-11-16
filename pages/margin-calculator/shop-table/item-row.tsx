@@ -27,8 +27,6 @@ export default function ItemRow({item}: { item: MarginItem }) {
                    defaultValue={item.SHOPPRICEINCVAT}
                    onBlur={async (e) => await updateItem(item, "SHOPPRICEINCVAT", e.target.value)}/>
         </div>
-
+        <MarginCell item={item}/>
     </div>
 }
-
-//<MarginCell item={item}/>

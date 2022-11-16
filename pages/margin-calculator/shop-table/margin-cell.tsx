@@ -26,8 +26,10 @@ export default function MarginCell({item}: { item: MarginItem }) {
             })
         }}
         onMouseLeave={() => dispatchNotification({type: undefined})}
-    >{generateMarginText(item.PURCHASEPRICE, item.MD.SHOPPAVC)}</span>
+    >{}</span>
 }
+
+//generateMarginText(item.PURCHASEPRICE, item.MD.SHOPPAVC)
 
 function buildMarginTooltip(item: MarginItem) {
     return <div className={styles.tooltip}>
