@@ -6,7 +6,9 @@ const useUpdateItemAndCalculateMargins = ():(item:MarginItem, key?:keyof MarginI
 
     async function update(item:MarginItem, key?:keyof MarginItem, value?:any) {
 
-        let itemClone = key && value ? {...item, ...{[key]:value}} : {...item}
+        let itemClone = key && value !== undefined ? {...item, ...{[key]:value}} : {...item}
+
+        console.log(itemClone)
 
         const opt = {
             method: 'POST',
