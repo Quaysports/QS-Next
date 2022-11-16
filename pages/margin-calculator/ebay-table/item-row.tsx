@@ -8,8 +8,6 @@ import MarginCell from "./margin-cell";
 
 export default function ItemRow({item, test}: { item: MarginItem, test: boolean}) {
 
-    if(!item) return null
-
     const inputRef = useRef<HTMLInputElement>(null)
     const updateItem = useUpdateItemAndCalculateMargins()
 
@@ -20,6 +18,8 @@ export default function ItemRow({item, test}: { item: MarginItem, test: boolean}
         inputRef.current.value = item.EBAYPRICEINCVAT
         setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "EBAY",)])
     }, [item])
+
+    if(!item) return null
 
     return <div key={item.SKU}
                 className={`${styles.row} ${test ? styles["ebay-grid"] : styles["ebay-grid-collapsed"]}`}>

@@ -10,10 +10,10 @@ import TitleRow from "./title-row";
 export default function ShopTable() {
 
     const items = useSelector(selectRenderedItems)
+    const toggles = useSelector(selectTableToggles)
 
     if(!items || items.length === 0) return null
 
-    const toggles = useSelector(selectTableToggles)
     if(!toggles.ShopTable) return null
 
     function createTable(){

@@ -10,10 +10,10 @@ import ItemRow from "./item-row";
 export default function MiscTable() {
 
     const items = useSelector(selectRenderedItems)
+    const toggles = useSelector(selectTableToggles)
 
     if(!items || items.length === 0) return null
 
-    const toggles = useSelector(selectTableToggles)
     if(!toggles.MiscTable) return null
 
     function createTable() {

@@ -8,9 +8,9 @@ import PurchasePriceCell from "./purchase-price-cell";
 
 export default function ItemRow({item}: { item: MarginItem }) {
 
-    if(!item) return null
-
     const packaging = useSelector(selectPackaging)
+
+    if(!item) return null
 
     return <div key={item.SKU} className={`${styles.row} ${styles["costs-grid"]}`}>
         <div><PurchasePriceCell item={item}/></div>

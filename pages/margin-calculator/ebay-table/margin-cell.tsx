@@ -7,10 +7,10 @@ import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 export default function MarginCell({item}:{item:MarginItem}){
 
-    if(!item) return null
-
     const [textClass, setTextClass] = useState("")
     useEffect(()=>{setTextClass(styles[textColourStyler(item.MD.EBAYUKPAVC)])},[item])
+
+    if(!item) return null
 
     return <span
         className={textClass}

@@ -10,10 +10,10 @@ import TitleRow from "./title-row";
 export default function CostsTable() {
 
     const items = useSelector(selectRenderedItems)
+    const toggles = useSelector(selectTableToggles)
 
     if(!items || items.length === 0) return null
 
-    const toggles = useSelector(selectTableToggles)
     if(!toggles.CostsTable) return null
 
     function createTable(){

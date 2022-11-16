@@ -8,8 +8,6 @@ import MarginCell, {PrimeMarginCell} from "./margin-cell";
 
 export default function ItemRow({item, displayTest}: { item: MarginItem, displayTest: boolean }) {
 
-    if(!item) return null
-
     const inputRef = useRef<HTMLInputElement>(null)
     const updateItem = useUpdateItemAndCalculateMargins()
 
@@ -20,6 +18,8 @@ export default function ItemRow({item, displayTest}: { item: MarginItem, display
         inputRef.current.value = item.AMZPRICEINCVAT
         setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "AMAZON",)])
     }, [item])
+
+    if(!item) return null
 
     return <div key={item.SKU}
                 className={`${styles.row} ${displayTest ? styles["amazon-grid"] : styles["amazon-grid-collapsed"]}`}>

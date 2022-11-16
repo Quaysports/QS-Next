@@ -5,14 +5,14 @@ import styles from '../margin-calculator.module.css'
 
 export default function PurchasePriceCell({item}:{item:MarginItem}){
 
-    if(!item) return null
-
     const tooltip = <div className={styles.tooltip}>
         <div>Linked to Linnworks Purchase Price.</div>
         <div>Change in Linnworks to update.</div>
         <div>--------------------------------------</div>
         <div>Click to open test item</div>
     </div>
+
+    if(!item) return null
 
     return <div
         onMouseOver={(e) => {

@@ -7,8 +7,6 @@ import MarginCell from "./margin-cell";
 
 export default function ItemRow({item}:{item:MarginItem}){
 
-    if(!item) return null
-
     const inputRef = useRef<HTMLInputElement>(null)
     const updateItem = useUpdateItemAndCalculateMargins()
 
@@ -19,6 +17,8 @@ export default function ItemRow({item}:{item:MarginItem}){
         inputRef.current.value = item.QSPRICEINCVAT
         setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "MAGENTO", )])
     },[item])
+
+    if(!item) return null
 
     return <div key={item.SKU} className={`${styles.row} ${styles["magento-grid"]}`}>
         <div>

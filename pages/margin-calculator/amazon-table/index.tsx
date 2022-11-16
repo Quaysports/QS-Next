@@ -11,13 +11,12 @@ import ItemRow from "./item-row"
 export default function AmazonTable() {
 
     const items = useSelector(selectRenderedItems)
+    const toggles = useSelector(selectTableToggles)
+    const [toggleMarginTest, setToggleTest] = useState<boolean>(false)
 
     if(!items || items.length === 0) return null
 
-    const toggles = useSelector(selectTableToggles)
     if (!toggles.AmazonTable) return null
-
-    const [toggleMarginTest, setToggleTest] = useState<boolean>(false)
 
     function createTable() {
         const elements = [

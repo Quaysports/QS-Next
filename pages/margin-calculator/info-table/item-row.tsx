@@ -5,9 +5,9 @@ import StatusAndUploadPopup from "./status-and-upload-popup";
 
 export default function ItemRow({item}:{item:MarginItem}){
 
-    if(!item) return null
-
     const updateItem = useUpdateItemAndCalculateMargins()
+
+    if(!item) return null
 
     return <div key={item.SKU} className={`${styles.row} ${styles["info-grid"]}`}>
         <div>

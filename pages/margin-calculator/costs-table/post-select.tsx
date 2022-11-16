@@ -4,10 +4,10 @@ import {useSelector} from "react-redux";
 
 export default function PostSelect({item}:{item:MarginItem}){
 
-    if(!item) return null
-
     const updateItem = useUpdateItemAndCalculateMargins()
     const postage = useSelector(selectPostage)
+
+    if(!item) return null
 
     function postOptions() {
         let opts = []
