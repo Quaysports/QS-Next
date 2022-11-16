@@ -81,6 +81,7 @@ export default function marginCalculatorLandingPage() {
                 <ColumnLayout background={false} scroll={true} stickyTop={true}>
                     <div className={styles.table}>
                         <InfoTable/>
+                        <CostsTable/>
                         <div style={{gridColumn:"1/7"}} ref={observedElement}></div>
                     </div>
                 </ColumnLayout>
@@ -91,7 +92,7 @@ export default function marginCalculatorLandingPage() {
 
 /*
 
-                        <CostsTable/>
+
                         <EbayTable/>
                         <AmazonTable/>
                         <MagentoTable/>
