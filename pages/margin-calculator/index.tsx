@@ -75,7 +75,7 @@ export default function marginCalculatorLandingPage() {
                     <MarginCalculatorMenuTabs searchData={items} updateItemsHandler={updateItemsHandler}/>
                 </Menu>
                 <ColumnLayout background={false} scroll={true} stickyTop={true}>
-                    <div className={styles.table}>
+                    {items ? <div className={styles.table}>
                         <InfoTable/>
                         <CostsTable/>
                         <EbayTable/>
@@ -84,7 +84,7 @@ export default function marginCalculatorLandingPage() {
                         <ShopTable/>
                         <MiscTable/>
                         <div style={{gridColumn:"1/7"}} ref={observedElement}></div>
-                    </div>
+                    </div> : null}
                 </ColumnLayout>
             </OneColumn>
         </div>
