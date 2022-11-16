@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import {useEffect, useState} from "react";
 import {StockForecastItem} from "../../server-modules/stock-forecast/process-data";
-import {dispatchNotification} from "../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../components/notification/dispatch-notification";
 import SupplierSelect from "./supplier-select-popup";
 
 interface Props {

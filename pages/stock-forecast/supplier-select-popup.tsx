@@ -3,7 +3,7 @@ import {selectSuppliers} from "../../store/stock-forecast-slice";
 import styles from "./stock-forecast.module.css"
 import React from "react";
 import {useRouter} from "next/router";
-import {dispatchNotification} from "../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../components/notification/dispatch-notification";
 
 export default function SupplierSelect(){
     const suppliers = useSelector(selectSuppliers)

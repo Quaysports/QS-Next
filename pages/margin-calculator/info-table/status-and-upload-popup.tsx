@@ -1,7 +1,7 @@
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import styles from "./popup.module.css"
 import {MarginItem, updateMCOverrides} from "../../../store/margin-calculator-slice";
-import {toCurrency} from "../utils";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 import {useDispatch} from "react-redux";
 import CopyFromShopButton from "./popup-copy-price-button";
 import LinnworksUploadButton from "./popup-linnworks-upload-button";

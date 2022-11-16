@@ -28,6 +28,24 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useRef} from "react";
 import useIntersectObserver from "../../components/hooks/use-intersection-observer";
 
+/* ToDO:
+
+    test column for QS?
+
+    Fees menu
+    Postage menu
+    Packaging menu
+
+    Test item menu / tool
+    Remove override button / script
+    Un-hide all button / script
+    Update all button
+    Update CP button
+
+    Loading indicators
+ */
+
+
 export default function marginCalculatorLandingPage() {
 
     const dispatch = useDispatch()

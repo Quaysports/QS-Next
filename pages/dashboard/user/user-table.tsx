@@ -4,7 +4,7 @@ import {deleteUser, setUserData} from "../../../store/dashboard/user-slice";
 import {useDispatch} from "react-redux";
 import {User} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import RegexInput from "../../../components/regex-input";
 import {ReactElement} from "react";
 

@@ -2,9 +2,8 @@ import SearchBar from "../../components/search-bar";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {useEffect, useState} from "react";
-import {StockForecastItem} from "../../server-modules/stock-forecast/process-data";
 import {MarginItem} from "../../store/margin-calculator-slice";
-import {dispatchNotification} from "../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../components/notification/dispatch-notification";
 import MarginCalculatorFilters from "./filter-popup";
 
 interface Props {
@@ -38,6 +37,17 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
                 resultHandler={result => updateItemsHandler(result as MarginItem[])}
                 EAN={false}
                 searchableArray={searchData ? searchData : []}/>
+            <span></span>
+            <span onClick={()=>{
+                const opts = {
+                    method: 'POST',
+                    headers: {"token": "9b9983e5-30ae-4581-bdc1-3050f8ae91cc"}
+                }
+
+                fetch("/api/linnworks/update-channel-prices", opts).then(async(res)=>{
+                    console.log(res.json())
+                })
+            }}>Update All Channel Prices</span>
         </>
     )
 }

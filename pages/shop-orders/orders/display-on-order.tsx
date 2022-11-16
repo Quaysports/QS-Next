@@ -9,7 +9,7 @@ import {
     setBookedInState,
 } from "../../../store/shop-orders-slice";
 import {useRouter} from "next/router";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 
 /**
  * Display On Order Component
@@ -161,4 +161,3 @@ export default function DisplayOnOrder() {
         return <></>
     }
 }
-

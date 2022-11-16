@@ -3,7 +3,7 @@ import {Fragment} from "react";
 import styles from "../shop-orders.module.css"
 import {useSelector} from "react-redux";
 import {OpenOrdersObject, selectOpenOrders} from "../../../store/shop-orders-slice";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import CSVButton from "../../../components/csv-button";
 import {useRouter} from "next/router";
 

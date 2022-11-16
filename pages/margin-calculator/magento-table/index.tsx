@@ -11,6 +11,8 @@ export default function MagentoTable() {
 
     const items = useSelector(selectRenderedItems)
 
+    if(!items || items.length === 0) return null
+
     const toggles = useSelector(selectTableToggles)
     if(!toggles.MagentoTable) return null
 

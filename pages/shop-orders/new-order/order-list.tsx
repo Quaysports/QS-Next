@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
     selectNewOrderArray,
@@ -8,7 +8,7 @@ import {
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
 import {useRouter} from "next/router";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 import CurrentOrderList from "./build-order-list";
 

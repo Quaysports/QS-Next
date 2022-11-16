@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux";
 import {selectTotalStockValData} from "../../../store/margin-calculator-slice";
 import styles from "../margin-calculator.module.css";
-import {toCurrency} from "../utils";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 export default function TitleRow(){
     const totalStockVal = useSelector(selectTotalStockValData)

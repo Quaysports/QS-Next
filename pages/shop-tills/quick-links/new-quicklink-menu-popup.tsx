@@ -1,5 +1,5 @@
 import {useRef} from "react";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {addNewQuickLinkMenu} from "../../../store/shop-tills/quicklinks-slice";
 import {useDispatch} from "react-redux";
 import styles from './quick-links.module.css'

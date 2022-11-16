@@ -3,7 +3,7 @@ import {
     setIncorrectStockSplice,
     setZeroStockSplice
 } from "../../../store/stock-reports-slice";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import styles from "./incorrect-stock-list.module.css";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";

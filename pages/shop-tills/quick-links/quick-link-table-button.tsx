@@ -1,5 +1,5 @@
 import styles from './quick-links.module.css'
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {useDispatch} from "react-redux";
 import {
     deleteQuickLinkItem,

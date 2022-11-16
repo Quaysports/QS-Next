@@ -1,5 +1,5 @@
 import styles from './quick-links.module.css'
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import DatabaseSearchBar, {DatabaseSearchItem} from "../../../components/database-search-bar/database-search";
 import {addItemToLinks, swapQuickLinkItems} from "../../../store/shop-tills/quicklinks-slice";
 import {useDispatch} from "react-redux";

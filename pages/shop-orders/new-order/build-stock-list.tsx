@@ -9,7 +9,7 @@ import {Fragment} from "react";
 import * as React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Image from "next/image";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 
 export default function BuildStockList() {
 

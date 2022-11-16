@@ -2,11 +2,13 @@ import {MarginItem} from "../../../store/margin-calculator-slice";
 import {useEffect, useRef, useState} from "react";
 import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margins";
 import styles from "../margin-calculator.module.css";
-import {inputStatusColour} from "../margin-styler";
+import {inputStatusColour} from "../../../components/margin-calculator-utils/margin-styler";
 import MarginTestResults from "./margin-test-results";
 import MarginCell, {PrimeMarginCell} from "./margin-cell";
 
 export default function ItemRow({item, displayTest}: { item: MarginItem, displayTest: boolean }) {
+
+    if(!item) return null
 
     const inputRef = useRef<HTMLInputElement>(null)
     const updateItem = useUpdateItemAndCalculateMargins()

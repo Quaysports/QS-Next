@@ -1,6 +1,6 @@
 import styles from './stock-forecast.module.css'
 import {StockForecastItem} from "../../server-modules/stock-forecast/process-data";
-import {dispatchNotification} from "../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../components/notification/dispatch-notification";
 
 interface Props {
     item: StockForecastItem

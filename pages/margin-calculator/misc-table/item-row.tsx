@@ -3,6 +3,9 @@ import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margin
 import styles from "../margin-calculator.module.css";
 
 export default function ItemRow({item}: { item: MarginItem }) {
+
+    if(!item) return null
+
     const updateItem = useUpdateItemAndCalculateMargins()
 
     return <div key={item.SKU} className={`${styles.row} ${styles["misc-grid"]}`}>

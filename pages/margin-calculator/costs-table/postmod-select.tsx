@@ -3,6 +3,8 @@ import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margin
 
 export default function PostModSelect({item}: { item: MarginItem }) {
 
+    if(!item) return null
+
     const updateItem = useUpdateItemAndCalculateMargins()
 
     function postModifierOptions() {

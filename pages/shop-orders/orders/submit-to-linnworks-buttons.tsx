@@ -6,7 +6,7 @@ import {
     setCompleteOrder,
     setSubmittedOrder
 } from "../../../store/shop-orders-slice";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {useRouter} from "next/router";
 
 /**

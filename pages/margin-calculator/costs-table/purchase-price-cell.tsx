@@ -1,9 +1,11 @@
-import {toCurrency} from "../utils";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 import {MarginItem} from "../../../store/margin-calculator-slice";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import styles from '../margin-calculator.module.css'
 
 export default function PurchasePriceCell({item}:{item:MarginItem}){
+
+    if(!item) return null
 
     const tooltip = <div className={styles.tooltip}>
         <div>Linked to Linnworks Purchase Price.</div>

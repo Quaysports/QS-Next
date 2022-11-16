@@ -1,6 +1,6 @@
 
 import CustomisationPopup from "./customisation-popup";
-import {dispatchNotification} from "../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../notification/dispatch-notification";
 
 /**
  * @param {boolean} showSettingsMenu - Boolean toggle to show settings menu.

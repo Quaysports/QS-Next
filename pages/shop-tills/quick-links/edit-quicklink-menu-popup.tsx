@@ -6,7 +6,7 @@ import {
     updateQuickLinkID
 } from "../../../store/shop-tills/quicklinks-slice";
 import styles from "./quick-links.module.css";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {useRouter} from "next/router";
 
 export default function EditQuickLinkMenuPopup(){

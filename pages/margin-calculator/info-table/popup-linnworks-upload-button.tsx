@@ -1,6 +1,6 @@
 import {MarginItem} from "../../../store/margin-calculator-slice";
 import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margins";
-import {dispatchNotification} from "../../../server-modules/dispatch-notification";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 
 export default function LinnworksUploadButton({item}:{item:MarginItem}){
     const updateItem = useUpdateItemAndCalculateMargins()
@@ -11,12 +11,11 @@ export default function LinnworksUploadButton({item}:{item:MarginItem}){
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "token": "9b9983e5-30ae-4581-bdc1-3050f8ae91cc"
             },
             body: JSON.stringify({items:[item]})
         }
 
-        fetch("http://192.168.1.120:3001/Linn/UpdateLinnChannelPrices", opts).then(async()=>{
+        fetch("/api/linnworks/update-channel-prices", opts).then(async()=>{
             await updateItem(item)
             dispatchNotification({type:undefined})
         })
