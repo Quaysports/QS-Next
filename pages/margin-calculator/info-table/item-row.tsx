@@ -14,7 +14,7 @@ export default function ItemRow({item, index}:{item:MarginItem, index:string}){
 
     const activeIndex = useSelector(selectActiveIndex)
     const [classes, setClasses] = useState(cssClasses())
-    useEffect(()=>{setClasses(cssClasses())},[activeIndex])
+    useEffect(()=>{setClasses(cssClasses())},[activeIndex, displayTitles])
 
     function cssClasses(){
         let classes = styles.row
