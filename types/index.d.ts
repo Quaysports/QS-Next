@@ -76,7 +76,7 @@ declare namespace sbt {
         PURCHASEPRICE?: number,
         QSPRICEINCVAT?: string,
         RETAILPRICE?: number,
-        SHELFLOCATION?: string,
+        SHELFLOCATION?: {PREFIX:string, LETTER:string, NUMBER: string},
         SHIPAMAZONEXP?: string,
         SHIPCOURIEREXP?: string,
         SHIPCOURIERSTD?: string,
