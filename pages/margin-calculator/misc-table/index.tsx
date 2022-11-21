@@ -25,7 +25,9 @@ export default function MiscTable() {
             <TitleRow key={"title-row"}/>
         ]
 
-        for (let item of items) elements.push(<ItemRow key={item.SKU} item={item}/>)
+        for(let index in items) elements.push(<ItemRow key={items[index].SKU}
+                                                       item={items[index]}
+                                                       index={index}/>)
 
         return elements
     }

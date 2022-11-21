@@ -1,4 +1,4 @@
-import {MarginItem} from "../../../store/margin-calculator-slice";
+import {MarginItem, selectActiveIndex} from "../../../store/margin-calculator-slice";
 import {useEffect, useRef, useState} from "react";
 import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margins";
 import styles from "../margin-calculator.module.css";
@@ -6,8 +6,9 @@ import {inputStatusColour} from "../../../components/margin-calculator-utils/mar
 import MarginCell from "./margin-cell";
 import {useRouter} from "next/router"
 import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {useSelector} from "react-redux";
 
-export default function ItemRow({item}: { item: MarginItem }) {
+export default function ItemRow({item, index}: { item: MarginItem, index:string }) {
 
     const router = useRouter()
     const domestic = router.query.domestic === "true"
@@ -26,10 +27,21 @@ export default function ItemRow({item}: { item: MarginItem }) {
         discountRef.current.value = item.QSDISCOUNT ? item.QSDISCOUNT.toString() : "0"
     }, [item])
 
+    const activeIndex = useSelector(selectActiveIndex)
+    const [classes, setClasses] = useState(cssClasses())
+    useEffect(()=>{setClasses(cssClasses())},[activeIndex])
+
+    function cssClasses(){
+        let classes = styles.row
+        classes += domestic ? ` ${styles["magento-grid-discount"]}` : ` ${styles["magento-grid"]}`
+        classes += activeIndex === index ? ` ${styles["active"]}` : ""
+        return classes
+    }
+
     if (!item) return null
 
     return <div key={item.SKU}
-                className={`${styles.row} ${domestic ? styles["magento-grid-discount"] : styles["magento-grid"]}`}>
+                className={classes}>
         {domestic ?
             <div>
                 <input ref={discountRef}

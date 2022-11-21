@@ -8,7 +8,6 @@ import {useDispatch, useSelector} from "react-redux";
 import TitleRow from "./title-row";
 import ItemRow from "./item-row";
 import TitleLink from "../title-link";
-import {useEffect, useState} from "react";
 
 export default function InfoTable(){
 
@@ -33,7 +32,10 @@ export default function InfoTable(){
             <TitleRow key={"title-row"}/>
         ]
 
-        for(let item of items) elements.push(<ItemRow key={item.SKU} item={item}/>)
+        for(let index in items) elements.push(<ItemRow
+            key={items[index].SKU}
+            item={items[index]}
+            index={index}/>)
 
         return elements
     }

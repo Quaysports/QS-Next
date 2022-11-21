@@ -49,6 +49,10 @@
     background: var(--primary-table-cell-background-alt);
 }
 
+.row.active{
+    background-color: var(--primary-color);
+}
+
 .title{
     background: var(--primary-table-title);
     border-top: 2px solid var(--primary-table-background);

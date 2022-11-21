@@ -32,8 +32,11 @@ export default function EbayTable() {
             <TitleRow key={"title-row"} test={toggleMarginTest}/>
         ]
 
-        for (let item of items) elements.push(
-            <ItemRow key={item.SKU} item={item} test={toggleMarginTest}/>
+        for(let index in items) elements.push(
+            <ItemRow key={items[index].SKU}
+                     item={items[index]}
+                     displayTest={toggleMarginTest}
+                     index={index}/>
         )
 
         return elements

@@ -44,6 +44,7 @@ export interface marginCalculatorState {
     tables: MarginTables
     searchItems: MarginItem[]
     renderedItems: MarginItem[]
+    activeIndex: string | null
     displayTitles: boolean
     threshold: number
     maxThreshold: number
@@ -133,6 +134,7 @@ const initialState: marginCalculatorState = {
     },
     searchItems: [],
     renderedItems: [],
+    activeIndex: null,
     displayTitles:false,
     threshold: 50,
     maxThreshold: 50,
@@ -154,6 +156,7 @@ export const marginCalculatorSlice = createSlice({
             setMarginData: (state, action: PayloadAction<MarginItem[]>) => {
                 state.marginData = action.payload
                 state.searchItems = action.payload
+                state.activeIndex = null
                 state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
             setSuppliers: (state, action:PayloadAction<string[]>) => {
@@ -177,6 +180,7 @@ export const marginCalculatorSlice = createSlice({
             setSearchItems: (state, action: PayloadAction<MarginItem[]>) => {
                 state.searchItems = action.payload
                 state.maxThreshold = 50
+                state.activeIndex = null
                 state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
             },
             sortMarginData: (state, action: PayloadAction<{ key: keyof MarginItem["MD"], ascending?: boolean }>) => {
@@ -236,6 +240,9 @@ export const marginCalculatorSlice = createSlice({
                     ? state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
                     : state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
+            setActiveIndex: (state, action:PayloadAction<string | null>) =>{
+                action.payload !== state.activeIndex ? state.activeIndex = action.payload : state.activeIndex = null
+            },
             toggleTable: (state, action: PayloadAction<keyof MarginTables>) => {
                 state.tables[action.payload] = !state.tables[action.payload]
             },
@@ -267,6 +274,7 @@ export const {
     updateMarginData,
     updateMCOverrides,
     sortMarginData,
+    setActiveIndex,
     toggleTable,
     toggleDisplayTitles,
     incrementThreshold,
@@ -279,6 +287,7 @@ export const selectSuppliers = (state: marginCalculatorWrapper) => state.marginC
 export const selectFees = (state: marginCalculatorWrapper) => state.marginCalculator.fees
 export const selectPostage = (state: marginCalculatorWrapper) => state.marginCalculator.postage
 export const selectPackaging = (state: marginCalculatorWrapper) => state.marginCalculator.packaging
+export const selectActiveIndex = (state: marginCalculatorWrapper) => state.marginCalculator.activeIndex
 export const selectTableToggles = (state: marginCalculatorWrapper) => state.marginCalculator.tables
 export const selectDisplayTitles = (state:marginCalculatorWrapper) => state.marginCalculator.displayTitles
 export const selectRenderedItems = (state: marginCalculatorWrapper) => state.marginCalculator.renderedItems

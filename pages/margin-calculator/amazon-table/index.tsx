@@ -29,10 +29,10 @@ export default function AmazonTable() {
             </div>,
             <TitleRow key={"title-row"} displayTest={toggleMarginTest}/>
         ]
-
-        for (let item of items) elements.push(
-            <ItemRow key={item.SKU} item={item} displayTest={toggleMarginTest}/>
+        for(let index in items) elements.push(
+            <ItemRow key={items[index].SKU} item={items[index]} displayTest={toggleMarginTest} index={index}/>
         )
+
         return elements
     }
 

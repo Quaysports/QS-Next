@@ -13,9 +13,9 @@ export default function StatsTable() {
     const items = useSelector(selectRenderedItems)
     const toggles = useSelector(selectTableToggles)
 
-    if(!items || items.length === 0) return null
+    if (!items || items.length === 0) return null
 
-    if(!toggles.StatsTable) return null
+    if (!toggles.StatsTable) return null
 
     function createTable() {
         const elements = [
@@ -25,7 +25,9 @@ export default function StatsTable() {
             <TitleRow key={"title-row"}/>
         ]
 
-        for (let item of items) elements.push(<ItemRow key={item.SKU} item={item}/>)
+        for (let index in items) elements.push(<ItemRow key={items[index].SKU}
+                                                        item={items[index]}
+                                                        index={index}/>)
 
         return elements
     }

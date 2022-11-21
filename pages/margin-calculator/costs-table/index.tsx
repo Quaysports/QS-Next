@@ -13,11 +13,11 @@ export default function CostsTable() {
     const items = useSelector(selectRenderedItems)
     const toggles = useSelector(selectTableToggles)
 
-    if(!items || items.length === 0) return null
+    if (!items || items.length === 0) return null
 
-    if(!toggles.CostsTable) return null
+    if (!toggles.CostsTable) return null
 
-    function createTable(){
+    function createTable() {
         const elements = [
             <div key={"header"} className={styles.header}>
                 <TitleLink type={"Costs"}/>
@@ -25,7 +25,9 @@ export default function CostsTable() {
             <TitleRow key={"title-row"}/>
         ]
 
-        for(let item of items)elements.push(<ItemRow key={item.SKU+"-costs"} item={item}/>)
+        for (let index in items) elements.push(<ItemRow key={items[index].SKU + "-costs"}
+                                                        item={items[index]}
+                                                        index={index}/>)
 
         return elements
     }
