@@ -12,23 +12,17 @@ import ItemRow from "./stock-forecast-row";
 import InfiniteScroll from "../../components/infinite-scroll";
 import {appWrapper} from "../../store/store";
 import {
-    incrementThreshold, selectInitialItems, selectMaxThreshold, selectRenderedItems,
-    selectThreshold, setInitialItems, setSearchItems, setSuppliers
+    incrementThreshold, selectInitialItems, setInitialItems, setSearchItems, setSuppliers
 } from "../../store/stock-forecast-slice";
 import {useDispatch, useSelector} from "react-redux";
 
 export default function StockForecastLandingPage() {
 
     const initialItems = useSelector(selectInitialItems)
-    const threshold = useSelector(selectThreshold)
-    const maxThreshold = useSelector(selectMaxThreshold)
 
     const dispatch = useDispatch()
 
-
     const updateItemsHandler = (items: StockForecastItem[]) => dispatch(setSearchItems(items))
-
-    const scrollHandler = () => dispatch(incrementThreshold())
 
     return (
         <OneColumn>
@@ -39,11 +33,7 @@ export default function StockForecastLandingPage() {
             </Menu>
             <ColumnLayout scroll={true} stickyTop={true}>
                 <div className={styles.table}>
-                    <InfiniteScroll
-                        threshold={threshold}
-                        maxThreshold={maxThreshold}
-                        scrollHandler={scrollHandler}
-                        selector={selectRenderedItems}>
+                    <InfiniteScroll incrementReducer={incrementThreshold}>
                         <ItemRow/>
                     </InfiniteScroll>
                 </div>

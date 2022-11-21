@@ -2,3 +2,12 @@
     overflow-y: scroll;
     max-height: 100%;
 }
+.wrapper{
+    width:fit-content;
+}
+.content {
+    width:100%
+}
+.target {
+    width:100%
+}

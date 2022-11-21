@@ -36,6 +36,10 @@ export const getDefaultSuppliers = async (filter: object = {}) => {
     return await mongoI.findDistinct("Items", "SUPPLIER", filter)
 }
 
+export const getAllBrands = async (filter: object = {}) => {
+    return await mongoI.findDistinct("Items", "IDBEP.BRAND", filter)
+}
+
 export const getAllSuppliers = async (filter: object = {}) => {
     return await mongoI.findDistinct("Items", "SUPPLIERS", filter)
 }
