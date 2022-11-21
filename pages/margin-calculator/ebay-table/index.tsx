@@ -7,6 +7,7 @@ import {
 import {useState} from "react";
 import ItemRow from "./item-row";
 import TitleRow from "./title-row";
+import TitleLink from "../title-link";
 
 export default function EbayTable() {
 
@@ -21,7 +22,9 @@ export default function EbayTable() {
     function createTable() {
         const elements = [
             <div key={"header"} className={styles.header}>
-                <div>Ebay</div>
+                <div>
+                    <TitleLink type={"Ebay"}/>
+                </div>
                 <div>
                     <button onClick={() => setToggleTest(!toggleMarginTest)}>Margin Tests</button>
                 </div>

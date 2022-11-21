@@ -90,8 +90,22 @@
     width:100%;
     text-align: justify;
 }
+.info-title-checkbox{
+    display:grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+}
 
-.info-grid {
+.info-cell{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.info-grid{
+    display:grid;
+    grid-template-columns: 30px 30px 250px 400px;
+}
+.info-grid-collapsed {
     display:grid;
     grid-template-columns: 30px 30px 250px;
 }

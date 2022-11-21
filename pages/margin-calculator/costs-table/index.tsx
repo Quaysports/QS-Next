@@ -6,6 +6,7 @@ import {
 } from "../../../store/margin-calculator-slice";
 import ItemRow from "./item-row";
 import TitleRow from "./title-row";
+import TitleLink from "../title-link";
 
 export default function CostsTable() {
 
@@ -18,7 +19,9 @@ export default function CostsTable() {
 
     function createTable(){
         const elements = [
-            <div key={"header"} className={styles.header}>Costs</div>,
+            <div key={"header"} className={styles.header}>
+                <TitleLink type={"Costs"}/>
+            </div>,
             <TitleRow key={"title-row"}/>
         ]
 

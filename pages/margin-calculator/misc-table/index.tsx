@@ -6,6 +6,7 @@ import {
 } from "../../../store/margin-calculator-slice";
 import TitleRow from "./title-row";
 import ItemRow from "./item-row";
+import TitleLink from "../title-link";
 
 export default function MiscTable() {
 
@@ -18,7 +19,9 @@ export default function MiscTable() {
 
     function createTable() {
         const elements = [
-            <div key={"header"} className={styles.header}>Misc</div>,
+            <div key={"header"} className={styles.header}>
+                <TitleLink type={"Misc"}/>
+            </div>,
             <TitleRow key={"title-row"}/>
         ]
 

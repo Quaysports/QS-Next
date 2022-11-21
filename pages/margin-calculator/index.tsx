@@ -39,8 +39,6 @@ import StatsTable from "./stats-table";
     Test item menu / tool
     Remove override button / script
     Un-hide all button / script
-    Update all button
-    Update CP button
 
     Loading indicators
  */
@@ -85,12 +83,8 @@ export default function marginCalculatorLandingPage() {
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
     const domestic = context.query.domestic === "true"
-    console.log("domestic:", domestic)
     const brand = context.query.brand
-    console.log("brand:", brand)
     const show = context.query.show === "true"
-    console.log("show:", show)
-    console.log("dom and brand:", domestic && !brand)
 
     let query: MarginQuery = {
         $and: [
@@ -113,8 +107,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     }
 
     if(!show) { query.$and.push({HIDE:{$ne:true}}) }
-
-    console.log(query)
 
     const projection = {
         SKU: 1,

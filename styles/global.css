@@ -330,9 +330,6 @@ select{
 
 #search-bar input[type=radio]{
     margin: 0 5px;
-    -ms-transform: scale(1.1); /* IE 9 */
-    -webkit-transform: scale(1.1); /* Chrome, Safari, Opera */
-    transform: scale(1.1);
 }
 
 #search-bar-buttons{

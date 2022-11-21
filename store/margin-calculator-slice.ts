@@ -39,12 +39,12 @@ export interface marginCalculatorState {
     fees: Fees | null
     postage: { [key: string]: PostalData } | null
     packaging: { [key: string]: PackagingData } | null
-    totalStockVal: number
     amazonMarginTest: number | null
     ebayMarginTest: number | null
     tables: MarginTables
     searchItems: MarginItem[]
     renderedItems: MarginItem[]
+    displayTitles: boolean
     threshold: number
     maxThreshold: number
     currentSort: string
@@ -118,7 +118,6 @@ const initialState: marginCalculatorState = {
     fees: null,
     postage: null,
     packaging: null,
-    totalStockVal: 0,
     amazonMarginTest: null,
     ebayMarginTest: null,
     tables: {
@@ -134,6 +133,7 @@ const initialState: marginCalculatorState = {
     },
     searchItems: [],
     renderedItems: [],
+    displayTitles:false,
     threshold: 50,
     maxThreshold: 50,
     currentSort: ""
@@ -154,7 +154,6 @@ export const marginCalculatorSlice = createSlice({
             setMarginData: (state, action: PayloadAction<MarginItem[]>) => {
                 state.marginData = action.payload
                 state.searchItems = action.payload
-                for (const item of state.marginData) state.totalStockVal += item.STOCKVAL
                 state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
             setSuppliers: (state, action:PayloadAction<string[]>) => {
@@ -240,6 +239,9 @@ export const marginCalculatorSlice = createSlice({
             toggleTable: (state, action: PayloadAction<keyof MarginTables>) => {
                 state.tables[action.payload] = !state.tables[action.payload]
             },
+            toggleDisplayTitles:(state) => {
+                state.displayTitles = !state.displayTitles
+            },
             setMarginTest: (state, action: PayloadAction<{ type: string, value: number }>) => {
                 switch (action.payload.type) {
                     case "Amazon": {
@@ -266,6 +268,7 @@ export const {
     updateMCOverrides,
     sortMarginData,
     toggleTable,
+    toggleDisplayTitles,
     incrementThreshold,
     setSearchItems,
     setMarginTest
@@ -276,8 +279,8 @@ export const selectSuppliers = (state: marginCalculatorWrapper) => state.marginC
 export const selectFees = (state: marginCalculatorWrapper) => state.marginCalculator.fees
 export const selectPostage = (state: marginCalculatorWrapper) => state.marginCalculator.postage
 export const selectPackaging = (state: marginCalculatorWrapper) => state.marginCalculator.packaging
-export const selectTotalStockValData = (state: marginCalculatorWrapper) => state.marginCalculator.totalStockVal
 export const selectTableToggles = (state: marginCalculatorWrapper) => state.marginCalculator.tables
+export const selectDisplayTitles = (state:marginCalculatorWrapper) => state.marginCalculator.displayTitles
 export const selectRenderedItems = (state: marginCalculatorWrapper) => state.marginCalculator.renderedItems
 export const selectCurrentSort = (state: marginCalculatorWrapper) => state.marginCalculator.currentSort
 export const selectAmazonMarginTest = (state: marginCalculatorWrapper) => state.marginCalculator.amazonMarginTest

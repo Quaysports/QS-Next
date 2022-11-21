@@ -6,6 +6,7 @@ import {
 } from "../../../store/margin-calculator-slice";
 import TitleRow from "./title-row";
 import ItemRow from "./item-row";
+import TitleLink from "../title-link";
 
 export default function MagentoTable() {
 
@@ -18,7 +19,9 @@ export default function MagentoTable() {
 
     function createTable(){
         const elements = [
-            <div key={"header"} className={styles.header}>Magento</div>,
+            <div key={"header"} className={styles.header}>
+                <TitleLink type={"Magento"}/>
+            </div>,
             <TitleRow key={"title-row"}/>
         ]
 
