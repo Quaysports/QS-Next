@@ -7,9 +7,9 @@ export default function SkuCell({item}:{item:MarginItem}){
         onMouseOver={(e)=>{
             const element = e.target as HTMLElement
             if(element.offsetWidth < element.scrollWidth)
-                dispatchNotification({type:"tooltip", e:e, content:item.SKU})
+                dispatchNotification({type:"tooltip", e:e, content:item?.SKU})
         }}
         onMouseLeave={
-            (e)=>dispatchNotification({type:undefined})
-        }><div className={styles["info-cell"]}>{item.SKU}</div></span>
+            ()=>dispatchNotification({type:undefined})
+        }><div className={styles["info-cell"]}>{item?.SKU}</div></span>
 }

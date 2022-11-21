@@ -7,9 +7,9 @@ export default function TitleCell({item}:{item:MarginItem}){
                  onMouseOver={(e)=>{
                      const element = e.target as HTMLElement
                      if(element.offsetWidth < element.scrollWidth)
-                         dispatchNotification({type:"tooltip", e:e, content:item.TITLE})
+                         dispatchNotification({type:"tooltip", e:e, content:item?.TITLE})
                  }}
                  onMouseLeave={
-                    (e)=>dispatchNotification({type:undefined})
-                 }><div className={styles["info-cell"]}>{item.TITLE}</div></span>
+                    ()=>dispatchNotification({type:undefined})
+                 }><div className={styles["info-cell"]}>{item?.TITLE}</div></span>
 }
