@@ -41,12 +41,10 @@ function TableRow({channel, priceId, item}:{channel:string, priceId:keyof Margin
 
     const dispatch = useDispatch()
 
-    let {
-        CP:{[channel]:{PRICE:channelPrice = "0"}},
-        [priceId]:marginPrice = "0",
-        CP:{[channel]:{STATUS:status}},
-        MCOVERRIDES:{[channel]:flag} = {}
-    } = item
+    let channelPrice = item.CP[channel]?.PRICE ? item.CP[channel].PRICE : "0"
+    let marginPrice = priceId ? priceId : "0"
+    let status = item.CP[channel]?.STATUS ? item.CP[channel]?.STATUS : 0
+    let flag = item.MCOVERRIDES?.[channel]
 
     let difference = Number(channelPrice) - Number(marginPrice)
 
