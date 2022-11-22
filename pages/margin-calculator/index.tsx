@@ -93,11 +93,11 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
         ]
     }
 
-    if (domestic && !brand) {
+    if (domestic) {
         query.$and.push({$or: [{IDBFILTER: {$eq: 'domestic'}}, {IDBFILTER: {$eq: 'bait'}}]})
     }
 
-    if(!domestic && !brand) {
+    if(!domestic) {
         query.$and.push({IDBFILTER: {$ne: 'domestic'}})
         query.$and.push({IDBFILTER: {$ne: 'bait'}})
     }
@@ -141,7 +141,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     const items = await getItems(query, projection, {SKU: 1}) as MarginItem[]
     if(items) store.dispatch(setMarginData(items))
 
-    const suppliers = await getAllBrands() as string[]
+    const suppliers = await getAllBrands(query) as string[]
     if(suppliers) store.dispatch(setSuppliers(suppliers))
 
     const fees = await Fees.get()

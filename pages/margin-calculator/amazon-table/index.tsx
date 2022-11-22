@@ -1,19 +1,34 @@
 import styles from "../margin-calculator.module.css";
 import {useSelector} from "react-redux";
 import {
-    selectRenderedItems,
+    selectRenderedItems, selectSearchData,
     selectTableToggles,
 } from "../../../store/margin-calculator-slice";
 import {useState} from "react";
 import TitleRow from "./title-row";
 import ItemRow from "./item-row"
 import TitleLink from "../title-link";
+import {generateMarginText} from "../../../components/margin-calculator-utils/margin-styler";
+import CSVButton from "../../../components/csv-button";
 
 export default function AmazonTable() {
 
     const items = useSelector(selectRenderedItems)
+    const itemsForCSV = useSelector(selectSearchData)
     const toggles = useSelector(selectTableToggles)
     const [toggleMarginTest, setToggleTest] = useState<boolean>(false)
+
+    function CSVData(){
+        return itemsForCSV.reduce((arr:any[], item)=>{
+            arr.push({
+                SKU:item.SKU,
+                TITLE:item.TITLE,
+                PRICE:item.AMZPRICEINCVAT,
+                MARGIN:generateMarginText(item.PURCHASEPRICE, item.MD.AMAZPAVC ),
+                NOTE:item.MARGINNOTE ? item.MARGINNOTE : ""})
+            return arr
+        },[])
+    }
 
     if(!items || items.length === 0) return null
 
@@ -23,7 +38,10 @@ export default function AmazonTable() {
         const elements = [
             <div key={"header"} className={styles.header}>
                 <div><TitleLink type={"Amazon"}/></div>
-                <div>
+                <div className={styles["header-buttons"]}>
+                    <CSVButton fileName={`Magento CSV - ${Date.now()}`}
+                               objectArray={CSVData()}
+                               label={"CSV"}/>
                     <button onClick={() => setToggleTest(!toggleMarginTest)}>Margin Tests</button>
                 </div>
             </div>,

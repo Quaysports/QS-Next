@@ -14,7 +14,7 @@ const initialState:userState = {
     usersArray:[]
 }
 
-export const userSlice = createSlice({
+export const usersSlice = createSlice({
         name: "users",
         initialState,
         extraReducers: {
@@ -26,7 +26,9 @@ export const userSlice = createSlice({
             },
         },
         reducers:{
-            setAllUserData:(state,action) => {state.usersArray = action.payload},
+            setAllUserData:(state,action) => {
+                state.usersArray = action.payload
+            },
             setUserData:(state,action:PayloadAction<{index:number, user:User}>) => {
                 state.usersArray[action.payload.index] = action.payload.user
                 const opt = {method:'POST', headers:{"Content-Type":"application/json"}, body: JSON.stringify(state.usersArray[action.payload.index])}
@@ -46,8 +48,8 @@ export const userSlice = createSlice({
     })
 ;
 
-export const {setUserData, setAllUserData, setUserPermissions, deleteUser} = userSlice.actions
+export const {setUserData, setAllUserData, setUserPermissions, deleteUser} = usersSlice.actions
 
 export const selectUsers = (state:userWrapper) => state.users.usersArray
 
-export default userSlice.reducer;
+export default usersSlice.reducer;

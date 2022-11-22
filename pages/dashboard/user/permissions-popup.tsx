@@ -1,6 +1,6 @@
 import style from "./user.module.css";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUsers, setUserPermissions} from "../../../store/dashboard/user-slice";
+import {selectUsers, setUserPermissions} from "../../../store/dashboard/users-slice";
 import {ChangeEvent} from "react";
 import {User} from "../../../server-modules/users/user";
 
