@@ -1,14 +1,18 @@
 import {useDispatch, useSelector} from "react-redux";
-import {selectTableToggles, toggleTable} from "../../store/margin-calculator-slice";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
+import {MarginCalcTables} from "../../server-modules/users/user";
+import {selectMarginSettings, updateMarginSetting} from "../../store/session-slice";
 
 export default function TitleLink({type}:{type:string}){
 
     const dispatch = useDispatch()
-    const filters = useSelector(selectTableToggles)
+    const settings = useSelector(selectMarginSettings)
 
     return <div onClick={()=>{
-                    dispatch(toggleTable(`${type}Table`))
+                    let newSettings = structuredClone(settings!)
+                    const key = `${type}Table` as keyof MarginCalcTables
+                    newSettings.tables[key] = !newSettings.tables[key]
+                    dispatch(updateMarginSetting(newSettings))
                     dispatchNotification({type:undefined})
                 }}
                 onMouseOver={(e)=>dispatchNotification({type:"tooltip",content:"Click to hide", e:e})}

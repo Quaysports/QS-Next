@@ -1,6 +1,6 @@
 import style from "./user.module.css";
 import PermissionsPopup from "./permissions-popup";
-import {deleteUser, setUserData} from "../../../store/dashboard/user-slice";
+import {deleteUser, setUserData} from "../../../store/dashboard/users-slice";
 import {useDispatch} from "react-redux";
 import {User} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";

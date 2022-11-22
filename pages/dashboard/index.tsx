@@ -5,7 +5,7 @@ import Menu from "../../components/menu/menu";
 import DashboardTabs from "./tabs";
 import OneColumn from "../../components/layouts/one-column";
 import {appWrapper} from "../../store/store";
-import {setAllUserData} from "../../store/dashboard/user-slice";
+import {setAllUserData} from "../../store/dashboard/users-slice";
 import {getUsers} from "../../server-modules/users/user";
 
 /**

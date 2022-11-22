@@ -283,6 +283,7 @@ export const {
 } = marginCalculatorSlice.actions
 
 export const selectMarginData = (state: marginCalculatorWrapper) => state.marginCalculator.marginData
+export const selectSearchData = (state: marginCalculatorWrapper) => state.marginCalculator.searchItems
 export const selectSuppliers = (state: marginCalculatorWrapper) => state.marginCalculator.suppliers
 export const selectFees = (state: marginCalculatorWrapper) => state.marginCalculator.fees
 export const selectPostage = (state: marginCalculatorWrapper) => state.marginCalculator.postage

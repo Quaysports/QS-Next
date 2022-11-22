@@ -47,9 +47,7 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
                         onChange={
                     async (e)=>{
                         let query:{brand?:string} = {...router.query, brand:e.target.value}
-
                         if(e.target.value === "") delete query.brand
-
                         await router.push({pathname:router.pathname, query:query})
                     }
                 }>

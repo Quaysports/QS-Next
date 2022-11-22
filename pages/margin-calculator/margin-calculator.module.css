@@ -39,6 +39,12 @@
     justify-content: right;
 }
 
+.header-buttons {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+}
+
 .row {
     height:24px;
     margin: 2px 0;

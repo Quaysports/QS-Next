@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import {selectUsers} from "../../../store/dashboard/user-slice";
+import {selectUsers} from "../../../store/dashboard/users-slice";
 import UserTable from "./user-table";
 import ColumnLayout from "../../../components/layouts/column-layout";
 

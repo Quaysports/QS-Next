@@ -1,21 +1,21 @@
 import styles from "../margin-calculator.module.css";
 import {useSelector} from "react-redux";
 import {
-    selectRenderedItems,
-    selectTableToggles
+    selectRenderedItems
 } from "../../../store/margin-calculator-slice";
 import TitleRow from "./title-row";
 import ItemRow from "./item-row";
 import TitleLink from "../title-link";
+import {selectMarginSettings} from "../../../store/session-slice";
 
 export default function StatsTable() {
 
     const items = useSelector(selectRenderedItems)
-    const toggles = useSelector(selectTableToggles)
+    const settings = useSelector(selectMarginSettings)
 
     if (!items || items.length === 0) return null
 
-    if (!toggles.StatsTable) return null
+    if (!settings?.tables.StatsTable) return null
 
     function createTable() {
         const elements = [

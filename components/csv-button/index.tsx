@@ -5,12 +5,13 @@
 interface Props {
     fileName?:string,
     objectArray: { [key:string]:string | number }[]
+    label?:string
 }
 
 /**
  * Button component that takes an array of json objects, converts to csv and downloads.
  */
-export default function CSVButton({fileName = (new Date()).toString(), objectArray = []}:Props){
+export default function CSVButton({fileName = (new Date()).toString(), objectArray = [], label = "Download CSV"}:Props){
 
     function createCSV(){
         let str = ""
@@ -35,6 +36,6 @@ export default function CSVButton({fileName = (new Date()).toString(), objectArr
     }
 
     return(
-        <button onClick={createCSV}>Download CSV</button>
+        <button onClick={createCSV}>{label}</button>
     )
 }
