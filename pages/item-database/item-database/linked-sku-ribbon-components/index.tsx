@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
-import {selectItem} from "../../../store/item-database/item-database-slice";
-import styles from "../item-database.module.css"
+import {selectItem} from "../../../../store/item-database/item-database-slice";
+import styles from "../../item-database.module.css"
 
 /**
  * Linked SKU Ribbon Component
@@ -17,7 +17,7 @@ export default function LinkedSKURibbon(){
 
         for(const SKU of linkedSKUs){
             linkedSKUArray.push(
-                <div>{SKU}</div>
+                <div key={SKU}>{SKU}</div>
             )
         }
         return linkedSKUArray

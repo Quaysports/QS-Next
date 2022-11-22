@@ -7,7 +7,7 @@ import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
 import SearchbarSidebarOneColumn from "../../components/layouts/searchbar-sidebar-one-column";
 import {appWrapper} from "../../store/store";
 import {setItem, setSuppliers} from "../../store/item-database/item-database-slice";
-import {getItem, getItems, getDefaultSuppliers} from "../../server-modules/items/items";
+import {getAllSuppliers, getItem, getItems} from "../../server-modules/items/items";
 import {InferGetServerSidePropsType} from "next";
 
 export type rodLocationObject = {
@@ -36,7 +36,7 @@ export default function itemDatabaseLandingPage({rodLocations}:InferGetServerSid
                 <>
                     <SidebarOneColumn>
                         <Menu><ItemDatabaseTabs/></Menu>
-                        <RodLocationsLandingPage rodLocations={rodLocations}/>
+                        <RodLocationsLandingPage />
                     </SidebarOneColumn>
                 </> : null}
         </>
@@ -48,7 +48,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     let sku = context.query.sku
     let item = await getItem({SKU: sku})
     store.dispatch(setItem(item))
-    let suppliers = await getDefaultSuppliers()
+    let suppliers = await getAllSuppliers()
     store.dispatch(setSuppliers(suppliers))
 
     let query = {"BRANDLABEL.loc": {$exists: true, $ne: ""}}

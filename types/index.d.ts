@@ -76,7 +76,7 @@ declare namespace sbt {
         PURCHASEPRICE?: number,
         QSPRICEINCVAT?: string,
         RETAILPRICE?: number,
-        SHELFLOCATION?: {PREFIX:string, LETTER:string, NUMBER: string},
+        SHELFLOCATION?: shelfLocation,
         SHIPAMAZONEXP?: string,
         SHIPCOURIEREXP?: string,
         SHIPCOURIERSTD?: string,
@@ -95,6 +95,8 @@ declare namespace sbt {
         TITLEWEBSITE?: string,
         WEIGHT?: number
     }
+
+    export interface shelfLocation {PREFIX:string, LETTER:string, NUMBER: string}
 
     /* ToDo remove from database
     *   POSTALPRICEUK

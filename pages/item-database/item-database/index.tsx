@@ -4,7 +4,6 @@ import SideBar from "./sidebar";
 import ItemDetails from "./item-details";
 import {useSelector} from "react-redux";
 import {selectItem} from "../../../store/item-database/item-database-slice";
-import {useEffect} from "react";
 import {useRouter} from "next/router";
 
 /**

@@ -288,15 +288,21 @@ export const deadStockReport = async ():Promise<DeadStockReport[]> => {
     let threeMonthDead = await mongoAggregate(threeMonths)
 
     let tempMap = new Map()
-    for(const item of threeMonthDead!){
-        item.SOLDFLAG = 3
-        tempMap.set(item.SKU, item)
+    if(threeMonthDead) {
+        for (const item of threeMonthDead) {
+            item.SOLDFLAG = 3
+            tempMap.set(item.SKU, item)
+        }
     }
-    for(const item of sixMonthDead!) {
-        if(tempMap.has(item.SKU)) tempMap.get(item.SKU).SOLDFLAG = 6
+    if(sixMonthDead) {
+        for (const item of sixMonthDead) {
+            if (tempMap.has(item.SKU)) tempMap.get(item.SKU).SOLDFLAG = 6
+        }
     }
-    for(const item of tenMonthDead!) {
-        if(tempMap.has(item.SKU)) tempMap.get(item.SKU).SOLDFLAG = 10
+    if(tenMonthDead) {
+        for (const item of tenMonthDead) {
+            if (tempMap.has(item.SKU)) tempMap.get(item.SKU).SOLDFLAG = 10
+        }
     }
 
     return Array.from(tempMap.values())

@@ -193,3 +193,8 @@ export const getBrandLabelImages = async () => {
 export const getBrands = async (filter = {}) => {
     return await mongoI.findDistinct("Items", "IDBEP.BRAND", filter)
 }
+
+export const getTags = async () => {
+    const tags = await mongoI.find("Item-Information", {id: "tags"}, {tags:1})
+    return tags ? tags : []
+}
