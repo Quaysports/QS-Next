@@ -1,21 +1,19 @@
 import styles from "../margin-calculator.module.css";
 import {useSelector} from "react-redux";
-import {
-    selectRenderedItems, selectSearchData,
-    selectTableToggles,
-} from "../../../store/margin-calculator-slice";
+import {selectRenderedItems, selectSearchData} from "../../../store/margin-calculator-slice";
 import {useState} from "react";
 import ItemRow from "./item-row";
 import TitleRow from "./title-row";
 import TitleLink from "../title-link";
 import CSVButton from "../../../components/csv-button";
 import {generateMarginText} from "../../../components/margin-calculator-utils/margin-styler";
+import {selectMarginSettings} from "../../../store/session-slice";
 
 export default function EbayTable() {
 
     const items = useSelector(selectRenderedItems)
     const itemsForCSV = useSelector(selectSearchData)
-    const toggles = useSelector(selectTableToggles)
+    const settings = useSelector(selectMarginSettings)
     const [toggleMarginTest, setToggleTest] = useState<boolean>(false)
 
     function CSVData(){
@@ -32,7 +30,7 @@ export default function EbayTable() {
 
     if(!items || items.length === 0) return null
 
-    if (!toggles.EbayTable) return null
+    if (!settings?.tables.EbayTable) return null
 
     function createTable() {
         const elements = [

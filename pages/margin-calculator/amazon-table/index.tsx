@@ -1,21 +1,19 @@
 import styles from "../margin-calculator.module.css";
 import {useSelector} from "react-redux";
-import {
-    selectRenderedItems, selectSearchData,
-    selectTableToggles,
-} from "../../../store/margin-calculator-slice";
+import {selectRenderedItems, selectSearchData} from "../../../store/margin-calculator-slice";
 import {useState} from "react";
 import TitleRow from "./title-row";
 import ItemRow from "./item-row"
 import TitleLink from "../title-link";
 import {generateMarginText} from "../../../components/margin-calculator-utils/margin-styler";
 import CSVButton from "../../../components/csv-button";
+import {selectMarginSettings} from "../../../store/session-slice";
 
 export default function AmazonTable() {
 
     const items = useSelector(selectRenderedItems)
     const itemsForCSV = useSelector(selectSearchData)
-    const toggles = useSelector(selectTableToggles)
+    const settings = useSelector(selectMarginSettings)
     const [toggleMarginTest, setToggleTest] = useState<boolean>(false)
 
     function CSVData(){
@@ -32,7 +30,7 @@ export default function AmazonTable() {
 
     if(!items || items.length === 0) return null
 
-    if (!toggles.AmazonTable) return null
+    if (!settings?.tables.AmazonTable) return null
 
     function createTable() {
         const elements = [

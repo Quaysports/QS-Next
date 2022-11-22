@@ -27,6 +27,9 @@ import {useDispatch, useSelector} from "react-redux";
 import PricesTable from "./prices-table";
 import InfiniteScroll from "../../components/infinite-scroll";
 import StatsTable from "./stats-table";
+import {getSession} from "next-auth/react";
+import {getUserSettings} from "../../server-modules/users/user";
+import {updateSettings} from "../../store/session-slice";
 
 /* ToDO:
 
@@ -44,7 +47,7 @@ import StatsTable from "./stats-table";
  */
 
 
-export default function marginCalculatorLandingPage() {
+export default function marginCalculatorLandingPage({loaded = false}) {
 
     const dispatch = useDispatch()
     const items = useSelector(selectMarginData)
@@ -53,6 +56,8 @@ export default function marginCalculatorLandingPage() {
         document.getElementById("column-layout")?.scroll(0,0)
         dispatch(setSearchItems(items))
     }
+
+    if(!loaded) return null
 
     return (
         <div>
@@ -85,6 +90,9 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     const domestic = context.query.domestic === "true"
     const brand = context.query.brand
     const show = context.query.show === "true"
+    const session = await getSession(context)
+    const user = await getUserSettings(session?.user.username)
+    if(user?.settings) store.dispatch(updateSettings(user!.settings))
 
     let query: MarginQuery = {
         $and: [
@@ -153,7 +161,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     let packaging = await Packaging.get()
     if(packaging) store.dispatch(setPackaging(packaging))
 
-    return {props: {}}
+    return {props: {loaded:true}}
 })
 
 

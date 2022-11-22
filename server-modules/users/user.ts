@@ -71,7 +71,7 @@ export const login = async (user: string, password: string) => {
 
     const result = await mongoI.findOne<User>("Users",
         {username: {$eq: user}, password: {$eq: password}},
-        {username: 1, role: 1, rota: 1, permissions: 1, theme: 1, settings: 1})
+        {username: 1, role: 1, rota: 1, permissions: 1, theme: 1})
     if (result) {
         return {...result, auth: true}
     } else {
@@ -82,7 +82,7 @@ export const login = async (user: string, password: string) => {
 export const pinLogin = async (pin: string) => {
     const result = await mongoI.findOne<User>("Users",
         {pin: {$eq: pin}},
-        {username: 1, role: 1, rota: 1, permissions: 1, theme: 1, settings: 1})
+        {username: 1, role: 1, rota: 1, permissions: 1, theme: 1})
     if (result) {
         return {...result, auth: true}
     } else {
@@ -94,8 +94,8 @@ export const getUsers = async (query?: object) => {
     return await mongoI.find<User>("Users", query)
 }
 
-export const getUserDetails = async (username?: string) => {
-    return await mongoI.find<User>("Users", {username:username},{username: 1, role: 1, rota: 1, permissions: 1, theme: 1, settings: 1})
+export const getUserSettings = async (username?: string) => {
+    return await mongoI.findOne<User>("Users", {username:username},{settings:1})
 }
 
 export const updateUser = async (data: User) => {

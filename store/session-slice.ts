@@ -40,16 +40,14 @@ export const sessionSlice = createSlice({
         initialState,
         extraReducers: {
             [HYDRATE]: (state, action) => {
-                console.log("hydration of user!")
                 return {
                     ...state,
-                    ...action.payload.session
-                }
+                    ...action.payload.session,
+                };
             },
         },
         reducers: {
             setUserData: (state, action: PayloadAction<User>) => {
-                console.log("set user data!")
                 state.user = {...state.user, ...action.payload}
             },
             updateUserData: (state, action: PayloadAction<User>) => {

@@ -44,7 +44,6 @@ export const authOptions = {
                     role:user.role,
                     rota:user.rota,
                     theme:user.theme,
-                    settings:user.settings,
                     accessToken: user.token,
                     refreshToken: user.refreshToken,
                 };
@@ -59,7 +58,6 @@ export const authOptions = {
             session.user.role = token.role;
             session.user.rota = token.rota;
             session.user.theme = token.theme;
-            session.user.settings = token.settings;
             session.user.accessToken = token.accessToken;
             session.user.refreshToken = token.refreshToken;
             session.user.accessTokenExpires = token.accessTokenExpires;

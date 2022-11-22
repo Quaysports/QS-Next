@@ -1,20 +1,18 @@
 import styles from "../margin-calculator.module.css";
 import {useSelector} from "react-redux";
-import {
-    selectRenderedItems, selectSearchData,
-    selectTableToggles,
-} from "../../../store/margin-calculator-slice";
+import {selectRenderedItems, selectSearchData} from "../../../store/margin-calculator-slice";
 import ItemRow from "./item-row";
 import TitleRow from "./title-row";
 import TitleLink from "../title-link";
 import {generateMarginText} from "../../../components/margin-calculator-utils/margin-styler";
 import CSVButton from "../../../components/csv-button";
+import {selectMarginSettings} from "../../../store/session-slice";
 
 export default function ShopTable() {
 
     const items = useSelector(selectRenderedItems)
     const itemsForCSV = useSelector(selectSearchData)
-    const toggles = useSelector(selectTableToggles)
+    const settings = useSelector(selectMarginSettings)
 
     function CSVData(){
         return itemsForCSV.reduce((arr:any[], item)=>{
@@ -31,7 +29,7 @@ export default function ShopTable() {
 
     if(!items || items.length === 0) return null
 
-    if(!toggles.ShopTable) return null
+    if(!settings?.tables.ShopTable) return null
 
     function createTable(){
         const elements = [

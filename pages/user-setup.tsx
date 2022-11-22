@@ -10,22 +10,15 @@ export default function UserSetup() {
 
     useEffect(() => {
         if (user.username !== "") return
-        getSession().then(session => {
-            if (!session) return
-            let opts = {method: "POST", body: user.username}
-            fetch("/api/user/get-user-details", opts)
-                .then(result => result.json()
-                    .then(json => dispatch(setUserData(json)))
-                )
-        })
-    },[])
+        getSession().then(session =>{ if(session) dispatch(setUserData(session.user))})
+    })
 
-    useEffect(() => {
-        if (!user?.theme) return
+    useEffect(()=>{
+        if(!user?.theme) return
         for (const [key, value] of Object.entries(user.theme)) {
             document.documentElement.style.setProperty(key, value)
         }
-    }, [user])
+    },[user])
 
     return null
 }

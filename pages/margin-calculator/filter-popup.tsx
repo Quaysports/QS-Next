@@ -11,14 +11,12 @@ export default function MarginCalculatorFilters() {
     const elements = []
     for (let [k, v] of Object.entries(settings!.tables)) {
         elements.push(
-            <label>
-                <input key={k}
-                       type={"checkbox"}
+            <label key={k}>
+                <input type={"checkbox"}
                        checked={v}
-                       onChange={() => {
+                       onChange={(e) => {
                            let newSettings = structuredClone(settings!)
-                           newSettings.tables[k as keyof MarginCalcTables] = !v
-                           console.log(newSettings)
+                           newSettings.tables[k as keyof MarginCalcTables] = e.target.checked
                            dispatch(updateMarginSetting(newSettings))
                        }}/>{k.replace("Table", "")}</label>
         )
