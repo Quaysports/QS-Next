@@ -214,6 +214,9 @@ export const shopOrdersSlice = createSlice({
                 if (action.payload.type === "qty") state.newOrderArray.order[action.payload.index].qty = parseFloat(action.payload.value)
                 if (action.payload.type === "tradePack") state.newOrderArray.order[action.payload.index].tradePack = parseFloat(action.payload.value)
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
+                let date = new Date()
+                state.newOrderArray.date ??= date.getTime()
+                saveNewOrder(state.newOrderArray, state.totalPrice)
             },
             setChangeOrderArray: (state, action: PayloadAction<{ item?: orderObject, type: string, index?: number }>) => {
                 if (action.payload.type === "remove") {
@@ -230,6 +233,9 @@ export const shopOrdersSlice = createSlice({
                     state.newOrderArray.order.push(action.payload.item!)
                 }
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
+                let date = new Date()
+                state.newOrderArray.date ??= date.getTime()
+                saveNewOrder(state.newOrderArray, state.totalPrice)
             },
             setRadioButtons: (state, action: PayloadAction<{ lowStock: boolean, allItems: boolean }>) => {
                 state.radioButtons.lowStock = action.payload.lowStock
@@ -380,3 +386,30 @@ export const selectOrderContents = (state: ShopOrdersWrapper) => state.shopOrder
 
 
 export default shopOrdersSlice.reducer;
+
+function saveNewOrder(newOrderArray:OpenOrdersObject, totalPrice: number){
+
+    const date = new Date();
+
+    console.log("DATE-----", newOrderArray.date)
+
+    let newOrder = {
+        id: newOrderArray.id ? newOrderArray.id : `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
+        supplier: newOrderArray.order[0].SUPPLIER,
+        date: newOrderArray.date ? newOrderArray.date : date.getTime(),
+        complete: false,
+        arrived: newOrderArray.arrived,
+        price: totalPrice,
+        order: newOrderArray.order,
+    }
+
+    const opts = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+        },
+        body: JSON.stringify(newOrder)
+    }
+    fetch("/api/shop-orders/update-order", opts).then()
+}

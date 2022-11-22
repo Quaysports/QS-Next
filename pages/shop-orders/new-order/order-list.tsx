@@ -17,68 +17,8 @@ import CurrentOrderList from "./build-order-list";
  */
 export default function OrderList() {
 
-    const newOrderArray = useSelector(selectNewOrderArray)
     const totalPrice = useSelector(selectTotalPrice)
     const dispatch = useDispatch()
-    const router = useRouter()
-
-    function saveOrder() {
-        if(newOrderArray.order.length < 1){
-            dispatchNotification({
-                type: "alert",
-                title: "No Items In Order",
-                content: "There are no items in the order to save"
-            })
-        } else {
-            dispatchNotification({
-                type: "confirm",
-                title: "Save Order",
-                content: `Create new ${newOrderArray.order[0].SUPPLIER} order?`,
-                fn: saveConfirmed
-            })
-        }
-    }
-
-    function saveConfirmed() {
-        const date = new Date();
-
-        let newOrder = {
-            id: newOrderArray.id ? newOrderArray.id : `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
-            supplier: newOrderArray.order[0].SUPPLIER,
-            date: newOrderArray.date ? newOrderArray.date : date.getTime(),
-            complete: false,
-            arrived: newOrderArray.arrived,
-            price: totalPrice,
-            order: newOrderArray.order,
-        }
-
-        let options = {
-            method: 'POST',
-            body: JSON.stringify(newOrder),
-            headers: {
-                'token': "9b9983e5-30ae-4581-bdc1-3050f8ae91cc",
-                'Content-Type': 'application/json'
-            }
-        }
-
-        fetch("/api/shop-orders/update-order", options)
-            .then((res) => {
-                res.json()
-                    .then((res) => {
-                        if (res.acknowledged) {
-                            dispatchNotification({type: "alert", title: "Success!", content: "New order created"})
-                            dispatch(setOrderInfoReset())
-                            router.push("/shop-orders?tab=orders")
-                        } else {
-                            dispatchNotification({
-                                type: "alert",
-                                title: "Error!",
-                                content: "Order failed, please try again"
-                            })
-                        }
-                    })
-            })
-    }
 
     let newProduct: orderObject = {
         SOLDFLAG: 0,
@@ -121,9 +61,6 @@ export default function OrderList() {
         <div className={styles["shop-orders-table-containers"]}>
             <div className={styles["table-title-container"]}>
                 <span>Order List</span>
-                <span className={styles["primary-buttons"]}>
-                            <button onClick={() => saveOrder()}>Save</button>
-                        </span>
                 <span className={styles["primary-buttons"]}>
                             <button onClick={() => dispatchNotification({
                                 type: "popup",
