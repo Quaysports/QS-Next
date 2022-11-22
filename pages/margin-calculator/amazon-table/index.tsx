@@ -39,7 +39,7 @@ export default function AmazonTable() {
             <div key={"header"} className={styles.header}>
                 <div><TitleLink type={"Amazon"}/></div>
                 <div className={styles["header-buttons"]}>
-                    <CSVButton fileName={`Magento CSV - ${Date.now()}`}
+                    <CSVButton fileName={`Amazon CSV - ${Date.now()}`}
                                objectArray={CSVData()}
                                label={"CSV"}/>
                     <button onClick={() => setToggleTest(!toggleMarginTest)}>Margin Tests</button>

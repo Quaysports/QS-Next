@@ -41,7 +41,7 @@ export default function EbayTable() {
                     <TitleLink type={"Ebay"}/>
                 </div>
                 <div className={styles["header-buttons"]}>
-                    <CSVButton fileName={`Magento CSV - ${Date.now()}`}
+                    <CSVButton fileName={`Ebay CSV - ${Date.now()}`}
                                label={"CSV"}
                                objectArray={CSVData()}/>
                     <button onClick={() => setToggleTest(!toggleMarginTest)}>Margin Tests</button>

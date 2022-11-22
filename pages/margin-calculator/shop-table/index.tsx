@@ -38,7 +38,7 @@ export default function ShopTable() {
             <div key={"header"} className={styles.header}>
                 <TitleLink type={"Shop"}/>
                 <div>
-                    <CSVButton fileName={`Magento CSV - ${Date.now()}`}
+                    <CSVButton fileName={`Shop CSV - ${Date.now()}`}
                                objectArray={CSVData()}
                                label={"CSV"}/>
                 </div>
