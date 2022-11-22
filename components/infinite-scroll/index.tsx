@@ -3,28 +3,22 @@ import {
     ReactNode, useEffect, useRef,
     useState
 } from "react";
-import {useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import {AnyAction} from "redux";
 
 interface Props {
     children: ReactNode
-    selector?: (state: any) => any
-    threshold: number
-    maxThreshold: number
-    scrollHandler: () => void
+    incrementReducer: ()=>AnyAction
 }
 
-export default function InfiniteScroll({children, selector, threshold, maxThreshold, scrollHandler}: Props) {
+export default function InfiniteScroll({children, incrementReducer}: Props) {
 
     const container = useRef<HTMLDivElement>(null)
-    const data = selector ? useSelector(selector) : null
+    const target = useRef<HTMLDivElement>(null)
+    const dispatch = useDispatch()
     const [observer, setObserver] = useState<IntersectionObserver>()
 
-    const handler = (entries: IntersectionObserverEntry[]) => {
-        for (let entry of entries) {
-            if (!entry.isIntersecting) continue;
-            if (Number(entry.target.id) + threshold >= maxThreshold - 10) scrollHandler()
-        }
-    }
+    const handler = () => dispatch(incrementReducer())
 
     useEffect(() => {
         let options = {root: container.current, rootMargin: '0px', threshold: [0],}
@@ -33,16 +27,14 @@ export default function InfiniteScroll({children, selector, threshold, maxThresh
     }, [])
 
     useEffect(() => {
-        if (!observer || !container.current) return
-        for (let i in container.current.childNodes) {
-            if (typeof container.current.childNodes[i] !== "object") continue;
-            Number(i) === maxThreshold
-                ? observer.observe(container.current.childNodes[i] as HTMLElement)
-                : observer.unobserve(container.current.childNodes[i] as HTMLElement)
-        }
-    }, [container, observer, children, data])
+        if (!observer || !target.current) return
+        observer.observe(target.current)
+    }, [observer, target])
 
-    return (<div ref={container} id={"infinite-scroll"} className={styles.container}>
-        {children}
+    return (<div ref={container} className={styles.container}>
+        <div className={styles.wrapper}>
+            <div  className={styles.content}>{children}</div>
+            <div ref={target} className={styles.target}></div>
+        </div>
     </div>)
 }

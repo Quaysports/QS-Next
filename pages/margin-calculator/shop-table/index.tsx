@@ -6,6 +6,7 @@ import {
 } from "../../../store/margin-calculator-slice";
 import ItemRow from "./item-row";
 import TitleRow from "./title-row";
+import TitleLink from "../title-link";
 
 export default function ShopTable() {
 
@@ -18,11 +19,15 @@ export default function ShopTable() {
 
     function createTable(){
         const elements = [
-            <div key={"header"} className={styles.header}>Shop</div>,
+            <div key={"header"} className={styles.header}>
+                <TitleLink type={"Shop"}/>
+            </div>,
             <TitleRow key={"title-row"}/>
         ]
 
-        for(let item of items) elements.push(<ItemRow key={item.SKU} item={item}/>)
+        for(let index in items) elements.push(<ItemRow key={items[index].SKU}
+                                                       item={items[index]}
+                                                       index={index}/>)
 
         return elements
     }

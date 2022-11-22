@@ -50,10 +50,8 @@ export const forecastSlice = createSlice({
             setSuppliers: (state, action: PayloadAction<string[]>) => {
                 state.suppliers = action.payload
             },
-            setThreshold: (state, action: PayloadAction<number>) => {
-                state.threshold = action.payload
-            },
             incrementThreshold: (state) => {
+                console.log("increment!")
                 state.maxThreshold += state.threshold
                 state.searchItems.length > 0
                     ? state.renderedItems = processItemsToRender(state.maxThreshold, current(state.searchItems))
@@ -93,7 +91,6 @@ function processItemsToRender(threshold: number, items: StockForecastItem[]) {
 }
 
 export const {
-    setThreshold,
     incrementThreshold,
     setInitialItems,
     setSearchItems,
@@ -104,7 +101,5 @@ export const {
 export const selectInitialItems = (state: forecastWrapper) => state.forecast.initialItems
 export const selectSuppliers = (state: forecastWrapper) => state.forecast.suppliers
 export const selectRenderedItems = (state: forecastWrapper) => state.forecast.renderedItems
-export const selectThreshold = (state: forecastWrapper) => state.forecast.threshold
-export const selectMaxThreshold = (state: forecastWrapper) => state.forecast.maxThreshold
 
 export default forecastSlice.reducer;

@@ -2,32 +2,30 @@ import styles from "../margin-calculator.module.css";
 import {useSelector} from "react-redux";
 import {
     selectRenderedItems,
-    selectTableToggles,
+    selectTableToggles
 } from "../../../store/margin-calculator-slice";
-import ItemRow from "./item-row";
 import TitleRow from "./title-row";
+import ItemRow from "./item-row";
 import TitleLink from "../title-link";
 
-export default function CostsTable() {
+export default function PricesTable() {
 
     const items = useSelector(selectRenderedItems)
     const toggles = useSelector(selectTableToggles)
 
-    if (!items || items.length === 0) return null
+    if(!items || items.length === 0) return null
 
-    if (!toggles.CostsTable) return null
+    if(!toggles.PricesTable) return null
 
     function createTable() {
         const elements = [
             <div key={"header"} className={styles.header}>
-                <TitleLink type={"Costs"}/>
+                <TitleLink type={"Prices"}/>
             </div>,
             <TitleRow key={"title-row"}/>
         ]
 
-        for (let index in items) elements.push(<ItemRow key={items[index].SKU + "-costs"}
-                                                        item={items[index]}
-                                                        index={index}/>)
+        for(let index in items) elements.push(<ItemRow key={items[index].SKU} item={items[index]} index={index}/>)
 
         return elements
     }

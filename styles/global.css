@@ -159,11 +159,14 @@ select{
 
 
 .menu-bar span {
+    display: flex;
     border-radius: 8px 8px 0 0;
-    padding: 5px 10px;
+    padding: 0 10px;
     color: var(--primary-inactive-text);
     font-weight: bold;
     white-space: nowrap;
+    height:28px;
+    align-items: center;
 }
 
 .menu-bar span:hover{
@@ -183,10 +186,15 @@ select{
 /*--------------------------------------Apps menu-----------------------------------------*/
 
 #apps-button{
-    padding-left: 10px;
+    display: flex;
     color: var(--primary-inactive-text);
     font-weight: bold;
-    font-size: 26px;
+    font-size: 25px;
+    line-height: 30px;
+    height:30px;
+    width:38px;
+    align-items:center;
+    justify-content: center;
     border-right: 1px solid var(--primary-inactive-text)
 }
 
@@ -246,10 +254,15 @@ select{
 /*--------------------------------------Settings menu-----------------------------------------*/
 
 #settings-button{
-    padding-left: 10px;
+    display: flex;
     color: var(--primary-inactive-text);
     font-weight: bold;
     font-size: 20px;
+    line-height: 30px;
+    height:30px;
+    width:38px;
+    align-items:center;
+    justify-content: center;
     border-left: 1px solid var(--primary-inactive-text)
 }
 
@@ -312,13 +325,11 @@ select{
 #search-bar{
     display: flex;
     align-items: center;
+    line-height: 25px;
 }
 
 #search-bar input[type=radio]{
     margin: 0 5px;
-    -ms-transform: scale(1.1); /* IE 9 */
-    -webkit-transform: scale(1.1); /* Chrome, Safari, Opera */
-    transform: scale(1.1);
 }
 
 #search-bar-buttons{

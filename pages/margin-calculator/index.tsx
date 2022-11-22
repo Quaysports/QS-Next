@@ -10,23 +10,23 @@ import MagentoTable from "./magento-table";
 import ShopTable from "./shop-table";
 import MiscTable from "./misc-table";
 import {appWrapper} from "../../store/store";
-import {getItems} from "../../server-modules/items/items";
+import {getAllBrands, getItems} from "../../server-modules/items/items";
 import * as Fees from "../../server-modules/fees/fees"
 import * as Packaging from "../../server-modules/packaging/packaging"
 import * as Postage from "../../server-modules/postage/postage"
-
 import {
     incrementThreshold,
     MarginItem,
-    selectMarginData, selectMaxThreshold, selectThreshold,
+    selectMarginData,
     setFees,
     setMarginData, setPackaging, setPostage,
-    setSearchItems
+    setSearchItems, setSuppliers
 } from "../../store/margin-calculator-slice";
 import MarginCalculatorMenuTabs from "./tabs";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useRef, useState} from "react";
-import useIntersectObserver from "../../components/hooks/use-intersection-observer";
+import PricesTable from "./prices-table";
+import InfiniteScroll from "../../components/infinite-scroll";
+import StatsTable from "./stats-table";
 
 /* ToDO:
 
@@ -39,8 +39,6 @@ import useIntersectObserver from "../../components/hooks/use-intersection-observ
     Test item menu / tool
     Remove override button / script
     Un-hide all button / script
-    Update all button
-    Update CP button
 
     Loading indicators
  */
@@ -50,27 +48,11 @@ export default function marginCalculatorLandingPage() {
 
     const dispatch = useDispatch()
     const items = useSelector(selectMarginData)
-    const [loading, setLoading] = useState<boolean>(true)
-
-    const maxThreshold = useSelector(selectMaxThreshold)
-    const threshold = useSelector(selectThreshold)
-    const observedElement = useRef<HTMLDivElement>(null)
-    const intersectionElement = useRef<HTMLDivElement | null>(null)
-
-    const scrollHandler = ()=> dispatch(incrementThreshold())
-    useIntersectObserver(intersectionElement, observedElement, threshold, maxThreshold, items, scrollHandler)
-
-    useEffect(()=>{
-        intersectionElement.current = document!.getElementById("column-layout") as HTMLDivElement
-        setLoading(true)
-    },[items])
 
     const updateItemsHandler = (items: MarginItem[]) => {
         document.getElementById("column-layout")?.scroll(0,0)
         dispatch(setSearchItems(items))
     }
-
-    if(!loading) return null
 
     return (
         <div>
@@ -79,16 +61,19 @@ export default function marginCalculatorLandingPage() {
                     <MarginCalculatorMenuTabs searchData={items} updateItemsHandler={updateItemsHandler}/>
                 </Menu>
                 <ColumnLayout background={false} scroll={true} stickyTop={true}>
-                    <div className={styles.table}>
-                        <InfoTable/>
-                        <CostsTable/>
-                        <EbayTable/>
-                        <AmazonTable/>
-                        <MagentoTable/>
-                        <ShopTable/>
-                        <MiscTable/>
-                        <div style={{gridColumn:"1/7"}} ref={observedElement}></div>
-                    </div>
+                    <InfiniteScroll incrementReducer={incrementThreshold}>
+                        <div className={styles.table}>
+                            <InfoTable/>
+                            <PricesTable/>
+                            <StatsTable/>
+                            <CostsTable/>
+                            <EbayTable/>
+                            <AmazonTable/>
+                            <MagentoTable/>
+                            <ShopTable/>
+                            <MiscTable/>
+                        </div>
+                    </InfiniteScroll>
                 </ColumnLayout>
             </OneColumn>
         </div>
@@ -97,34 +82,31 @@ export default function marginCalculatorLandingPage() {
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
-    const domestic = context.query.domestic
-    const show = context.query.show
+    const domestic = context.query.domestic === "true"
+    const brand = context.query.brand
+    const show = context.query.show === "true"
 
     let query: MarginQuery = {
         $and: [
             {LISTINGVARIATION: false},
             {IDBFILTER: {$ne: true}},
-            {},
-            {}
         ]
     }
-    if (domestic === "true") {
-        query.$and.push(
-            {
-                $or: [
-                    {IDBFILTER: {$eq: 'domestic'}},
-                    {IDBFILTER: {$eq: 'bait'}}
-                ]
-            })
 
-    } else {
+    if (domestic && !brand) {
+        query.$and.push({$or: [{IDBFILTER: {$eq: 'domestic'}}, {IDBFILTER: {$eq: 'bait'}}]})
+    }
+
+    if(!domestic && !brand) {
         query.$and.push({IDBFILTER: {$ne: 'domestic'}})
         query.$and.push({IDBFILTER: {$ne: 'bait'}})
     }
 
+    if(brand){
+        query.$and.push({"IDBEP.BRAND":brand})
+    }
 
-    if(!show || show === "false") { query.$and.push({HIDE:{$ne:true}}) }
-
+    if(!show) { query.$and.push({HIDE:{$ne:true}}) }
 
     const projection = {
         SKU: 1,
@@ -148,7 +130,9 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
         EBAYPRICEINCVAT: 1,
         AMZPRICEINCVAT: 1,
         QSPRICEINCVAT: 1,
+        QSDISCOUNT:1,
         SHOPPRICEINCVAT: 1,
+        SHOPDISCOUNT:1,
         AMZPRIME: 1,
         IDBEP: 1,
         IDBFILTER: 1,
@@ -156,6 +140,9 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     }
     const items = await getItems(query, projection, {SKU: 1}) as MarginItem[]
     if(items) store.dispatch(setMarginData(items))
+
+    const suppliers = await getAllBrands() as string[]
+    if(suppliers) store.dispatch(setSuppliers(suppliers))
 
     const fees = await Fees.get()
     if(fees) store.dispatch(setFees(fees))
@@ -173,9 +160,10 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
 interface MarginQuery {
     $and: [
         { LISTINGVARIATION: boolean },
-        { IDBFILTER: IDBFilter },
-        { HIDE?: {$ne:true} },
-        { $or?: any[] }
+        { IDBFILTER: IDBFilter }?,
+        {"IDBEP.BRAND":string | string[]}?,
+        { HIDE?: {$ne:true} }?,
+        { $or?: any[] }?
     ]
 }
 

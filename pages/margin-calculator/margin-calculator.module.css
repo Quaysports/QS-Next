@@ -1,3 +1,8 @@
+.tab-select{
+    padding:2px 5px;
+    text-align: left;
+}
+
 .filters{
     display:grid;
     grid-gap:5px;
@@ -44,11 +49,18 @@
     background: var(--primary-table-cell-background-alt);
 }
 
+.row.active{
+    background-color: var(--primary-color);
+}
+
 .title{
     background: var(--primary-table-title);
+    border-top: 2px solid var(--primary-table-background);
+    border-bottom: 2px solid var(--primary-table-background);
     border-radius: 0;
     position:sticky;
     top:0;
+    height:30px;
 }
 
 .row input[type="checkbox"]{
@@ -56,6 +68,7 @@
 }
 .row > div {
     display:grid;
+    padding:0 2px;
     border-right:1px solid rgba(0,0,0,20%);
     justify-content: center;
     align-content: center;
@@ -81,14 +94,32 @@
     width:100%;
     text-align: justify;
 }
+.info-title-checkbox{
+    display:grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+}
 
+.info-cell{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .info-grid{
+    display:grid;
+    grid-template-columns: 30px 30px 250px 400px;
+}
+.info-grid-collapsed {
     display:grid;
     grid-template-columns: 30px 30px 250px;
 }
+.prices-grid {
+    display:grid;
+    grid-template-columns: 120px 100px;
+}
 .costs-grid {
     display:grid;
-    grid-template-columns: repeat(3, 100px) 200px repeat(4, 100px);
+    grid-template-columns: 200px repeat(4, 100px);
 }
 .ebay-grid {
     display:grid;
@@ -112,9 +143,15 @@
     display:grid;
     grid-template-columns: 100px 130px;
 }
+
+.magento-grid-discount {
+    display:grid;
+    grid-template-columns: 100px 100px 100px 130px;
+}
+
 .shop-grid {
     display:grid;
-    grid-template-columns: 100px 130px;
+    grid-template-columns: 100px 100px 100px 130px;
 }
 .misc-grid {
     display:grid;

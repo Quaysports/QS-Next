@@ -7,6 +7,7 @@ import {
 import {useState} from "react";
 import TitleRow from "./title-row";
 import ItemRow from "./item-row"
+import TitleLink from "../title-link";
 
 export default function AmazonTable() {
 
@@ -21,17 +22,17 @@ export default function AmazonTable() {
     function createTable() {
         const elements = [
             <div key={"header"} className={styles.header}>
-                <div>Amazon</div>
+                <div><TitleLink type={"Amazon"}/></div>
                 <div>
                     <button onClick={() => setToggleTest(!toggleMarginTest)}>Margin Tests</button>
                 </div>
             </div>,
             <TitleRow key={"title-row"} displayTest={toggleMarginTest}/>
         ]
-
-        for (let item of items) elements.push(
-            <ItemRow key={item.SKU} item={item} displayTest={toggleMarginTest}/>
+        for(let index in items) elements.push(
+            <ItemRow key={items[index].SKU} item={items[index]} displayTest={toggleMarginTest} index={index}/>
         )
+
         return elements
     }
 

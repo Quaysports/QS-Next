@@ -20,7 +20,9 @@ export interface MarginItem {
     EBAYPRICEINCVAT: string,
     AMZPRICEINCVAT: string,
     QSPRICEINCVAT: string,
+    QSDISCOUNT: number,
     SHOPPRICEINCVAT: string,
+    SHOPDISCOUNT: number,
     AMZPRIME: boolean,
     IDBEP: sbt.itemDatabaseExtendedProperties,
     IDBFILTER: string,
@@ -33,15 +35,17 @@ export interface marginCalculatorWrapper {
 
 export interface marginCalculatorState {
     marginData: MarginItem[]
+    suppliers: string[]
     fees: Fees | null
     postage: { [key: string]: PostalData } | null
     packaging: { [key: string]: PackagingData } | null
-    totalStockVal: number
     amazonMarginTest: number | null
     ebayMarginTest: number | null
     tables: MarginTables
     searchItems: MarginItem[]
     renderedItems: MarginItem[]
+    activeIndex: string | null
+    displayTitles: boolean
     threshold: number
     maxThreshold: number
     currentSort: string
@@ -111,14 +115,16 @@ interface PackagingData {
 
 const initialState: marginCalculatorState = {
     marginData: [],
+    suppliers: [],
     fees: null,
     postage: null,
     packaging: null,
-    totalStockVal: 0,
     amazonMarginTest: null,
     ebayMarginTest: null,
     tables: {
         InfoTable: true,
+        PricesTable: true,
+        StatsTable: true,
         CostsTable: true,
         EbayTable: true,
         AmazonTable: true,
@@ -128,6 +134,8 @@ const initialState: marginCalculatorState = {
     },
     searchItems: [],
     renderedItems: [],
+    activeIndex: null,
+    displayTitles:false,
     threshold: 50,
     maxThreshold: 50,
     currentSort: ""
@@ -148,8 +156,11 @@ export const marginCalculatorSlice = createSlice({
             setMarginData: (state, action: PayloadAction<MarginItem[]>) => {
                 state.marginData = action.payload
                 state.searchItems = action.payload
-                for (const item of state.marginData) state.totalStockVal += item.STOCKVAL
+                state.activeIndex = null
                 state.renderedItems = state.marginData.slice(0, state.maxThreshold)
+            },
+            setSuppliers: (state, action:PayloadAction<string[]>) => {
+                state.suppliers = action.payload
             },
             setFees: (state, action: PayloadAction<Fees>) => {
                 state.fees = action.payload
@@ -169,6 +180,7 @@ export const marginCalculatorSlice = createSlice({
             setSearchItems: (state, action: PayloadAction<MarginItem[]>) => {
                 state.searchItems = action.payload
                 state.maxThreshold = 50
+                state.activeIndex = null
                 state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
             },
             sortMarginData: (state, action: PayloadAction<{ key: keyof MarginItem["MD"], ascending?: boolean }>) => {
@@ -199,10 +211,10 @@ export const marginCalculatorSlice = createSlice({
                     ? state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
                     : state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
-            updateMCOverrides:(state, action:PayloadAction<{item: MarginItem, key:keyof MarginItem["MCOVERRIDES"], value:boolean}>)=>{
+            updateMCOverrides: (state, action: PayloadAction<{ item: MarginItem, key: keyof MarginItem["MCOVERRIDES"], value: boolean }>) => {
                 if (state.searchItems.length > 0) {
                     for (let index in state.searchItems) {
-                        if (state.searchItems[index].SKU === action.payload.item.SKU){
+                        if (state.searchItems[index].SKU === action.payload.item.SKU) {
                             state.searchItems[index].MCOVERRIDES[action.payload.key] = action.payload.value
                         }
                     }
@@ -215,7 +227,7 @@ export const marginCalculatorSlice = createSlice({
                             headers: {"Content-Type": "application/json",},
                             body: JSON.stringify(current(state.marginData[index]))
                         }
-                        fetch('/api/items/update-item', opt).then(res=>console.log(res))
+                        fetch('/api/items/update-item', opt).then(res => console.log(res))
                     }
                 }
                 state.renderedItems = state.searchItems.length > 0
@@ -228,11 +240,17 @@ export const marginCalculatorSlice = createSlice({
                     ? state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
                     : state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
+            setActiveIndex: (state, action:PayloadAction<string | null>) =>{
+                action.payload !== state.activeIndex ? state.activeIndex = action.payload : state.activeIndex = null
+            },
             toggleTable: (state, action: PayloadAction<keyof MarginTables>) => {
                 state.tables[action.payload] = !state.tables[action.payload]
             },
+            toggleDisplayTitles:(state) => {
+                state.displayTitles = !state.displayTitles
+            },
             setMarginTest: (state, action: PayloadAction<{ type: string, value: number }>) => {
-                switch(action.payload.type){
+                switch (action.payload.type) {
                     case "Amazon": {
                         state.amazonMarginTest = action.payload.value;
                         break;
@@ -249,29 +267,32 @@ export const marginCalculatorSlice = createSlice({
 
 export const {
     setMarginData,
+    setSuppliers,
     setFees,
     setPostage,
     setPackaging,
     updateMarginData,
     updateMCOverrides,
     sortMarginData,
+    setActiveIndex,
     toggleTable,
+    toggleDisplayTitles,
     incrementThreshold,
     setSearchItems,
     setMarginTest
 } = marginCalculatorSlice.actions
 
 export const selectMarginData = (state: marginCalculatorWrapper) => state.marginCalculator.marginData
+export const selectSuppliers = (state: marginCalculatorWrapper) => state.marginCalculator.suppliers
 export const selectFees = (state: marginCalculatorWrapper) => state.marginCalculator.fees
 export const selectPostage = (state: marginCalculatorWrapper) => state.marginCalculator.postage
 export const selectPackaging = (state: marginCalculatorWrapper) => state.marginCalculator.packaging
-export const selectTotalStockValData = (state: marginCalculatorWrapper) => state.marginCalculator.totalStockVal
+export const selectActiveIndex = (state: marginCalculatorWrapper) => state.marginCalculator.activeIndex
 export const selectTableToggles = (state: marginCalculatorWrapper) => state.marginCalculator.tables
+export const selectDisplayTitles = (state:marginCalculatorWrapper) => state.marginCalculator.displayTitles
 export const selectRenderedItems = (state: marginCalculatorWrapper) => state.marginCalculator.renderedItems
-export const selectThreshold = (state: marginCalculatorWrapper) => state.marginCalculator.threshold
-export const selectMaxThreshold = (state: marginCalculatorWrapper) => state.marginCalculator.maxThreshold
 export const selectCurrentSort = (state: marginCalculatorWrapper) => state.marginCalculator.currentSort
-export const selectAmazonMarginTest = (state:marginCalculatorWrapper) => state.marginCalculator.amazonMarginTest
-export const selectEbayMarginTest = (state:marginCalculatorWrapper) => state.marginCalculator.ebayMarginTest
+export const selectAmazonMarginTest = (state: marginCalculatorWrapper) => state.marginCalculator.amazonMarginTest
+export const selectEbayMarginTest = (state: marginCalculatorWrapper) => state.marginCalculator.ebayMarginTest
 
 export default marginCalculatorSlice.reducer;

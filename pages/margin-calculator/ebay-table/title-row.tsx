@@ -12,7 +12,7 @@ export default function TitleRow({test}: { test: boolean}) {
 
     return <div
         className={`${styles.title} ${styles.row} ${test ? styles["ebay-grid"] : styles["ebay-grid-collapsed"]}`}>
-        <div>Ebay Price</div>
+        <div>Price</div>
         {test ? <MarginTestTitle/> : null}
         <div onClick={() => {
             dispatch(sortMarginData({key: "EBAYUKPAVC", ascending: ascendingSort}))
