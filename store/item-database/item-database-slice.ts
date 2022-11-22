@@ -1,7 +1,6 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {rodLocationObject} from "../../pages/item-database";
-import {WritableDraft} from "immer/dist/types/types-external";
 
 /**
  * @property {itemDatabaseState} itemDatabase
