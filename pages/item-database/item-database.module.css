@@ -115,7 +115,13 @@
     width:100%;
     text-align: left;
 }
-
+/*-------------Descriptions----------------*/
+.descriptions-containers{
+    margin:20px
+}
+.description-titles{
+    margin:10px 0
+}
 /*-----------Amazon Properties------------*/
 
 .amazon-props-container{

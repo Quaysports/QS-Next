@@ -161,6 +161,13 @@ export const itemDatabaseSlice = createSlice({
                     state.item!.IDBEP.CATEGORIE1 = action.payload.categoryID
                 }
             },
+            setItemShortDescription: (state, action:PayloadAction<string>) => {
+                state.item!.SHORTDESC = action.payload
+            },
+            setItemLongDescription: (state, action:PayloadAction<string>) => {
+                state.item!.DESCRIPTION = action.payload
+                console.log(current(state))
+            },
             setSuppliers: (state, action) => {
                 state.suppliers = action.payload
             },
@@ -196,7 +203,9 @@ export const {
     setItemStatusBoxes,
     setItemChannelStatus,
     setItemAmazonCategories,
-    setItemAmazonBulletPoints
+    setItemAmazonBulletPoints,
+    setItemShortDescription,
+    setItemLongDescription
 } = itemDatabaseSlice.actions
 
 export const selectItem = (state: itemDatabaseWrapper) => state.itemDatabase.item;
