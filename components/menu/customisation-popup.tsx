@@ -15,7 +15,7 @@ export default function CustomisationPopup() {
     useEffect(() => {
         !user
             ? setUser(session?.user)
-            : setPrimaryColor(user.theme['--primary-color'])
+            : setPrimaryColor(user.theme?.['--primary-color'])
     },[session, user])
 
     async function handleColorChange(key:string, e:React.FocusEvent<HTMLInputElement>) {

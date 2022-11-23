@@ -43,7 +43,6 @@ import {updateSettings} from "../../store/session-slice";
     Remove override button / script
     Un-hide all button / script
 
-    Loading indicators
  */
 
 

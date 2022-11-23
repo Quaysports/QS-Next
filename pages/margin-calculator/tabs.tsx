@@ -63,8 +63,10 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
             <span/>
             <span onClick={async()=>{
                 dispatchNotification({type:"loading",title:"Running Margin Calculations"})
+
                 const opt = {method: 'POST', headers:{"Content-Type":"application/json"}}
                 await fetch('/api/margin/update', opt)
+
                 dispatchNotification()
                 router.reload()
             }}>Update All Margins</span>
@@ -74,9 +76,7 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
                 dispatchNotification({type:"loading",title:"Uploading prices to Linnworks"})
 
                 const opts = { method: 'POST', headers:{"Content-Type":"application/json"}}
-
-                const result = await fetch("/api/linnworks/update-channel-prices", opts)
-                console.log(await result.json())
+                await fetch("/api/linnworks/update-channel-prices", opts)
 
                 dispatchNotification()
 
