@@ -1,6 +1,7 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {rodLocationObject} from "../../pages/item-database";
+import {dispatchNotification} from "../../components/notification/dispatch-notification";
 
 /**
  * @property {itemDatabaseState} itemDatabase
@@ -166,7 +167,48 @@ export const itemDatabaseSlice = createSlice({
             },
             setItemLongDescription: (state, action:PayloadAction<string>) => {
                 state.item!.DESCRIPTION = action.payload
-                console.log(current(state))
+            },
+            setItemSearchTerms: (state, action:PayloadAction<{value: string, index:number}>) => {
+                if(!state.item!.IDBEP) state.item!.IDBEP = {SEARCHTERM1:"",SEARCHTERM2:"",SEARCHTERM3:"",SEARCHTERM4:"",SEARCHTERM5:"",}
+                switch(action.payload.index){
+                    case 1: state.item!.IDBEP.SEARCHTERM1 = action.payload.value
+                        break;
+                    case 2: state.item!.IDBEP.SEARCHTERM2 = action.payload.value
+                        break;
+                    case 3: state.item!.IDBEP.SEARCHTERM3 = action.payload.value
+                        break;
+                    case 4: state.item!.IDBEP.SEARCHTERM4 = action.payload.value
+                        break;
+                    case 5: state.item!.IDBEP.SEARCHTERM5 = action.payload.value
+                        break;
+                }
+            },
+            setItemImages: (state, action:PayloadAction<{image:string, index:string, extension:string}>) => {
+                let {image, index,extension } = action.payload
+                state.item!.IMAGES ??= {}
+                state.item!.IMAGES[index] = {
+                    filename:`${index === "main" ? "0" : index}.${extension}`
+                }
+                let body = {_id:state.item!._id, SKU:state.item!.SKU, id:index === "main" ? "main" : "image" + index, filename: `${index}.${extension}`, image:image}
+                const opts = {
+                    headers:{
+                        "Content-Type": "application/json",
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(body)
+                }
+                fetch("api/item-database/upload-image", opts).then(res => {
+                    console.log(res)
+                    if(res.ok){
+                        console.log("Uploaded image")
+                    } else {
+                        throw new Error(`Status: ${res.status}, ${res.statusText}`)
+                    }
+                })
+                    .catch((error) => {
+                        dispatchNotification({type:"alert",content: error.message, title: "Upload Failed"})
+                        console.log(error.message)
+                    })
             },
             setSuppliers: (state, action) => {
                 state.suppliers = action.payload
@@ -175,9 +217,7 @@ export const itemDatabaseSlice = createSlice({
                 state.currentSupplier = action.payload
             },
             setNewItemValues: (state, action: PayloadAction<{ key: number, nestedKey: keyof newItem, value: string }>) => {
-                const key = action.payload.key;
-                const nestedKey = action.payload.nestedKey;
-                const value = action.payload.value;
+                const {key, nestedKey, value} = action.payload;
                 state.newItems[key] ?
                     nestedKey === "tags" ? state.newItems[key][nestedKey] = tagsArray(state.newItems[key][nestedKey], value) : state.newItems[key][nestedKey] = value
                     : state.newItems[key] = newProducts(nestedKey, value);
@@ -205,7 +245,9 @@ export const {
     setItemAmazonCategories,
     setItemAmazonBulletPoints,
     setItemShortDescription,
-    setItemLongDescription
+    setItemLongDescription,
+    setItemSearchTerms,
+    setItemImages
 } = itemDatabaseSlice.actions
 
 export const selectItem = (state: itemDatabaseWrapper) => state.itemDatabase.item;

@@ -5,8 +5,9 @@ import styles from "../item-database.module.css"
 import StatusRibbon from "./status-ribbon-components";
 import EssentialsRibbon from "./essentials-ribbon-components";
 import LinkedSKURibbon from "./linked-sku-ribbon-components";
-import AmazonPropsRibbon from "./amazon-props-components";
+import AmazonPropsRibbon from "./amazon-props-ribbon-components";
 import DescriptionsRibbon from "./descriptions-ribbon-components";
+import ImagesRibbon from "./images-ribbon-components";
 
 /**
  * Item Details Component
@@ -32,6 +33,7 @@ export default function ItemDetails(){
             </div>
             <div className={styles["details-sections"]}>
                 <div>Images</div>
+                <ImagesRibbon/>
             </div>
             <div className={styles["details-sections"]}>
                 <div>Amazon Extended Properties</div>
