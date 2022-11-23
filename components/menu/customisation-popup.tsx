@@ -38,8 +38,11 @@ export default function CustomisationPopup() {
             <div className={style["colours-table"]}>
                 <input
                     type="color"
-                    defaultValue={primaryColor}
-                    onChange={(e) => document.documentElement.style.setProperty('--primary-color', e.target.value)}
+                    value={primaryColor}
+                    onChange={(e) =>{
+                        setPrimaryColor(e.target.value)
+                        document.documentElement.style.setProperty('--primary-color', e.target.value)
+                    }}
                     onBlur={(e) => handleColorChange('--primary-color', e)}/>
                 <label>Primary Colour</label>
             </div>
