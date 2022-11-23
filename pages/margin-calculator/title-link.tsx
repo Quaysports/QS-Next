@@ -13,7 +13,7 @@ export default function TitleLink({type}:{type:string}){
                     const key = `${type}Table` as keyof MarginCalcTables
                     newSettings.tables[key] = !newSettings.tables[key]
                     dispatch(updateMarginSetting(newSettings))
-                    dispatchNotification({type:undefined})
+                    dispatchNotification()
                 }}
                 onMouseOver={(e)=>dispatchNotification({type:"tooltip",content:"Click to hide", e:e})}
                 onMouseLeave={()=>dispatchNotification({type:undefined})}

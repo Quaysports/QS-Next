@@ -25,11 +25,11 @@ export default function EditQuickLinkMenuPopup(){
             <div className={styles["dual-button-container"]}>
                 <button onClick={()=>{
                 dispatch(updateQuickLinkID({linksIndex:linksIndex, data:inputRef.current!.value}))
-                dispatchNotification({type:undefined})
+                dispatchNotification()
                 }}>Update</button>
                 <button onClick={()=>{
                     dispatch(deleteQuickLink(linksIndex))
-                    dispatchNotification({type:undefined})
+                    dispatchNotification()
                 }}>Delete</button>
             </div>
         </div>

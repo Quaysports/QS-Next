@@ -16,6 +16,6 @@ export default function CopyFromShopButton({item}: { item: MarginItem }) {
             }
         }
         await updateItem(clone)
-        dispatchNotification({type:undefined})
+        dispatchNotification()
     }}>Copy prices from RRP</button>
 }

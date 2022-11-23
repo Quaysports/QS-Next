@@ -31,7 +31,7 @@ export default function OnOrderCell({item}: Props) {
         }}
         onMouseLeave={()=>{
             if(item.onOrder?.total && item.onOrder?.total > 0)
-                dispatchNotification({type:undefined})
+                dispatchNotification()
         }}
     >{item.onOrder?.total}</div>
 }

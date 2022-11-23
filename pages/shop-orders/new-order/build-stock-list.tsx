@@ -74,7 +74,7 @@ export default function BuildStockList() {
                 return (
                     <Image
                         onMouseOver={(e) => dispatchNotification({type: "tooltip", content:"Not sold for between 3-6 months", e:e})}
-                        onMouseLeave={() => dispatchNotification({type: undefined})}
+                        onMouseLeave={() => dispatchNotification()}
                         src="/dead-stock-icon-green.webp"
                         width="22"
                         height="22"
@@ -88,7 +88,7 @@ export default function BuildStockList() {
                 return (
                     <Image
                         onMouseOver={(e) => dispatchNotification({type: "tooltip", content: "Not sold for between 6-10 months", e:e})}
-                        onMouseLeave={() => dispatchNotification({type: undefined})}
+                        onMouseLeave={() => dispatchNotification()}
                         src="/dead-stock-icon-orange.webp"
                         width="22"
                         height="22"
@@ -102,7 +102,7 @@ export default function BuildStockList() {
                 return (
                     <Image
                         onMouseOver={(e) => dispatchNotification({type: "tooltip", content: "Not sold for over 10 months", e:e})}
-                        onMouseLeave={() => dispatchNotification({type: undefined})}
+                        onMouseLeave={() => dispatchNotification()}
                         src="/dead-stock-icon-red.webp"
                         width="22"
                         height="22"

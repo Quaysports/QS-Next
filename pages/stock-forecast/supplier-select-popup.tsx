@@ -21,11 +21,11 @@ export default function SupplierSelect(){
             const selected = []
             for (let entry of data.keys()) selected.push(entry)
             await router.push({pathname: router.pathname, query: {...router.query, suppliers: selected}})
-            dispatchNotification({type: undefined})
+            dispatchNotification()
         } else {
             if(router.query.suppliers) delete router.query.suppliers
             await router.push({pathname: router.pathname, query: router.query})
-            dispatchNotification({type: undefined})
+            dispatchNotification()
         }
     }
 

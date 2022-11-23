@@ -28,7 +28,7 @@ export default function MarginCell({item}: { item: MarginItem }) {
                 e: e
             })
         }}
-        onMouseLeave={() => dispatchNotification({type: undefined})}
+        onMouseLeave={() => dispatchNotification()}
     >{marginText}</span>
 }
 

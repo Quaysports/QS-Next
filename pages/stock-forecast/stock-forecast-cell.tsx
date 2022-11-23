@@ -28,7 +28,7 @@ export default function StockForecastCell({item, index}:Props){
 
                 dispatchNotification({type:"tooltip",title:"Stock Consumption", content:content,e:e})
             }}
-            onMouseLeave={()=>dispatchNotification({type:undefined})}
+            onMouseLeave={()=>dispatchNotification()}
         >{item.months[index].dayBreakdown[0].stock}</div>
     )
 }

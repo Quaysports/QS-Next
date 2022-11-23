@@ -17,7 +17,7 @@ export default function LinnworksUploadButton({item}:{item:MarginItem}){
 
         fetch("/api/linnworks/update-channel-prices", opts).then(async()=>{
             await updateItem(item)
-            dispatchNotification({type:undefined})
+            dispatchNotification()
         })
 
     }}>Upload to Linnworks</button>

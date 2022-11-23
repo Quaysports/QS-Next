@@ -24,7 +24,7 @@ export default function SkuCell({item}: Props) {
         onMouseLeave={(e)=>{
             const element = e.target as HTMLElement
             if(element.offsetWidth < element.scrollWidth)
-                dispatchNotification({type:undefined})
+                dispatchNotification()
         }}
     >{item.SKU}</div>
 }

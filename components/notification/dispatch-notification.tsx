@@ -10,7 +10,7 @@ import React from 'react'
 interface Options {type?:string,title?:string,content?:JSX.Element | JSX.Element[] | string,fn?:Function, e?: React.MouseEvent<HTMLElement>}
 
 //It dispatches a notification event to the notification-target element.
-export function dispatchNotification(options: Options) {
+export function dispatchNotification(options: Options = {}) {
     const event = new CustomEvent('notification', {detail: options});
     document.getElementById("notification-target")?.dispatchEvent(event)
 }

@@ -46,11 +46,11 @@ export default function OrderList() {
                 <button
                     onClick={() => {
                         dispatch(setChangeOrderArray({item: newProduct, type: "new"}));
-                        dispatchNotification({type: undefined});
+                        dispatchNotification();
                     }}>Submit
                 </button>
                 <button id={styles["add-new-item-container-cancel-button"]} onClick={() => {
-                    dispatchNotification({type: undefined});
+                    dispatchNotification();
                 }}>Cancel
                 </button>
             </div>

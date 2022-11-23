@@ -86,6 +86,16 @@ export default function Notification(this: any, {options = {type:undefined}, clo
                 <div className={style["tooltip-text"]}>{options.content}</div>
             </div>
         )
+        case "loading":
+            return(
+                <div key={new Date().toString()} className={`${style['fullscreen-dim']} ${style['fullscreen-layout']}`}>
+                    <div className={style.spinner}>
+                        <div className={style["spinner-inner"]}></div>
+                    </div>
+                    <div>{options.title}</div>
+                    <div>{options.content}</div>
+                </div>
+            )
         default: return null
     }
 }

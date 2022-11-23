@@ -13,7 +13,7 @@ export default function TitleCell({item}:{item:MarginItem}){
                          dispatchNotification({type:"tooltip", e:e, content:item?.TITLE})
                  }}
                  onMouseLeave={
-                    ()=>dispatchNotification({type:undefined})
+                    ()=>dispatchNotification()
                  }
                  onClick={()=>{
                      if(ref.current){
