@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-import {MarginSettings, Settings, User} from "../server-modules/users/user";
+import {MarginSettings, Settings, User, UserTheme} from "../server-modules/users/user";
 
 export interface sessionWrapper {
     session: sessionState
@@ -62,6 +62,9 @@ export const sessionSlice = createSlice({
             updateSettings: (state, action: PayloadAction<Settings>) => {
                 state.user.settings = action.payload
             },
+            updateTheme: (state, action: PayloadAction<UserTheme>) => {
+                state.user.theme = action.payload
+            },
             updateMarginSetting: (state, action: PayloadAction<MarginSettings>) => {
                 if (!state.user) return
                 state.user.settings.marginCalculator = action.payload
@@ -76,7 +79,7 @@ export const sessionSlice = createSlice({
     })
 ;
 
-export const {setUserData, updateUserData, updateSettings, updateMarginSetting} = sessionSlice.actions
+export const {setUserData, updateUserData, updateSettings, updateTheme, updateMarginSetting} = sessionSlice.actions
 
 export const selectUser = (state: sessionWrapper) => state.session.user;
 export const selectMarginSettings = (state: sessionWrapper) => state.session.user.settings.marginCalculator

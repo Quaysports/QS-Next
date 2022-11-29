@@ -98,6 +98,10 @@ export const getUserSettings = async (username?: string) => {
     return await mongoI.findOne<User>("Users", {username:username},{settings:1})
 }
 
+export const getUserDetails = async (username?: string) => {
+    return await mongoI.findOne<{ settings:Settings, theme:UserTheme }>("Users", {username:username},{settings:1, theme:1})
+}
+
 export const updateUser = async (data: User) => {
     if (data._id) delete data._id
     return await mongoI.setData("Users", {username: {$eq: data.username}}, data)

@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import {useEffect, useState} from "react";
 import {MarginItem, selectSuppliers} from "../../store/margin-calculator-slice";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
-import MarginCalculatorFilters from "./filter-popup";
 import {useSelector} from "react-redux";
+import MarginMenu from "./popups/margin-menu-popup";
 
 interface Props {
     searchData:MarginItem[] | null;
@@ -34,13 +34,22 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
 
     return (
         <>
-            <span onClick={()=>dispatchNotification({type:"popup",title:"filters", content:<MarginCalculatorFilters/>})}>Filters</span>
+            <span onClick={()=>dispatchNotification({type:"popup",title:"Margin Menu", content:<MarginMenu/>})}>Margin Menu</span>
             {showToggle
                 ? <span><Link href={{pathname:router.pathname, query:{...router.query, show:false}}}>Hide</Link></span>
                 : <span><Link href={{pathname:router.pathname, query:{...router.query, show:true}}}>Show</Link></span>}
             {domesticToggle
-                ? <span><Link href={{pathname:router.pathname, query:{...router.query, domestic:false}}}>International</Link></span>
-                : <span><Link href={{pathname:router.pathname, query:{...router.query, domestic:true}}}>Domestic</Link></span>}
+                ? <span>
+                    <Link href={{pathname:router.pathname, query:{...router.query, domestic:false}}}
+                          onClick={()=>{
+                              dispatchNotification({type:"loading"})
+                          }}>International</Link>
+            </span>
+                : <span>
+                    <Link href={{pathname:router.pathname, query:{...router.query, domestic:true}}} onClick={()=>{
+                        dispatchNotification({type:"loading"})
+                    }}>Domestic</Link>
+                </span>}
             <span>
                 <select defaultValue={brand}
                         className={styles["tab-select"]}
@@ -61,26 +70,9 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
                 EAN={false}
                 searchableArray={searchData ? searchData : []}/>
             <span/>
-            <span onClick={async()=>{
-                dispatchNotification({type:"loading",title:"Running Margin Calculations"})
 
-                const opt = {method: 'POST', headers:{"Content-Type":"application/json"}}
-                await fetch('/api/margin/update', opt)
-
-                dispatchNotification()
-                router.reload()
-            }}>Update All Margins</span>
             <span/>
-            <span onClick={async ()=>{
 
-                dispatchNotification({type:"loading",title:"Uploading prices to Linnworks"})
-
-                const opts = { method: 'POST', headers:{"Content-Type":"application/json"}}
-                await fetch("/api/linnworks/update-channel-prices", opts)
-
-                dispatchNotification()
-
-            }}>Update All Channel Prices</span>
         </>
     )
 }

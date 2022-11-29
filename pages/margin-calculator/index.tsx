@@ -30,14 +30,12 @@ import StatsTable from "./stats-table";
 import {getSession} from "next-auth/react";
 import {getUserSettings} from "../../server-modules/users/user";
 import {updateSettings} from "../../store/session-slice";
+import {dispatchNotification} from "../../components/notification/dispatch-notification";
+import {useEffect} from "react";
 
 /* ToDO:
 
     test column for QS?
-
-    Fees menu
-    Postage menu
-    Packaging menu
 
     Test item menu / tool
     Remove override button / script
@@ -55,6 +53,8 @@ export default function marginCalculatorLandingPage({loaded = false}) {
         document.getElementById("column-layout")?.scroll(0,0)
         dispatch(setSearchItems(items))
     }
+
+    useEffect(()=>dispatchNotification(),[items])
 
     if(!loaded) return null
 

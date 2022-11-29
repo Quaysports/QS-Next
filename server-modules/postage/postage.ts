@@ -1,7 +1,7 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import * as Linn from '../linn-api/linn-api';
 
-interface postalData {
+export interface Postage {
     _id?: { $oid: string };
     POSTALFORMAT: string;
     POSTID: string;
@@ -12,23 +12,13 @@ interface postalData {
     LASTUPDATE: string;
 }
 
-export let data:Map<string,postalData>
-
-export const init = async () => {
-    let result = await mongoI.find<postalData>("Postage")
-    if(!result) return
-    data = new Map(result.map(postage=>{return [postage.POSTID, postage]}))
-}
-
 export const get = async ()=> {
-    return await mongoI.find<postalData>("Postage")
+    return await mongoI.find<Postage>("Postage")
 }
 
-export const update = async (data:postalData) => {
+export const update = async (data:Postage) => {
     if (data._id !== undefined) delete data._id;
-    await mongoI.setData("Postage", {POSTALFORMAT: data.POSTALFORMAT}, data)
-    await init()
-    return data
+    return await mongoI.setData("Postage", {POSTALFORMAT: data.POSTALFORMAT}, data)
 }
 
 export const updateAll = async () => {
@@ -43,13 +33,10 @@ export const updateAll = async () => {
             await mongoI.setData("Postage", {POSTALFORMAT: postService.POSTALFORMAT}, postService)
         }
     }
-    await init()
     return
 }
 
-export const remove = async (data:postalData) => {
+export const remove = async (data:Postage) => {
     if (data._id !== undefined) delete data._id
-    await mongoI.deleteOne("Postage", {POSTALFORMAT: data.POSTALFORMAT})
-    await init()
-    return data
+    return mongoI.deleteOne("Postage", {POSTALFORMAT: data.POSTALFORMAT})
 }

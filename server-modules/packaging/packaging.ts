@@ -1,7 +1,7 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import * as Linn from '../linn-api/linn-api';
 
-interface packagingData {
+export interface Packaging {
     _id?: { $oid: string };
     ID: string;
     LINKEDSKU: string[];
@@ -10,36 +10,18 @@ interface packagingData {
     PRICE?: number;
 }
 
-export let data: Map<string, packagingData> = new Map()
-let firstLoad: boolean = true
-
-export const init = async () => {
-    if (firstLoad) {
-        await updateAll()
-    } else {
-        let result = await mongoI.find<packagingData>("Packaging")
-        if (!result) return
-        data = new Map(result.map(packaging => {
-            return [packaging.ID, packaging]
-        }))
-    }
-}
-
 export const get = async (id?: string) => {
-    return await mongoI.find<packagingData>("Packaging", id ? {ID: id} : {})
+    return await mongoI.find<Packaging>("Packaging", id ? {ID: id} : {})
 }
 
-export const update = async (data: packagingData) => {
+export const update = async (data: Packaging) => {
     if (data._id) delete data._id
     return await mongoI.setData("Packaging", {ID: data.ID}, data)
 }
 
 export const updateAll = async () => {
-    console.log('Packaging: Updating all')
     const linnData = await linnGet()
     for (let v of linnData) await mongoI.setData("Packaging", {ID: v.ID}, v)
-    firstLoad = false
-    await init()
     return {status: 'done'}
 }
 

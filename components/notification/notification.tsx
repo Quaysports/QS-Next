@@ -13,8 +13,9 @@ export interface Options {
     type?:string;
     title?:string;
     content?:JSX.Element | JSX.Element[] | string;
-    fn?:()=>void;
-    e?:MouseEvent<HTMLElement, MouseEvent>;
+    fn?:(arg0?: any)=>void;
+    closeFn?:()=>void;
+    e?:MouseEvent<HTMLElement>;
 }
 
 /**
@@ -51,8 +52,13 @@ export default function Notification(this: any, {options = {type:undefined}, clo
         case "popup": return(
             <div key={new Date().toString()} className={style['fullscreen-dim']}>
                 <div className={style['popup-frame']}>
-                    <div className={style['popup-title']}><span>{options.title}</span><button onClick={()=>close()}>X</button></div>
-                    {options.content}
+                    <div className={style['popup-title']}>
+                        <span>{options.title}</span>
+                        <button onClick={()=>{
+                            close()
+                            if(options.closeFn) options.closeFn()
+                        }}>X</button></div>
+                        {options.content}
                 </div>
             </div>
         )

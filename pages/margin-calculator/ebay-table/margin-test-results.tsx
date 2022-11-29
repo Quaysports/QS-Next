@@ -1,11 +1,11 @@
 import {
-    Fees,
     MarginItem,
     selectEbayMarginTest,
     selectFees,
     setMarginTest
 } from "../../../store/margin-calculator-slice";
 import {useDispatch, useSelector} from "react-redux";
+import {Fees} from "../../../server-modules/fees/fees";
 
 export default function MarginTestResults({item}:{item:MarginItem}){
 

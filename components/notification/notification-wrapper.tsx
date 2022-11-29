@@ -22,6 +22,6 @@ export default function NotificationWrapper(){
     }
 
     return <div id="notification-target" ref={element}>
-        <Notification options={notificationContent} close={()=>setNotificationContent({type:undefined})}/>
+        <Notification options={notificationContent} close={()=>setNotificationContent({})}/>
     </div>
 }

@@ -1,5 +1,8 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
+import {Fees} from "../server-modules/fees/fees";
+import {Postage} from "../server-modules/postage/postage";
+import {Packaging} from "../server-modules/packaging/packaging";
 
 export interface MarginItem {
     SKU: string
@@ -37,8 +40,9 @@ export interface marginCalculatorState {
     marginData: MarginItem[]
     suppliers: string[]
     fees: Fees | null
-    postage: { [key: string]: PostalData } | null
-    packaging: { [key: string]: PackagingData } | null
+    postage: { [key: string]: Postage } | null
+    packaging: { [key: string]: Packaging } | null
+    marginUpdateRequired: boolean,
     amazonMarginTest: number | null
     ebayMarginTest: number | null
     tables: MarginTables
@@ -55,70 +59,13 @@ export interface MarginTables {
     [key: string]: boolean
 }
 
-export interface Fees {
-    _id?: { $oid: string };
-    LISTING: Listing;
-    FLAT: Flat
-    VATAPP: VatApplicable
-    VAT: number;
-    LASTUPDATE: string;
-    SUBSCRIPTION: Subscription
-}
-
-interface Listing {
-    SHOP: string;
-    QS: string;
-    EBAY: string;
-    AMAZ: string
-}
-
-interface Flat {
-    SHOP: string;
-    QS: string;
-    EBAY: string;
-    AMAZ: string
-}
-
-interface Subscription {
-    SHOP: string;
-    QS: string;
-    EBAY: string;
-    AMAZ: string
-}
-
-interface VatApplicable {
-    SHOP: boolean;
-    QS: boolean;
-    EBAY: boolean;
-    AMAZ: boolean
-}
-
-interface PostalData {
-    _id?: { $oid: string };
-    POSTALFORMAT: string;
-    POSTID: string;
-    VENDOR: string;
-    POSTCOSTEXVAT: number;
-    SFORMAT: string;
-    LINNSHIPPING: string;
-    LASTUPDATE: string;
-}
-
-interface PackagingData {
-    _id?: { $oid: string };
-    ID: string;
-    LINKEDSKU: string[];
-    NAME: string;
-    TYPE: string;
-    PRICE?: number;
-}
-
 const initialState: marginCalculatorState = {
     marginData: [],
     suppliers: [],
     fees: null,
     postage: null,
     packaging: null,
+    marginUpdateRequired: false,
     amazonMarginTest: null,
     ebayMarginTest: null,
     tables: {
@@ -165,17 +112,41 @@ export const marginCalculatorSlice = createSlice({
             setFees: (state, action: PayloadAction<Fees>) => {
                 state.fees = action.payload
             },
-            setPostage: (state, action: PayloadAction<PostalData[]>) => {
+            updateFees: (state,action: PayloadAction<Fees>) => {
+                const opts = {
+                    method:"POST",
+                    headers:{"Content-Type": "application/json"},
+                    body:JSON.stringify(action.payload)
+                }
+                fetch("/api/fees/update", opts).then(res=>{console.log(res)})
+            },
+            setPostage: (state, action: PayloadAction<Postage[]>) => {
                 if (!action.payload) return
-                let idMappedObj: { [key: string]: PostalData } = {}
+                let idMappedObj: { [key: string]: Postage } = {}
                 for (let value of action.payload) idMappedObj[value.POSTID] = value
                 state.postage = idMappedObj
             },
-            setPackaging: (state, action: PayloadAction<PackagingData[]>) => {
+            updatePostage: (state,action:PayloadAction<Postage>) => {
+                const opts = {
+                    method:"POST",
+                    headers:{"Content-Type": "application/json"},
+                    body:JSON.stringify(action.payload)
+                }
+                fetch("/api/postage/update", opts).then(res=>{console.log(res)})
+            },
+            setPackaging: (state, action: PayloadAction<Packaging[]>) => {
                 if (!action.payload) return
-                let idMappedObj: { [key: string]: PackagingData } = {}
+                let idMappedObj: { [key: string]: Packaging } = {}
                 for (let value of action.payload) idMappedObj[value.ID] = value
                 state.packaging = idMappedObj
+            },
+            updatePackaging: (state,action: PayloadAction<Packaging>) => {
+                const opts = {
+                    method:"POST",
+                    headers:{"Content-Type": "application/json"},
+                    body:JSON.stringify(action.payload)
+                }
+                fetch("/api/packaging/update", opts).then(res=>{console.log(res)})
             },
             setSearchItems: (state, action: PayloadAction<MarginItem[]>) => {
                 state.searchItems = action.payload
@@ -243,12 +214,6 @@ export const marginCalculatorSlice = createSlice({
             setActiveIndex: (state, action:PayloadAction<string | null>) =>{
                 action.payload !== state.activeIndex ? state.activeIndex = action.payload : state.activeIndex = null
             },
-            toggleTable: (state, action: PayloadAction<keyof MarginTables>) => {
-                state.tables[action.payload] = !state.tables[action.payload]
-            },
-            toggleDisplayTitles:(state) => {
-                state.displayTitles = !state.displayTitles
-            },
             setMarginTest: (state, action: PayloadAction<{ type: string, value: number }>) => {
                 switch (action.payload.type) {
                     case "Amazon": {
@@ -269,14 +234,15 @@ export const {
     setMarginData,
     setSuppliers,
     setFees,
+    updateFees,
     setPostage,
+    updatePostage,
     setPackaging,
+    updatePackaging,
     updateMarginData,
     updateMCOverrides,
     sortMarginData,
     setActiveIndex,
-    toggleTable,
-    toggleDisplayTitles,
     incrementThreshold,
     setSearchItems,
     setMarginTest
@@ -289,7 +255,6 @@ export const selectFees = (state: marginCalculatorWrapper) => state.marginCalcul
 export const selectPostage = (state: marginCalculatorWrapper) => state.marginCalculator.postage
 export const selectPackaging = (state: marginCalculatorWrapper) => state.marginCalculator.packaging
 export const selectActiveIndex = (state: marginCalculatorWrapper) => state.marginCalculator.activeIndex
-export const selectTableToggles = (state: marginCalculatorWrapper) => state.marginCalculator.tables
 export const selectDisplayTitles = (state:marginCalculatorWrapper) => state.marginCalculator.displayTitles
 export const selectRenderedItems = (state: marginCalculatorWrapper) => state.marginCalculator.renderedItems
 export const selectCurrentSort = (state: marginCalculatorWrapper) => state.marginCalculator.currentSort
