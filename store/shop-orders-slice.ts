@@ -351,7 +351,6 @@ export const {
     setOpenOrders,
     setArrivedHandler,
     setBookedInState,
-    setTotalPrice,
     setSupplierItems,
     setChangeOrderArray,
     setRadioButtons,
@@ -390,8 +389,6 @@ export default shopOrdersSlice.reducer;
 function saveNewOrder(newOrderArray:OpenOrdersObject, totalPrice: number){
 
     const date = new Date();
-
-    console.log("DATE-----", newOrderArray.date)
 
     let newOrder = {
         id: newOrderArray.id ? newOrderArray.id : `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
