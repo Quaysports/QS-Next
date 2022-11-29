@@ -122,6 +122,31 @@
 .description-titles{
     margin:10px 0
 }
+/*------------Images--------------------*/
+.image-container{
+    margin: 10px 0;
+    display:flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-evenly;
+}
+.image-drop-box{
+    transition: 0.1s;
+    border:1px solid white;
+    width:15%;
+    aspect-ratio: 1/1;
+    border-radius: var(--primary-border-radius);
+    position: relative;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.image-drop-box img {
+    max-height:100%;
+    max-width:100%;
+}
+
 /*-----------Amazon Properties------------*/
 
 .amazon-props-container{
