@@ -1,6 +1,5 @@
 @media print {
 
-
     .container {
         background-color: white;
         display: grid;
@@ -16,6 +15,11 @@
         background-size: contain;
         background-repeat: no-repeat;
         width: 100%
+    }
+
+    .image img{
+        object-fit: contain;
+        background: white;
     }
 
     .details {
