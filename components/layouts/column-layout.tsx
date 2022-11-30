@@ -11,6 +11,7 @@ interface Props {
     children:ReactNode;
     background?: boolean;
     scroll?:boolean;
+    height?: number;
     maxWidth?:string;
     stickyTop?:boolean
 }
@@ -18,13 +19,13 @@ interface Props {
 /**
  * Layout component for basic column, child elements are the columns contents.
  */
-export default function ColumnLayout({children, background = true, scroll = false, maxWidth = undefined, stickyTop = false}:Props) {
+export default function ColumnLayout({children, background = true, scroll = false, height = 30, maxWidth = undefined, stickyTop = false}:Props) {
 
     const styleOverrides: CSSProperties = {overflowY: undefined, margin: undefined, maxHeight: undefined, maxWidth: undefined}
 
     if (scroll) {
         styleOverrides.overflowY = "auto"
-        styleOverrides.height = "calc(100vh - 30px)"
+        styleOverrides.height = `calc(100vh - ${height}px)`
     }
     if (maxWidth) {
         styleOverrides.margin = "var(--sidebar-margin) auto"

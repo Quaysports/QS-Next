@@ -1,0 +1,38 @@
+.label {
+    position: absolute;
+    width: 1in;
+    height: 1in;
+    font-size: 12px;
+    transform: rotate(90deg);
+    left: 40px;
+    overflow: hidden;
+    color: black;
+}
+
+.sku,
+.price,
+.title {
+    width: 100%;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.sku {
+    height:10px;
+    margin-top: 0;
+    font-size: 0.6em;
+}
+
+.price {
+    height:25px;
+    font-size: 1.5em;
+}
+
+.title {
+    height: calc(1in - 50px);
+    font-size: 0.8em;
+    text-align: center;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+    overflow: hidden;
+}

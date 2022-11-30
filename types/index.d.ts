@@ -39,61 +39,63 @@ declare namespace sbt {
     //master struct for item data
     interface Item {
         _id?: string,
-        AMZPRICEINCVAT?: string,
-        AMZPRIME?: boolean,
-        BRAND?: string,
-        BRANDLABEL?: brandLabel,
-        CD?: channelData,
-        CHECK?: statusChecks,
-        COMPDATA?: composite[],
-        CP?: channelPrice,
-        DESCRIPTION?: string,
-        EAN?: string,
-        EBAYPRICEINCVAT?: string,
-        EXTENDEDPROPERTY?: linnExtendedProperty[],
-        HIDE?: boolean,
-        IDBEP?: itemDatabaseExtendedProperties,
-        IDBFILTER?: string,
-        IMAGES?: itemImages,
-        INVCHECK?: { DONE: boolean, DATE: string },
-        INVCHECKDATE?: string,
-        ISCOMPOSITE?: boolean,
-        LASTUPDATE?: string,
-        LINKEDSKUS?: string[],
-        LINNID?: string,
-        LISTINGVARIATION?: boolean,
-        MARGINNOTE?: string,
-        MCOVERRIDES?: { [key: string]: boolean }
-        MD?: marginData,
-        MINSTOCK?: number,
-        MONTHSTOCKHIST?: MonthStockHistory,
-        ONORDER?: onOrder[],
-        PACKAGING?: { EDITABLE: boolean, ITEMS: string[] | string, LOCK: boolean },
-        PACKGROUP?: string,
-        PICKLIST?: pickListItem[],
-        POSTID?: string,
-        POSTMODID?: string | number,
-        PURCHASEPRICE?: number,
-        QSPRICEINCVAT?: string,
-        RETAILPRICE?: number,
-        SHELFLOCATION?: shelfLocation,
-        SHIPAMAZONEXP?: string,
-        SHIPCOURIEREXP?: string,
-        SHIPCOURIERSTD?: string,
-        SHIPEBAYSTD?: string,
-        SHIPFORMAT?: string,
-        SHOP?: { PRICE: string, STATUS: number }
-        SHOPPRICEINCVAT?: string,
-        SHORTDESC?: string,
+        AMZPRICEINCVAT: string,
+        AMZPRIME: boolean,
+        BRAND: string,
+        BRANDLABEL: brandLabel,
+        CD: channelData,
+        CHECK: statusChecks,
+        COMPDATA: composite[],
+        CP: channelPrice,
+        DESCRIPTION: string,
+        EAN: string,
+        EBAYPRICEINCVAT: string,
+        EXTENDEDPROPERTY: linnExtendedProperty[],
+        HIDE: boolean,
+        IDBEP: itemDatabaseExtendedProperties,
+        IDBFILTER: string,
+        IMAGES: itemImages,
+        INVCHECK: { DONE: boolean, DATE: string },
+        INVCHECKDATE: string,
+        ISCOMPOSITE: boolean,
+        LASTUPDATE: string,
+        LINKEDSKUS: string[],
+        LINNID: string,
+        LISTINGVARIATION: boolean,
+        MARGINNOTE: string,
+        MCOVERRIDES: { [key: string]: boolean }
+        MD: marginData,
+        MINSTOCK: number,
+        MONTHSTOCKHIST: MonthStockHistory,
+        ONORDER: onOrder[],
+        PACKAGING: { EDITABLE: boolean, ITEMS: string[] | string, LOCK: boolean },
+        PACKGROUP: string,
+        PICKLIST: pickListItem[],
+        POSTID: string,
+        POSTMODID: string | number,
+        PURCHASEPRICE: number,
+        QSPRICEINCVAT: string,
+        QSDISCOUNT:number,
+        RETAILPRICE: number,
+        SHELFLOCATION: shelfLocation,
+        SHIPAMAZONEXP: string,
+        SHIPCOURIEREXP: string,
+        SHIPCOURIERSTD: string,
+        SHIPEBAYSTD: string,
+        SHIPFORMAT: string,
+        SHOP: { PRICE: string, STATUS: number }
+        SHOPDISCOUNT: number,
+        SHOPPRICEINCVAT: string,
+        SHORTDESC: string,
         SKU: string,
-        STOCKINFO?: { WAREHOUSE: number, YELLAND: number }
-        STOCKTOTAL?: number,
-        STOCKVAL?: number,
-        SUPPLIER?: string,
-        TILLFILTER?: string,
-        TITLE?: string,
-        TITLEWEBSITE?: string,
-        WEIGHT?: number
+        STOCKINFO: { WAREHOUSE: number, YELLAND: number }
+        STOCKTOTAL: number,
+        STOCKVAL: number,
+        SUPPLIER: string,
+        TILLFILTER: string,
+        TITLE: string,
+        TITLEWEBSITE: string,
+        WEIGHT: number
     }
 
     export interface shelfLocation {PREFIX:string, LETTER:string, NUMBER: string}
@@ -106,6 +108,13 @@ declare namespace sbt {
     *   StockItem?
     * */
 
+    /**
+     * @property {string} brand Depreciated, pull info from item.IDBEP.BRAND
+     * @property {string} image Depreciated, do not use
+     * @property {string} loc Depreciated, pull info from item.SHELFLOCATION
+     * @property {string} price Depreciated, pull info from item.SHOPPRICEINCVAT
+     *
+     **/
     type brandLabel = {
         brand: string,
         image: string,
@@ -178,12 +187,12 @@ declare namespace sbt {
     }
 
     type channelPriceData = {
-        ID?: string,
+        ID: string,
         PRICE: string,
-        STATUS?: number,
+        STATUS: number | undefined,
         SUBSOURCE: string,
         UPDATED: string,
-        updateReq?: boolean
+        updateReq: boolean
     }
 
     type linnExtendedProperty = {
@@ -194,28 +203,28 @@ declare namespace sbt {
     }
 
     type itemDatabaseExtendedProperties = {
-        AMAZSPORT?: string,
-        AMZDEPARTMENT?: string,
-        AMZLATENCY?: number,
-        BRAND?: string,
-        BULLETPOINT1?: string,
-        BULLETPOINT2?: string,
-        BULLETPOINT3?: string,
-        BULLETPOINT4?: string,
-        BULLETPOINT5?: string,
-        CATEGORIE1?: string,
-        CATEGORIE2?: string,
-        COMISO2?: string,
-        COMISO3?: string,
-        QSCAT1?: string,
-        QSCAT2?: string,
-        SEARCHTERM1?: string,
-        SEARCHTERM2?: string,
-        SEARCHTERM3?: string,
-        SEARCHTERM4?: string,
-        SEARCHTERM5?: string
-        TARIFFCODE?: string,
-        TRADEPACK?: string
+        AMAZSPORT: string,
+        AMZDEPARTMENT: string,
+        AMZLATENCY: number,
+        BRAND: string,
+        BULLETPOINT1: string,
+        BULLETPOINT2: string,
+        BULLETPOINT3: string,
+        BULLETPOINT4: string,
+        BULLETPOINT5: string,
+        CATEGORIE1: string,
+        CATEGORIE2: string,
+        COMISO2: string,
+        COMISO3: string,
+        QSCAT1: string,
+        QSCAT2: string,
+        SEARCHTERM1: string,
+        SEARCHTERM2: string,
+        SEARCHTERM3: string,
+        SEARCHTERM4: string,
+        SEARCHTERM5: string
+        TARIFFCODE: string,
+        TRADEPACK: string
     }
 
     type itemImages = {
@@ -227,26 +236,26 @@ declare namespace sbt {
     }
 
     type marginData = {
-        AMAZONFEES?: number,
-        AMAZPAVC?: number,
-        AMAZPROFITLY?: number,
-        AMAZSALESVAT?: number,
-        EBAYFEES?: number,
-        EBAYPROFITLY?: number,
-        EBAYUKPAVC?: number,
-        EBAYUKSALESVAT?: number,
-        PACKAGING?: number,
-        POSTALPRICEUK?: number,
-        PRIMEPAVC?: number,
-        PRIMEPOSTAGEUK?: number,
-        QSFEES?: number,
-        QSPAVC?: number,
-        QSPROFITLY?: number,
-        QSUKSALESVAT?: number,
-        SHOPFEES?: number,
-        SHOPPAVC?: number,
-        SHOPUKSALESVAT?: number,
-        TOTALPROFITLY?: number
+        AMAZONFEES: number | undefined,
+        AMAZPAVC: number | undefined,
+        AMAZPROFITLY: number | undefined,
+        AMAZSALESVAT: number | undefined,
+        EBAYFEES: number | undefined,
+        EBAYPROFITLY: number | undefined,
+        EBAYUKPAVC: number | undefined,
+        EBAYUKSALESVAT: number | undefined,
+        PACKAGING: number | undefined,
+        POSTALPRICEUK: number | undefined,
+        PRIMEPAVC: number | undefined,
+        PRIMEPOSTAGEUK: number | undefined,
+        QSFEES: number | undefined,
+        QSPAVC: number | undefined,
+        QSPROFITLY: number | undefined,
+        QSUKSALESVAT: number | undefined,
+        SHOPFEES: number | undefined,
+        SHOPPAVC: number | undefined,
+        SHOPUKSALESVAT: number | undefined,
+        TOTALPROFITLY: number | undefined
     }
 
     type MonthStockHistory = {

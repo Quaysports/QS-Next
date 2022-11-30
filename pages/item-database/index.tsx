@@ -7,7 +7,7 @@ import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
 import SearchbarSidebarOneColumn from "../../components/layouts/searchbar-sidebar-one-column";
 import {appWrapper} from "../../store/store";
 import {setItem, setSuppliers} from "../../store/item-database/item-database-slice";
-import {getAllSuppliers, getItem, getItems} from "../../server-modules/items/items";
+import {getAllSuppliers, getItem, getItems, getLinkedItems} from "../../server-modules/items/items";
 import {InferGetServerSidePropsType} from "next";
 
 export type rodLocationObject = {
@@ -45,12 +45,15 @@ export default function itemDatabaseLandingPage({rodLocations}:InferGetServerSid
 
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
-    let sku = context.query.sku
-    let item = await getItem({SKU: sku})
-    store.dispatch(setItem(item))
-    let suppliers = await getAllSuppliers()
-    store.dispatch(setSuppliers(suppliers))
+    if(context.query.sku) {
+        let sku = context.query.sku
+        let item = await getItem({SKU: sku})
+        if(item) item.LINKEDSKUS = await getLinkedItems(sku as string)
 
+        store.dispatch(setItem(item))
+        let suppliers = await getAllSuppliers()
+        store.dispatch(setSuppliers(suppliers))
+    }
     let query = {"BRANDLABEL.loc": {$exists: true, $ne: ""}}
     let projection = {SKU: 1, TITLE: 1, "IDBEP.BRAND": 1, "BRANDLABEL.loc": 1}
 

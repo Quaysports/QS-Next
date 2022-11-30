@@ -172,3 +172,13 @@
     from {transform: rotate(0deg);}
     to {transform: rotate(359deg);}
 }
+
+/*-----------------Print style--------------------*/
+
+.print-container{
+    position:fixed;
+    top:0;
+    left:0;
+    height: 100vh;
+    width: 100vw;
+}

@@ -1,7 +1,8 @@
-import {selectItem, setItem, setItemLocation} from "../../../../store/item-database/item-database-slice";
+import {selectItem, setItemLocation} from "../../../../store/item-database/item-database-slice";
 import {useDispatch, useSelector} from "react-redux";
+import {Fragment} from "react";
 
-export default function itemLocation() {
+export default function ItemLocation() {
 
     const item = useSelector(selectItem)
     const dispatch = useDispatch()
@@ -11,11 +12,12 @@ export default function itemLocation() {
     }
 
     function prefixOptions(){
-        return [<>
-            <option/>
-            <option>R</option>
-            <option>S</option>
-        </>]
+        return [<Fragment key={"prefix-fragment"}>
+            <option key={"prefix" + 0}/>
+            <option key={"prefix" + 1}>S</option>
+            <option key={"prefix" + 2}>D</option>
+            <option key={"prefix" + 2}>U</option>
+        </Fragment>]
     }
 
     function letterOptions(){
@@ -34,19 +36,19 @@ export default function itemLocation() {
         return numberArray
     }
     return (
-        <>
-            <select value={item?.SHELFLOCATION?.PREFIX}
+        <div key={"location-div"}>
+            <select key={"select 1"} value={item.SHELFLOCATION.PREFIX}
                     onChange={(e) => locationHandler(e.target.value, "PREFIX")}>
                 {prefixOptions()}
             </select>
-            <select value={item?.SHELFLOCATION?.LETTER}
+            <select key={"select 2"} value={item.SHELFLOCATION.LETTER}
                     onChange={(e) => locationHandler(e.target.value, "LETTER")}>
                 {letterOptions()}
             </select>
-            <select value={item?.SHELFLOCATION?.NUMBER}
+            <select key={"select 3"} value={item.SHELFLOCATION.NUMBER}
                     onChange={(e) => locationHandler(e.target.value, "NUMBER")}>
                 {numberOptions()}
             </select>
-        </>
+        </div>
     )
 }

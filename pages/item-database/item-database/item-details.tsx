@@ -17,7 +17,7 @@ export default function ItemDetails(){
     const item = useSelector(selectItem)
 
     return (
-        <ColumnLayout background={false} scroll={true}>
+        <ColumnLayout background={false} scroll={true} height={80}>
             <div className={`${styles["details-sections"]} center-align`}>{item?.TITLE ? item.TITLE: ""} Details</div>
             <div className={styles["details-sections"]}>
                 <div>Status</div>
@@ -39,13 +39,10 @@ export default function ItemDetails(){
                 <div>Amazon Extended Properties</div>
                 <AmazonPropsRibbon/>
             </div>
-            {item?.LINKEDSKUS ? <div className={styles["details-sections"]}>
+            {item.LINKEDSKUS.length != 0 ? <div className={styles["details-sections"]}>
                 <div>Linked SKUs</div>
                 <LinkedSKURibbon/>
             </div>  : null}
-            <div className={styles["details-sections"]}>
-                <div>Shipping</div>
-            </div>
         </ColumnLayout>
     )
 }

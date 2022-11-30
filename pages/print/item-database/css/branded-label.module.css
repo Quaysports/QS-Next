@@ -1,0 +1,49 @@
+@media print {
+
+
+    .container {
+        background-color: white;
+        display: grid;
+        grid-template-columns: 24mm 1fr;
+        font-size: 0.8em;
+        margin: 0;
+        height: 26mm;
+        width: 50mm;
+    }
+
+    .image {
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 100%
+    }
+
+    .details {
+        display: grid;
+        grid-template-rows: auto;
+        overflow: hidden;
+        height: 100%
+    }
+
+    .brand, .title1, .title2, .price, .loc {
+        padding: 2px 5px;
+        line-height: 14px;
+        font-size: 85%;
+    }
+
+    .brand, .title1, .title2 {
+        text-align: justify;
+    }
+
+    .brand {
+        font-size: 100%;
+    }
+
+    .price, .loc {
+        text-align: center;
+    }
+
+    .price {
+        font-size: 150%;
+    }
+}

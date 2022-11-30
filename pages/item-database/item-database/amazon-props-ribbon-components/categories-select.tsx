@@ -1,7 +1,7 @@
 import {AmzCats, AmzCatsType} from "../../../../server-modules/amazon-categories/amazon-categories";
-import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {setItemAmazonCategories} from "../../../../store/item-database/item-database-slice";
+import {Fragment, useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {selectItem, setItemAmazonCategories} from "../../../../store/item-database/item-database-slice";
 
 interface Props {
     id: number
@@ -10,7 +10,18 @@ interface Props {
 export default function CategoriesSelect({id}: Props) {
 
     const [categories] = useState<AmzCatsType[]>(AmzCats)
+    const [currentCategory, setCurrentCategory] = useState<string>("")
+    const [rerender, setRerender] = useState<boolean>(false)
     const dispatch = useDispatch()
+    const item = useSelector(selectItem)
+
+    useEffect(() => {
+        for (const category of categories) {
+            if(item.IDBEP["CATEGORIE" + id as keyof sbt.itemDatabaseExtendedProperties] === category.CATID && currentCategory != category.CATNAME) {
+                setCurrentCategory(category.CATNAME)
+            }
+        }
+    }, [rerender])
 
     function amazonCategories() {
         let amazonCategoryArray = []
@@ -23,15 +34,19 @@ export default function CategoriesSelect({id}: Props) {
     }
 
     function amazonCategoriesHandler(categoryID: string, id: number) {
+        setRerender(!rerender)
         dispatch(setItemAmazonCategories({categoryID: categoryID, id: id}))
     }
 
     return (
         <>
             <span>{id}:</span>
-            <select onChange={(e) => {
+            <select key={"category-select "+ id} onChange={(e) => {
                 amazonCategoriesHandler(e.target.value, id)
-            }}>{amazonCategories()}</select>
+            }}
+            defaultValue={item.IDBEP["CATEGORIE" + id as keyof sbt.itemDatabaseExtendedProperties] ?
+                item.IDBEP["CATEGORIE" + id as keyof sbt.itemDatabaseExtendedProperties] : ""}
+            >{amazonCategories()}</select>
         </>
     )
 }
