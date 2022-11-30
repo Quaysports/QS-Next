@@ -9,6 +9,7 @@ import {inputStatusColour} from "../../../components/margin-calculator-utils/mar
 import MarginCell from "./margin-cell";
 import {useRouter} from "next/router"
 import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {useSelector} from "react-redux";
 
 export default function ItemRow({item, index}: { item: MarginItem, index:string }) {
 
