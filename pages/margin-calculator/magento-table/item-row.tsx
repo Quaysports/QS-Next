@@ -1,4 +1,7 @@
-import {MarginItem, selectActiveIndex} from "../../../store/margin-calculator-slice";
+import {
+    MarginItem,
+    selectActiveIndex
+} from "../../../store/margin-calculator-slice";
 import {useEffect, useRef, useState} from "react";
 import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margins";
 import styles from "../margin-calculator.module.css";
@@ -6,7 +9,6 @@ import {inputStatusColour} from "../../../components/margin-calculator-utils/mar
 import MarginCell from "./margin-cell";
 import {useRouter} from "next/router"
 import {toCurrency} from "../../../components/margin-calculator-utils/utils";
-import {useSelector} from "react-redux";
 
 export default function ItemRow({item, index}: { item: MarginItem, index:string }) {
 
@@ -48,7 +50,8 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
                        type={"number"}
                        defaultValue={item.QSDISCOUNT}
                        onBlur={async (e) => {
-                           await updateItem(item, "QSDISCOUNT", Number(e.target.value))
+                           let itemClone = {...item, ...{SHOPDISCOUNT:Number(e.target.value)}}
+                           await updateItem(itemClone, "QSDISCOUNT", Number(e.target.value))
                        }}/>
             </div> : null
         }
