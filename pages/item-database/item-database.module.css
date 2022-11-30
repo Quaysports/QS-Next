@@ -220,6 +220,8 @@
     height:170px;
     width:170px;
     border: 1px solid white;
+    object-fit: contain;
+    background: white;
 }
 
 .brand-label-info{
