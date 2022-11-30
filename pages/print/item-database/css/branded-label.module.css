@@ -18,8 +18,7 @@
     }
 
     .image img{
-        object-fit: contain;
-        background: white;
+        width:100%
     }
 
     .details {
