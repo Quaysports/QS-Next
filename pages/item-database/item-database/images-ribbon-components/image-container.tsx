@@ -64,8 +64,8 @@ export default function ImageContainer({imageTag}: Props) {
 
         return item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag] ?
             item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].link
-                ? `http://localhost:3001/images/${item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].link!.replace(/([ \/])+/g, "-")}/${item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].filename}`
-                : `http://localhost:3001/images/${item.SKU.replace(/([ \/])+/g, "-")}/${item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].filename}`
+                ? `http://192.168.1.200:3001/images/${item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].link!.replace(/([ \/])+/g, "-")}/${item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].filename}`
+                : `http://192.168.1.200:3001/images/${item.SKU.replace(/([ \/])+/g, "-")}/${item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].filename}`
             : image
     }
 
