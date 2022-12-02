@@ -386,6 +386,7 @@ function itemTemplate():sbt.Item {
             EXTENDEDPROPERTY: [],
             HIDE: false,
             IDBEP: {
+                TAGS: "",
                 AMAZSPORT: "",
                 AMZDEPARTMENT: "",
                 AMZLATENCY: 0,
