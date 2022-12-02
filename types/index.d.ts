@@ -222,7 +222,8 @@ declare namespace sbt {
         SEARCHTERM2: string,
         SEARCHTERM3: string,
         SEARCHTERM4: string,
-        SEARCHTERM5: string
+        SEARCHTERM5: string,
+        TAGS: string,
         TARIFFCODE: string,
         TRADEPACK: string
     }
