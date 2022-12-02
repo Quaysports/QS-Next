@@ -2,7 +2,7 @@ import {dispatchNotification} from "../../../components/notification/dispatch-no
 import MarginCalculatorFilters from "./filter-popup";
 import SidebarButton from "../../../components/layouts/SidebarButton";
 import {useRouter} from "next/router";
-import styles from '../margin-calculator.module.css'
+import styles from './popup-styles.module.css'
 import FeesMenu from "./fees-popup";
 import PostageMenu from "./postage-popup";
 import PackagingMenu from "./packaging-popup";
@@ -80,6 +80,17 @@ export default function MarginMenu() {
             <span>Bulk updates</span>
             <SidebarButton onClick={async () => updateAllMarginData() }>Update All Margins</SidebarButton>
             <SidebarButton onClick={async () => uploadLinnworksPrices() }>Update All Channel Prices</SidebarButton>
+            <span/>
+            <SidebarButton onClick={async () => {
+                dispatchNotification({type: "loading", title: "Removing Overrides"})
+                await fetch("/api/margin/remove-overrides")
+                router.reload()
+            }}>Remove All Overrides</SidebarButton>
+            <SidebarButton onClick={async () => {
+                dispatchNotification({type: "loading", title: "Un-hiding All"})
+                await fetch("/api/margin/unhide-all")
+                router.reload()
+            }}>Un-hide All</SidebarButton>
         </div>
     </div>
 }

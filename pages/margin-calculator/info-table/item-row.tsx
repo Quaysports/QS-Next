@@ -7,6 +7,8 @@ import TitleCell from "./title-cell";
 import SkuCell from "./sku-cell";
 import {useEffect, useState} from "react";
 import {selectMarginSettings} from "../../../store/session-slice";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
+import MarginItemTest from "../margin-test/margin-item-test-popup";
 
 export default function ItemRow({item, index}:{item:MarginItem, index:string}){
 
@@ -29,6 +31,13 @@ export default function ItemRow({item, index}:{item:MarginItem, index:string}){
     return <div key={item.SKU} className={classes}>
         <div>
             <StatusAndUploadPopup item={item}/>
+        </div>
+        <div>
+            <button onClick={()=>dispatchNotification({
+                type:"popup",
+                title:"Margin Item Test",
+                content:<MarginItemTest initialItem={item}/>}
+            )}>&#129045;</button>
         </div>
         <div>
             <input type={"checkbox"}
