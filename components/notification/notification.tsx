@@ -46,6 +46,7 @@ export default function Notification(this: any, {options = {type:undefined}, clo
             setLeft(styleLeft)
             setTop(styleTop)
         }
+
     })
 
     switch(options.type){
@@ -100,6 +101,14 @@ export default function Notification(this: any, {options = {type:undefined}, clo
                     </div>
                     <div>{options.title}</div>
                     <div>{options.content}</div>
+                </div>
+            )
+        case "print":
+            return (
+                <div key={new Date().toString()} className={style['fullscreen-dim']}>
+                    <div className={style["print-container"]}>
+                    {options.content}
+                    </div>
                 </div>
             )
         default: return null

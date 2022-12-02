@@ -3,11 +3,11 @@ import {
     selectItem,
 } from "../../../../store/item-database/item-database-slice";
 import styles from "../../item-database.module.css"
-import itemLocation from "./location-selects";
-import suppliersSelect from "./supplier-select";
-import brandInput from "./brand-input";
-import titleInput from "./title-input";
-import websiteTitleInput from "./website-title-input";
+import ItemLocation from "./location-selects";
+import SuppliersSelect from "./supplier-select";
+import BrandInput from "./brand-input";
+import TitleInput from "./title-input";
+import WebsiteTitleInput from "./website-title-input";
 
 /**
  * Essentials Ribbon Component
@@ -30,14 +30,14 @@ export default function EssentialsRibbon(){
                 <div>Linnworks Title:</div>
             </div>
             <div className={styles["essentials-inputs-1"]}>
-                <div>{brandInput()}</div>
-                <div>{item?.SKU}</div>
-                <div>{item?.EAN}</div>
-                <div>{suppliersSelect()}</div>
-                <div>{item?.STOCKTOTAL}</div>
-                <div>{itemLocation()}</div>
-                <div>{websiteTitleInput()}</div>
-                <div>{titleInput()}</div>
+                <BrandInput/>
+                <div>{item.SKU}</div>
+                <div>{item.EAN}</div>
+                <SuppliersSelect/>
+                <div>{item.STOCKTOTAL}</div>
+                <ItemLocation/>
+                <WebsiteTitleInput/>
+                <TitleInput/>
             </div>
             <div className={styles["essentials-titles-2"]}>
                 <div>Channel Prices</div>
@@ -48,10 +48,10 @@ export default function EssentialsRibbon(){
             </div>
             <div className={styles["essentials-inputs-2"]}>
                 <div/>
-                <div>£{item?.EBAYPRICEINCVAT}</div>
-                <div>£{item?.AMZPRICEINCVAT}</div>
-                <div>£{item?.QSPRICEINCVAT}</div>
-                <div>£{item?.SHOPPRICEINCVAT}</div>
+                <div>£{item.EBAYPRICEINCVAT}</div>
+                <div>£{item.AMZPRICEINCVAT}</div>
+                <div>£{item.QSPRICEINCVAT}</div>
+                <div>£{item.SHOPPRICEINCVAT}</div>
             </div>
         </div>
     )

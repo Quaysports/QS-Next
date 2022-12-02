@@ -32,6 +32,11 @@ export const getItems = async (query:object = {}, projection:object = {}, sort:o
     return await mongoI.find<sbt.Item>("Items", query, projection, sort)
 }
 
+export const getLinkedItems = async (sku:string) =>{
+    let linkedSkus = await mongoI.findDistinct("Items", "SKU", {"COMPDATA.SKU":sku})
+    return linkedSkus ? linkedSkus : []
+}
+
 export const getDefaultSuppliers = async (filter: object = {}) => {
     return await mongoI.findDistinct("Items", "SUPPLIER", filter)
 }

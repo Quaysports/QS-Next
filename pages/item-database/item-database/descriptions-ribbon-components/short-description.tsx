@@ -10,11 +10,10 @@ export default function ShortDescription() {
     return (
         <div className={styles["descriptions-containers"]}>
             <div className={styles["description-titles"]}>Short Description:</div>
-            <Editor tinymceScriptSrc={"/tinymce/js/tinymce/tinymce.min.js"} init={
+            <Editor id={"short-description"} tinymceScriptSrc={"/tinymce/js/tinymce/tinymce.min.js"} init={
                 {
                     inline: false,
-                    plugins: ['advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'print', 'preview', 'paste'],
-                    paste_word_valid_elements: 'b',
+                    plugins: ['advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'preview'],
                     browser_spellcheck: true,
                     menubar: false,
                     toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | charmap | bullist numlist outdent indent | bull',

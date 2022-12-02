@@ -1,0 +1,18 @@
+.container {
+    background-color: white;
+    font-size: 0.8em;
+    width:1.5in;
+    height:1in;
+    margin: 0;
+    color: black;
+}
+@media print {
+
+    .sku {
+        width: 100%;
+        font-size: 10px;
+        text-align: center;
+        background: white;
+        color: black;
+    }
+}

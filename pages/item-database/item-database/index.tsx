@@ -22,8 +22,8 @@ export default function ItemDatabaseLandingPage() {
     return (
         <>
             <div className={styles["search-bar-container"]}><DatabaseSearchBar handler={(x) => searchOptions(x)}/></div>
-            {item ? <SideBar/> : null}
-            {item ? <ItemDetails/> : null}
+            {item.SKU !== "" ? <SideBar/> : null}
+            {item.SKU !== "" ? <ItemDetails/> : null}
         </>
     )
 }

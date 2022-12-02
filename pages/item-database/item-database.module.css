@@ -146,6 +146,9 @@
     max-height:100%;
     max-width:100%;
 }
+.image-dropped{
+    background:white;
+}
 
 /*-----------Amazon Properties------------*/
 
@@ -198,5 +201,72 @@
     border-radius: var(--table-cell-border-radius);
     margin: 3px;
     padding: 5px
+}
+
+/*-------Brand Label Pop Up----------*/
+
+.brand-label-container{
+    display: grid;
+    grid-template-columns: 178px 300px;
+}
+
+.brand-label-image{
+    display: grid;
+    grid-template-rows: 1fr 30px;
+}
+
+.brand-label-image img{
+    margin: 3px;
+    height:170px;
+    width:170px;
+    border: 1px solid white;
+    object-fit: contain;
+    background: white;
+}
+
+.brand-label-info{
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 1fr 30px;
+    grid-row-gap: 15px;
+    margin: 0 10px
+}
+
+.brand-label-titles{
+    display: flex;
+    text-align: right;
+    flex-flow: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.brand-label-inputs{
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column;
+    justify-content: space-between;
+    margin: 0 10px;
+}
+
+.brand-label-character-count{
+    position:relative;
+}
+
+.brand-label-character-count div {
+    position:absolute;
+    right:10px;
+    top:2px;
+    color: lightgrey;
+}
+.brand-label-inputs input{
+    text-align: left;
+}
+
+.brand-label-print-button{
+    grid-area: 2/1/2/3;
+    margin: 2px 0;
+    justify-content: center;
+    display:grid;
+    align-content: center;
 }
 

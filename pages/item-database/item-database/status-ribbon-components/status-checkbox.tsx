@@ -14,7 +14,7 @@ export default function StatusCheckboxes({title}:Props){
     }
 
     return (
-        <div><input checked={item?.CHECK?.DONE[title as keyof sbt.statusChecks["DONE"]]}
+        <div><input checked={item.CHECK.DONE[title as keyof sbt.statusChecks["DONE"]]}
                type={"checkbox"}
                     onChange={(e) => statusCheckBoxHandler(e.target.checked, title)}/></div>
     )

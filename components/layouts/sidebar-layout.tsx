@@ -8,17 +8,18 @@ import {ReactNode, CSSProperties} from "react";
 interface Props {
     children:ReactNode;
     scroll?:boolean;
+    height?:number;
 }
 
 /**
  * Sidebar layout, takes JSX element array of divs and renders as buttons
  */
-export default function SidebarLayout({children, scroll = false}:Props){
+export default function SidebarLayout({children, scroll = false, height=52}:Props){
     const styleOverrides:CSSProperties = {overflowY:undefined, maxHeight:undefined}
 
     if(scroll){
         styleOverrides.overflowY = "auto"
-        styleOverrides.maxHeight = "calc(100vh - 52px)"
+        styleOverrides.maxHeight = `calc(100vh - ${height}px)`
     }
     return(
         <div className={styles["sidebar-layout"]}><div style={styleOverrides}>{children}</div></div>
