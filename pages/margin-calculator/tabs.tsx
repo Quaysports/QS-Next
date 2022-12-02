@@ -7,7 +7,7 @@ import {MarginItem, selectSuppliers} from "../../store/margin-calculator-slice";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
 import {useSelector} from "react-redux";
 import MarginMenu from "./popups/margin-menu-popup";
-import MarginItemTest from "./margin-test/margin-item-test-popup";
+import MarginItemTest from "./margin-test";
 
 interface Props {
     searchData:MarginItem[] | null;

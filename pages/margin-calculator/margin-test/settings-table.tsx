@@ -1,11 +1,14 @@
 import styles from "./test-styles.module.css";
 import {useSelector} from "react-redux";
 import {selectPackaging, selectPostage} from "../../../store/margin-calculator-slice";
-import {UpdateHandler} from "./margin-item-test-popup";
+import {UpdateHandler} from "./index";
 
 export default function SettingsTable({item, handler}: UpdateHandler) {
     const packaging = useSelector(selectPackaging)
     const postage = useSelector(selectPostage)
+
+    if(!item) return null
+
     return <>
         <div className={styles["settings-row"]}>
             <div>Purchase Price</div>
@@ -50,6 +53,8 @@ function PackagingSelect({item, handler}: UpdateHandler) {
 function PostSelect({item, handler}: UpdateHandler) {
 
     const postage = useSelector(selectPostage)
+
+    if(!postage) return null
 
     let opts = []
     for (let option of Object.values(postage!)) {

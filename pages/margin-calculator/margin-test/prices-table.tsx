@@ -1,7 +1,10 @@
 import styles from "./test-styles.module.css";
-import {UpdateHandler} from "./margin-item-test-popup";
+import {UpdateHandler} from "./index";
 
 export default function PricesTable({item, handler}: UpdateHandler) {
+
+    if(!item) return null
+
     return <>
         <div className={styles["prices-row"]}>
             <div>Discount</div>

@@ -4,6 +4,9 @@ import {useEffect, useState} from "react";
 import styles from "./test-styles.module.css";
 
 export default function ResultsTable({item}:{item:MarginItem}){
+
+    if(!item) return null
+
     return <div className={styles["results-table"]}>
         <TitleRow/>
         <ItemRow item={item} channel={"Ebay"} />

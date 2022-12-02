@@ -8,7 +8,7 @@ import SkuCell from "./sku-cell";
 import {useEffect, useState} from "react";
 import {selectMarginSettings} from "../../../store/session-slice";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
-import MarginItemTest from "../margin-test/margin-item-test-popup";
+import MarginItemTest from "../margin-test";
 
 export default function ItemRow({item, index}:{item:MarginItem, index:string}){
 
