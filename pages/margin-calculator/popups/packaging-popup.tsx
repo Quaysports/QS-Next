@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {selectPackaging, updatePackaging} from "../../../store/margin-calculator-slice";
-import styles from "../margin-calculator.module.css"
+import styles from "./popup-styles.module.css"
 import {Packaging} from "../../../server-modules/packaging/packaging";
 import {MenuState} from "./margin-menu-popup";
 import {ChangeEvent} from "react";

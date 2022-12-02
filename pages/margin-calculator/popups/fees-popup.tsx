@@ -1,6 +1,6 @@
 import {selectFees, updateFees} from "../../../store/margin-calculator-slice";
 import {useDispatch, useSelector} from "react-redux";
-import styles from "../margin-calculator.module.css"
+import styles from "./popup-styles.module.css"
 import {Fees} from "../../../server-modules/fees/fees";
 import {MenuState} from "./margin-menu-popup";
 import {ChangeEvent} from "react";

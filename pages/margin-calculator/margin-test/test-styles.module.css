@@ -1,0 +1,97 @@
+/*-------------- Test Item Tables ---------------*/
+
+.table, .sub-table, .sub-table-content, .settings-row, .prices-row, .results-table, .results-row{
+    display:grid;
+    grid-gap:10px;
+}
+
+
+.table{
+    grid-template-areas: "settings prices" "results results";
+    grid-gap: 20px;
+}
+
+.settings {
+    grid-area:settings
+}
+
+.prices {
+    grid-area:prices
+}
+
+.results {
+    grid-area: results
+}
+
+.sub-table{
+    grid-template-rows: auto 1fr;
+    background:var(--primary-table-cell-background);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+
+.sub-table-content{
+    grid-template-columns: repeat(2, auto);
+    grid-gap: 20px;
+    padding:0 10px 10px 10px;
+}
+
+.table-heading {
+    background:var(--primary-background);
+    border-radius: var(--primary-border-radius) var(--primary-border-radius) 0 0;
+    padding:5px 10px;
+    font-weight:bold;
+}
+
+.settings-row{
+    grid-template-rows: repeat(4, 20px);
+    align-items: center;
+}
+
+.settings-row input[type="number"],
+.prices-row input[type="number"]{
+    width: 72px;
+    text-align: left;
+    padding:2px 5px;
+}
+
+.settings-row > select {
+    width:fit-content;
+    text-align: left;
+    padding:0 2px;
+}
+
+.input-pound{
+    display:grid;
+    grid-template-columns: 15px 1fr;
+    align-items: center;
+}
+
+.prices-row{
+    grid-template-rows: repeat(5, 20px);
+    align-items: center;
+}
+
+.results-table{
+    grid-template-rows:repeat(5,auto)
+}
+
+.results-row{
+    grid-template-columns: 100px 100px 150px 150px;
+    text-align: center;
+}
+.results-row span{
+    text-align: left;
+}
+
+.red-text{
+    color:#ff7878;
+}
+
+.green-text{
+    color: #87ee87;
+}
+
+.gray-text{
+    color:lightgray;
+}

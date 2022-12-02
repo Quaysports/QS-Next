@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {selectPostage, updatePostage} from "../../../store/margin-calculator-slice";
-import styles from "../margin-calculator.module.css"
+import styles from "./popup-styles.module.css"
 import {Postage} from "../../../server-modules/postage/postage";
 import {MenuState} from "./margin-menu-popup";
 import {ChangeEvent} from "react";

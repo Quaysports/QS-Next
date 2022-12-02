@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import styles from '../margin-calculator.module.css'
+import styles from './popup-styles.module.css'
 import {selectMarginSettings, updateMarginSetting} from "../../../store/session-slice";
 import {MarginCalcTables} from "../../../server-modules/users/user";
 

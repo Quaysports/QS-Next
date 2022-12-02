@@ -8,6 +8,7 @@ export default function TitleRow(){
 
     return <div className={`${styles.title} ${styles.row} ${displayTitles ? styles["info-grid"] : styles["info-grid-collapsed"]}`}>
         <div>&#127760;</div>
+        <div>&#128201;</div>
         <div>&#128065;</div>
         <div>SKU</div>
         {displayTitles ? <span>Title</span> : null}

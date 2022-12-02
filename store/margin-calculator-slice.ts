@@ -26,6 +26,7 @@ export interface MarginItem {
     QSDISCOUNT: number,
     SHOPPRICEINCVAT: string,
     SHOPDISCOUNT: number,
+    DISCOUNT?: string
     AMZPRIME: boolean,
     IDBEP: sbt.itemDatabaseExtendedProperties,
     IDBFILTER: string,

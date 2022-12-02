@@ -33,17 +33,6 @@ import {updateSettings} from "../../store/session-slice";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
 import {useEffect} from "react";
 
-/* ToDO:
-
-    test column for QS?
-
-    Test item menu / tool
-    Remove override button / script
-    Un-hide all button / script
-
- */
-
-
 export default function marginCalculatorLandingPage({loaded = false}) {
 
     const dispatch = useDispatch()

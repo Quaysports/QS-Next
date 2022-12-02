@@ -7,6 +7,7 @@ import {MarginItem, selectSuppliers} from "../../store/margin-calculator-slice";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
 import {useSelector} from "react-redux";
 import MarginMenu from "./popups/margin-menu-popup";
+import MarginItemTest from "./margin-test/margin-item-test-popup";
 
 interface Props {
     searchData:MarginItem[] | null;
@@ -50,6 +51,11 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
                         dispatchNotification({type:"loading"})
                     }}>Domestic</Link>
                 </span>}
+            <span onClick={()=>dispatchNotification({
+                type:"popup",
+                title:"Margin Item Test",
+                content:<MarginItemTest/>}
+            )}>Test Item</span>
             <span>
                 <select defaultValue={brand}
                         className={styles["tab-select"]}
