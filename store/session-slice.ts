@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-import {MarginSettings, Settings, User, UserTheme} from "../server-modules/users/user";
+import {DashboardSettings, MarginSettings, Settings, User, UserTheme} from "../server-modules/users/user";
 
 export interface sessionWrapper {
     session: sessionState
@@ -30,6 +30,11 @@ const initialState: sessionState = {
                     MiscTable: true,
                 },
                 displayTitles: false
+            },
+            dashboard: {
+                holiday: {
+                    location: "shop"
+                }
             }
         }
     }
@@ -75,13 +80,24 @@ export const sessionSlice = createSlice({
                 }
                 fetch('/api/user/update-user', opt).then(res => console.log(res))
             },
+            updateDashboardSetting: (state, action: PayloadAction<DashboardSettings>) => {
+                if (!state.user) return
+                state.user.settings.dashboard = action.payload
+                const opt = {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(state.user)
+                }
+                fetch('/api/user/update-user', opt).then(res => console.log(res))
+            }
         },
     })
 ;
 
-export const {setUserData, updateUserData, updateSettings, updateTheme, updateMarginSetting} = sessionSlice.actions
+export const {setUserData, updateUserData, updateSettings, updateTheme, updateMarginSetting, updateDashboardSetting} = sessionSlice.actions
 
 export const selectUser = (state: sessionWrapper) => state.session.user;
 export const selectMarginSettings = (state: sessionWrapper) => state.session.user.settings.marginCalculator
+export const selectDashboardSettings = (state: sessionWrapper) => state.session.user.settings.dashboard
 
 export default sessionSlice.reducer;

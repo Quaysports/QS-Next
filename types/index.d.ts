@@ -333,6 +333,7 @@ declare namespace sbt {
         year: number,
         booked: holidayUser
         template: holidayMonths[]
+        maxDays: number
     }
 
     //shop order struct

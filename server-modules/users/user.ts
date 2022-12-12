@@ -41,8 +41,11 @@ export interface Permissions {
     holidays?: { auth: boolean };
 }
 
+
+
 export interface Settings {
     marginCalculator?: MarginSettings
+    dashboard?: DashboardSettings
 }
 
 export interface MarginSettings {
@@ -60,6 +63,10 @@ export interface MarginCalcTables{
     MagentoTable: boolean
     ShopTable: boolean
     MiscTable: boolean
+}
+
+export interface DashboardSettings {
+    holiday:{location: "shop" | "online"}
 }
 
 export const auth = async (code: string) => {
@@ -94,6 +101,16 @@ export const getUsers = async (query?: object) => {
     return await mongoI.find<User>("Users", query)
 }
 
+export const getUsersHoliday = async (query: object) => {
+    return await mongoI.find<User>("Users", query, {
+        username: 1,
+        holiday: 1,
+        colour: 1,
+        rota: 1
+    })
+}
+
+
 export const getUserSettings = async (username?: string) => {
     return await mongoI.findOne<User>("Users", {username:username},{settings:1})
 }
@@ -117,6 +134,11 @@ export const getAllExistingCalendars = async (req: { location: string; }) => {
 
 export const getHolidayCalendar = async (req: { year: number; location: string; }) => {
     return await mongoI.findOne<any>("Holiday-Calendar", {$and: [{year: {$eq: req.year}}, {location: {$eq: req.location}}]})
+}
+
+export const getHolidayYearsForLocation = async (location: string) => {
+    let years = await mongoI.findDistinct("Holiday-Calendar", "year", {location:location})
+    return years ? years : [];
 }
 
 export const updateHolidayCalendar = async (data: sbt.holidayCalendar) => {

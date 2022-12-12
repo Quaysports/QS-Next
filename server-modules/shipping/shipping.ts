@@ -61,7 +61,8 @@ export interface ShippingCompany {
     company: string
 }
 
-export const get = async (query: {} | undefined) => {
+export const get = async (query?: {} | undefined) => {
+    console.log(query)
     if (query) {
         return await mongoI.find<Shipment>("Shipping", query)
     } else {
@@ -69,6 +70,7 @@ export const get = async (query: {} | undefined) => {
             {delivered: false},
             {
                 id: 1,
+                intId:1,
                 confirmed: 1,
                 data: 1,
                 due: 1,

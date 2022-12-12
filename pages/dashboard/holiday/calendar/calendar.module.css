@@ -1,0 +1,120 @@
+.calendar {
+    display:grid;
+    grid-template-rows:auto repeat(12,1fr);
+    width:fit-content;
+    background: var(--primary-table-background);
+    grid-gap:2px;
+    padding:10px;
+    box-shadow: var(--primary-box-shadow);
+    border-radius: var(--primary-border-radius);
+}
+.title{
+    display:grid;
+    font-weight: bold;
+    align-items: end;
+    justify-content: center;
+}
+.month {
+    display:grid;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+}
+.row {
+    display:grid;
+    grid-gap:2px;
+    background: var(--primary-table-background);
+}
+.row:first-child{
+    border-radius: var(--primary-border-radius) var(--primary-border-radius) 0 0;
+}
+
+.row:last-child{
+    border-radius: 0 0 var(--primary-border-radius) var(--primary-border-radius);
+}
+
+.day-cell, .weekend-cell, .bank-holiday-cell {
+    display:grid;
+    border:1px solid transparent;
+    grid-template-rows: auto 1fr;
+    transition:0.1s
+}
+.day-cell:hover, .weekend-cell:hover, .bank-holiday-cell:hover{
+    transform:scale(1.05);
+    border:1px solid var(--primary-active-text);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+.day-cell {
+    background: var(--primary-table-cell-background-alt);
+}
+.weekend-cell{
+    background: var(--primary-table-cell-background);
+}
+.bank-holiday-cell {
+    background: var(--primary-color);
+}
+
+.month-cell-text{
+    padding:2px 5px;
+}
+.month-cell-dots{
+    padding:0 1px;
+}
+
+.booked-dot {
+    height: 10px;
+    width: 10px;
+    float: left;
+    border-radius: 5px;
+    margin: 2px;
+    box-shadow: var(--primary-box-shadow);
+}
+
+.half-booked-dot {
+    height: 10px;
+    width: 5px;
+    float: left;
+    border-radius: 0 5px 5px 0;
+    margin: 1px 1px 1px 6px;
+    box-shadow: var(--primary-box-shadow);
+}
+
+/*--------------------- booking popup ---------------------*/
+.booking-table{
+    display:grid;
+    grid-gap:10px;
+}
+.booking-split-row{
+    display:grid;
+    grid-gap:10px;
+    grid-template-columns: 1fr 1fr;
+}
+.booking-split-row span{
+    text-align: right;
+}
+.booking-linebreak {
+    border:1px solid var(--primary-table-cell-background);
+}
+.booked-user-list{
+    display:grid;
+    grid-gap:2px;
+    border-radius: 5px;
+    box-shadow: var(--primary-box-shadow);
+}
+.booked-user-row{
+    display:grid;
+    grid-template-columns: 20px auto 1fr;
+    text-align:right;
+    padding:5px;
+    background: var(--primary-table-cell-background);
+}
+.booked-user-row:nth-child(odd){
+    background: var(--primary-table-cell-background-alt);
+}
+.booked-user-row:first-child{
+    border-radius: var(--primary-border-radius) var(--primary-border-radius) 0 0;
+}
+.booked-user-row:last-child{
+    border-radius: 0 0 var(--primary-border-radius) var(--primary-border-radius);
+}
