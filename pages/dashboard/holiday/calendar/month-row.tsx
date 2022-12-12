@@ -11,6 +11,8 @@ interface Props {
 
 export default function MonthRow({ month, maxDays, dayCellWidth }: Props) {
 
+    if(!month) return null
+
     let elements = [<div key={month.text} className={styles.month}>{month.text}</div>]
 
     for(let i = 0; i < maxDays; i++){

@@ -4,6 +4,9 @@ import styles from "./shipment-card.module.css";
 
 
 export default function SupplierTable({shipmentItems}:{shipmentItems: ShipmentItem[]}){
+
+    if(!shipmentItems || shipmentItems.length === 0) return null
+
     const {supplier} = shipmentItems[0]
 
     const title = `${supplier}`

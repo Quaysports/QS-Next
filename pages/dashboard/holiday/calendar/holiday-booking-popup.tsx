@@ -4,7 +4,9 @@ import {selectUsers} from "../../../../store/dashboard/holiday-slice";
 import UserDot from "./UserDot";
 export default function HolidayBookingPopup({day}:{day:sbt.holidayDay}) {
 
-    const date = new Date(day.date)
+    if(!day) return null
+
+    const date = day.date ? (new Date(day.date)).toISOString().slice(0,10) : ""
 
     return <div className={styles["booking-table"]}>
         <div className={styles["booking-split-row"]}>
@@ -13,7 +15,7 @@ export default function HolidayBookingPopup({day}:{day:sbt.holidayDay}) {
         </div>
         <div className={styles["booking-split-row"]}>
             <span>Start date:</span>
-            <input type={"date"} defaultValue={`${date.toISOString().slice(0,10)}`}/>
+            <input type={"date"} defaultValue={`${date}`}/>
         </div>
         <div className={styles["booking-split-row"]}>
             <span>Num. of days</span>
