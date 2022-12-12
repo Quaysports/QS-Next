@@ -2,22 +2,23 @@ import {MarginItem, selectActiveIndex} from "../../../store/margin-calculator-sl
 import styles from "../margin-calculator.module.css";
 import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 import {useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {selectMarginSettings} from "../../../store/session-slice";
 
 export default function ItemRow({item, index}: { item: MarginItem, index:string }) {
 
     const activeIndex = useSelector(selectActiveIndex)
-    const [classes, setClasses] = useState(cssClasses())
-    useEffect(()=>{setClasses(cssClasses())},[activeIndex])
-
-    function cssClasses(){
-        return `${styles.row} ${styles["prices-grid"]} ${activeIndex === index ? ` ${styles["active"]}` : ""}`
-    }
+    const settings = useSelector(selectMarginSettings)
 
     if(!item) return null
 
-    return <div key={item.SKU} className={classes}>
+    return <div key={item.SKU} className={`${
+        styles.row
+    } ${
+        settings?.displayRetail ? styles["prices-grid"] : styles["prices-grid-collapsed"]
+    } ${
+        activeIndex === index ? ` ${styles["active"]}` : ""}`
+    }>
         <div>{toCurrency(Number(item.PURCHASEPRICE))}</div>
-        <div>{toCurrency(Number(item.RETAILPRICE))}</div>
+        {settings?.displayRetail ? <div>{toCurrency(Number(item.RETAILPRICE))}</div> : null}
     </div>
 }

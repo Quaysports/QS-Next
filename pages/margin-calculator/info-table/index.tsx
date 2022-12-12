@@ -5,12 +5,16 @@ import TitleRow from "./title-row";
 import ItemRow from "./item-row";
 import TitleLink from "../title-link";
 import {selectMarginSettings, updateMarginSetting} from "../../../store/session-slice";
+import {useEffect, useState} from "react";
 
 export default function InfoTable(){
 
     const items = useSelector(selectRenderedItems)
     const settings = useSelector(selectMarginSettings)
     const dispatch = useDispatch()
+
+    const [displayTitles, setDisplayTitles] = useState(settings?.displayTitles)
+    useEffect(()=>{ setDisplayTitles(settings?.displayTitles) }, [settings?.displayTitles])
 
     if(!items || items.length === 0) return null
 
@@ -22,7 +26,7 @@ export default function InfoTable(){
                 <TitleLink type={"Info"}/>
                 <div className={styles["info-title-checkbox"]}>
                     Titles:<input type={"checkbox"}
-                                  checked={settings?.displayTitles}
+                                  checked={displayTitles}
                                   onChange={(e)=>{
                                       let newSettings = structuredClone(settings!)
                                       newSettings.displayTitles = e.target.checked

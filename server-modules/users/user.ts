@@ -51,6 +51,8 @@ export interface Settings {
 export interface MarginSettings {
     tables: MarginCalcTables
     displayTitles: boolean
+    displayRetail: boolean
+    displayPackaging: boolean
 }
 
 export interface MarginCalcTables{

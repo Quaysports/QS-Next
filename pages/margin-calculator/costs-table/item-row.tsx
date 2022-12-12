@@ -4,25 +4,25 @@ import styles from "../margin-calculator.module.css";
 import PostSelect from "./post-select";
 import PostModSelect from "./postmod-select";
 import {toCurrency} from "../../../components/margin-calculator-utils/utils";
-import {useEffect, useState} from "react";
+import {selectMarginSettings} from "../../../store/session-slice";
 
 export default function ItemRow({item, index}: { item: MarginItem, index:string}) {
 
     const packaging = useSelector(selectPackaging)
-
+    const settings = useSelector(selectMarginSettings)
     const activeIndex = useSelector(selectActiveIndex)
-    const [classes, setClasses] = useState(cssClasses())
-    useEffect(()=>{setClasses(cssClasses())},[activeIndex])
-
-    function cssClasses(){
-        return `${styles.row} ${styles["costs-grid"]} ${activeIndex === index ? ` ${styles["active"]}` : ""}`
-    }
 
     if(!item) return null
 
-    return <div key={item.SKU} className={classes}>
-        <span>{packaging ? packaging[item.PACKGROUP].NAME : ""}</span>
-        <div>{packaging ? toCurrency(packaging[item.PACKGROUP].PRICE) : ""}</div>
+    return <div key={item.SKU} className={`${
+        styles.row
+    } ${
+        settings?.displayPackaging ? styles["costs-grid"] : styles["costs-grid-collapsed"]
+    } ${
+        activeIndex === index ? ` ${styles["active"]}` : ""}`
+    }>
+        {settings?.displayPackaging ? <span>{packaging ? packaging[item.PACKGROUP].NAME : ""}</span> : null}
+        {settings?.displayPackaging ? <div>{packaging ? toCurrency(packaging[item.PACKGROUP].PRICE) : ""}</div> : null}
         <div><PostSelect item={item}/></div>
         <div><PostModSelect item={item}/></div>
         <div>{toCurrency(item.MD.POSTALPRICEUK)}</div>

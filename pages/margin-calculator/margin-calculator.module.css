@@ -117,9 +117,17 @@
     display:grid;
     grid-template-columns: 120px 100px;
 }
+.prices-grid-collapsed {
+    display:grid;
+    grid-template-columns: 120px;
+}
 .costs-grid {
     display:grid;
     grid-template-columns: 200px repeat(4, 100px);
+}
+.costs-grid-collapsed {
+    display:grid;
+    grid-template-columns: repeat(3, 100px);
 }
 .ebay-grid {
     display:grid;

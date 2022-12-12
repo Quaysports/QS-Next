@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {DashboardSettings, MarginSettings, Settings, User, UserTheme} from "../server-modules/users/user";
 
@@ -29,7 +29,9 @@ const initialState: sessionState = {
                     ShopTable: true,
                     MiscTable: true,
                 },
-                displayTitles: false
+                displayTitles: false,
+                displayRetail: true,
+                displayPackaging:true,
             },
             dashboard: {
                 holiday: {
@@ -53,9 +55,12 @@ export const sessionSlice = createSlice({
         },
         reducers: {
             setUserData: (state, action: PayloadAction<User>) => {
+                console.log(current(state))
+                console.log(action.payload)
                 state.user = {...state.user, ...action.payload}
             },
             updateUserData: (state, action: PayloadAction<User>) => {
+                console.log("update user settings!")
                 state.user = action.payload
                 const opt = {
                     method: 'POST',
@@ -65,7 +70,7 @@ export const sessionSlice = createSlice({
                 fetch('/api/user/update-user', opt).then(res => console.log(res))
             },
             updateSettings: (state, action: PayloadAction<Settings>) => {
-                state.user.settings = action.payload
+                state.user.settings = {...state.user.settings, ...action.payload}
             },
             updateTheme: (state, action: PayloadAction<UserTheme>) => {
                 state.user.theme = action.payload

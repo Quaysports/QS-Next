@@ -1,10 +1,20 @@
 import styles from "../margin-calculator.module.css";
+import {useSelector} from "react-redux";
+import {selectMarginSettings} from "../../../store/session-slice";
 
 export default function TitleRow(){
 
-    return <div className={`${styles.title} ${styles.row} ${styles["costs-grid"]}`}>
-        <div>Packaging</div>
-        <div>Cost</div>
+    const settings = useSelector(selectMarginSettings)
+
+    return <div className={`${
+        styles.title
+    } ${
+        styles.row
+    } ${
+        settings?.displayPackaging ? styles["costs-grid"] : styles["costs-grid-collapsed"]}`
+    }>
+        {settings?.displayPackaging ? <div>Packaging</div> : null }
+        {settings?.displayPackaging ? <div>Cost</div> : null}
         <div>Postage</div>
         <div>Modifier</div>
         <div>Cost</div>
