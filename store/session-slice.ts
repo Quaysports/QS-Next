@@ -1,4 +1,4 @@
-import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {DashboardSettings, MarginSettings, Settings, User, UserTheme} from "../server-modules/users/user";
 
@@ -55,12 +55,9 @@ export const sessionSlice = createSlice({
         },
         reducers: {
             setUserData: (state, action: PayloadAction<User>) => {
-                console.log(current(state))
-                console.log(action.payload)
                 state.user = {...state.user, ...action.payload}
             },
             updateUserData: (state, action: PayloadAction<User>) => {
-                console.log("update user settings!")
                 state.user = action.payload
                 const opt = {
                     method: 'POST',
@@ -99,7 +96,7 @@ export const sessionSlice = createSlice({
     })
 ;
 
-export const {setUserData, updateUserData, updateSettings, updateTheme, updateMarginSetting, updateDashboardSetting} = sessionSlice.actions
+export const {setUserData, updateSettings, updateMarginSetting, updateDashboardSetting} = sessionSlice.actions
 
 export const selectUser = (state: sessionWrapper) => state.session.user;
 export const selectMarginSettings = (state: sessionWrapper) => state.session.user.settings.marginCalculator

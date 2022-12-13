@@ -321,7 +321,7 @@ declare namespace sbt {
         booked?: bookedUser
     }
 
-    interface holidayMonths {
+    interface holidayMonth {
         text: string,
         days: holidayDay[],
         offset: number
@@ -332,7 +332,7 @@ declare namespace sbt {
         location: string,
         year: number,
         booked: holidayUser
-        template: holidayMonths[]
+        template: holidayMonth[]
         maxDays: number
     }
 

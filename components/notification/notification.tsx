@@ -69,7 +69,7 @@ export default function Notification(this: any, {options = {type:undefined}, clo
                     <div className={style['confirm-title']}>{options.title}</div>
                     <div className={style['confirm-text']}>{options.content}</div>
                     <div className={style['confirm-buttons']}>
-                        <button onClick={()=>{options.fn!(); close()}}>Yes</button>
+                        <button onClick={()=>{ close(); options.fn!()}}>Yes</button>
                         <button onClick={()=> close()}>No</button>
                     </div>
                 </div>
@@ -86,6 +86,14 @@ export default function Notification(this: any, {options = {type:undefined}, clo
                 </div>
             </div>
         )
+        case "toast": {
+            setTimeout(()=>close(), 4000)
+            return(
+                <div key={new Date().toString()} className={style['toast-frame']}>
+                    <div className={style['toast-text']}>{options.content}</div>
+                </div>
+            )
+        }
         case "tooltip":
             return (
             <div key={new Date().toString()} ref={tooltip} className={style["tooltip-frame"]} style={{left: left , top: top}}>

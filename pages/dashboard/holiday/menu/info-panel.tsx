@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import {selectBookedDays, selectUsers} from "../../../../store/dashboard/holiday-slice";
+import {selectBookedDays, selectCalendar, selectUsers} from "../../../../store/dashboard/holiday-slice";
 import {User} from "../../../../server-modules/users/user";
 import styles from "../holiday.module.css"
 import calendarStyles from "../calendar/calendar.module.css"
@@ -7,10 +7,13 @@ import calendarStyles from "../calendar/calendar.module.css"
 export default function InfoPanel(){
 
     const bookedDays = useSelector(selectBookedDays)
-    const holidayUsers = useSelector(selectUsers)
+    const calendar = useSelector(selectCalendar)
+    const users = useSelector(selectUsers)
+
+    if(!calendar) return null
 
     let elements = [<TitleRow key={"title-row"}/>]
-    for(const user of holidayUsers){
+    for(const user of users[calendar.location as "shop" | "online"]){
         elements.push(<UserRow key={user.username} user={user} bookedDays={bookedDays}/>)
     }
 
@@ -29,12 +32,15 @@ function TitleRow(){
 }
 
 function UserRow({user, bookedDays}:{user:User, bookedDays:{[_:string]:number}}){
+
+    let bookedDaysCount = bookedDays[user.username] || 0
+
     return <div className={styles["info-row"]}>
         <div style={{background:user.colour}}
              className={calendarStyles["booked-dot"]}></div>
         <div>{user.username}</div>
         <div className={styles["info-cell"]}>{user.holiday}</div>
-        <div className={styles["info-cell"]}>{bookedDays[user.username]}</div>
-        <div className={styles["info-cell"]}>{user.holiday? Number(user.holiday) - bookedDays[user.username] : user.holiday}</div>
+        <div className={styles["info-cell"]}>{bookedDaysCount}</div>
+        <div className={styles["info-cell"]}>{user.holiday? Number(user.holiday) - bookedDaysCount : user.holiday}</div>
     </div>
 }

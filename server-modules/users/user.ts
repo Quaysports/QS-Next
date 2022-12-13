@@ -103,8 +103,8 @@ export const getUsers = async (query?: object) => {
     return await mongoI.find<User>("Users", query)
 }
 
-export const getUsersHoliday = async (query: object) => {
-    return await mongoI.find<User>("Users", query, {
+export const getUsersHoliday = async () => {
+    return await mongoI.find<User>("Users", {}, {
         username: 1,
         holiday: 1,
         colour: 1,
@@ -139,6 +139,11 @@ export const getHolidayCalendar = async (req: { year: number; location: string; 
 }
 
 export const getHolidayYearsForLocation = async (location: string) => {
+    let years = await mongoI.findDistinct("Holiday-Calendar", "year", {location:location})
+    return years ? years : [];
+}
+
+export const getListOfHolidayYears = async (location:string) => {
     let years = await mongoI.findDistinct("Holiday-Calendar", "year", {location:location})
     return years ? years : [];
 }

@@ -7,6 +7,7 @@ import {selectUser, updateDashboardSetting} from "../../../../store/session-slic
 import {useEffect, useState} from "react";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
 import InfoPanel from "./info-panel";
+import CreateCalendarPopup from "./create-calendar-popup";
 
 export default function HolidayMenu(){
     const calendar = useSelector(selectCalendar)
@@ -29,7 +30,9 @@ export default function HolidayMenu(){
         <button onClick={()=>{
             dispatchNotification({type:"popup", title:"Booked Days", content:<InfoPanel/>})
         }}>Info Panel</button>
-        <button>Create Calendar</button>
+        <button onClick={()=>{
+                dispatchNotification({type:"popup", title:"Create Calendar", content:<CreateCalendarPopup/>})
+        }}>Create Calendar</button>
         <select defaultValue={calendar?.location}
                 onChange={async (e)=>{
                     let newDashboardSettings = structuredClone(session.settings.dashboard!)

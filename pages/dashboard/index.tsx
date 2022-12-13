@@ -65,7 +65,8 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
         const data = await getHolidayCalendar({year:year, location:location})
         if(data) store.dispatch(setHolidayCalendar(data))
 
-        const users = await getUsersHoliday({rota:location})
+        const users = await getUsersHoliday()
+        console.dir(users)
         if(users) store.dispatch(setHolidayUsers(users))
     }
     return {props:{}}

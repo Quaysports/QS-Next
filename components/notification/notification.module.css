@@ -107,6 +107,19 @@
     min-width: 80px;
 }
 
+/*------------------- toast style -------------------*/
+.toast-frame{
+    position: fixed;
+    z-index: 100;
+    width: 500px;
+    left: calc(50% - 250px);
+    bottom: 40px;
+    padding: 2px 5px;
+    background: var(--primary-color);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+
 /*-------------------- tooltip style----------------*/
 
 .tooltip-frame{

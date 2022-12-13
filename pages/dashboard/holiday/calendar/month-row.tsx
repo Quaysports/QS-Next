@@ -4,7 +4,7 @@ import HolidayBookingPopup from "./holiday-booking-popup";
 import UserDot from "./UserDot";
 
 interface Props {
-    month: sbt.holidayMonths;
+    month: sbt.holidayMonth;
     maxDays: number;
     dayCellWidth:string;
 }
@@ -22,7 +22,7 @@ export default function MonthRow({ month, maxDays, dayCellWidth }: Props) {
     return <div style={{gridTemplateColumns:`repeat(${maxDays + 1}, ${dayCellWidth})`}} className={styles.row}>{elements}</div>
 }
 
-function MonthCell({ index, month }: { index: number, month:sbt.holidayMonths }) {
+function MonthCell({ index, month }: { index: number, month:sbt.holidayMonth }) {
     const {offset, days} = month
     const loop = Math.floor(index / 7)
     const day = index - (loop * 7)

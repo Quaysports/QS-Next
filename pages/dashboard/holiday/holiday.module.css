@@ -44,3 +44,36 @@
 .info-cell{
     text-align: center;
 }
+/*------------------- create calendar popup -------------------*/
+.create-calendar-options {
+    width:510px;
+    display:grid;
+    grid-gap:10px;
+    grid-template-columns: repeat(4,fit-content(200px)) 1fr;
+}
+
+.create-calendar-options div {
+    text-align: right;
+}
+
+/*------------------- bank holiday table -------------------*/
+.bank-holiday-table {
+    margin-top:10px;
+    display:grid;
+    grid-gap:2px;
+    background: var(--primary-table-background);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+.bank-holiday-row {
+    display:grid;
+    grid-template-columns: 300px 100px 100px;
+    padding:2px 5px;
+    background: var(--primary-table-cell-background);
+}
+.bank-holiday-row:first-child {
+    border-radius: var(--primary-border-radius) var(--primary-border-radius) 0 0;
+}
+.bank-holiday-row:last-child {
+    border-radius: 0 0 var(--primary-border-radius) var(--primary-border-radius);
+}

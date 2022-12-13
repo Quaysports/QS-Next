@@ -1,6 +1,6 @@
 import styles from "./calendar.module.css"
 import {useSelector} from "react-redux";
-import {selectUsers} from "../../../../store/dashboard/holiday-slice";
+import {selectCalendar, selectUsers} from "../../../../store/dashboard/holiday-slice";
 import UserDot from "./UserDot";
 export default function HolidayBookingPopup({day}:{day:sbt.holidayDay}) {
 
@@ -32,8 +32,12 @@ export default function HolidayBookingPopup({day}:{day:sbt.holidayDay}) {
 
 function UserSelect(){
     const users = useSelector(selectUsers)
+    const calendar = useSelector(selectCalendar)
+
+    if(!calendar) return null
+
     let options = []
-    for(const [id, user] of Object.entries(users)){
+    for(const [id, user] of Object.entries(users[calendar.location as "shop" | "online"])){
         options.push(<option key={id} value={user.username}>{user.username}</option>)
     }
     return <select>{options}</select>
