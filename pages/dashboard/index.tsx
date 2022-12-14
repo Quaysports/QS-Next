@@ -49,8 +49,8 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
 
         const location = context.query.location
             ? context.query.location as string
-            : user?.settings.dashboard?.holiday.location
-                ? user?.settings.dashboard?.holiday.location
+            : user?.settings?.dashboard?.holiday.location
+                ? user?.settings?.dashboard?.holiday.location
                 : "shop"
 
         let currentYear = new Date().getFullYear()
