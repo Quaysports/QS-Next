@@ -2,6 +2,8 @@ import styles from "./calendar.module.css";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
 import HolidayBookingPopup from "./holiday-booking-popup";
 import UserDot from "./UserDot";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../../../store/session-slice";
 
 interface Props {
     month: sbt.holidayMonth;
@@ -23,10 +25,12 @@ export default function MonthRow({ month, maxDays, dayCellWidth }: Props) {
 }
 
 function MonthCell({ index, month }: { index: number, month:sbt.holidayMonth }) {
+
+    const session = useSelector(selectUser)
+
     const {offset, days} = month
     const loop = Math.floor(index / 7)
     const day = index - (loop * 7)
-
 
     function cellText(){
         switch(true){
@@ -49,21 +53,20 @@ function MonthCell({ index, month }: { index: number, month:sbt.holidayMonth }) 
         let booked = month.days[index - offset]?.booked
         if(booked){
             for(const [user, value] of Object.entries(booked)){
-                dots.push(<UserDot booked={value} user={user}/>)
+                dots.push(<UserDot key={user} booked={value} user={user}/>)
             }
         }
         return <>{dots}</>
     }
 
-
-
     return <div className={cellClass()}
                 onClick={()=>{
+                    if(!month.days[index - offset] || !session.permissions.holidaysEdit?.auth) return
                     dispatchNotification(
                         {
                             type:"popup",
                             title:"Holiday Booking",
-                            content:<HolidayBookingPopup  day={month.days[index - offset]}/>
+                            content:<HolidayBookingPopup  dateString={month.days[index - offset].date}/>
                         })
                 }}>
         <div className={styles["month-cell-text"]}>{cellText()}</div>

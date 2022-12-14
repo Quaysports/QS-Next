@@ -86,14 +86,6 @@ export default function Notification(this: any, {options = {type:undefined}, clo
                 </div>
             </div>
         )
-        case "toast": {
-            setTimeout(()=>close(), 4000)
-            return(
-                <div key={new Date().toString()} className={style['toast-frame']}>
-                    <div className={style['toast-text']}>{options.content}</div>
-                </div>
-            )
-        }
         case "tooltip":
             return (
             <div key={new Date().toString()} ref={tooltip} className={style["tooltip-frame"]} style={{left: left , top: top}}>

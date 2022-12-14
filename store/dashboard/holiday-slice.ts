@@ -1,7 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {User} from "../../server-modules/users/user";
-import {dispatchNotification} from "../../components/notification/dispatch-notification";
 
 export interface holidaysWrapper {
     holidays: holidaysState
@@ -59,11 +58,7 @@ export const holidaysSlice = createSlice({
                 body: JSON.stringify(action.payload)
             }
 
-            fetch("/api/holiday-calendar/update-calendar", options).then(res => {
-                res.status === 200
-                    ? dispatchNotification({type:"toast",content:"Calendar updated!"})
-                    : dispatchNotification({type:"toast",content:"Error updating Calendar!"});
-            })
+            fetch("/api/holiday-calendar/update-calendar", options)
 
         },
         setAvailableCalendarsYears(state, action: PayloadAction<string[]>) {

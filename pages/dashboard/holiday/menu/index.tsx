@@ -10,6 +10,7 @@ import InfoPanel from "./info-panel";
 import CreateCalendarPopup from "./create-calendar-popup";
 
 export default function HolidayMenu(){
+
     const calendar = useSelector(selectCalendar)
     const session = useSelector(selectUser)
     const years = useSelector(selectYears)
@@ -26,13 +27,13 @@ export default function HolidayMenu(){
         yearOptions.push(<option key={year} value={year}>{year}</option>)
     }
 
-    return <div className={styles.menu}>
+    return <div className={session.permissions.holidaysEdit?.auth ? styles.menu : styles["menu-collapsed"]}>
         <button onClick={()=>{
             dispatchNotification({type:"popup", title:"Booked Days", content:<InfoPanel/>})
         }}>Info Panel</button>
-        <button onClick={()=>{
+        {session.permissions.holidaysEdit?.auth ? <button onClick={()=>{
                 dispatchNotification({type:"popup", title:"Create Calendar", content:<CreateCalendarPopup/>})
-        }}>Create Calendar</button>
+        }}>Create Calendar</button> : null}
         <select defaultValue={calendar?.location}
                 onChange={async (e)=>{
                     let newDashboardSettings = structuredClone(session.settings.dashboard!)

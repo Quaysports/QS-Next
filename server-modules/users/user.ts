@@ -39,6 +39,7 @@ export interface Permissions {
     online?: { auth: boolean };
     rotas?: { auth: boolean };
     holidays?: { auth: boolean };
+    holidaysEdit?: { auth: boolean };
 }
 
 
