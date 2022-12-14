@@ -81,7 +81,10 @@ function calculateBookedDays(calendar: sbt.holidayCalendar) {
             if (day.booked) {
                 for (const [k, v] of Object.entries(day.booked)) {
                     bookedDays[k] ??= 0
-                    if (v === "half") bookedDays[k] += 0.5
+                    if (v === "half") {
+                        bookedDays[k] += 0.5
+                        continue
+                    }
                     if (v) bookedDays[k]++
                 }
             }
