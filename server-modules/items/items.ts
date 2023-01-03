@@ -210,7 +210,9 @@ export const getStockValues = async (domestic: boolean) => {
     let query = {
         $and: [
             {LISTINGVARIATION: false},
+            {ISCOMPOSITE: false},
             {IDBFILTER: {$ne: true}},
+            {STOCKVAL: {$gt: 0}},
             {IDBFILTER: {$ne: 'domestic'}},
             {IDBFILTER: {$ne: 'bait'}}
         ]
@@ -219,7 +221,9 @@ export const getStockValues = async (domestic: boolean) => {
     let domesticQuery = {
         $and: [
             {LISTINGVARIATION: false},
+            {ISCOMPOSITE: false},
             {IDBFILTER: {$ne: true}},
+            {STOCKVAL: {$gt: 0}},
             {IDBFILTER: {$eq: 'domestic'}},
             {IDBFILTER: {$ne: 'bait'}}
         ]
@@ -249,6 +253,7 @@ export const getStockValueCSVData = async (domestic: boolean) => {
     let query = {
         $and: [
             {LISTINGVARIATION: false},
+            {ISCOMPOSITE: false},
             {STOCKVAL: {$gt: 0}},
             {IDBFILTER: {$ne: true}},
             {IDBFILTER: {$ne: 'domestic'}},
@@ -259,6 +264,7 @@ export const getStockValueCSVData = async (domestic: boolean) => {
     let domesticQuery = {
         $and: [
             {LISTINGVARIATION: false},
+            {ISCOMPOSITE: false},
             {STOCKVAL: {$gt: 0}},
             {IDBFILTER: {$ne: true}},
             {IDBFILTER: {$eq: 'domestic'}},
@@ -274,7 +280,7 @@ export const getStockValueCSVData = async (domestic: boolean) => {
                 'SKU': 1,
                 'price': '$PURCHASEPRICE',
                 'quantity': '$STOCKTOTAL',
-                'value': '$STOCKVAL'
+                'value': {$multiply: ['$PURCHASEPRICE', '$STOCKTOTAL']}
             }
         }
     ]
