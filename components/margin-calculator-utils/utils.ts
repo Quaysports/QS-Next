@@ -1,5 +1,5 @@
 export function toCurrency(value?:number){
-    return value ? `£${value.toFixed(2)}` : "£0.00"
+    return value ? `£${value.toLocaleString("en-GB", {minimumFractionDigits: 2})}` : "£0.00"
 }
 
 export function toTitleCase(string?:string){

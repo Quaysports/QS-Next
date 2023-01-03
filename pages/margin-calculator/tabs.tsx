@@ -8,6 +8,7 @@ import {dispatchNotification} from "../../components/notification/dispatch-notif
 import {useSelector} from "react-redux";
 import MarginMenu from "./popups/margin-menu-popup";
 import MarginItemTest from "./margin-test";
+import StockTotalsPopup from "./popups/stock-totals-popup";
 
 interface Props {
     searchData:MarginItem[] | null;
@@ -51,11 +52,18 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
                         dispatchNotification({type:"loading"})
                     }}>Domestic</Link>
                 </span>}
+            <span/>
+            <span onClick={()=>dispatchNotification({
+                type:"popup",
+                title:"Stock Totals",
+                content:<StockTotalsPopup/>
+            })}>Stock Totals</span>
             <span onClick={()=>dispatchNotification({
                 type:"popup",
                 title:"Margin Item Test",
                 content:<MarginItemTest/>}
             )}>Test Item</span>
+            <span/>
             <span>
                 <select defaultValue={brand}
                         className={styles["tab-select"]}
