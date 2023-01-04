@@ -82,3 +82,50 @@
     border-radius: 5px;
     margin: var(--sidebar-margin);
 }
+
+/*-------------------- loading spinner style----------------*/
+
+.spinner {
+    display:grid;
+    align-items: center;
+    height:90px;
+    width:90px;
+    margin:20px auto;
+    mask: radial-gradient(circle 39px, #0000 98%, #fff);
+    -webkit-animation: rotation 3s infinite linear;
+    -moz-animation: rotation 3s infinite linear;
+    -o-animation: rotation 3s infinite linear;
+    animation: rotation 3s infinite linear;
+    background:linear-gradient(90deg, rgba(255,255,255, 0), var(--primary-color));
+    border-radius:100%;
+}
+
+.spinner-inner{
+    height:80px;
+    width:80px;
+    margin:auto auto;
+    mask: radial-gradient(circle 36px, #0000 98%, #fff);
+    -webkit-animation: rotation 3s infinite linear;
+    -moz-animation: rotation 3s infinite linear;
+    -o-animation: rotation 3s infinite linear;
+    animation: rotation 3s infinite linear;
+    background:linear-gradient(90deg, rgba(255,255,255, 0), white);
+    border-radius:100%;
+}
+
+@-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(359deg);}
+}
+@-moz-keyframes rotation {
+    from {-moz-transform: rotate(0deg);}
+    to {-moz-transform: rotate(359deg);}
+}
+@-o-keyframes rotation {
+    from {-o-transform: rotate(0deg);}
+    to {-o-transform: rotate(359deg);}
+}
+@keyframes rotation {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(359deg);}
+}

@@ -101,3 +101,53 @@
     grid-template-rows: auto;
     text-align: center;
 }
+
+/*-------------- Parcel Info Table ---------------*/
+.parcel-wrapper{
+    display:grid;
+    grid-gap:10px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.postal-year{
+    display:grid;
+    grid-gap:10px;
+    grid-template-rows: auto 1fr;
+}
+
+.postal-source-wrapper{
+    display:grid;
+    grid-gap:10px;
+    grid-template-rows: repeat(6, fit-content(1px));
+}
+.postal-source {
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+
+.postal-service-wrapper{
+    display:grid;
+    grid-gap:2px;
+    grid-template-rows: auto;
+}
+
+.postal-service-row{
+    display:grid;
+    background: var(--primary-table-cell-background);
+    grid-gap:10px;
+    padding: 2px 5px;
+    grid-template-columns: 1fr 50px;
+}
+
+.postal-service-row:nth-child(odd){
+    background: var(--primary-table-cell-background-alt);
+}
+
+.postal-service-row:first-child{
+    background: var(--primary-color);
+    border-radius: var(--primary-border-radius) var(--primary-border-radius) 0 0;
+}
+
+.postal-service-row:last-child{
+    border-radius: 0 0 var(--primary-border-radius) var(--primary-border-radius);
+}

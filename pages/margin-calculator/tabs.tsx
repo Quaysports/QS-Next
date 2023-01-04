@@ -9,6 +9,7 @@ import {useSelector} from "react-redux";
 import MarginMenu from "./popups/margin-menu-popup";
 import MarginItemTest from "./margin-test";
 import StockTotalsPopup from "./popups/stock-totals-popup";
+import ParcelInfoPopup from "./popups/parcel-info-popup";
 
 interface Props {
     searchData:MarginItem[] | null;
@@ -33,6 +34,11 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
         setDomesticToggle(router.query.domestic === "true")
         setBrand(brand ? brand : "")
     },[router.query])
+
+    function generateDate(){
+        let date = new Date()
+        return `${date.getFullYear()-1} / ${date.getFullYear()}`
+    }
 
     return (
         <>
@@ -63,6 +69,11 @@ export default function MarginCalculatorMenuTabs({searchData, updateItemsHandler
                 title:"Margin Item Test",
                 content:<MarginItemTest/>}
             )}>Test Item</span>
+            <span onClick={()=>dispatchNotification({
+                type:"popup",
+                title:`Parcel Info for ${generateDate()}`,
+                content:<ParcelInfoPopup/>}
+            )}>Parcel Info</span>
             <span/>
             <span>
                 <select defaultValue={brand}
