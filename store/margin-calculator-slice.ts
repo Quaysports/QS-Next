@@ -40,6 +40,7 @@ export interface marginCalculatorWrapper {
 export interface marginCalculatorState {
     marginData: MarginItem[]
     suppliers: string[]
+    totalStockValue: number
     fees: Fees | null
     postage: { [key: string]: Postage } | null
     packaging: { [key: string]: Packaging } | null
@@ -63,6 +64,7 @@ export interface MarginTables {
 const initialState: marginCalculatorState = {
     marginData: [],
     suppliers: [],
+    totalStockValue: 0,
     fees: null,
     postage: null,
     packaging: null,
@@ -109,6 +111,9 @@ export const marginCalculatorSlice = createSlice({
             },
             setSuppliers: (state, action:PayloadAction<string[]>) => {
                 state.suppliers = action.payload
+            },
+            setTotalStockValue: (state, action:PayloadAction<number>) => {
+                state.totalStockValue = action.payload
             },
             setFees: (state, action: PayloadAction<Fees>) => {
                 state.fees = action.payload
@@ -234,6 +239,7 @@ export const marginCalculatorSlice = createSlice({
 export const {
     setMarginData,
     setSuppliers,
+    setTotalStockValue,
     setFees,
     updateFees,
     setPostage,
@@ -252,6 +258,7 @@ export const {
 export const selectMarginData = (state: marginCalculatorWrapper) => state.marginCalculator.marginData
 export const selectSearchData = (state: marginCalculatorWrapper) => state.marginCalculator.searchItems
 export const selectSuppliers = (state: marginCalculatorWrapper) => state.marginCalculator.suppliers
+export const selectTotalStockValue = (state: marginCalculatorWrapper) => state.marginCalculator.totalStockValue
 export const selectFees = (state: marginCalculatorWrapper) => state.marginCalculator.fees
 export const selectPostage = (state: marginCalculatorWrapper) => state.marginCalculator.postage
 export const selectPackaging = (state: marginCalculatorWrapper) => state.marginCalculator.packaging

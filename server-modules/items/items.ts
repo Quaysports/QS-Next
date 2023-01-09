@@ -34,8 +34,8 @@ export const getItems = async (query:object = {}, projection:object = {}, sort:o
     return await mongoI.find<sbt.Item>("Items", query, projection, sort)
 }
 
-export const getLinkedItems = async (sku:string) =>{
-    let linkedSkus = await mongoI.findDistinct("Items", "SKU", {"COMPDATA.SKU":sku})
+export const getLinkedItems = async (sku: string) => {
+    let linkedSkus = await mongoI.findDistinct("Items", "SKU", {"COMPDATA.SKU": sku})
     return linkedSkus ? linkedSkus : []
 }
 
@@ -51,16 +51,18 @@ export const getAllSuppliers = async (filter: object = {}) => {
     return await mongoI.findDistinct("Items", "SUPPLIERS", filter)
 }
 
-export const searchItems = async (query: { opts?: {LISTINGVARIATION?:boolean}; type: string; id: string; }) => {
+export const searchItems = async (query: { opts?: { LISTINGVARIATION?: boolean }; type: string; id: string; }) => {
 
     interface dbQueryTitle {
-        $and: [{$or: [{$text: {$search: string}}, {TITLE: {$regex: string, $options: string}}]}]
+        $and: [{ $or: [{ $text: { $search: string } }, { TITLE: { $regex: string, $options: string } }] }]
     }
+
     interface dbQuery {
-        [key:string]:{$regex: string, $options: string}
+        [key: string]: { $regex: string, $options: string }
     }
+
     interface SearchOpts {
-        LISTINGVARIATION?:boolean
+        LISTINGVARIATION?: boolean
     }
 
     let dbQuery: SearchOpts & dbQuery | SearchOpts & dbQueryTitle
@@ -92,7 +94,7 @@ export const searchItems = async (query: { opts?: {LISTINGVARIATION?:boolean}; t
     return await mongoI.find<sbt.Item>("Items", dbQuery, dbProject, dbSort)
 }
 
-export const getImages = async (sku:string, type:string) => {
+export const getImages = async (sku: string, type: string) => {
     const item = await mongoI.findOne<sbt.Item>("Items", {SKU: sku}, {IMAGES: 1})
     if (!item) return
     if (!item.IMAGES) return
@@ -109,20 +111,20 @@ export const getImages = async (sku:string, type:string) => {
     }
 }
 
-export const uploadImages = async (file:{_id:string, SKU:string, id:string, filename: string, image:string}) => {
+export const uploadImages = async (file: { _id: string, SKU: string, id: string, filename: string, image: string }) => {
     const makeImagesFolder = async () => {
         if (!fs.existsSync('../images')) await fs.mkdir("../images")
         return '../images'
     }
 
-    const makeSkuFolder = async (root:string) => {
+    const makeSkuFolder = async (root: string) => {
         if (!fs.existsSync(`${root}/${file.SKU.replaceAll("/", "-")}`)) {
             await fs.mkdir(`${root}/${file.SKU.replaceAll("/", "-")}`)
         }
         return `${root}/${file.SKU.replaceAll("/", "-")}`
     }
 
-    function decodeBase64Image(dataString:string): { type: string | null, data: Buffer | null, error: Error | null } {
+    function decodeBase64Image(dataString: string): { type: string | null, data: Buffer | null, error: Error | null } {
         let matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
 
         if (!matches || matches.length !== 3) return {type: null, data: null, error: new Error('Invalid input string')};
@@ -150,9 +152,9 @@ export const uploadImages = async (file:{_id:string, SKU:string, id:string, file
         return
     }
 
-    fs.readdir(path, function (err:Error, files: any) {
+    fs.readdir(path, function (err: Error, files: any) {
         if (!files) {
-            fs.writeFile(`${path}/${file.filename}`, image.data!.toString(), async (err:Error) => {
+            fs.writeFile(`${path}/${file.filename}`, image.data!.toString(), async (err: Error) => {
                 if (err) console.log(err)
                 return await dbUpdateImage(dbImage)
             })
@@ -162,7 +164,7 @@ export const uploadImages = async (file:{_id:string, SKU:string, id:string, file
                     fs.unlinkSync(`${path}/${foundFile}`)
                 }
             }
-            fs.writeFile(`${path}/${file.filename}`, image.data!.toString(), async (err:Error) => {
+            fs.writeFile(`${path}/${file.filename}`, image.data!.toString(), async (err: Error) => {
                 if (err) console.log(err)
                 return await dbUpdateImage(dbImage)
             })
@@ -183,7 +185,7 @@ export const deleteImage = async (id:keyof schema.Images, item:schema.Item) => {
     return {status: "Deleted"}
 }
 
-export const archiveSKU = async (data: {[key:string]:string}) => {
+export const archiveSKU = async (data: { [key: string]: string }) => {
     await mongoI.setData("Archived-SKU", {}, data)
     return {status: "Archived"}
 }
@@ -191,8 +193,7 @@ export const archiveSKU = async (data: {[key:string]:string}) => {
 export const getBrandLabelImages = async () => {
     try {
         return await fs.readdir("../brand-label-images")
-    }
-    catch(e) {
+    } catch (e) {
         console.error(e)
     }
 }
@@ -204,4 +205,87 @@ export const getBrands = async (filter = {}) => {
 export const getTags = async () => {
     const tags = await mongoI.findDistinct("New-Items", "tags")
     return tags ? tags : []
+}
+
+export const getStockValues = async (domestic: boolean) => {
+
+    let query = {
+        $and: [
+            {LISTINGVARIATION: false},
+            {ISCOMPOSITE: false},
+            {IDBFILTER: {$ne: true}},
+            {STOCKVAL: {$gt: 0}},
+            {IDBFILTER: {$ne: 'domestic'}},
+            {IDBFILTER: {$ne: 'bait'}}
+        ]
+    }
+
+    let domesticQuery = {
+        $and: [
+            {LISTINGVARIATION: false},
+            {ISCOMPOSITE: false},
+            {IDBFILTER: {$ne: true}},
+            {STOCKVAL: {$gt: 0}},
+            {IDBFILTER: {$eq: 'domestic'}},
+            {IDBFILTER: {$ne: 'bait'}}
+        ]
+    }
+
+    let totalsQuery = [
+        {
+            '$match': domestic ? domesticQuery : query
+        }, {
+            '$group': {
+                '_id': null,
+                'total': {
+                    '$sum': {
+                        '$multiply': [
+                            '$PURCHASEPRICE', '$STOCKTOTAL'
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+
+    return await mongoI.findAggregate<{ _id: string, total: number }>("Items", totalsQuery)
+}
+
+export const getStockValueCSVData = async (domestic: boolean) => {
+    let query = {
+        $and: [
+            {LISTINGVARIATION: false},
+            {ISCOMPOSITE: false},
+            {STOCKVAL: {$gt: 0}},
+            {IDBFILTER: {$ne: true}},
+            {IDBFILTER: {$ne: 'domestic'}},
+            {IDBFILTER: {$ne: 'bait'}}
+        ]
+    }
+
+    let domesticQuery = {
+        $and: [
+            {LISTINGVARIATION: false},
+            {ISCOMPOSITE: false},
+            {STOCKVAL: {$gt: 0}},
+            {IDBFILTER: {$ne: true}},
+            {IDBFILTER: {$eq: 'domestic'}},
+            {IDBFILTER: {$ne: 'bait'}}
+        ]
+    }
+
+    let totalsQuery = [
+        {
+            '$match': domestic ? domesticQuery : query
+        }, {
+            '$project': {
+                'SKU': 1,
+                'price': '$PURCHASEPRICE',
+                'quantity': '$STOCKTOTAL',
+                'value': {$multiply: ['$PURCHASEPRICE', '$STOCKTOTAL']}
+            }
+        }
+    ]
+
+    return await mongoI.findAggregate<{ _id: string, SKU: string, price: number, quantity:number, value:number}>("Items", totalsQuery)
 }
