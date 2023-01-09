@@ -13,6 +13,7 @@ export default function ImageContainer({imageTag}: Props) {
     const item = useSelector(selectItem)
     const [image, setImage] = useState<string | undefined>(undefined)
     const dispatch = useDispatch()
+    const key: keyof schema.Images = imageTag === "Main" ? "main" : "image" + imageTag as keyof schema.Images
 
     function dragOverHandler(event: DragEvent<HTMLDivElement>) {
         event.stopPropagation()
@@ -39,7 +40,7 @@ export default function ImageContainer({imageTag}: Props) {
                     setImage(event.target?.result?.toString())
                     dispatch(setItemImages({
                         image: event.target!.result!.toString(),
-                        index: index,
+                        index: index as keyof schema.Images,
                         extension: imageExtension
                     }))
                 }
@@ -58,17 +59,29 @@ export default function ImageContainer({imageTag}: Props) {
         event.currentTarget.style.background = ""
     }
 
-    function imageSourceHandler(item: sbt.Item, imageTag: string, image: string | undefined) {
+    function imageSourceHandler(item: schema.Item, imageTag:string, image: string | undefined, key:keyof schema.Images) {
 
-        if (!item.IMAGES) return image
+        if (!item.images) return image
 
-        return item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag] ?
-            item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].link
-                ? `http://192.168.1.200:3001/images/${item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].link!.replace(/([ \/])+/g, "-")}/${item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].filename}`
-                : `http://192.168.1.200:3001/images/${item.SKU.replace(/([ \/])+/g, "-")}/${item.IMAGES[imageTag === "Main" ? "main" : "image" + imageTag].filename}`
+        return item.images[key] ?
+            item.images[key].link
+                ? `http://192.168.1.200:3001/images/${item.images[key].link!.replace(/([ \/])+/g, "-")}/${item.images[key].filename}`
+                : `http://192.168.1.200:3001/images/${item.SKU.replace(/([ \/])+/g, "-")}/${item.images[key].filename}`
             : image
     }
 
+    function deleteImageHandler(key:keyof schema.Images, item:schema.Item) {
+        const opts = {
+            method: "POST",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({id:key, item:item})
+        }
+        fetch('api/item-database/delete-image', opts)
+            .then((res) =>  console.log(res))
+        setImage(undefined)
+    }
 
     return (
         <div
@@ -79,7 +92,8 @@ export default function ImageContainer({imageTag}: Props) {
             onDrop={(e) => onDropHandler(e, imageTag)}
             className={`${styles["image-drop-box"]} ${image ? styles["image-dropped"] : ""}`}
         >
-            <img src={imageSourceHandler(item!, imageTag, image)} alt={"Image " + imageTag}></img>
+            {item.images[key]?.filename ? <div className={`${styles["image-delete-button"]} button`} onClick={() => {deleteImageHandler(key, item)}}>X</div> : null}
+            <img src={imageSourceHandler(item, imageTag, image, key)} alt={"Image " + imageTag}></img>
         </div>
     )
 }

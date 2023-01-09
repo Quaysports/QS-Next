@@ -11,7 +11,7 @@ export default function BrandedLabel() {
     },[])
 
     useEffect(() => {
-        if(item) window.print()
+        if(item) setTimeout(() => window.print(), 200)
     }, [item])
 
     if(!item) return null

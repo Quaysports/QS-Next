@@ -168,7 +168,7 @@ export const findOne = async <T>(collection: string, filter = {}, projection = {
   }
 }
 
-export const findDistinct = async (collection: string, key: string, filter: object) => {
+export const findDistinct = async (collection: string, key: string, filter: object = {}) => {
   const client = await connect()
   try {
     const db = client.db(process.env.DB_NAME);

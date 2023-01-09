@@ -20,15 +20,17 @@ export const dbUpdateImage = async (item: { _id?: string; SKU: string; IMAGES: {
 }
 
 export const getItem = async (query:object, projection:object = {}) => {
-    return await mongoI.findOne<sbt.Item>("Items", query, projection)
+    return await mongoI.findOne<schema.Item>("New-Items", query, projection)
 }
 
-export const updateItem = async (item:sbt.Item) => {
+export const updateItem = async (item:schema.Item) => {
     if (item._id !== undefined) delete item._id
-    return await mongoI.setData("Items", {SKU: item.SKU}, item)
+    let res = await mongoI.setData("New-Items", {SKU: item.SKU}, item)
+    return res ? res : {acknowledged: false}
 }
 
 export const getItems = async (query:object = {}, projection:object = {}, sort:object = {}) => {
+    console.log("Query",query)
     return await mongoI.find<sbt.Item>("Items", query, projection, sort)
 }
 
@@ -168,14 +170,14 @@ export const uploadImages = async (file:{_id:string, SKU:string, id:string, file
     })
 }
 
-export const deleteImage = async (id:string, item:sbt.Item) => {
-    const result = await mongoI.unsetData("Items", {SKU: item.SKU}, {["IMAGES." + id]: ""})
+export const deleteImage = async (id:keyof schema.Images, item:schema.Item) => {
+    const result = await mongoI.unsetData("Items", {SKU: item.SKU}, {["images." + id]: ""})
     if (result && result.modifiedCount === 0) return {status: "No image found"}
 
     const files = await fs.readdir(`../images/${item.SKU}/`)
 
-    if (files.indexOf(item.IMAGES![id].filename) !== -1) {
-        if (!item.IMAGES![id].link) fs.unlinkSync(`../images/${item.SKU}/${item.IMAGES![id].filename}`)
+    if (files.indexOf(item.images[id].filename) !== -1) {
+        if (!item.images[id].link) fs.unlinkSync(`../images/${item.SKU}/${item.images[id].filename}`)
     }
 
     return {status: "Deleted"}
@@ -200,6 +202,6 @@ export const getBrands = async (filter = {}) => {
 }
 
 export const getTags = async () => {
-    const tags = await mongoI.find("Item-Information", {id: "tags"}, {tags:1})
+    const tags = await mongoI.findDistinct("New-Items", "tags")
     return tags ? tags : []
 }

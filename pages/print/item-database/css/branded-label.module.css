@@ -11,14 +11,14 @@
     }
 
     .image {
-        background-position: center;
-        background-size: contain;
-        background-repeat: no-repeat;
-        width: 100%
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        width: 100%;
     }
 
     .image img{
-        width:100%
+        width:100%;
     }
 
     .details {

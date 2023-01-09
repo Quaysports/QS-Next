@@ -1,11 +1,10 @@
-import Image from "next/image";
 import {useDispatch, useSelector} from "react-redux";
 import {selectItem, setItemBrandLabel} from "../../../../store/item-database/item-database-slice";
 import {useEffect, useState} from "react";
 import styles from '../../item-database.module.css'
 
 interface Props {
-    print: (x: string) => void
+    print: (x: string, item:schema.Item) => void
 }
 
 export default function BrandLabelPopUp({print}: Props) {
@@ -17,7 +16,7 @@ export default function BrandLabelPopUp({print}: Props) {
     const [title2CharacterCount, setTitle2CharacterCount] = useState<number>(0)
 
     useEffect(() => {
-        let {title1, title2} = item.BRANDLABEL
+        let {title1, title2} = item.brandLabel
 
         if(images.length < 1) {
             const opts = {
@@ -42,20 +41,20 @@ export default function BrandLabelPopUp({print}: Props) {
         return brandImageOptions
     }
 
-    function brandLabelHandler(value: string, key: keyof sbt.brandLabel) {
+    function brandLabelHandler(value: string, key: keyof schema.BrandLabel) {
         dispatch(setItemBrandLabel({value: value, key: key}))
     }
 
-    const {title1, title2, path} = item.BRANDLABEL
-    const {PREFIX, LETTER, NUMBER} = item.SHELFLOCATION
+    const {title1, title2, path} = item.brandLabel
+    const {prefix, letter, number} = item.shelfLocation
 
     return (
         <div className={styles["brand-label-container"]}>
             <div className={styles["brand-label-image"]}>
-                <img src={path ? path : ""} alt={item.BRAND + "image"}/>
+                <img src={path ? path : ""} alt={item.brand + "image"}/>
                 <select
                     onChange={(e) => brandLabelHandler(
-                        "http://192.168.1.200:3001/brand-label-images/" + e.target.value,
+                        "http://localhost:3001/brand-label-images/" + e.target.value,
                         "path")
                 }>{brandImageOptions()}</select>
             </div>
@@ -67,7 +66,7 @@ export default function BrandLabelPopUp({print}: Props) {
                     <div>Location:</div>
                 </div>
                 <div className={styles["brand-label-inputs"]}>
-                    <div>{item.IDBEP.BRAND}</div>
+                    <div>{item.mappedExtendedProperties.brand}</div>
                     <div className={styles["brand-label-character-count"]}>
                         <input value={title1}
                                onChange={(e) => brandLabelHandler(e.target.value, "title1")}/>
@@ -78,11 +77,11 @@ export default function BrandLabelPopUp({print}: Props) {
                                onChange={(e) => brandLabelHandler(e.target.value, "title2")}/>
                         <div>{title2CharacterCount}/12</div>
                     </div>
-                    <div>{item.SHELFLOCATION ? `${PREFIX}-${LETTER}-${NUMBER}` : ""}</div>
+                    <div>{item.shelfLocation ? `${prefix}-${letter}-${number}` : ""}</div>
 
                 </div>
                 <div className={`${styles["brand-label-print-button"]} button`}
-                     onClick={() => print("branded-label")}>Print
+                     onClick={() => print("branded-label", item)}>Print
                 </div>
             </div>
         </div>

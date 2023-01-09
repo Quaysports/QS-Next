@@ -18,7 +18,7 @@ export default function ItemDetails(){
 
     return (
         <ColumnLayout background={false} scroll={true} height={80}>
-            <div className={`${styles["details-sections"]} center-align`}>{item?.TITLE ? item.TITLE: ""} Details</div>
+            <div className={`${styles["details-sections"]} center-align`}>{item.title ? item.title: ""} Details</div>
             <div className={styles["details-sections"]}>
                 <div>Status</div>
                 <StatusRibbon/>
@@ -39,7 +39,7 @@ export default function ItemDetails(){
                 <div>Amazon Extended Properties</div>
                 <AmazonPropsRibbon/>
             </div>
-            {item.LINKEDSKUS.length != 0 ? <div className={styles["details-sections"]}>
+            {item.linkedSKUS.length != 0 ? <div className={styles["details-sections"]}>
                 <div>Linked SKUs</div>
                 <LinkedSKURibbon/>
             </div>  : null}

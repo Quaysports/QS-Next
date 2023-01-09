@@ -99,6 +99,13 @@ button:active{
     transition-duration: 0.025s;
 }
 
+button:disabled, button:disabled:hover {
+    background-color: var(--primary-table-background);
+    transform: translate(0, 0);
+    opacity: 0.6;
+    color: var(--primary-inactive-text)
+}
+
 /*-------------------------------Input default styles----------------------------------*/
 
 input{

@@ -17,11 +17,11 @@ export default function StatusRibbon() {
                 <div>Margins calculated</div>
             </span>
             <span className={styles["status-inputs"]}>
-                <StatusCheckboxes title={"GOODRCVD"}/>
-                <StatusCheckboxes title={"ADDINV"}/>
+                <StatusCheckboxes title={"goodsReceived"}/>
+                <StatusCheckboxes title={"addedToInventory"}/>
                 <StatusCheckboxes title={"EAN"}/>
-                <StatusCheckboxes title={"PHOTOS"}/>
-                <StatusCheckboxes title={"MARGIN"}/>
+                <StatusCheckboxes title={"photos"}/>
+                <StatusCheckboxes title={"marginsCalculated"}/>
             </span>
             <span className={styles["status-titles"]}>
                 <div>eBay: </div>
@@ -29,9 +29,9 @@ export default function StatusRibbon() {
                 <div>Quay Sports: </div>
             </span>
             <span className={styles["status-inputs"]}>
-                <ChannelRadioButtons channel={"EBAY"}/>
-                <ChannelRadioButtons channel={"AMAZON"}/>
-                <ChannelRadioButtons channel={"QS"}/>
+                <ChannelRadioButtons channel={"ebay"}/>
+                <ChannelRadioButtons channel={"amazon"}/>
+                <ChannelRadioButtons channel={"magento"}/>
             </span>
         </div>
     )

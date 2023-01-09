@@ -1,16 +1,17 @@
 import {Editor} from "@tinymce/tinymce-react";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styles from "../../item-database.module.css"
-import {setItemShortDescription} from "../../../../store/item-database/item-database-slice";
+import {selectItem, setItemShortDescription} from "../../../../store/item-database/item-database-slice";
 
 export default function ShortDescription() {
 
     const dispatch = useDispatch()
+    const item = useSelector(selectItem)
 
     return (
         <div className={styles["descriptions-containers"]}>
             <div className={styles["description-titles"]}>Short Description:</div>
-            <Editor id={"short-description"} tinymceScriptSrc={"/tinymce/js/tinymce/tinymce.min.js"} init={
+            <Editor id={"short-description"} tinymceScriptSrc={"/tinymce/js/tinymce/tinymce.min.js"} initialValue={item.shortDescription} init={
                 {
                     inline: false,
                     plugins: ['advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'preview'],

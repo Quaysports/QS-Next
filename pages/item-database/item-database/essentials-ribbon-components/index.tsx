@@ -8,6 +8,9 @@ import SuppliersSelect from "./supplier-select";
 import BrandInput from "./brand-input";
 import TitleInput from "./title-input";
 import WebsiteTitleInput from "./website-title-input";
+import TagsCheckboxList from "./tags-checkbox-list";
+import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
+import ShippingSelect from "./shipping-select";
 
 /**
  * Essentials Ribbon Component
@@ -34,7 +37,7 @@ export default function EssentialsRibbon(){
                 <div>{item.SKU}</div>
                 <div>{item.EAN}</div>
                 <SuppliersSelect/>
-                <div>{item.STOCKTOTAL}</div>
+                <div>{item.stock.total}</div>
                 <ItemLocation/>
                 <WebsiteTitleInput/>
                 <TitleInput/>
@@ -45,13 +48,21 @@ export default function EssentialsRibbon(){
                 <div>Amazon:</div>
                 <div>Quay Sports:</div>
                 <div>Shop:</div>
+                <div/>
+                <div>Tags:</div>
+                <div>Shipping Format:</div>
             </div>
             <div className={styles["essentials-inputs-2"]}>
                 <div/>
-                <div>£{item.EBAYPRICEINCVAT}</div>
-                <div>£{item.AMZPRICEINCVAT}</div>
-                <div>£{item.QSPRICEINCVAT}</div>
-                <div>£{item.SHOPPRICEINCVAT}</div>
+                <div>£{item.prices.ebay}</div>
+                <div>£{item.prices.amazon}</div>
+                <div>£{item.prices.magento}</div>
+                <div>£{item.prices.shop}</div>
+                <div/>
+                <div className={`${styles["tags-button"]} button`} onClick={() => {
+                    dispatchNotification({type:"popup", content:<TagsCheckboxList/>, title:"Tags"}
+                    )}}>{item.tags ? item.tags.length : 0} Tags</div>
+                <div><ShippingSelect/></div>
             </div>
         </div>
     )

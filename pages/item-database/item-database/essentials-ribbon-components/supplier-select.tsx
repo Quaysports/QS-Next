@@ -28,7 +28,7 @@ export default function SuppliersSelect() {
 
     return (
         <div>
-            <select value={currentSupplier ? currentSupplier : item.SUPPLIER}
+            <select value={currentSupplier ? currentSupplier : item.supplier}
                     onChange={(e) => supplierHandler(e.target.value)}>
                 {supplierOptions()}
             </select>

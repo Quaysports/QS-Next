@@ -10,7 +10,7 @@ export default function BulletPointInput({index}: Props) {
     const dispatch = useDispatch()
     const item = useSelector(selectItem)
 
-    let bulletPoint = "BULLETPOINT" + index as keyof sbt.itemDatabaseExtendedProperties
+    let bulletPoint = "bulletPoint" + index as keyof schema.MappedExtendedProperties
 
     function amazonBulletPointHandler(value: string, index: number) {
         dispatch(setItemAmazonBulletPoints({value: value, index: index}))
@@ -19,9 +19,9 @@ export default function BulletPointInput({index}: Props) {
     return (
         <>
             <div>{index}:</div>
-            <input onChange={(e) => {
+            <input onBlur={(e) => {
                 amazonBulletPointHandler(e.target.value, index)
-            }} value={item.IDBEP[bulletPoint] ?  item.IDBEP[bulletPoint] : ""}/>
+            }} defaultValue={item.mappedExtendedProperties[bulletPoint] ?  item.mappedExtendedProperties[bulletPoint] : ""}/>
         </>
     )
 }

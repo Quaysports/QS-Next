@@ -1,5 +1,5 @@
 import {AmzCats, AmzCatsType} from "../../../../server-modules/amazon-categories/amazon-categories";
-import {Fragment, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {selectItem, setItemAmazonCategories} from "../../../../store/item-database/item-database-slice";
 
@@ -17,7 +17,7 @@ export default function CategoriesSelect({id}: Props) {
 
     useEffect(() => {
         for (const category of categories) {
-            if(item.IDBEP["CATEGORIE" + id as keyof sbt.itemDatabaseExtendedProperties] === category.CATID && currentCategory != category.CATNAME) {
+            if(item.mappedExtendedProperties["category" + id as keyof schema.MappedExtendedProperties] === category.CATID && currentCategory != category.CATNAME) {
                 setCurrentCategory(category.CATNAME)
             }
         }
@@ -44,8 +44,8 @@ export default function CategoriesSelect({id}: Props) {
             <select key={"category-select "+ id} onChange={(e) => {
                 amazonCategoriesHandler(e.target.value, id)
             }}
-            defaultValue={item.IDBEP["CATEGORIE" + id as keyof sbt.itemDatabaseExtendedProperties] ?
-                item.IDBEP["CATEGORIE" + id as keyof sbt.itemDatabaseExtendedProperties] : ""}
+            defaultValue={item.mappedExtendedProperties["category" + id as keyof schema.MappedExtendedProperties] ?
+                item.mappedExtendedProperties["category" + id as keyof schema.MappedExtendedProperties] : ""}
             >{amazonCategories()}</select>
         </>
     )

@@ -1,16 +1,17 @@
 import {Editor} from "@tinymce/tinymce-react";
 import styles from "../../item-database.module.css"
-import {useDispatch} from "react-redux";
-import {setItemLongDescription} from "../../../../store/item-database/item-database-slice";
+import {useDispatch, useSelector} from "react-redux";
+import {selectItem, setItemLongDescription} from "../../../../store/item-database/item-database-slice";
 
 export default function LongDescription() {
 
+    const item = useSelector(selectItem)
     const dispatch = useDispatch()
 
     return (
         <div className={styles["descriptions-containers"]}>
             <div className={styles["description-titles"]}>Long Description:</div>
-            <Editor id={"long-description"} tinymceScriptSrc={"/tinymce/js/tinymce/tinymce.min.js"} init={
+            <Editor id={"long-description"} tinymceScriptSrc={"/tinymce/js/tinymce/tinymce.min.js"} initialValue={item.description} init={
                 {
                     inline: false,
                     plugins: ['advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'preview'],
@@ -38,7 +39,7 @@ export default function LongDescription() {
                         })
                     }
                 }
-            }/>
+            } />
         </div>
     )
 }

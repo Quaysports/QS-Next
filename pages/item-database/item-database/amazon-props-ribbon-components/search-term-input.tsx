@@ -10,7 +10,7 @@ export default function SearchTermInput({index}:Props) {
     const dispatch = useDispatch()
     const item = useSelector(selectItem)
 
-    let searchTerm = "SEARCHTERM" + index as keyof sbt.itemDatabaseExtendedProperties
+    let searchTerm = "searchTerm" + index as keyof schema.MappedExtendedProperties
 
     function searchTermsHandler(value: string, index:number){
         dispatch(setItemSearchTerms({value:value, index:index}))
@@ -19,7 +19,7 @@ export default function SearchTermInput({index}:Props) {
     return (
         <span className={styles["search-term"]}>
             <span>{index}:</span>
-            <input onChange={(e) => {searchTermsHandler(e.target.value, index)}} value={item.IDBEP[searchTerm] ?  item.IDBEP[searchTerm] : ""}/>
+            <input onBlur={(e) => {searchTermsHandler(e.target.value, index)}} defaultValue={item.mappedExtendedProperties[searchTerm] ?  item.mappedExtendedProperties[searchTerm] : ""}/>
         </span>
     )
 }

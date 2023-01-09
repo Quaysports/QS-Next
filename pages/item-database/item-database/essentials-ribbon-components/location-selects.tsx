@@ -7,7 +7,7 @@ export default function ItemLocation() {
     const item = useSelector(selectItem)
     const dispatch = useDispatch()
 
-    function locationHandler(value:string, key:keyof sbt.shelfLocation) {
+    function locationHandler(value:string, key:keyof schema.ShelfLocation) {
         dispatch(setItemLocation({value: value, key:key}))
     }
 
@@ -16,7 +16,7 @@ export default function ItemLocation() {
             <option key={"prefix" + 0}/>
             <option key={"prefix" + 1}>S</option>
             <option key={"prefix" + 2}>D</option>
-            <option key={"prefix" + 2}>U</option>
+            <option key={"prefix" + 3}>U</option>
         </Fragment>]
     }
 
@@ -37,16 +37,16 @@ export default function ItemLocation() {
     }
     return (
         <div key={"location-div"}>
-            <select key={"select 1"} value={item.SHELFLOCATION.PREFIX}
-                    onChange={(e) => locationHandler(e.target.value, "PREFIX")}>
+            <select key={"select 1"} value={item.shelfLocation.prefix}
+                    onChange={(e) => locationHandler(e.target.value, "prefix")}>
                 {prefixOptions()}
             </select>
-            <select key={"select 2"} value={item.SHELFLOCATION.LETTER}
-                    onChange={(e) => locationHandler(e.target.value, "LETTER")}>
+            <select key={"select 2"} value={item.shelfLocation.letter}
+                    onChange={(e) => locationHandler(e.target.value, "letter")}>
                 {letterOptions()}
             </select>
-            <select key={"select 3"} value={item.SHELFLOCATION.NUMBER}
-                    onChange={(e) => locationHandler(e.target.value, "NUMBER")}>
+            <select key={"select 3"} value={item.shelfLocation.number}
+                    onChange={(e) => locationHandler(e.target.value, "number")}>
                 {numberOptions()}
             </select>
         </div>

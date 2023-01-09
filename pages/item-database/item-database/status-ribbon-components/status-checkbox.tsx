@@ -10,11 +10,11 @@ export default function StatusCheckboxes({title}:Props){
     const dispatch = useDispatch()
 
     function statusCheckBoxHandler(checked: boolean, title:string){
-        dispatch(setItemStatusBoxes({checked:checked, title:title as keyof sbt.statusChecks["DONE"]}))
+        dispatch(setItemStatusBoxes({checked:checked, title:title as keyof schema.DoneStatus}))
     }
 
     return (
-        <div><input checked={item.CHECK.DONE[title as keyof sbt.statusChecks["DONE"]]}
+        <div><input checked={item.checkboxStatus.done[title as keyof schema.DoneStatus]}
                type={"checkbox"}
                     onChange={(e) => statusCheckBoxHandler(e.target.checked, title)}/></div>
     )

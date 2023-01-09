@@ -29,7 +29,15 @@ export const updateLinnItem = async (path: string, updateData: string) => {
     )
 }
 
-export const updateItemImage = async (data: string) => {
+export const updateExtendedProperties = async (path:string, extendedProperties:string) => {
+    return await postReq(
+        path,
+        extendedProperties,
+        true
+    )
+}
+
+export const updateItemImage = async (data: linn.InventoryItemImage) => {
     return await postReq(
         '/api/Inventory/AddImageToInventoryItem',
         `request=${encodeURIComponent(JSON.stringify(data))}`

@@ -115,6 +115,18 @@
     width:100%;
     text-align: left;
 }
+.tags-container{
+    display:grid;
+    grid-template-columns: 200px 200px 200px 200px;
+    grid-row-gap: 5px;
+    text-transform: capitalize;
+}
+.tags-button{
+    height: 20px;
+    text-align: center;
+    width: 80px;
+    cursor: pointer;
+}
 /*-------------Descriptions----------------*/
 .descriptions-containers{
     margin:20px
@@ -148,6 +160,12 @@
 }
 .image-dropped{
     background:white;
+    position: relative;
+}
+.image-delete-button{
+    position: absolute;
+    top: 3px;
+    right:3px
 }
 
 /*-----------Amazon Properties------------*/
@@ -270,3 +288,57 @@
     align-content: center;
 }
 
+/*-----Import Details Pop Up-----*/
+.import-details-wrapper{
+    width:820px;
+    overflow-y: auto;
+}
+.import-details-container{
+    display: grid;
+    grid-template-columns:800px;
+    max-height: 80vh;
+    grid-gap: 2px;
+}
+.import-details-table-row:nth-child(odd){
+    background: var(--primary-table-cell-background);
+}
+.import-details-table-row:nth-child(even){
+    background: var(--primary-table-cell-background-alt);
+}
+.import-details-table-row{
+    display:grid;
+    grid-template-columns: 50px 250px 1fr;
+    padding: 2px 0;
+    border-radius: var(--primary-border-radius);
+}
+.import-details-checkbox{
+    height: 20px;
+    margin: 3px 10px;
+    align-self: center;
+}
+
+.import-details-checkbox input{
+    margin:0
+}
+.import-details-keys{
+    height: 20px;
+    margin: 3px 0;
+    align-self: center;
+}
+.import-details-values{
+    height: 20px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 3px 0;
+}
+.import-details-button-container{
+    display:grid;
+}
+.import-details-button{
+    margin:3px;
+    padding:2px;
+    width:100px;
+    text-align: center;
+    justify-self: right;
+}

@@ -75,7 +75,7 @@ declare namespace sbt {
         POSTMODID: string | number,
         PURCHASEPRICE: number,
         QSPRICEINCVAT: string,
-        QSDISCOUNT:number,
+        QSDISCOUNT: number,
         RETAILPRICE: number,
         SHELFLOCATION: shelfLocation,
         SHIPAMAZONEXP: string,
@@ -92,13 +92,18 @@ declare namespace sbt {
         STOCKTOTAL: number,
         STOCKVAL: number,
         SUPPLIER: string,
+        TAGS: string[],
         TILLFILTER: string,
         TITLE: string,
         TITLEWEBSITE: string,
         WEIGHT: number
     }
 
-    export interface shelfLocation {PREFIX:string, LETTER:string, NUMBER: string}
+    export interface shelfLocation {
+        PREFIX: string,
+        LETTER: string,
+        NUMBER: string
+    }
 
     /* ToDo remove from database
     *   POSTALPRICEUK
@@ -452,6 +457,13 @@ declare namespace sbt {
 
 declare namespace linn {
 
+    interface InventoryItemImage {
+        "ItemNumber": string,
+        "StockItemId": string,
+        "IsMain": boolean,
+        "ImageUrl": string
+    }
+
     interface Query<T> {
         IsError: boolean;
         ErrorMessage: string;
@@ -579,9 +591,273 @@ declare namespace linn {
 
 }
 
-declare namespace server {
-    export interface sessionObject {
-
+declare namespace schema {
+    interface Image {
+        id: string;
+        filename: string;
+        link: string;
     }
-
+    interface ChannelData {
+        year: number;
+        source: string;
+        quantity: number;
+    }
+    interface CompositeItems {
+        title: string;
+        SKU: string;
+        quantity: number;
+        purchasePrice: number;
+        weight: number;
+    }
+    interface LinnExtendedProperty {
+        epName: string;
+        epType: string;
+        epValue: string;
+        pkRowId: string;
+    }
+    interface OnOrder {
+        confirmed: boolean;
+        due: string;
+        id: string;
+        quantity: number;
+    }
+    interface MappedExtendedProperties {
+        amazonLatency: number
+        COMISO2: string
+        COMISO3: string
+        tariffCode: string
+        category1: string
+        category2: string
+        bulletPoint1: string
+        bulletPoint2: string
+        bulletPoint3: string
+        bulletPoint4: string
+        bulletPoint5: string
+        searchTerm1: string
+        searchTerm2: string
+        searchTerm3: string
+        searchTerm4: string
+        searchTerm5: string
+        amazonSport: string
+        amazonDepartment: string
+        tradePack: string
+        specialPrice: string
+        //used to be SHIPFORMAT, move to extended properties?
+        shippingFormat: string
+        //used to be TILLFILTER
+        tillFilter:string
+    }
+    interface LegacyShipping {
+        //used to be SHIPCOURIERSTD, remove?
+        standard:string
+        //used to be SHIPCOURIEREXP
+        expedited: string
+        //used to be SHIPEBAYSTD, remove?
+        standardEbay:string
+        //used to be SHIPAMAZONEXP, remove?
+        expeditedAmazon: string
+    }
+    interface Prices {
+        //used to be PURCHASEPRICE
+        purchase:number
+        //used to be RETAILPRICE
+        retail:number
+        //used to be AMZPRICEINCVAT
+        amazon:number
+        //used to be EBAYPRICEINCVAT
+        ebay:number
+        //used to be QSPRICEINCVAT
+        magento:number
+        //used to be SHOPPRICEINCVAT
+        shop:number
+    }
+    interface ShelfLocation {
+        prefix:string
+        letter:string
+        number:string
+    }
+    interface Discounts {
+        shop:number
+        magento:number
+    }
+    interface ChannelPrices {
+        amazon: LinnChannelPriceData
+        ebay: LinnChannelPriceData
+        magento: LinnChannelPriceData
+        shop: BaseChannelPriceData
+    }
+    interface BaseChannelPriceData {
+        status: number,
+        price: string
+    }
+    interface LinnChannelPriceData extends BaseChannelPriceData{
+        subSource: string,
+        updated: string,
+        id: string,
+        updateRequired: boolean
+    }
+    interface Stock  {
+        //renamed from yelland?
+        default: number,
+        warehouse: number
+        //map from STOCKTOTAL
+        total: number
+        //map from MINSTOCK
+        minimum: number
+        //map from STOCKVAL
+        value: number
+        //map from INVCHECKDATE
+        checkedDate: string
+    }
+    interface MarginData {
+        amazonFees: number,
+        amazonProfitAfterVat: number,
+        amazonProfitLastYear: number,
+        amazonSalesVat: number,
+        ebayFees: number,
+        ebayProfitLastYear: number
+        ebayProfitAfterVat: number
+        ebaySalesVat: number
+        packagingCost: number
+        postageCost: number
+        amazonPrimeProfitAfterVat: number
+        amazonPrimePostageCost: number
+        magentoFees: number
+        magentoProfitAfterVat: number
+        magentoProfitLastYear: number
+        magentoSalesVat: number
+        shopFees: number
+        shopProfitAfterVat: number
+        shopProfitLastYear: number
+        shopSalesVat: number
+        totalProfitLastYear: number
+    }
+    interface CheckboxStatus {
+        stockForecast: StockForecastStatus
+        done: DoneStatus
+        ready: ReadyStatus
+        notApplicable:NotApplicableStatus
+        //map from AMZPRIME
+        prime:boolean
+        marginCalculator:MarginCalculatorStatus
+    }
+    interface StockForecastStatus{
+        list:boolean
+        hide:boolean
+    }
+    interface DoneStatus{
+        goodsReceived:boolean
+        addedToInventory:boolean
+        EAN:boolean
+        photos:boolean
+        marginsCalculated:boolean
+        jariloTemplate:boolean
+        ebayDraft:boolean
+        inventoryLinked:boolean
+        ebay:boolean
+        amazon:boolean
+        magento:boolean
+        zenTackle:boolean
+        amazonStore:boolean
+    }
+    interface ReadyStatus{
+        ebay:boolean
+        amazon:boolean
+        magento:boolean
+        zenTackle:boolean
+        amazonStore:boolean
+    }
+    interface NotApplicableStatus{
+        ebay:boolean
+        amazon:boolean
+        magento:boolean
+        zenTackle:boolean
+        amazonStore:boolean
+    }
+    interface MarginCalculatorStatus{
+        //map from MCOVERRIDES
+        amazonOverride:boolean
+        ebayOverride:boolean
+        magentoOverride:boolean
+    }
+    interface Postage{
+        // used to be POSTID?
+        id: string
+        //used to be POSTALPRICEUK
+        price:number
+        //used to be POSTMODID
+        modifier:string
+    }
+    interface Packaging{
+        lock: boolean,
+        items: string[]
+        editable: boolean
+        //used to be PACKGROUP
+        group: string
+    }
+    interface Images{
+        main: Image,
+        image1: Image,
+        image2: Image,
+        image3: Image,
+        image4: Image,
+        image5: Image,
+        image6: Image,
+        image7: Image,
+        image8: Image,
+        image9: Image,
+        image10: Image,
+        image11: Image
+    }
+    interface BrandLabel{
+        image: string,
+        path: string,
+        brand: string
+        title1: string,
+        title2: string,
+        location:string
+    }
+    interface Item {
+        _id?: string
+        EAN: string
+        isComposite: boolean
+        isListingVariation: boolean
+        linnId: string
+        SKU: string
+        title: string
+        webTitle: string
+        weight: number
+        supplier:string
+        suppliers:string[]
+        brand:string
+        description: string
+        shortDescription: string
+        lastUpdate: string
+        marginNote:string
+        legacyShipping: LegacyShipping
+        prices: Prices
+        discounts: Discounts
+        shelfLocation: ShelfLocation
+        channelPrices: ChannelPrices
+        stock: Stock
+        onOrder:OnOrder[]
+        //used to be MD
+        marginData: MarginData
+        //used to be CD is it dynamically generated and still used?
+        channelData: ChannelData[]
+        //used to be CHECK
+        checkboxStatus: CheckboxStatus
+        //used to be IDBEP
+        mappedExtendedProperties: MappedExtendedProperties
+        compositeItems: CompositeItems[]
+        extendedProperties: LinnExtendedProperty[]
+        postage:Postage
+        packaging: Packaging
+        images:Images
+        stockHistory: number[][]
+        linkedSKUS: string[]
+        //move items from IDBFILTER into tags
+        tags: string[]
+        brandLabel:BrandLabel
+    }
 }

@@ -6,8 +6,8 @@ import RodLocationsLandingPage from "./rod-locations";
 import SidebarOneColumn from "../../components/layouts/sidebar-one-column";
 import SearchbarSidebarOneColumn from "../../components/layouts/searchbar-sidebar-one-column";
 import {appWrapper} from "../../store/store";
-import {setItem, setSuppliers} from "../../store/item-database/item-database-slice";
-import {getAllSuppliers, getItem, getItems, getLinkedItems} from "../../server-modules/items/items";
+import {setItem, setSuppliers, setTags} from "../../store/item-database/item-database-slice";
+import {getAllSuppliers, getItem, getItems, getLinkedItems, getTags} from "../../server-modules/items/items";
 import {InferGetServerSidePropsType} from "next";
 
 export type rodLocationObject = {
@@ -48,12 +48,19 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     if(context.query.sku) {
         let sku = context.query.sku
         let item = await getItem({SKU: sku})
-        if(item) item.LINKEDSKUS = await getLinkedItems(sku as string)
+        if(item) item.linkedSKUS = await getLinkedItems(sku as string)
 
         store.dispatch(setItem(item))
         let suppliers = await getAllSuppliers()
         store.dispatch(setSuppliers(suppliers))
     }
+
+    if(context.query.tab === "new-items" || context.query.tab === "item-database" || context.query.tab === undefined){
+        let tags = await getTags()
+        let sortedTags = tags ? tags: []
+        store.dispatch(setTags(sortedTags))
+    }
+
     let query = {"BRANDLABEL.loc": {$exists: true, $ne: ""}}
     let projection = {SKU: 1, TITLE: 1, "IDBEP.BRAND": 1, "BRANDLABEL.loc": 1}
 
