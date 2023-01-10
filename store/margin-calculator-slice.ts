@@ -4,34 +4,23 @@ import {Fees} from "../server-modules/fees/fees";
 import {Postage} from "../server-modules/postage/postage";
 import {Packaging} from "../server-modules/packaging/packaging";
 
-export interface MarginItem {
-    SKU: string
-    TITLE: string
-    POSTID: string,
-    POSTMODID: string | number,
-    STOCKVAL: number,
-    STOCKTOTAL: number,
-    MARGINNOTE: string,
-    MD: sbt.marginData,
-    LINNID: string,
-    HIDE: boolean,
-    PACKGROUP: string,
-    PURCHASEPRICE: number,
-    RETAILPRICE: number,
-    CP: sbt.channelPrice,
-    CD: sbt.channelData,
-    EBAYPRICEINCVAT: string,
-    AMZPRICEINCVAT: string,
-    QSPRICEINCVAT: string,
-    QSDISCOUNT: number,
-    SHOPPRICEINCVAT: string,
-    SHOPDISCOUNT: number,
-    DISCOUNT?: string
-    AMZPRIME: boolean,
-    IDBEP: sbt.itemDatabaseExtendedProperties,
-    IDBFILTER: string,
-    MCOVERRIDES: { [key: string]: boolean }
-}
+export type MarginItem = Pick<schema.Item,
+    "SKU" |
+    "title" |
+    "postage" |
+    "stock" |
+    "marginNote" |
+    "marginData" |
+    "linnId" |
+    "checkboxStatus" |
+    "packaging" |
+    "prices" |
+    "channelPrices" |
+    "channelData" |
+    "discounts" |
+    "mappedExtendedProperties" |
+    "tags"
+>
 
 export interface marginCalculatorWrapper {
     marginCalculator: marginCalculatorState
@@ -85,7 +74,7 @@ const initialState: marginCalculatorState = {
     searchItems: [],
     renderedItems: [],
     activeIndex: null,
-    displayTitles:false,
+    displayTitles: false,
     threshold: 50,
     maxThreshold: 50,
     currentSort: ""
@@ -109,22 +98,24 @@ export const marginCalculatorSlice = createSlice({
                 state.activeIndex = null
                 state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
-            setSuppliers: (state, action:PayloadAction<string[]>) => {
+            setSuppliers: (state, action: PayloadAction<string[]>) => {
                 state.suppliers = action.payload
             },
-            setTotalStockValue: (state, action:PayloadAction<number>) => {
+            setTotalStockValue: (state, action: PayloadAction<number>) => {
                 state.totalStockValue = action.payload
             },
             setFees: (state, action: PayloadAction<Fees>) => {
                 state.fees = action.payload
             },
-            updateFees: (state,action: PayloadAction<Fees>) => {
+            updateFees: (state, action: PayloadAction<Fees>) => {
                 const opts = {
-                    method:"POST",
-                    headers:{"Content-Type": "application/json"},
-                    body:JSON.stringify(action.payload)
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(action.payload)
                 }
-                fetch("/api/fees/update", opts).then(res=>{console.log(res)})
+                fetch("/api/fees/update", opts).then(res => {
+                    console.log(res)
+                })
             },
             setPostage: (state, action: PayloadAction<Postage[]>) => {
                 if (!action.payload) return
@@ -132,13 +123,15 @@ export const marginCalculatorSlice = createSlice({
                 for (let value of action.payload) idMappedObj[value.POSTID] = value
                 state.postage = idMappedObj
             },
-            updatePostage: (state,action:PayloadAction<Postage>) => {
+            updatePostage: (state, action: PayloadAction<Postage>) => {
                 const opts = {
-                    method:"POST",
-                    headers:{"Content-Type": "application/json"},
-                    body:JSON.stringify(action.payload)
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(action.payload)
                 }
-                fetch("/api/postage/update", opts).then(res=>{console.log(res)})
+                fetch("/api/postage/update", opts).then(res => {
+                    console.log(res)
+                })
             },
             setPackaging: (state, action: PayloadAction<Packaging[]>) => {
                 if (!action.payload) return
@@ -146,13 +139,15 @@ export const marginCalculatorSlice = createSlice({
                 for (let value of action.payload) idMappedObj[value.ID] = value
                 state.packaging = idMappedObj
             },
-            updatePackaging: (state,action: PayloadAction<Packaging>) => {
+            updatePackaging: (state, action: PayloadAction<Packaging>) => {
                 const opts = {
-                    method:"POST",
-                    headers:{"Content-Type": "application/json"},
-                    body:JSON.stringify(action.payload)
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(action.payload)
                 }
-                fetch("/api/packaging/update", opts).then(res=>{console.log(res)})
+                fetch("/api/packaging/update", opts).then(res => {
+                    console.log(res)
+                })
             },
             setSearchItems: (state, action: PayloadAction<MarginItem[]>) => {
                 state.searchItems = action.payload
@@ -160,13 +155,13 @@ export const marginCalculatorSlice = createSlice({
                 state.activeIndex = null
                 state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
             },
-            sortMarginData: (state, action: PayloadAction<{ key: keyof MarginItem["MD"], ascending?: boolean }>) => {
+            sortMarginData: (state, action: PayloadAction<{ key: keyof MarginItem["marginData"], ascending?: boolean }>) => {
                 const key = action.payload.key
                 state.currentSort = key
                 const asc = action.payload.ascending === undefined ? true : action.payload.ascending
                 state.searchItems.sort((a, b) => {
-                    if (a.MD[key]! > b.MD[key]!) return asc ? 1 : -1
-                    if (b.MD[key]! > a.MD[key]!) return asc ? -1 : 1
+                    if (a.marginData[key]! > b.marginData[key]!) return asc ? 1 : -1
+                    if (b.marginData[key]! > a.marginData[key]!) return asc ? -1 : 1
                     return 0
                 })
                 state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
@@ -188,17 +183,17 @@ export const marginCalculatorSlice = createSlice({
                     ? state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
                     : state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
-            updateMCOverrides: (state, action: PayloadAction<{ item: MarginItem, key: keyof MarginItem["MCOVERRIDES"], value: boolean }>) => {
+            updateMCOverrides: (state, action: PayloadAction<{ item: MarginItem, key: keyof MarginItem["checkboxStatus"]["marginCalculator"], value: boolean }>) => {
                 if (state.searchItems.length > 0) {
                     for (let index in state.searchItems) {
                         if (state.searchItems[index].SKU === action.payload.item.SKU) {
-                            state.searchItems[index].MCOVERRIDES[action.payload.key] = action.payload.value
+                            state.searchItems[index].checkboxStatus.marginCalculator[action.payload.key] = action.payload.value
                         }
                     }
                 }
                 for (let index in state.marginData) {
                     if (state.marginData[index].SKU === action.payload.item.SKU) {
-                        state.marginData[index].MCOVERRIDES[action.payload.key] = action.payload.value
+                        state.marginData[index].checkboxStatus.marginCalculator[action.payload.key] = action.payload.value
                         const opt = {
                             method: 'POST',
                             headers: {"Content-Type": "application/json",},
@@ -217,7 +212,7 @@ export const marginCalculatorSlice = createSlice({
                     ? state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
                     : state.renderedItems = state.marginData.slice(0, state.maxThreshold)
             },
-            setActiveIndex: (state, action:PayloadAction<string | null>) =>{
+            setActiveIndex: (state, action: PayloadAction<string | null>) => {
                 action.payload !== state.activeIndex ? state.activeIndex = action.payload : state.activeIndex = null
             },
             setMarginTest: (state, action: PayloadAction<{ type: string, value: number }>) => {
@@ -263,7 +258,7 @@ export const selectFees = (state: marginCalculatorWrapper) => state.marginCalcul
 export const selectPostage = (state: marginCalculatorWrapper) => state.marginCalculator.postage
 export const selectPackaging = (state: marginCalculatorWrapper) => state.marginCalculator.packaging
 export const selectActiveIndex = (state: marginCalculatorWrapper) => state.marginCalculator.activeIndex
-export const selectDisplayTitles = (state:marginCalculatorWrapper) => state.marginCalculator.displayTitles
+export const selectDisplayTitles = (state: marginCalculatorWrapper) => state.marginCalculator.displayTitles
 export const selectRenderedItems = (state: marginCalculatorWrapper) => state.marginCalculator.renderedItems
 export const selectCurrentSort = (state: marginCalculatorWrapper) => state.marginCalculator.currentSort
 export const selectAmazonMarginTest = (state: marginCalculatorWrapper) => state.marginCalculator.amazonMarginTest
