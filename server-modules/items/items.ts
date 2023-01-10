@@ -2,17 +2,22 @@ import * as mongoI from '../mongo-interface/mongo-interface'
 
 const fs = require("fs");
 
-export const dbUpdateImage = async (item: { _id?: string; SKU: string; IMAGES: { [p: string]: { filename: string } }; }) => {
+type DbImage = {
+    _id:schema.Item["_id"]
+    SKU:schema.Item["SKU"]
+    images:Partial<schema.Images>
+}
+export const dbUpdateImage = async (item: DbImage) => {
     if (item._id !== undefined) delete item._id
 
-    let result = await mongoI.findOne<sbt.Item>("Items", {SKU: item.SKU}, {IMAGES: 1})
+    let result = await mongoI.findOne<Pick<schema.Item, "SKU" | "_id" | "images">>("New-Items", {SKU: item.SKU}, {images: 1})
     if (result) {
-        if (result.IMAGES) {
-            for (let i in item.IMAGES) result.IMAGES[i] = item.IMAGES[i]
+        if (result.images) {
+            for (let i in item.images) result.images[i as keyof schema.Images] = item.images[i as keyof schema.Images] as schema.Image
         } else {
-            result.IMAGES = item.IMAGES
+            result.images = <schema.Images>item.images
         }
-        await mongoI.setData("Items", {SKU: item.SKU}, result)
+        await mongoI.setData("New-Items", {SKU: item.SKU}, result)
         return result
     } else {
         return result
@@ -30,31 +35,30 @@ export const updateItem = async (item:schema.Item) => {
 }
 
 export const getItems = async (query:object = {}, projection:object = {}, sort:object = {}) => {
-    console.log("Query",query)
-    return await mongoI.find<sbt.Item>("Items", query, projection, sort)
+    return await mongoI.find<schema.Item>("New-Items", query, projection, sort)
 }
 
 export const getLinkedItems = async (sku: string) => {
-    let linkedSkus = await mongoI.findDistinct("Items", "SKU", {"COMPDATA.SKU": sku})
+    let linkedSkus = await mongoI.findDistinct("New-Items", "SKU", {"compositeItems.SKU": sku})
     return linkedSkus ? linkedSkus : []
 }
 
 export const getDefaultSuppliers = async (filter: object = {}) => {
-    return await mongoI.findDistinct("Items", "SUPPLIER", filter)
+    return await mongoI.findDistinct("New-Items", "supplier", filter)
 }
 
 export const getAllBrands = async (filter: object = {}) => {
-    return await mongoI.findDistinct("Items", "IDBEP.BRAND", filter)
+    return await mongoI.findDistinct("New-Items", "brand", filter)
 }
 
 export const getAllSuppliers = async (filter: object = {}) => {
-    return await mongoI.findDistinct("Items", "SUPPLIERS", filter)
+    return await mongoI.findDistinct("New-Items", "suppliers", filter)
 }
 
-export const searchItems = async (query: { opts?: { LISTINGVARIATION?: boolean }; type: string; id: string; }) => {
+export const searchItems = async (query: { opts?: { isListingVariation?: boolean }; type: string; id: string; }) => {
 
     interface dbQueryTitle {
-        $and: [{ $or: [{ $text: { $search: string } }, { TITLE: { $regex: string, $options: string } }] }]
+        $and: [{ $or: [{ $text: { $search: string } }, { title: { $regex: string, $options: string } }] }]
     }
 
     interface dbQuery {
@@ -62,7 +66,7 @@ export const searchItems = async (query: { opts?: { LISTINGVARIATION?: boolean }
     }
 
     interface SearchOpts {
-        LISTINGVARIATION?: boolean
+        isListingVariation?: boolean
     }
 
     let dbQuery: SearchOpts & dbQuery | SearchOpts & dbQueryTitle
@@ -72,11 +76,11 @@ export const searchItems = async (query: { opts?: { LISTINGVARIATION?: boolean }
     let opts = query.opts ? query.opts : {}
 
     if (query.type === "TITLE") {
-        dbQuery = {$and: [{$or: [{$text: {$search: query.id}}, {TITLE: {$regex: query.id, $options: "i"}}]}]}
+        dbQuery = {$and: [{$or: [{$text: {$search: query.id}}, {title: {$regex: query.id, $options: "i"}}]}]}
         dbSort = {score: {$meta: "textScore"}}
         dbProject = {
             SKU: 1,
-            TITLE: 1,
+            title: 1,
             EAN: 1,
             score: {$meta: "textScore"}
         }
@@ -85,30 +89,13 @@ export const searchItems = async (query: { opts?: { LISTINGVARIATION?: boolean }
         dbSort = {[query.type]: 1}
         dbProject = {
             "SKU": 1,
-            "TITLE": 1,
+            "title": 1,
             "EAN": 1,
         }
     }
 
-    if (opts.LISTINGVARIATION !== undefined) dbQuery.LISTINGVARIATION = opts.LISTINGVARIATION
-    return await mongoI.find<sbt.Item>("Items", dbQuery, dbProject, dbSort)
-}
-
-export const getImages = async (sku: string, type: string) => {
-    const item = await mongoI.findOne<sbt.Item>("Items", {SKU: sku}, {IMAGES: 1})
-    if (!item) return
-    if (!item.IMAGES) return
-    if (type) {
-        let path = item.IMAGES[type].link ? "/images/" + item.IMAGES[type].link + "/" : "/images/" + sku + "/"
-        return path + item.IMAGES[type].filename
-    } else {
-        let arr = []
-        for (let i in item.IMAGES) {
-            let path = item.IMAGES[i].link ? "/images/" + item.IMAGES[i].link + "/" : "/images/" + sku + "/"
-            arr.push(path + item.IMAGES[i].filename)
-        }
-        return arr
-    }
+    if (opts.isListingVariation !== undefined) dbQuery.isListingVariation = opts.isListingVariation
+    return await mongoI.find<schema.Item>("New-Items", dbQuery, dbProject, dbSort)
 }
 
 export const uploadImages = async (file: { _id: string, SKU: string, id: string, filename: string, image: string }) => {
@@ -135,16 +122,16 @@ export const uploadImages = async (file: { _id: string, SKU: string, id: string,
     //check for existing files
     const root = await makeImagesFolder()
     const path = await makeSkuFolder(root)
-    let dbImage = {
+
+    const dbImage = {
         _id: file._id,
         SKU: file.SKU,
-        IMAGES: {
+        images:  {
             [file.id]: {
                 filename: file.filename
-            }
+            },
         }
     }
-
     let image = decodeBase64Image(file.image)
 
     if (image.error) {
@@ -173,7 +160,7 @@ export const uploadImages = async (file: { _id: string, SKU: string, id: string,
 }
 
 export const deleteImage = async (id:keyof schema.Images, item:schema.Item) => {
-    const result = await mongoI.unsetData("Items", {SKU: item.SKU}, {["images." + id]: ""})
+    const result = await mongoI.unsetData("New-Items", {SKU: item.SKU}, {["images." + id]: ""})
     if (result && result.modifiedCount === 0) return {status: "No image found"}
 
     const files = await fs.readdir(`../images/${item.SKU}/`)
@@ -199,7 +186,7 @@ export const getBrandLabelImages = async () => {
 }
 
 export const getBrands = async (filter = {}) => {
-    return await mongoI.findDistinct("Items", "IDBEP.BRAND", filter)
+    return await mongoI.findDistinct("New-Items", "brand", filter)
 }
 
 export const getTags = async () => {
@@ -211,23 +198,20 @@ export const getStockValues = async (domestic: boolean) => {
 
     let query = {
         $and: [
-            {LISTINGVARIATION: false},
-            {ISCOMPOSITE: false},
-            {IDBFILTER: {$ne: true}},
-            {STOCKVAL: {$gt: 0}},
-            {IDBFILTER: {$ne: 'domestic'}},
-            {IDBFILTER: {$ne: 'bait'}}
+            {isListingVariation: false},
+            {isComposite: false},
+            {"stock.value": {$gt: 0}},
+            {tags: {$nin: ['domestic', 'bait', 'filtered']}},
         ]
     }
 
     let domesticQuery = {
         $and: [
-            {LISTINGVARIATION: false},
-            {ISCOMPOSITE: false},
-            {IDBFILTER: {$ne: true}},
-            {STOCKVAL: {$gt: 0}},
-            {IDBFILTER: {$eq: 'domestic'}},
-            {IDBFILTER: {$ne: 'bait'}}
+            {isListingVariation: false},
+            {isComposite: false},
+            {"stock.value": {$gt: 0}},
+            {tags: {$in: ['domestic']}},
+            {tags: {$nin: ['bait, filtered']}},
         ]
     }
 
@@ -240,7 +224,7 @@ export const getStockValues = async (domestic: boolean) => {
                 'total': {
                     '$sum': {
                         '$multiply': [
-                            '$PURCHASEPRICE', '$STOCKTOTAL'
+                            '$prices.purchasePrice', '$stock.total'
                         ]
                     }
                 }
@@ -248,29 +232,26 @@ export const getStockValues = async (domestic: boolean) => {
         }
     ]
 
-    return await mongoI.findAggregate<{ _id: string, total: number }>("Items", totalsQuery)
+    return await mongoI.findAggregate<{ _id: string, total: number }>("New-Items", totalsQuery)
 }
 
 export const getStockValueCSVData = async (domestic: boolean) => {
     let query = {
         $and: [
-            {LISTINGVARIATION: false},
-            {ISCOMPOSITE: false},
-            {STOCKVAL: {$gt: 0}},
-            {IDBFILTER: {$ne: true}},
-            {IDBFILTER: {$ne: 'domestic'}},
-            {IDBFILTER: {$ne: 'bait'}}
+            {isListingVariation: false},
+            {isComposite: false},
+            {"stock.value": {$gt: 0}},
+            {tags: {$nin: ['filtered', 'domestic', 'bait']}}
         ]
     }
 
     let domesticQuery = {
         $and: [
-            {LISTINGVARIATION: false},
-            {ISCOMPOSITE: false},
-            {STOCKVAL: {$gt: 0}},
-            {IDBFILTER: {$ne: true}},
-            {IDBFILTER: {$eq: 'domestic'}},
-            {IDBFILTER: {$ne: 'bait'}}
+            {isListingVariation: false},
+            {isComposite: false},
+            {"stock.value": {$gt: 0}},
+            {tags: {$nin: ['filtered', 'bait']}},
+            {tags: {$in: 'domestic'}},
         ]
     }
 
@@ -280,12 +261,12 @@ export const getStockValueCSVData = async (domestic: boolean) => {
         }, {
             '$project': {
                 'SKU': 1,
-                'price': '$PURCHASEPRICE',
-                'quantity': '$STOCKTOTAL',
-                'value': {$multiply: ['$PURCHASEPRICE', '$STOCKTOTAL']}
+                'price': '$prices.purchasePrice',
+                'quantity': '$stock.total',
+                'value': {$multiply: ['$prices.purchasePrice', '$stock.total']}
             }
         }
     ]
 
-    return await mongoI.findAggregate<{ _id: string, SKU: string, price: number, quantity:number, value:number}>("Items", totalsQuery)
+    return await mongoI.findAggregate<{ _id: string, SKU: string, price: number, quantity:number, value:number}>("New-Items", totalsQuery)
 }

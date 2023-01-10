@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 
 export default function BrandedLabel() {
 
-    const [item, setItem] = useState<sbt.Item | null>(null)
+    const [item, setItem] = useState<schema.Item | null>(null)
 
     useEffect(() => {
         const data = window.localStorage.getItem("item")
@@ -15,7 +15,7 @@ export default function BrandedLabel() {
     }, [item])
 
     if(!item) return null
-    let {PREFIX, LETTER, NUMBER} = item.SHELFLOCATION
+    let {prefix, letter, number} = item.shelfLocation
 
     return (
         <div className={styles["container"]}>
@@ -26,14 +26,14 @@ export default function BrandedLabel() {
         padding: 0;
     }`}</style>
             <div className={styles["image"]}>
-                <img src={item.BRANDLABEL.path} alt={item.IDBEP.BRAND + " image"}/>
+                <img src={item.brandLabel.path} alt={item.brand + " image"}/>
             </div>
             <div className={styles["details"]}>
-                <div className={styles["brand"]}>{item.IDBEP.BRAND}</div>
-                <div className={styles["title1"]}>{item.BRANDLABEL.title1}</div>
-                <div className={styles["title2"]}>{item.BRANDLABEL.title2}</div>
-                <div className={styles["price"]}>£{item.SHOPPRICEINCVAT}</div>
-                <div className={styles["loc"]}>{PREFIX}-{LETTER}-{NUMBER}</div>
+                <div className={styles["brand"]}>{item.brand}</div>
+                <div className={styles["title1"]}>{item.brandLabel.title1}</div>
+                <div className={styles["title2"]}>{item.brandLabel.title2}</div>
+                <div className={styles["price"]}>£{item.prices.shop}</div>
+                <div className={styles["loc"]}>{prefix}-{letter}-{number}</div>
             </div>
         </div>
     )

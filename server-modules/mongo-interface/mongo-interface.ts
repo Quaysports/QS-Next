@@ -50,7 +50,7 @@ export const unsetData = async (collection: string, filter: object, data: object
   }
 }
 
-export const bulkUpdateItems = async (items:sbt.Item[]) => {
+export const bulkUpdateItems = async (items:schema.Item[]) => {
   const client = await connect()
   let bulkUpdateOps: mongoDB.AnyBulkWriteOperation<mongoDB.Document>[][] = []
   let index = 0

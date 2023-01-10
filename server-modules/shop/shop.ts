@@ -174,7 +174,7 @@ export const getSupplierPriceChanges = async (data: { supplier: string, data: st
 
     let itemChanges = []
 
-    const result = await mongoI.find<sbt.Item>("Items", {SUPPLIER: data.supplier})
+    const result = await mongoI.find<schema.Item>("Items", {SUPPLIER: data.supplier})
     if (!result) return
 
     for (let item of result) {
@@ -185,9 +185,9 @@ export const getSupplierPriceChanges = async (data: { supplier: string, data: st
             }).indexOf(check[1])
             if (pos !== -1) {
                 json[pos]["SKU"] = item.SKU
-                json[pos]["title"] = item.TITLE
-                json[pos]["Retail Change"] = (parseFloat(json[pos]["Retail Price"]) - parseFloat(String(item.RETAILPRICE!))).toFixed(2)
-                json[pos]["Purchase Change"] = (parseFloat(json[pos]["Purchase Price"]) - parseFloat(String(item.PURCHASEPRICE!))).toFixed(2)
+                json[pos]["title"] = item.title
+                json[pos]["Retail Change"] = (parseFloat(json[pos]["Retail Price"]) - parseFloat(String(item.prices.retail!))).toFixed(2)
+                json[pos]["Purchase Change"] = (parseFloat(json[pos]["Purchase Price"]) - parseFloat(String(item.prices.purchase!))).toFixed(2)
                 itemChanges.push(json[pos])
             }
         }

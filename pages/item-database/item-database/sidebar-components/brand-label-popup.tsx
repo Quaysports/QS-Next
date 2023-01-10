@@ -66,7 +66,7 @@ export default function BrandLabelPopUp({print}: Props) {
                     <div>Location:</div>
                 </div>
                 <div className={styles["brand-label-inputs"]}>
-                    <div>{item.mappedExtendedProperties.brand}</div>
+                    <div>{item.brand}</div>
                     <div className={styles["brand-label-character-count"]}>
                         <input value={title1}
                                onChange={(e) => brandLabelHandler(e.target.value, "title1")}/>

@@ -3,7 +3,7 @@ import styles from "./css/shelf-tag.module.css";
 
 export default function ShelfTag() {
 
-    const [item, setItem] = useState<sbt.Item | null>(null)
+    const [item, setItem] = useState<schema.Item | null>(null)
 
     useEffect(() => {
         const data = window.localStorage.getItem("item")
@@ -27,9 +27,9 @@ export default function ShelfTag() {
             <div className={styles["container"]}>
                 <div className={styles["sku"]}>{item.SKU}</div>
                 <div
-                    className={styles["price"]}>£{item.SHOPPRICEINCVAT ? parseFloat(item.SHOPPRICEINCVAT).toFixed(2) : parseFloat(item.QSPRICEINCVAT!).toFixed(2)}</div>
+                    className={styles["price"]}>£{item.prices.shop ? item.prices.shop.toFixed(2) : item.prices.magento.toFixed(2)}</div>
             </div>
-            <div className={styles["title"]}>{item.TITLE}</div>
+            <div className={styles["title"]}>{item.title}</div>
         </>
     )
 }

@@ -4,7 +4,7 @@ import styles from "./css/barcode.module.css"
 
 export default function CreateBarcode() {
 
-    const [item, setItem] = useState<sbt.Item | null>(null)
+    const [item, setItem] = useState<schema.Item | null>(null)
 
     useEffect(() => {
         const data = window.localStorage.getItem("item")

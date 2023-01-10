@@ -63,7 +63,7 @@ export interface orderObject {
 }
 
 export const getLowStock = async () => {
-    return await mongoI.find<sbt.Item>("Items",
+    return await mongoI.find<schema.Item>("Items",
         {IDBFILTER: "domestic", MINSTOCK: {$gt: 0}, $expr: {$lt: ["$STOCKTOTAL", "$MINSTOCK"]}},
         {TITLE: 1, SKU: 1, STOCKTOTAL: 1, PURCHASEPRICE:1, MINSTOCK: 1, SUPPLIER: 1, "IDBEP.BRAND": 1})
 }

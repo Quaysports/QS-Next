@@ -12,11 +12,11 @@ export default function Orders() {
     return (
         <>
             <SideBar/>
-                <ColumnLayout scroll={true} background={false}>
+            <ColumnLayout scroll={true} background={false}>
                 <OrderInformation/>
                 <DisplayOnOrder/>
-                <DisplayArrived/></ColumnLayout>
-
+                <DisplayArrived/>
+            </ColumnLayout>
         </>
     );
 }
