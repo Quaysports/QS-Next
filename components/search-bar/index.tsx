@@ -7,7 +7,7 @@ import React, {Fragment, useState} from "react"
  */
 export interface SearchItem {
     SKU: string;
-    TITLE: string;
+    title: string;
     EAN?: string;
 }
 
@@ -64,11 +64,11 @@ export default function SearchBar({resultHandler, searchableArray, EAN}:Props) {
                 }
             }
             if (searchType === "Title") {
-                if (searchableArray[i].TITLE.toUpperCase().startsWith(value.toUpperCase())) {
+                if (searchableArray[i].title.toUpperCase().startsWith(value.toUpperCase())) {
                     startsWith.push(searchableArray[i])
                     continue;
                 }
-                if (searchableArray[i].TITLE.toUpperCase().includes(value.toUpperCase())) {
+                if (searchableArray[i].title.toUpperCase().includes(value.toUpperCase())) {
                     contains.push(searchableArray[i])
                 }
             }

@@ -112,7 +112,7 @@ export default function DisplayOnOrder() {
                         <span className={"center-align"}>{loadedOrder!.order[i].qty ??= 0}</span>
                         <span className={"center-align"}>{loadedOrder!.order[i].tradePack ??= 0}</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
-                        <span>{loadedOrder!.order[i].TITLE} </span>
+                        <span>{loadedOrder!.order[i].title} </span>
 
                     </div>)
             } else {
@@ -128,7 +128,7 @@ export default function DisplayOnOrder() {
                         <span className={"center-align"}>{loadedOrder!.order[i].qty ??= 0}</span>
                         <span className={"center-align"}>{loadedOrder!.order[i].tradePack ??= 0}</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
-                        <span>{loadedOrder!.order[i].TITLE} </span>
+                        <span>{loadedOrder!.order[i].title} </span>
 
                     </div>
                 )

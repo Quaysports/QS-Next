@@ -19,6 +19,7 @@ import {
     getOpenOrders, getSupplierItems,
     getSuppliersAndLowStock, orderObject,
     shopOrder,
+
 } from "../../server-modules/shop/shop-order-tool";
 import {appWrapper} from "../../store/store";
 
@@ -51,7 +52,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
         let lowStock = await getSuppliersAndLowStock()
         store.dispatch(setOnOrderSKUs(orders))
 
-        let tempArray = lowStock.map(item => ({[item.SUPPLIER]: item.LOWSTOCKCOUNT}))
+        let tempArray = lowStock.map(item => ({[item.supplier]: item.lowStockCount}))
         store.dispatch(setSideBarContent({content: tempArray, title: "Suppliers"}))
 
         let supplier = ""
@@ -63,7 +64,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
             supplier = orders[Number(context.query.editOrder)].supplier
         }
         if (context.query.index) {
-            supplier = lowStock[Number(context.query.index)].SUPPLIER
+            supplier = lowStock[Number(context.query.index)].supplier
         }
         if(context.query.index || context.query.editOrder){
 
@@ -71,7 +72,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
             let itemsTempObject: { [key: string]: orderObject[] } = {}
             itemsTempObject[supplier] = []
             for (let i = 0; i < supplierItems.length; i++) {
-                supplierItems[i].SUPPLIER = supplier
+                supplierItems[i].supplier = supplier
                 supplierItems[i].bookedIn = "false"
                 supplierItems[i].newProduct = false
                 supplierItems[i].lowStock = false
@@ -80,14 +81,14 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
                 supplierItems[i].qty = 1
                 supplierItems[i].submitted = false
                 supplierItems[i].onOrder = false
-                if (Number(supplierItems[i].STOCKTOTAL) < supplierItems[i].MINSTOCK) supplierItems[i].lowStock = true;
+                if (Number(supplierItems[i].stock.total) < supplierItems[i].stock.minimum) supplierItems[i].lowStock = true;
                 let item = deadStock.find((element) => element.SKU === supplierItems[i].SKU)
                 if (item) {
                     supplierItems[i].deadStock = true
-                    supplierItems[i].SOLDFLAG = item.SOLDFLAG
+                    supplierItems[i].soldFlag = item.SOLDFLAG
                 } else {
                     supplierItems[i].deadStock = false
-                    supplierItems[i].SOLDFLAG = 0
+                    supplierItems[i].soldFlag = 0
                 }
                 itemsTempObject[supplier].push(supplierItems[i]);
             }

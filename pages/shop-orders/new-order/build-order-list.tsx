@@ -22,10 +22,10 @@ export default function CurrentOrderList() {
                             dispatch(setChangeOrderArray({item: item, type: "remove", index: index}))
                         }}>⇅
                         </button>
-                        <span className={"center-align"}>{item.STOCKTOTAL} </span>
-                        <span className={"center-align"}>{item.MINSTOCK} </span>
+                        <span className={"center-align"}>{item.stock.total} </span>
+                        <span className={"center-align"}>{item.stock.minimum} </span>
                         <span>{item.SKU} </span>
-                        <span>{item.TITLE} </span>
+                        <span>{item.title} </span>
                         <input defaultValue={item.qty ? item.qty : 1} onChange={(e) => {
                             changeInputAmountHandler(item, index, e.target.value, "qty")
                         }}/>
@@ -33,7 +33,7 @@ export default function CurrentOrderList() {
                             changeInputAmountHandler(item, index, e.target.value, "tradePack")
                         }}/>
                         <span
-                            className={"center-align"}>£{item.PURCHASEPRICE ? item.PURCHASEPRICE.toFixed(2) : 0}</span>
+                            className={"center-align"}>£{item.purchasePrice ? item.purchasePrice.toFixed(2) : 0}</span>
                     </div>
                 )
 

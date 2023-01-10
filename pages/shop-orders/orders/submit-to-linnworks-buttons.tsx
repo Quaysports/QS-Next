@@ -8,6 +8,7 @@ import {
 } from "../../../store/shop-orders-slice";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {useRouter} from "next/router";
+import {selectUser} from "../../../store/session-slice";
 
 /**
  * Submit To Linnworks Buttons Component
@@ -15,6 +16,7 @@ import {useRouter} from "next/router";
  */
 export default function SubmitToLinnworksButtons() {
 
+    const user = useSelector(selectUser)
     const router = useRouter()
     const orders = useSelector(selectOpenOrders)
     const loadedOrder = orders ? orders[Number(router.query.index)] : null
@@ -71,12 +73,12 @@ export default function SubmitToLinnworksButtons() {
                     title: "Confirm Complete Order",
                     content: "Not all items in this order have been booked in, completing this will delete the rest of the order. Are you sure you want to continue?",
                     fn: () => {
-                        dispatch(setCompleteOrder(router.query.index as string));
+                        dispatch(setCompleteOrder({index:router.query.index as string,user:user.username }));
                         router.push({pathname: "/shop-orders", query: {tab: "orders"}})
                     }
                 })
             } else {
-                dispatch(setCompleteOrder(router.query.index as string))
+                dispatch(setCompleteOrder({index:router.query.index as string,user:user.username }))
                 router.push({pathname: "/shop-orders", query: {tab: "orders"}})
             }
         }

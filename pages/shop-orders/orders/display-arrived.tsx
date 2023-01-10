@@ -33,7 +33,7 @@ export default function DisplayArrived() {
                     <span className={"center-align"}>{loadedOrder!.arrived[i].qty ? loadedOrder!.arrived[i].qty : 0} </span>
                     <span className={"center-align"}>{loadedOrder!.arrived[i].tradePack ??= 0}</span>
                     <span>{loadedOrder!.arrived[i].SKU} </span>
-                    <span>{loadedOrder!.arrived[i].TITLE} </span>
+                    <span>{loadedOrder!.arrived[i].title} </span>
                 </div>
             )
         }

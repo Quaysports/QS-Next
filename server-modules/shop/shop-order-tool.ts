@@ -20,6 +20,7 @@ export interface shopOrder {
     price: number
     order: orderObject[]
     supplier: string
+    completedBy?:string
 }
 
 /**
@@ -42,30 +43,29 @@ export interface shopOrder {
  * @property {number} SOLDFLAG
  */
 export interface orderObject {
-    IDBEP: { BRAND: string }
-    MINSTOCK: number
+    brand:string
+    stock: {minimum:number, total: number}
     SKU: string
-    STOCKTOTAL: string
-    TITLE: string
-    SUPPLIER: string
+    title: string
+    supplier: string
     _id: string
     bookedIn?: string
     qty: number
     tradePack: number
     arrived?: number
-    PURCHASEPRICE: number
+    purchasePrice: number
     deadStock?: boolean
     newProduct?: boolean
     lowStock?: boolean
     submitted: boolean
-    SOLDFLAG: number
+    soldFlag: number
     onOrder?: boolean
 }
 
 export const getLowStock = async () => {
-    return await mongoI.find<schema.Item>("Items",
-        {IDBFILTER: "domestic", MINSTOCK: {$gt: 0}, $expr: {$lt: ["$STOCKTOTAL", "$MINSTOCK"]}},
-        {TITLE: 1, SKU: 1, STOCKTOTAL: 1, PURCHASEPRICE:1, MINSTOCK: 1, SUPPLIER: 1, "IDBEP.BRAND": 1})
+    return await mongoI.find<schema.Item>("New-Items",
+        {tags: {$in:["domestic"]}, "stock.minimum": {$gt: 0}, $expr: {$lt: ["$stock.total", "$stock.minimum"]}},
+        {title: 1, SKU: 1, "stock.total": 1, "prices.purchase":1, "stock.minimum": 1, supplier: 1, brand: 1})
 }
 export const shopStockOrder = async (order:shopOrder) => {
     if (order._id !== undefined) delete order._id
@@ -93,13 +93,13 @@ export const updateStock = async (skus:string) => {
          WHERE sl.fkStockLocationId in ('00000000-0000-0000-0000-000000000000')
            AND si.ItemNumber IN (${skus})`)
 }
-export const adjustStock =  async (arr:{SKU:string,QTY:string}[], id:string) => {
+export const adjustStock =  async (arr:{SKU:string,quantity:string}[], id:string) => {
     let stockData = []
     for (let item of arr) {
         let details = {
             "SKU": item.SKU,
             "LocationId": "00000000-0000-0000-0000-000000000000",
-            "Level": item.QTY
+            "Level": item.quantity
         }
         stockData.push(details)
     }
@@ -107,7 +107,7 @@ export const adjustStock =  async (arr:{SKU:string,QTY:string}[], id:string) => 
 }
 
 export const getBrandsForSupplier = async (supplier:string) => {
-    return await mongoI.findDistinct("Items", "IDBEP.BRAND", {SUPPLIER:supplier})
+    return await mongoI.findDistinct("New-Items", "brand", {supplier:supplier})
 }
 
 
@@ -118,25 +118,25 @@ export const getBrandsForSupplier = async (supplier:string) => {
  */
 export interface SupplierLowStock {
     _id:string,
-    SUPPLIER:string,
-    LOWSTOCKCOUNT:number
+    supplier:string,
+    lowStockCount:number
 }
 export const getSuppliersAndLowStock = async () => {
     const query = [
         {
             '$match': {
-                'IDBFILTER': 'domestic',
-                'LISTINGVARIATION' : false
+                'tags': '{$in: ["domestic"]}',
+                'isListingVariation' : false
             }
         }, {
             '$group': {
-                '_id': '$SUPPLIER',
-                'LOWSTOCKCOUNT': {
+                '_id': '$supplier',
+                'lowStockCount': {
                     '$sum': {
                         '$cond': [
                             {
                                 '$lt': [
-                                    '$STOCKTOTAL', '$MINSTOCK'
+                                    '$stock.total', '$stock.minimum'
                                 ]
                             }, 1, 0
                         ]
@@ -146,16 +146,16 @@ export const getSuppliersAndLowStock = async () => {
         }, {
             '$project': {
                 '_id': 0,
-                'SUPPLIER': '$_id',
-                'LOWSTOCKCOUNT': 1
+                'supplier': '$_id',
+                'lowStockCount': 1
             }
         }, {
             '$sort':{
-                'SUPPLIER':1
+                'supplier':1
             }
         }
     ]
-    const result = await mongoI.findAggregate<SupplierLowStock>("Items", query)
+    const result = await mongoI.findAggregate<SupplierLowStock>("New-Items", query)
     return result ? result : []
 }
 

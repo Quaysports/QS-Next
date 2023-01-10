@@ -29,17 +29,17 @@ export default function BuildStockList() {
                     addToOrderHandler(item)
                 }}>⇅
                 </button>
-                <span className={"center-align"}>{item.STOCKTOTAL} </span>
-                <span className={"center-align"}>{item.MINSTOCK} </span>
+                <span className={"center-align"}>{item.stock.total} </span>
+                <span className={"center-align"}>{item.stock.minimum} </span>
                 <span>{item.SKU} </span>
-                <span>{item.TITLE} </span>
+                <span>{item.title} </span>
                 <input defaultValue={renderedArray[index].qty} onChange={(e) => {
                     inputChangeHandler(e.target.value, "qty", index)
                 }}/>
                 <input defaultValue={renderedArray[index].tradePack} onChange={(e) => {
                     inputChangeHandler(e.target.value, "tradePack", index)
                 }}/>
-                <span className={"center-align"}>£{item.PURCHASEPRICE.toFixed(2)}</span>
+                <span className={"center-align"}>£{item.purchasePrice.toFixed(2)}</span>
                 <span className={styles["dead-stock-image-parent"]}>{item.deadStock ? imageCheck(item) : null}
                     </span>
             </div>
@@ -69,7 +69,7 @@ export default function BuildStockList() {
     }
 
     function imageCheck(item: orderObject) {
-        switch (item.SOLDFLAG) {
+        switch (item.soldFlag) {
             case 3:
                 return (
                     <Image

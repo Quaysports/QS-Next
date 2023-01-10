@@ -35,7 +35,7 @@ export default function StockList() {
 
         supplierItems.forEach((value) => {
             if (router.query.brand !== "All Items") {
-                if (value.IDBEP.BRAND === router.query.brand) {
+                if (value.brand === router.query.brand) {
                     if (value.lowStock) {
                         tempArray.push(value)
                         lowStockBrandArray.push(value)
@@ -43,18 +43,18 @@ export default function StockList() {
                     brandArray.push(value)
                 }
             } else if (value.lowStock) tempArray.push(value)
-            if (!newBrandList.includes(value.IDBEP.BRAND)) {
-                newBrandList.push(value.IDBEP.BRAND)
+            if (!newBrandList.includes(value.brand)) {
+                newBrandList.push(value.brand)
             }
         })
         setBrandList(newBrandList)
 
 
         tempArray.sort((a, b) => {
-            return a.STOCKTOTAL < b.STOCKTOTAL ? -1 : (a.STOCKTOTAL > b.STOCKTOTAL ? 1 : 0)
+            return a.stock.total < b.stock.total ? -1 : (a.stock.total > b.stock.total ? 1 : 0)
         })
         brandArray ? brandArray.sort((a, b) => {
-            return a.STOCKTOTAL < b.STOCKTOTAL ? -1 : (a.STOCKTOTAL > b.STOCKTOTAL ? 1 : 0)
+            return a.stock.total < b.stock.total ? -1 : (a.stock.total > b.stock.total ? 1 : 0)
         }) : null
 
         if (radioButtons.lowStock) {

@@ -202,8 +202,8 @@ export const shopOrdersSlice = createSlice({
                         action.payload.splice(index, 1)
                     }
                 }
-                if (state.orderSKUs[action.payload[0].SUPPLIER]) {
-                    for (const item of state.orderSKUs[action.payload[0].SUPPLIER]) {
+                if (state.orderSKUs[action.payload[0].supplier]) {
+                    for (const item of state.orderSKUs[action.payload[0].supplier]) {
                         let obj = binarySearch<orderObject>(action.payload, "SKU", item)
                         obj ? obj.onOrder = true : null
                     }
@@ -274,9 +274,11 @@ export const shopOrdersSlice = createSlice({
                     supplier: null
                 }
             },
-            setCompleteOrder: (state, action: PayloadAction<string>) => {
-                const openOrder = state.openOrders![Number(action.payload)]
+            setCompleteOrder: (state, action: PayloadAction<{index: string, user:string}>) => {
+                const {index, user} = action.payload
+                const openOrder = state.openOrders![Number(index)]
                 openOrder.complete = true
+                openOrder.completedBy = user
                 const opts = {
                     method: 'POST',
                     headers: {
@@ -311,7 +313,7 @@ export const shopOrdersSlice = createSlice({
                 state.newOrderArray = action.payload
                 const tempArray = [...state.newOrderArray.order, ...state.newOrderArray.arrived]
                 for (let i = 0; i < tempArray.length; i++) {
-                    state.totalPrice += (tempArray[i].PURCHASEPRICE * tempArray[i].tradePack * tempArray[i].qty)
+                    state.totalPrice += (tempArray[i].purchasePrice * tempArray[i].tradePack * tempArray[i].qty)
                     let index = state.supplierItems.findIndex(item => item.SKU === tempArray[i].SKU)
                     state.supplierItems.splice(index, 1)
                 }
@@ -334,12 +336,12 @@ function totalPriceCalc(order: OpenOrdersObject) {
     let totalPrice = 0
     if (order.arrived) {
         for (let i = 0; i < order.arrived.length; i++) {
-            let price = order.arrived[i].PURCHASEPRICE * (order.arrived[i].qty * order.arrived[i].tradePack)
+            let price = order.arrived[i].purchasePrice * (order.arrived[i].qty * order.arrived[i].tradePack)
             totalPrice += price
         }
     }
     for (let i = 0; i < order.order.length; i++) {
-        let price = order.order[i].PURCHASEPRICE * (order.order[i].qty * order.order[i].tradePack)
+        let price = order.order[i].purchasePrice * (order.order[i].qty * order.order[i].tradePack)
         totalPrice += price
     }
     return parseFloat(totalPrice.toFixed(2))
@@ -392,7 +394,7 @@ function saveNewOrder(newOrderArray:OpenOrdersObject, totalPrice: number){
 
     let newOrder = {
         id: newOrderArray.id ? newOrderArray.id : `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
-        supplier: newOrderArray.order[0].SUPPLIER,
+        supplier: newOrderArray.order[0].supplier,
         date: newOrderArray.date ? newOrderArray.date : date.getTime(),
         complete: false,
         arrived: newOrderArray.arrived,

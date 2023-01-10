@@ -14,7 +14,7 @@ export default function ShowOrder() {
                          className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["completed-orders-list-grid"]}`}>
                         <span className={"center-align"}>{item.qty}</span>
                         <span>{item.SKU}</span>
-                        <span>{item.TITLE}</span>
+                        <span>{item.title}</span>
                     </div>
                 )
             }

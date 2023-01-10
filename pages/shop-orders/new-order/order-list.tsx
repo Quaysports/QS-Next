@@ -19,18 +19,17 @@ export default function OrderList() {
 
     function newProductHandler(){
         let newProduct: orderObject = {
-            SOLDFLAG: 0,
-            IDBEP: {BRAND: ""},
-            MINSTOCK: 0,
-            PURCHASEPRICE: 0,
-            STOCKTOTAL: "0",
-            SUPPLIER: "",
+            soldFlag: 0,
+            brand:"",
+            stock: {minimum:0, total:0},
+            purchasePrice: 0,
+            supplier: "",
             _id: "",
             deadStock: false,
             qty: 1,
             tradePack: 1,
             SKU: "",
-            TITLE: "",
+            title: "",
             newProduct: true,
             bookedIn: "false",
             arrived: 0,
@@ -39,7 +38,7 @@ export default function OrderList() {
         let tempArray = [
             <div key={new Date().toString()} id={styles["add-new-item-container"]}>
                 <div>SKU:<input onChange={(e) => newProduct.SKU = e.target.value}/></div>
-                <div>Title:<input onChange={(e) => newProduct.TITLE = e.target.value}/></div>
+                <div>Title:<input onChange={(e) => newProduct.title = e.target.value}/></div>
                 <div>
                     <button
                         onClick={() => {
