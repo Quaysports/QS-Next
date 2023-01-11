@@ -120,5 +120,5 @@ export default function UserTable({userInfo}: UserTableProps) {
             </div>
         )
     }
-    return <>{userArray}</>
+    return <div className={style["user-table"]}>{userArray}</div>
 }

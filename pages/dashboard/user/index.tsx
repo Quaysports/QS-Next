@@ -11,7 +11,7 @@ export default function UserTab() {
     const userInfo = useSelector(selectUsers)
 
     return (
-        <ColumnLayout scroll={true} maxWidth={"fit-content"}>
+        <ColumnLayout background={false} scroll={true} maxWidth={"fit-content"}>
                 <UserTable userInfo={userInfo}/>
         </ColumnLayout>
     )
