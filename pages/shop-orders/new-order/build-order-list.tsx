@@ -26,14 +26,14 @@ export default function CurrentOrderList() {
                         <span className={"center-align"}>{item.stock.minimum} </span>
                         <span>{item.SKU} </span>
                         <span>{item.title} </span>
-                        <input defaultValue={item.qty ? item.qty : 1} onChange={(e) => {
+                        <input defaultValue={item.quantity ? item.quantity : 1} onChange={(e) => {
                             changeInputAmountHandler(item, index, e.target.value, "qty")
                         }}/>
                         <input defaultValue={item.tradePack ? item.tradePack : 1} onChange={(e) => {
                             changeInputAmountHandler(item, index, e.target.value, "tradePack")
                         }}/>
                         <span
-                            className={"center-align"}>£{item.purchasePrice ? item.purchasePrice.toFixed(2) : 0}</span>
+                            className={"center-align"}>£{item.prices.purchase ? item.prices.purchase.toFixed(2) : 0}</span>
                     </div>
                 )
 

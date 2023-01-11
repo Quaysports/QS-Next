@@ -4,9 +4,6 @@ import DisplayArrived from "./display-arrived";
 import OrderInformation from "./order-information";
 import ColumnLayout from "../../../components/layouts/column-layout";
 
-/**
- * Orders Tab
- */
 export default function Orders() {
 
     return (

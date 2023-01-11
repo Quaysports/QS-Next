@@ -21,6 +21,7 @@ export default function BuildStockList() {
 
     function buildListRow(item: orderObject, index: number, allItems: boolean) {
         let tempArray = []
+        console.log(item)
         tempArray.push(
             <div key={item.SKU}
                  className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["new-order-list-grid"]}`}
@@ -33,13 +34,13 @@ export default function BuildStockList() {
                 <span className={"center-align"}>{item.stock.minimum} </span>
                 <span>{item.SKU} </span>
                 <span>{item.title} </span>
-                <input defaultValue={renderedArray[index].qty} onChange={(e) => {
+                <input defaultValue={renderedArray[index].quantity} onChange={(e) => {
                     inputChangeHandler(e.target.value, "qty", index)
                 }}/>
                 <input defaultValue={renderedArray[index].tradePack} onChange={(e) => {
                     inputChangeHandler(e.target.value, "tradePack", index)
                 }}/>
-                <span className={"center-align"}>£{item.purchasePrice.toFixed(2)}</span>
+                <span className={"center-align"}>£{item.prices.purchase.toFixed(2)}</span>
                 <span className={styles["dead-stock-image-parent"]}>{item.deadStock ? imageCheck(item) : null}
                     </span>
             </div>

@@ -14,9 +14,6 @@ import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 import {useRouter} from "next/router";
 import BuildStockList from "./build-stock-list";
 
-/**
- * Stock List Component
- */
 export default function StockList() {
 
     const dispatch = useDispatch()

@@ -30,7 +30,7 @@ export default function DisplayArrived() {
                 <div key={i} className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["open-orders-grid"]}`} style={loadedOrder!.arrived[i].submitted ? {backgroundColor:"var(--traffic-light-green)"} : {backgroundColor:"var(--primary-table-cell-background)"}} >
                     {!loadedOrder!.arrived[i].submitted ? <button data-testid={"arrived-button"} onClick={() => removeFromBookedInHandler(loadedOrder!, i, loadedOrder!.arrived[i].SKU)}>⇅</button>: <span/>}
                     <span className={"center-align"}>{loadedOrder!.arrived[i].arrived} </span>
-                    <span className={"center-align"}>{loadedOrder!.arrived[i].qty ? loadedOrder!.arrived[i].qty : 0} </span>
+                    <span className={"center-align"}>{loadedOrder!.arrived[i].quantity ? loadedOrder!.arrived[i].quantity : 0} </span>
                     <span className={"center-align"}>{loadedOrder!.arrived[i].tradePack ??= 0}</span>
                     <span>{loadedOrder!.arrived[i].SKU} </span>
                     <span>{loadedOrder!.arrived[i].title} </span>

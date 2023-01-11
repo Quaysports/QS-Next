@@ -1,16 +1,5 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import * as linn from "../linn-api/linn-api";
-
-/**
- * @property {string} _id
- * @property {orderObject[]} arrived
- * @property {boolean} complete
- * @property {number} date
- * @property {string} id
- * @property {number} price
- * @property {orderObject[]} order
- * @property {string} supplier
- */
 export interface shopOrder {
     _id?: string
     arrived: orderObject[]
@@ -22,26 +11,6 @@ export interface shopOrder {
     supplier: string
     completedBy?:string
 }
-
-/**
- * @property {{BRAND: string}} IDBEP
- * @property {number} MINSTOCK
- * @property {string} SKU
- * @property {string} STOCKTOTAL
- * @property {string} TITLE
- * @property {string} SUPPLIER
- * @property {string} _id
- * @property {string} [bookedIn]
- * @property {number} qty
- * @property {number} tradePack
- * @property {number} [arrived]
- * @property {number} PURCHASEPRICE
- * @property {boolean} [deadStock]
- * @property {boolean} [newProduct]
- * @property {boolean} [lowStock]
- * @property {boolean} submitted
- * @property {number} SOLDFLAG
- */
 export interface orderObject {
     brand:string
     stock: {minimum:number, total: number}
@@ -50,10 +19,10 @@ export interface orderObject {
     supplier: string
     _id: string
     bookedIn?: string
-    qty: number
+    quantity: number
     tradePack: number
     arrived?: number
-    purchasePrice: number
+    prices: {purchase: number}
     deadStock?: boolean
     newProduct?: boolean
     lowStock?: boolean
@@ -73,12 +42,12 @@ export const shopStockOrder = async (order:shopOrder) => {
 }
 
 export const getCompleteOrders = async (start:object = {}, end:object = {}, supplier:object = {}) => {
-    const result =  await mongoI.find<shopOrder>("New-Shop-Orders", {$and: [start, end, supplier, {complete: {$eq: true}}]}, {}, {supplier:1})
+    const result =  await mongoI.find<shopOrder>("New-New-Shop-Orders", {$and: [start, end, supplier, {complete: {$eq: true}}]}, {}, {supplier:1})
     return result ? result : []
 }
 
 export const getOpenOrders = async () => {
-    const result = await mongoI.find<shopOrder>("New-Shop-Orders", {complete: false})
+    const result = await mongoI.find<shopOrder>("New-New-Shop-Orders", {complete: false})
     return result ? result : []
 }
 
@@ -109,13 +78,6 @@ export const adjustStock =  async (arr:{SKU:string,quantity:string}[], id:string
 export const getBrandsForSupplier = async (supplier:string) => {
     return await mongoI.findDistinct("New-Items", "brand", {supplier:supplier})
 }
-
-
-/**
- * @property {string} _id
- * @property {string} SUPPLIER
- * @property {number} LOWSTOCKCOUNT
- */
 export interface SupplierLowStock {
     _id:string,
     supplier:string,
@@ -125,8 +87,12 @@ export const getSuppliersAndLowStock = async () => {
     const query = [
         {
             '$match': {
-                'tags': '{$in: ["domestic"]}',
-                'isListingVariation' : false
+                'tags': {
+                    '$in': [
+                        'domestic'
+                    ]
+                },
+                'isListingVariation': false
             }
         }, {
             '$group': {
@@ -150,33 +116,22 @@ export const getSuppliersAndLowStock = async () => {
                 'lowStockCount': 1
             }
         }, {
-            '$sort':{
-                'supplier':1
+            '$sort': {
+                'supplier': 1
             }
         }
     ]
     const result = await mongoI.findAggregate<SupplierLowStock>("New-Items", query)
     return result ? result : []
 }
-
-/**
- * Supplier Item
- * @property {string} SKU
- * @property {string} TITLE
- * @property {{BRAND: string}} IDBEP
- * @property {number} MINSTOCK
- * @property {number} STOCKTOTAL
- * @property {number} PURCHASEPRICE
- */
 export interface SupplierItem {
     SKU: string,
-    TITLE: string,
-    IDBEP:{BRAND: string},
-    MINSTOCK: number,
-    STOCKTOTAL: number,
-    PURCHASEPRICE:number
+    title: string,
+    brand: string,
+    stock:{minimum : number, total: number},
+    prices: {purchasePrice:number}
 }
 export const getSupplierItems = async (supplier:string) => {
-    let result = await mongoI.find<SupplierItem>("Items", {SUPPLIER: supplier, IDBFILTER: "domestic"}, {SKU: 1, TITLE: 1, "IDBEP.BRAND": 1, MINSTOCK: 1, STOCKTOTAL: 1, PURCHASEPRICE:1},{SKU:1})
+    let result = await mongoI.find<SupplierItem>("New-Items", {supplier: supplier, tags: {"$in":["domestic"]}}, {SKU: 1, title: 1, brand: 1, stock:1, prices:1},{SKU:1})
     return result ? result : []
 }

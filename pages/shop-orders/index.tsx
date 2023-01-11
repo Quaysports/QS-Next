@@ -23,9 +23,6 @@ import {
 } from "../../server-modules/shop/shop-order-tool";
 import {appWrapper} from "../../store/store";
 
-/**
- * Shop Orders Landing Page
- */
 
 export default function ShopOrdersLandingPage() {
     const router = useRouter()
@@ -78,7 +75,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
                 supplierItems[i].lowStock = false
                 supplierItems[i].arrived = 0
                 supplierItems[i].tradePack = 1
-                supplierItems[i].qty = 1
+                supplierItems[i].quantity = 1
                 supplierItems[i].submitted = false
                 supplierItems[i].onOrder = false
                 if (Number(supplierItems[i].stock.total) < supplierItems[i].stock.minimum) supplierItems[i].lowStock = true;

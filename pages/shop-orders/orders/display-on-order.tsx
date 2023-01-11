@@ -21,6 +21,7 @@ export default function DisplayOnOrder() {
     const loadedOrder = orders? orders[Number(router.query.index)] : null
     const dispatch = useDispatch()
     const [saveOrder, setSaveOrder] = useState<boolean>(false)
+    console.log(orders)
 
     function arrivedHandler(quantity:string, index:number) {
         dispatch(setArrivedHandler({order: router.query.index as string, index: index, value: Number(quantity)}))
@@ -41,7 +42,7 @@ export default function DisplayOnOrder() {
             })
             return
         }
-        if ((order.order[index].qty - order.order[index].arrived!) < 0) {
+        if ((order.order[index].quantity - order.order[index].arrived!) < 0) {
             dispatchNotification({
                 type: "alert",
                 title: "Too Many Arrived",
@@ -50,13 +51,13 @@ export default function DisplayOnOrder() {
             return
         }
 
-        if ((order.order[index].qty - order.order[index].arrived!) === 0) {
+        if ((order.order[index].quantity - order.order[index].arrived!) === 0) {
             setSaveOrder(true)
             dispatch(setBookedInState({bookedIn: "false", index: index, order: router.query.index as string}))
             return
         }
 
-        if ((order.order[index].qty - order.order[index].arrived!) > 0) {
+        if ((order.order[index].quantity - order.order[index].arrived!) > 0) {
             dispatchNotification({
                 type: "confirm",
                 title: "Partial Order Arrived",
@@ -109,7 +110,7 @@ export default function DisplayOnOrder() {
                                onChange={(e) => {
                                    arrivedHandler(e.target.value, i)
                                }}/>
-                        <span className={"center-align"}>{loadedOrder!.order[i].qty ??= 0}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].quantity ??= 0}</span>
                         <span className={"center-align"}>{loadedOrder!.order[i].tradePack ??= 0}</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
                         <span>{loadedOrder!.order[i].title} </span>
@@ -125,7 +126,7 @@ export default function DisplayOnOrder() {
                                onChange={(e) => {
                                    arrivedHandler(e.target.value, i)
                                }}/>
-                        <span className={"center-align"}>{loadedOrder!.order[i].qty ??= 0}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].quantity ??= 0}</span>
                         <span className={"center-align"}>{loadedOrder!.order[i].tradePack ??= 0}</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
                         <span>{loadedOrder!.order[i].title} </span>

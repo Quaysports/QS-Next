@@ -164,9 +164,9 @@ export const shopOrdersSlice = createSlice({
                     openOrder.order.splice(action.payload.index, 1)
                 }
                 if (action.payload.bookedIn === "partial") {
-                    openOrder.order[action.payload.index].qty = (openOrder.order[action.payload.index].qty - openOrder.order[action.payload.index].arrived!)
+                    openOrder.order[action.payload.index].quantity = (openOrder.order[action.payload.index].quantity - openOrder.order[action.payload.index].arrived!)
                     openOrder.arrived.push(openOrder.order[action.payload.index])
-                    openOrder.arrived[(openOrder.arrived.length - 1)].qty = openOrder.order[action.payload.index].arrived!
+                    openOrder.arrived[(openOrder.arrived.length - 1)].quantity = openOrder.order[action.payload.index].arrived!
                     openOrder.order[action.payload.index].arrived = 0
                 }
             },
@@ -174,7 +174,7 @@ export const shopOrdersSlice = createSlice({
                 let openOrder = state.openOrders![Number(action.payload.order)]
                 const i = openOrder.order.map((item: orderObject) => item.SKU).indexOf(action.payload.SKU)
                 if (i > -1) {
-                    openOrder.order[i].qty = (openOrder.order[i].qty + openOrder.arrived[action.payload.index].arrived!)
+                    openOrder.order[i].quantity = (openOrder.order[i].quantity + openOrder.arrived[action.payload.index].arrived!)
                     openOrder.order[i].arrived = 0
                     openOrder.arrived.splice(action.payload.index, 1)
                 } else {
@@ -211,7 +211,7 @@ export const shopOrdersSlice = createSlice({
                 state.supplierItems = action.payload
             },
             setChangeOrderQty: (state, action: PayloadAction<{ item: orderObject, type: string, index: number, value: string }>) => {
-                if (action.payload.type === "qty") state.newOrderArray.order[action.payload.index].qty = parseFloat(action.payload.value)
+                if (action.payload.type === "qty") state.newOrderArray.order[action.payload.index].quantity = parseFloat(action.payload.value)
                 if (action.payload.type === "tradePack") state.newOrderArray.order[action.payload.index].tradePack = parseFloat(action.payload.value)
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
                 let date = new Date()
@@ -225,7 +225,7 @@ export const shopOrdersSlice = createSlice({
                 }
                 if (action.payload.type === "add") {
                     let item = state.supplierItems.splice(action.payload.index!, 1)
-                    item[0].qty = action.payload.item!.qty
+                    item[0].quantity = action.payload.item!.quantity
                     item[0].tradePack = action.payload.item!.tradePack
                     state.newOrderArray.order.push(item[0])
                 }
@@ -248,7 +248,7 @@ export const shopOrdersSlice = createSlice({
                 state.renderedArray = action.payload
             },
             setInputChange: (state, action: PayloadAction<{ key: string, index: number, value: string }>) => {
-                if (action.payload.key === "qty") state.renderedArray[action.payload.index].qty = Number(action.payload.value)
+                if (action.payload.key === "qty") state.renderedArray[action.payload.index].quantity = Number(action.payload.value)
                 if (action.payload.key === "tradePack") state.renderedArray[action.payload.index].tradePack = Number(action.payload.value)
             },
             setCompletedOrders: (state, action: PayloadAction<{ [key: string]: shopOrder[] }[]>) => {
@@ -294,7 +294,7 @@ export const shopOrdersSlice = createSlice({
                 const openOrder = state.openOrders![Number(action.payload.order)]
                 for (const item of action.payload.res) {
                     let posNew = openOrder.arrived.map(order => order.SKU).indexOf(item.SKU)
-                    if (Number(openOrder.arrived[posNew].qty) <= Number(item["StockLevel"])) {
+                    if (Number(openOrder.arrived[posNew].quantity) <= Number(item["StockLevel"])) {
                         openOrder.arrived[posNew].submitted = true
                     }
                 }
@@ -313,7 +313,7 @@ export const shopOrdersSlice = createSlice({
                 state.newOrderArray = action.payload
                 const tempArray = [...state.newOrderArray.order, ...state.newOrderArray.arrived]
                 for (let i = 0; i < tempArray.length; i++) {
-                    state.totalPrice += (tempArray[i].purchasePrice * tempArray[i].tradePack * tempArray[i].qty)
+                    state.totalPrice += (tempArray[i].prices.purchase * tempArray[i].tradePack * tempArray[i].quantity)
                     let index = state.supplierItems.findIndex(item => item.SKU === tempArray[i].SKU)
                     state.supplierItems.splice(index, 1)
                 }
@@ -336,12 +336,12 @@ function totalPriceCalc(order: OpenOrdersObject) {
     let totalPrice = 0
     if (order.arrived) {
         for (let i = 0; i < order.arrived.length; i++) {
-            let price = order.arrived[i].purchasePrice * (order.arrived[i].qty * order.arrived[i].tradePack)
+            let price = order.arrived[i].prices.purchase * (order.arrived[i].quantity * order.arrived[i].tradePack)
             totalPrice += price
         }
     }
     for (let i = 0; i < order.order.length; i++) {
-        let price = order.order[i].purchasePrice * (order.order[i].qty * order.order[i].tradePack)
+        let price = order.order[i].prices.purchase * (order.order[i].quantity * order.order[i].tradePack)
         totalPrice += price
     }
     return parseFloat(totalPrice.toFixed(2))

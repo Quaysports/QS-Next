@@ -1,31 +1,6 @@
 import * as mongoI from '../../../server-modules/mongo-interface/mongo-interface'
 import {NextApiRequest, NextApiResponse} from "next";
-
-interface shopOrder {
-    _id?: string
-    arrived: orderItem[] | []
-    complete: boolean
-    date: number
-    id: string
-    price: number
-    order: orderItem[] | []
-    supplier: string
-}
-
-interface orderItem {
-    IDBEP: { BRAND: string }
-    MINSTOCK: number
-    SKU: string
-    STOCKTOTAL: string
-    TITLE: string
-    _id: string
-    bookedIn: string
-    qty: number
-    tradePack: number
-    arrived: number
-    purchasePrice: number
-    deadStock: boolean
-}
+import {shopOrder} from "../../../server-modules/shop/shop-order-tool";
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     res.status(200).json(
@@ -34,5 +9,5 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 }
 
 export const deleteOrder = async (order:shopOrder) => {
-    return await mongoI.deleteOne("New-Shop-Orders", {date: order.date})
+    return await mongoI.deleteOne("New-New-Shop-Orders", {date: order.date})
 }

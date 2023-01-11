@@ -55,7 +55,7 @@ export default function OrderInformation() {
         let tempArray: JSX.Element[] = []
         let csvObject = []
         if(loadedOrder && loadedOrder.order){
-            for(const item of loadedOrder.order) csvObject.push({SKU:item.SKU, Title:item.title, Quantity:item.qty})
+            for(const item of loadedOrder.order) csvObject.push({SKU:item.SKU, Title:item.title, Quantity:item.quantity})
         }
         tempArray.push(
             <div key={1} className={styles["shop-orders-table-containers"]}>
