@@ -1,7 +1,7 @@
 import styles from './quick-links.module.css'
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import EditQuickLinkMenuPopup from "./edit-quicklink-menu-popup";
-import SidebarButton from "../../../components/layouts/SidebarButton";
+import SidebarButton from "../../../components/layouts/sidebar-button";
 import {useRouter} from "next/router";
 
 /**

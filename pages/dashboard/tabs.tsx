@@ -25,6 +25,7 @@ export default function DashboardTabs() {
         <>
             <span className={activeTab("home")} data-testid={"home-tab"}><Link href="/dashboard?tab=home">Home</Link></span>
             {permissions?.users?.auth ? <span className={activeTab("user")} data-testid={"user-tab"}><Link href="/dashboard?tab=user">Users</Link></span> : null}
+            {permissions?.rotas?.auth ? <span className={activeTab("rotas")}><Link href="/dashboard?tab=rotas&location=online">Rotas</Link></span> : null}
             {permissions?.holidays?.auth ? <span className={activeTab("holidays")}><Link href="/dashboard?tab=holidays">Holidays</Link></span> : null}
         </>
     )

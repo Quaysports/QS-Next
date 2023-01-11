@@ -1,7 +1,7 @@
 import styles from "./quick-links.module.css";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import NewQuickLinkMenuPopup from "./new-quicklink-menu-popup";
-import SidebarButton from "../../../components/layouts/SidebarButton";
+import SidebarButton from "../../../components/layouts/sidebar-button";
 
 /**
  * Sidebar button that creates a popup that allows you to create a new Quick Link menu.

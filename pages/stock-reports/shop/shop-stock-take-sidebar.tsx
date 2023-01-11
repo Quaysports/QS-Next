@@ -1,4 +1,4 @@
-import SidebarButton from "../../../components/layouts/SidebarButton";
+import SidebarButton from "../../../components/layouts/sidebar-button";
 import {useState} from "react";
 import {useSelector} from "react-redux";
 import {selectBrands} from "../../../store/stock-reports-slice";

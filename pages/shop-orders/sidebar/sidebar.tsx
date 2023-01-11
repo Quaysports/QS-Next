@@ -3,7 +3,7 @@ import styles from "../shop-orders.module.css"
 import {useSelector} from "react-redux";
 import {selectSideBarContent} from "../../../store/shop-orders-slice";
 import SidebarLayout from "../../../components/layouts/sidebar-layout";
-import SidebarButton from "../../../components/layouts/SidebarButton";
+import SidebarButton from "../../../components/layouts/sidebar-button";
 import {useEffect} from "react";
 import {useRouter} from "next/router";
 
