@@ -18,7 +18,7 @@ export default function PublishSidebar({rota, editable = true}: { rota: Rota, ed
 
 function RotaDay({dayOfWeek, userHours, editable}: { dayOfWeek: number, userHours: UserHours[], editable: boolean }) {
 
-    if(!dayOfWeek || !userHours || !editable) return null
+    if(!userHours) return null
 
     let userRows = []
 
@@ -38,7 +38,7 @@ function RotaDay({dayOfWeek, userHours, editable}: { dayOfWeek: number, userHour
 
 function UserRow({userIndex, userHours, dayOfWeek, editable}: { userIndex: number, userHours: UserHours, dayOfWeek: number, editable: boolean }) {
 
-    if(!userIndex || !userHours || !dayOfWeek || !editable) return null
+    if(!userHours) return null
 
     const dispatch = useDispatch()
 

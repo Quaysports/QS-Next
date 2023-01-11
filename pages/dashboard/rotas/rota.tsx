@@ -19,7 +19,7 @@ export default function RotaWeek({rota, weekData, holiday}: { rota: Rota, weekDa
 
 function RotaDay({dayOfWeek, userHours, weekData, holiday}: { dayOfWeek: number, userHours: UserHours[], weekData:WeekData | null, holiday:sbt.holidayDay[] | null }) {
 
-    if(!dayOfWeek || !userHours) return null
+    if(!userHours) return null
 
     let userRows = []
 
@@ -39,8 +39,6 @@ function RotaDay({dayOfWeek, userHours, weekData, holiday}: { dayOfWeek: number,
 }
 
 function DayTitle({dayOfWeek, weekData}: { dayOfWeek: number, weekData:WeekData | null }) {
-
-    if(!dayOfWeek) return null
 
     const days = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
     const hours = ["6am", "7", "8", "9", "10", "11", "12pm", "1", "2", "3", "4", "5", "6"]
@@ -62,7 +60,7 @@ function DayTitle({dayOfWeek, weekData}: { dayOfWeek: number, weekData:WeekData 
 
 function UserRow({userIndex, userHours, dayOfWeek, holiday}: { userIndex: number, userHours: UserHours, dayOfWeek: number, holiday:sbt.holidayDay[] | null }) {
 
-    if(!userHours || !dayOfWeek) return null
+    if(!userHours) return null
 
     const dispatch = useDispatch()
     const [tracking, setTracking] = useState(false)

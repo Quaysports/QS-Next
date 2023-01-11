@@ -85,6 +85,7 @@
 .day{
     box-shadow: var(--primary-box-shadow);
     min-width: 200px;
+    height:fit-content;
 }
 
 .title{
