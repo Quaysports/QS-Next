@@ -23,7 +23,10 @@ function RotaDay({dayOfWeek, userHours, weekData, holiday}: { dayOfWeek: number,
 
     let userRows = []
 
+    console.log(userHours)
+
     for (let i in userHours) {
+        console.log(i)
         userRows.push(<UserRow key={i} userIndex={Number(i)} userHours={userHours[i]} dayOfWeek={dayOfWeek} holiday={holiday}/>)
     }
 
@@ -59,7 +62,7 @@ function DayTitle({dayOfWeek, weekData}: { dayOfWeek: number, weekData:WeekData 
 
 function UserRow({userIndex, userHours, dayOfWeek, holiday}: { userIndex: number, userHours: UserHours, dayOfWeek: number, holiday:sbt.holidayDay[] | null }) {
 
-    if(!userIndex || !userHours || !dayOfWeek) return null
+    if(!userHours || !dayOfWeek) return null
 
     const dispatch = useDispatch()
     const [tracking, setTracking] = useState(false)
