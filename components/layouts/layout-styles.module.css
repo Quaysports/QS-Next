@@ -40,6 +40,27 @@
     overflow-y: auto;
 }
 
+.sidebar-select{
+    width:calc(100% - 10px);
+    color: var(--primary-color);
+    background: var(--primary-inactive-text);
+    cursor: pointer;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: var(--primary-box-shadow);
+    margin: 5px;
+    padding: 3px;
+    font-size: 0.9em;
+}
+
+.sidebar-break {
+    color: var(--primary-inactive-text);
+    margin: 30px 0 15px 10px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .sidebar-button{
     background-color: var(--primary-color);
     color: var(--primary-inactive-text);

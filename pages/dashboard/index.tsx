@@ -16,6 +16,9 @@ import HolidayTab from "./holiday";
 import {setAvailableCalendarsYears, setHolidayCalendar, setHolidayUsers} from "../../store/dashboard/holiday-slice";
 import {updateSettings} from "../../store/session-slice";
 import {getSession} from "next-auth/react";
+import RotasTab from "./rotas";
+import {getPublishedRotas, getRotaNames, getRotaTemplates} from "../../server-modules/rotas/rotas";
+import {setPublishedRotas, setTemplatesNames, setUserData} from "../../store/dashboard/rotas-slice";
 
 /**
  * Dashboard landing page
@@ -28,6 +31,7 @@ export default function Dashboard() {
             <Menu><DashboardTabs/></Menu>
             {router.query.tab === undefined || router.query.tab === "home" ? <HomeTab/> : null}
             {router.query.tab === "user" ? <UserTab/> : null}
+            {router.query.tab === "rotas" ? <RotasTab/> : null}
             {router.query.tab === "holidays" ? <HolidayTab/> : null}
         </OneColumn>
     );
@@ -44,8 +48,24 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
         if(data) store.dispatch(setAllUserData(data))
     }
 
-    if(context.query.tab === "holidays"){
+    if(context.query.tab === "rotas" && typeof context.query.location === "string"){
+        const users = await getRotaNames(context.query.location)
+        if(users) store.dispatch(setUserData({location:context.query.location, users:users}))
 
+        const locationTemplates = await getRotaTemplates(context.query.location)
+        if(locationTemplates) store.dispatch(setTemplatesNames(locationTemplates))
+
+        let currentYear = new Date().getFullYear()
+        const data = await getHolidayCalendar({year:currentYear, location:context.query.location})
+        if(data) store.dispatch(setHolidayCalendar(data))
+
+        let oneWeekAgo = new Date(new Date().getTime() - 604800000).toISOString()
+
+        const publishedRotas = await getPublishedRotas(context.query.location, oneWeekAgo)
+        if(publishedRotas) store.dispatch(setPublishedRotas(publishedRotas))
+    }
+
+    if(context.query.tab === "holidays"){
 
         const location = context.query.location
             ? context.query.location as string

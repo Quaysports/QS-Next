@@ -1,7 +1,7 @@
 import {ReactElement, useEffect, useState} from "react";
 import styles from "../item-database.module.css"
 import SidebarLayout from "../../../components/layouts/sidebar-layout";
-import SidebarButton from "../../../components/layouts/SidebarButton";
+import SidebarButton from "../../../components/layouts/sidebar-button";
 import ColumnLayout from "../../../components/layouts/column-layout";
 import {rodLocationObject} from "../index";
 import {useSelector} from "react-redux";

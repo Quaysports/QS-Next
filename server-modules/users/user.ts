@@ -1,4 +1,5 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
+import {ObjectId} from "mongodb";
 
 export interface User {
     theme: UserTheme;
@@ -128,7 +129,13 @@ export const updateUser = async (data: User) => {
 }
 
 export const deleteUser = async (data: User) => {
-    return await mongoI.deleteOne("Users", {username: {$eq: data.username}})
+    let query;
+    if (data._id) {
+        query = {_id: new ObjectId(data._id)}
+    } else {
+        query = {username: {$eq: data.username}}
+    }
+    return await mongoI.deleteOne("Users", query)
 }
 
 export const getAllExistingCalendars = async (req: { location: string; }) => {

@@ -10,6 +10,7 @@ import {marginCalculatorSlice} from "./margin-calculator-slice";
 import {sessionSlice} from "./session-slice";
 import {shipmentsSlice} from "./shipments-slice";
 import {holidaysSlice} from "./dashboard/holiday-slice";
+import {rotaSlice} from "./dashboard/rotas-slice";
 
 
 const rootReducer = combineReducers({
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     [sessionSlice.name]:sessionSlice.reducer,
     [shipmentsSlice.name]: shipmentsSlice.reducer,
     [holidaysSlice.name]: holidaysSlice.reducer,
+    [rotaSlice.name]: rotaSlice.reducer,
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>){
@@ -35,6 +37,7 @@ export function setupStore(preloadedState?: PreloadedState<RootState>){
 
 export type RootState = ReturnType<typeof rootReducer>
 export type AppStore = ReturnType<typeof setupStore>
+
 export type AppDispatch = AppStore['dispatch']
 
 export const appWrapper = createWrapper(()=>setupStore());
