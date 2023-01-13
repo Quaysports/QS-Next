@@ -233,6 +233,10 @@
     grid-template-rows: 1fr 30px;
 }
 
+.brand-label-image select {
+    max-width: 175px;
+}
+
 .brand-label-image img{
     margin: 3px;
     height:170px;

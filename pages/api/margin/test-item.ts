@@ -11,7 +11,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         body:JSON.stringify(req.body)
     }
 
-    let result = await fetch('http://localhost:3001/Margin/TestItem', opt)
+    let result = await fetch('http://localhost:4000/Margin/TestItem', opt)
 
     res.status(200).json(await result.json())
 }

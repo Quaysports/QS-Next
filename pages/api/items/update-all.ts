@@ -10,7 +10,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         }
     }
 
-    const result = await fetch('http://localhost:3001/Linn/UpdateAll', opt)
+    const result = await fetch('http://localhost:4000/Items/UpdateAll', opt)
 
     res.status(200).json(await result.json())
 }

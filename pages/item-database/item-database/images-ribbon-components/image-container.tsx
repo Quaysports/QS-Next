@@ -65,8 +65,8 @@ export default function ImageContainer({imageTag}: Props) {
 
         return item.images[key] ?
             item.images[key].link
-                ? `http://192.168.1.200:3001/images/${item.images[key].link!.replace(/([ \/])+/g, "-")}/${item.images[key].filename}`
-                : `http://192.168.1.200:3001/images/${item.SKU.replace(/([ \/])+/g, "-")}/${item.images[key].filename}`
+                ? `http://192.168.1.200:4000/images/${item.images[key].link!.replace(/([ \/])+/g, "-")}/${item.images[key].filename}`
+                : `http://192.168.1.200:4000/images/${item.SKU.replace(/([ \/])+/g, "-")}/${item.images[key].filename}`
             : image
     }
 

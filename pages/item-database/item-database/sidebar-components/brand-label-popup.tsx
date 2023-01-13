@@ -54,7 +54,7 @@ export default function BrandLabelPopUp({print}: Props) {
                 <img src={path ? path : ""} alt={item.brand + "image"}/>
                 <select
                     onChange={(e) => brandLabelHandler(
-                        "http://localhost:3001/brand-label-images/" + e.target.value,
+                        "http://localhost:4000/brand-label-images/" + e.target.value,
                         "path")
                 }>{brandImageOptions()}</select>
             </div>

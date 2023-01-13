@@ -13,7 +13,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         body:JSON.stringify(req.body)
     }
 
-    const result = await fetch('http://localhost:3001/Items/UploadImages', opt)
+    const result = await fetch('http://localhost:4000/Items/UploadImages', opt)
 
     res.send(result)
 }

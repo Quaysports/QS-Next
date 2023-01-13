@@ -10,7 +10,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         }
     }
 
-    await fetch('http://localhost:3001/Margin/UnHideAll', opt)
+    await fetch('http://localhost:4000/Margin/UnHideAll', opt)
 
     res.status(200).end()
 }

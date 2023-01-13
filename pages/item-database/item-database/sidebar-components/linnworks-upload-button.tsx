@@ -1,7 +1,7 @@
-import SidebarButton from "../../../../components/layouts/SidebarButton";
 import styles from "../../item-database.module.css";
 import {useSelector} from "react-redux";
 import {selectItem} from "../../../../store/item-database/item-database-slice";
+import SidebarButton from "../../../../components/layouts/sidebar-button";
 
 export default function LinnworksUploadButton(){
 
