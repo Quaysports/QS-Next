@@ -5,25 +5,25 @@ export function textColourStyler(value: number | undefined): string {
     return value > 0 ? "green-text" : value < 0 ? "red-text" : "gray-text"
 }
 
-export function inputStatusColour(price: string | undefined, item: MarginItem, channel: string,): string {
+export function inputStatusColour(price: string | undefined, item: MarginItem, channel: "amazon" | "ebay" | "magento" | "shop",): string {
+    let channelPrices = item.channelPrices[channel]
 
-    let channelData = item.CP[channel]
-    let flag = item.MCOVERRIDES?.[channel]
+    let flag = item.checkboxStatus.marginCalculator[`${channel}Override` as keyof MarginItem["checkboxStatus"]["marginCalculator"]]
 
-    if (!channelData || !price) return ""
+    if (!channelPrices || !channelPrices.price) return ""
 
-    if (!channelData.PRICE || channelData.PRICE !== price) return "price-mismatch"
+    if (!channelPrices.price || channelPrices.price !== price) return "price-mismatch"
 
-    if (channelData.STATUS === 99) {
+    if (channelPrices.status === 99) {
         return "listing-error"
     }
-    if ((channelData.STATUS === 1 || channelData.STATUS === 2) && !flag) {
+    if ((channelPrices.status === 1 || channelPrices.status === 2) && !flag) {
         return "listing-pending"
     }
-    if (channelData.STATUS === 3 || channelData.STATUS === 5 || flag) {
+    if (channelPrices.status === 3 || channelPrices.status === 5 || flag) {
         return "listing-success"
     }
-    if (!channelData.STATUS && channelData.ID) {
+    if (!channelPrices.status) {
         return "listing-success"
     }
 

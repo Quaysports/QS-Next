@@ -16,8 +16,8 @@ export default function ItemRow({item, displayTest, index}: { item: MarginItem, 
 
     useEffect(() => {
         if(!inputRef.current) return
-        inputRef.current.value = item.EBAYPRICEINCVAT
-        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "EBAY",)])
+        inputRef.current.value = String(item.prices.ebay)
+        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "ebay",)])
     }, [item])
 
     const activeIndex = useSelector(selectActiveIndex)
@@ -39,8 +39,11 @@ export default function ItemRow({item, displayTest, index}: { item: MarginItem, 
             <input
                 ref={inputRef}
                 className={inputClass}
-                defaultValue={item.EBAYPRICEINCVAT}
-                onBlur={async(e)=> await updateItem(item,"EBAYPRICEINCVAT",e.target.value)}/>
+                defaultValue={item.prices.ebay}
+                onBlur={async(e)=>{
+                    const update = {...item.prices, ebay: Number(e.target.value)}
+                    await updateItem(item,"prices", update)
+                }}/>
         </div>
         {displayTest ? <MarginTestResults item={item}/> : null}
         <MarginCell item={item}/>

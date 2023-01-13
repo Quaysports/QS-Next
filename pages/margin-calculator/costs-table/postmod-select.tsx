@@ -17,7 +17,10 @@ export default function PostModSelect({item}: { item: MarginItem }) {
     if(!item) return null
 
     return <select
-        defaultValue={item.POSTMODID}
-        onChange={async (e) => await updateItem(item, "POSTMODID", e.target.value)}
+        defaultValue={item.postage.modifier}
+        onChange={async (e) => {
+            const update = {...item.postage, modifier: Number(e.target.value)}
+            await updateItem(item, "postage", update)
+        }}
     >{postModifierOptions()}</select>
 }

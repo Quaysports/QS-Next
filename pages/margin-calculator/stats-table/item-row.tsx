@@ -17,7 +17,7 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
     if(!item) return null
 
     return <div key={item.SKU} className={classes}>
-        <div>{toCurrency(item.MD?.TOTALPROFITLY)}</div>
-        <div>{toCurrency(item.STOCKVAL)}</div>
+        <div>{toCurrency(item.marginData.totalProfitLastYear)}</div>
+        <div>{toCurrency(item.stock.value)}</div>
     </div>
 }

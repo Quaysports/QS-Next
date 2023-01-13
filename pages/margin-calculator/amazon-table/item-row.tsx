@@ -15,8 +15,8 @@ export default function ItemRow({item, index, displayTest}: { item: MarginItem, 
     const [inputClass, setInputClass] = useState("")
     useEffect(() => {
         if (!inputRef.current) return
-        inputRef.current.value = item.AMZPRICEINCVAT
-        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "AMAZON",)])
+        inputRef.current.value = String(item.prices.amazon)
+        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "amazon",)])
     }, [item])
 
     const activeIndex = useSelector(selectActiveIndex)
@@ -31,21 +31,27 @@ export default function ItemRow({item, index, displayTest}: { item: MarginItem, 
     }
 
 
-    if (!item) return null
+    if (!item || !item.prices) return null
 
     return <div key={item.SKU} className={classes}>
         <div>
             <input ref={inputRef}
                    className={inputClass}
-                   defaultValue={item.AMZPRICEINCVAT}
-                   onBlur={async (e) => await updateItem(item, "AMZPRICEINCVAT", e.target.value)}/>
+                   defaultValue={item.prices.amazon}
+                   onBlur={async (e) => {
+                       const update = {...item.prices, amazon: Number(e.target.value)}
+                       await updateItem(item, "prices", update)
+                   }}/>
         </div>
         {displayTest ? <MarginTestResults item={item}/> : null}
         <MarginCell item={item}/>
         <div>
             <input type={"checkbox"}
-                   defaultChecked={item.AMZPRIME}
-                   onChange={async (e) => await updateItem(item, "AMZPRIME", e.target.checked)}
+                   defaultChecked={item.checkboxStatus.prime}
+                   onChange={async (e) => {
+                       const update = {...item.checkboxStatus, prime: e.target.checked}
+                       await updateItem(item, "checkboxStatus", update)
+                   }}
             />
         </div>
         <PrimeMarginCell item={item}/>

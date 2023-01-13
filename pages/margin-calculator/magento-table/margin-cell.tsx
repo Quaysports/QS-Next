@@ -11,8 +11,8 @@ export default function MarginCell({item}: { item: MarginItem }) {
     const [marginText, setMarginText] = useState<string>("")
 
     useEffect(() => {
-        setTextClass(styles[textColourStyler(item.MD.QSPAVC)])
-        setMarginText(generateMarginText(item.PURCHASEPRICE, item.MD.QSPAVC))
+        setTextClass(styles[textColourStyler(item.marginData.magentoProfitAfterVat)])
+        setMarginText(generateMarginText(item.prices.purchase, item.marginData.magentoProfitAfterVat))
     }, [item])
 
     if(!item) return null
@@ -20,7 +20,7 @@ export default function MarginCell({item}: { item: MarginItem }) {
     return <span
         className={textClass}
         onMouseOver={(e) => {
-            if (!item.QSPRICEINCVAT || item.QSPRICEINCVAT === "0") return
+            if (!item.prices.magento) return
             dispatchNotification({
                 type: "tooltip",
                 title: "Magento Margin Breakdown",
@@ -33,25 +33,26 @@ export default function MarginCell({item}: { item: MarginItem }) {
 }
 
 function buildMarginTooltip(item: MarginItem) {
-    return Number(item.QSPRICEINCVAT) < 25
+    const {postageCost, packagingCost, magentoSalesVat, magentoFees, magentoProfitAfterVat} = item.marginData
+    return Number(item.prices.magento) < 25
         ? <div className={styles.tooltip}>
-            <div>Selling Price: £{item.QSPRICEINCVAT}</div>
+            <div>Selling Price: £{item.prices.magento}</div>
             <div>------- Minus -------</div>
-            <div>Purchase Price: {toCurrency(item.PURCHASEPRICE)}</div>
-            <div>Postage: {toCurrency(item.MD.POSTALPRICEUK)}</div>
-            <div>Packaging: {toCurrency(item.MD.PACKAGING)}</div>
-            <div>VAT: {toCurrency(item.MD.QSUKSALESVAT)}</div>
-            <div>Channel Fees: {toCurrency(item.MD.QSFEES)}</div>
+            <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
+            <div>Postage: {toCurrency(postageCost)}</div>
+            <div>Packaging: {toCurrency(packagingCost)}</div>
+            <div>VAT: {toCurrency(magentoSalesVat)}</div>
+            <div>Channel Fees: {toCurrency(magentoFees)}</div>
             <div>------- Equals -------</div>
-            <div>Profit: {toCurrency(item.MD.QSPAVC)}</div>
+            <div>Profit: {toCurrency(magentoProfitAfterVat)}</div>
         </div>
         : <div className={styles.tooltip}>
-            <div>Selling Price: £{item.QSPRICEINCVAT}</div>
+            <div>Selling Price: £{item.prices.magento}</div>
             <div>------- Minus -------</div>
-            <div>Purchase Price: {toCurrency(item.PURCHASEPRICE)}</div>
-            <div>VAT: {toCurrency(item.MD.QSUKSALESVAT)}</div>
-            <div>Channel Fees: {toCurrency(item.MD.QSFEES)}</div>
+            <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
+            <div>VAT: {toCurrency(magentoSalesVat)}</div>
+            <div>Channel Fees: {toCurrency(magentoFees)}</div>
             <div>------- Equals -------</div>
-            <div>Profit: {toCurrency(item.MD.QSPAVC)}</div>
+            <div>Profit: {toCurrency(magentoProfitAfterVat)}</div>
         </div>
 }

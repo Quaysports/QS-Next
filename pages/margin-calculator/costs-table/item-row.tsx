@@ -21,10 +21,10 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string}
     } ${
         activeIndex === index ? ` ${styles["active"]}` : ""}`
     }>
-        {settings?.displayPackaging ? <span>{packaging ? packaging[item.PACKGROUP].NAME : ""}</span> : null}
-        {settings?.displayPackaging ? <div>{packaging ? toCurrency(packaging[item.PACKGROUP].PRICE) : ""}</div> : null}
+        {settings?.displayPackaging ? <span>{packaging ? packaging[item.packaging.group].NAME : ""}</span> : null}
+        {settings?.displayPackaging ? <div>{packaging ? toCurrency(packaging[item.packaging.group].PRICE) : ""}</div> : null}
         <div><PostSelect item={item}/></div>
         <div><PostModSelect item={item}/></div>
-        <div>{toCurrency(item.MD.POSTALPRICEUK)}</div>
+        <div>{toCurrency(item.marginData.postageCost)}</div>
     </div>
 }

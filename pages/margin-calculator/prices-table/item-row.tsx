@@ -18,7 +18,7 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
     } ${
         activeIndex === index ? ` ${styles["active"]}` : ""}`
     }>
-        <div>{toCurrency(Number(item.PURCHASEPRICE))}</div>
-        {settings?.displayRetail ? <div>{toCurrency(Number(item.RETAILPRICE))}</div> : null}
+        <div>{toCurrency(Number(item.prices.purchase))}</div>
+        {settings?.displayRetail ? <div>{toCurrency(Number(item.prices.retail))}</div> : null}
     </div>
 }

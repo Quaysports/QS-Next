@@ -14,8 +14,8 @@ export default function TitleRow(){
         <div>Discount</div>
         <div>Price</div>
         <div  onClick={()=>{
-            dispatch(sortMarginData({key:"SHOPPAVC", ascending:ascendingSort}))
+            dispatch(sortMarginData({key:"shopProfitAfterVat", ascending:ascendingSort}))
             ascendingSort === undefined ? setAscendingSort(false) : setAscendingSort(!ascendingSort)
-        }}>Shop Margin  {currentSort !== "SHOPPAVC" ? "--" : ascendingSort ? "▲" : "▼"}</div>
+        }}>Shop Margin  {currentSort !== "shopProfitAfterVat" ? "--" : ascendingSort ? "▲" : "▼"}</div>
     </div>
 }

@@ -39,13 +39,13 @@ function generateTestValues(item: MarginItem, testValue: number | null, fees: Fe
 
     if (!fees || !testValue) return {testPrice: undefined, testMargin: undefined}
 
-    let ebayFlat = item.PURCHASEPRICE
-        + item.MD.POSTALPRICEUK!
-        + item.MD.PACKAGING!
+    let ebayFlat = item.prices.purchase
+        + item.marginData.postageCost
+        + item.marginData.packagingCost
         + parseFloat(fees["FLAT"].EBAY)
         + parseFloat(fees["SUBSCRIPTION"].EBAY)
 
-    let targetMargin = ((item.PURCHASEPRICE / 100) * testValue)
+    let targetMargin = ((item.prices.purchase / 100) * testValue)
     let adjustedPrice = (ebayFlat + targetMargin) / 0.724333
 
     return {

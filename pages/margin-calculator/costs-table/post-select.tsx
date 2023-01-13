@@ -18,7 +18,10 @@ export default function PostSelect({item}:{item:MarginItem}){
     }
 
     return <select
-        defaultValue={item.POSTID}
-        onChange={async (e) => await updateItem(item, "POSTID", e.target.value)}
+        defaultValue={item.postage.id}
+        onChange={async (e) => {
+            const update = {...item.postage, id: e.target.value}
+            await updateItem(item, "postage", update)
+        }}
     >{postOptions()}</select>
 }

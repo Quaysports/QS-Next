@@ -6,21 +6,23 @@ import MarginCell from "./margin-cell";
 import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 import {useSelector} from "react-redux";
 
-export default function ItemRow({item, index}: { item: MarginItem, index:string }) {
+export default function ItemRow({item, index}: { item: MarginItem, index: string }) {
 
     const discountRef = useRef<HTMLInputElement>(null)
     const updateItem = useUpdateItemAndCalculateMargins()
 
     useEffect(() => {
         if (!discountRef.current) return
-        discountRef.current.value = item.SHOPDISCOUNT ? item.SHOPDISCOUNT.toString() : "0"
+        discountRef.current.value = String(item.discounts.shop)
     }, [item])
 
     const activeIndex = useSelector(selectActiveIndex)
     const [classes, setClasses] = useState(cssClasses())
-    useEffect(()=>{setClasses(cssClasses())},[activeIndex])
+    useEffect(() => {
+        setClasses(cssClasses())
+    }, [activeIndex])
 
-    function cssClasses(){
+    function cssClasses() {
         return `${styles.row} ${styles["shop-grid"]} ${activeIndex === index ? ` ${styles["active"]}` : ""}`
     }
 
@@ -31,13 +33,14 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
         <div>
             <input ref={discountRef}
                    type={"number"}
-                   defaultValue={item.SHOPDISCOUNT ? item.SHOPDISCOUNT : 0}
+                   defaultValue={item.discounts.shop}
                    onBlur={async (e) => {
-                       await updateItem(item, "SHOPDISCOUNT", Number(e.target.value))
+                       const update = {...item.discounts, shop: Number(e.target.value)}
+                       await updateItem(item, "discounts", update)
                    }}/>
         </div>
-        <span>{toCurrency(Number(item.SHOPPRICEINCVAT) - Number(item.RETAILPRICE))}</span>
-        <span>{toCurrency(Number(item.SHOPPRICEINCVAT))}</span>
+        <span>{toCurrency(Number(item.prices.shop) - Number(item.prices.retail))}</span>
+        <span>{toCurrency(Number(item.prices.shop))}</span>
         <MarginCell item={item}/>
     </div>
 }

@@ -18,11 +18,11 @@ export default function MagentoTable() {
         return itemsForCSV.reduce((arr:any[], item)=>{
             arr.push({
                 SKU:item.SKU,
-                TITLE:item.TITLE,
-                PRICE:item.QSPRICEINCVAT,
-                DISCOUNT:item.SHOPDISCOUNT ? item.SHOPDISCOUNT : "0",
-                MARGIN:generateMarginText(item.PURCHASEPRICE, item.MD.QSPAVC ),
-                NOTE:item.MARGINNOTE ? item.MARGINNOTE : ""})
+                TITLE:item.title,
+                PRICE:item.prices.magento,
+                DISCOUNT:item.discounts.magento,
+                MARGIN:generateMarginText(item.prices.purchase, item.marginData.magentoProfitAfterVat ),
+                NOTE:item.marginNote})
             return arr
         },[])
     }

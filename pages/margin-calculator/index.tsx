@@ -84,55 +84,45 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
 
     let query: MarginQuery = {
         $and: [
-            {LISTINGVARIATION: false},
-            {IDBFILTER: {$ne: true}},
+            {isListingVariation: false},
+            {tags: {
+                $nin: ["filtered"]
+            }},
         ]
     }
 
     if (domestic) {
-        query.$and.push({$or: [{IDBFILTER: {$eq: 'domestic'}}, {IDBFILTER: {$eq: 'bait'}}]})
+        query.$and[1].tags.$in = ['domestic', 'bait']
     }
 
     if(!domestic) {
-        query.$and.push({IDBFILTER: {$ne: 'domestic'}})
-        query.$and.push({IDBFILTER: {$ne: 'bait'}})
+        query.$and[1].tags.$nin = [...query.$and[1].tags.$nin, 'domestic', 'bait']
     }
 
     if(brand){
-        query.$and.push({"IDBEP.BRAND":brand})
+        query.$and.push({brand:brand})
     }
 
-    if(!show) { query.$and.push({HIDE:{$ne:true}}) }
+    if(!show) { query.$and.push({"checkboxStatus.marginCalculator.hide":{$ne:true}}) }
+
+    console.dir(query, {depth: 5})
 
     const projection = {
         SKU: 1,
-        TITLE: 1,
-        POSTID: 1,
-        POST: 1,
-        POSTMODID: 1,
-        STOCKVAL: 1,
-        STOCKTOTAL: 1,
-        MARGINNOTE: 1,
-        MD: 1,
-        LINNID: 1,
-        HIDE: 1,
-        PACKGROUP: 1,
-        PACKAGINGPRICE: 1,
-        POSTUKNOTSTD: 1,
-        PURCHASEPRICE: 1,
-        RETAILPRICE: 1,
-        CP: 1,
-        CD: 1,
-        EBAYPRICEINCVAT: 1,
-        AMZPRICEINCVAT: 1,
-        QSPRICEINCVAT: 1,
-        QSDISCOUNT:1,
-        SHOPPRICEINCVAT: 1,
-        SHOPDISCOUNT:1,
-        AMZPRIME: 1,
-        IDBEP: 1,
-        IDBFILTER: 1,
-        MCOVERRIDES: 1
+        title: 1,
+        postage: 1,
+        stock: 1,
+        marginNote: 1,
+        marginData: 1,
+        linnId: 1,
+        checkboxStatus: 1,
+        packaging:1,
+        prices:1,
+        channelPrices:1,
+        channelData:1,
+        brand:1,
+        discounts:1,
+        mappedExtendedProperties:1,
     }
 
     const items = await getItems(query, projection, {SKU: 1}) as MarginItem[]
@@ -159,15 +149,14 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
 
 interface MarginQuery {
     $and: [
-        { LISTINGVARIATION: boolean },
-        { IDBFILTER: IDBFilter }?,
-        {"IDBEP.BRAND":string | string[]}?,
-        { HIDE?: {$ne:true} }?,
+        { isListingVariation: boolean },
+        { tags: {
+                $in?: string[]
+                $nin: string[]
+            }
+        },
+        { brand?:string | string[]}?,
+        { "checkboxStatus.marginCalculator.hide"?: {$ne:true} }?,
         { $or?: any[] }?
     ]
-}
-
-interface IDBFilter {
-    $ne?: boolean | string
-    $eq?: boolean | string
 }

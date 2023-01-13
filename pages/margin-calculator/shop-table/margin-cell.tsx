@@ -11,8 +11,8 @@ export default function MarginCell({item}: { item: MarginItem }) {
     const [marginText, setMarginText] = useState<string>("")
 
     useEffect(() => {
-        setTextClass(styles[textColourStyler(item.MD.SHOPPAVC)])
-        setMarginText(generateMarginText(item.PURCHASEPRICE, item.MD.SHOPPAVC))
+        setTextClass(styles[textColourStyler(item.marginData.shopProfitAfterVat)])
+        setMarginText(generateMarginText(item.prices.purchase, item.marginData.shopProfitAfterVat))
     }, [item])
 
     if(!item) return null
@@ -20,7 +20,7 @@ export default function MarginCell({item}: { item: MarginItem }) {
     return <span
         className={textClass}
         onMouseOver={(e) => {
-            if (!item.SHOPPRICEINCVAT || item.SHOPPRICEINCVAT === "0") return
+            if (!item.prices.shop) return
             dispatchNotification({
                 type: "tooltip",
                 title: "Shop Margin Breakdown",
@@ -33,13 +33,14 @@ export default function MarginCell({item}: { item: MarginItem }) {
 }
 
 function buildMarginTooltip(item: MarginItem) {
+    const {shopSalesVat, shopFees, shopProfitAfterVat} = item.marginData
     return <div className={styles.tooltip}>
-            <div>Selling Price: £{item.SHOPPRICEINCVAT}</div>
+            <div>Selling Price: £{item.prices.shop}</div>
             <div>------- Minus -------</div>
-            <div>Purchase Price: {toCurrency(item.PURCHASEPRICE)}</div>
-            <div>VAT: {toCurrency(item.MD.SHOPUKSALESVAT)}</div>
-            <div>Channel Fees: {toCurrency(item.MD.SHOPFEES)}</div>
+            <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
+            <div>VAT: {toCurrency(shopSalesVat)}</div>
+            <div>Channel Fees: {toCurrency(shopFees)}</div>
             <div>------- Equals -------</div>
-            <div>Profit: {toCurrency(item.MD.SHOPPAVC)}</div>
+            <div>Profit: {toCurrency(shopProfitAfterVat)}</div>
         </div>
 }

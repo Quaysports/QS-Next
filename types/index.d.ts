@@ -776,6 +776,7 @@ declare namespace schema {
     }
     interface MarginCalculatorStatus{
         //map from MCOVERRIDES
+        hide:boolean
         amazonOverride:boolean
         ebayOverride:boolean
         magentoOverride:boolean

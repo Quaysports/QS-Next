@@ -7,7 +7,7 @@ export default function SettingsTable({item, handler}: UpdateHandler) {
     const packaging = useSelector(selectPackaging)
     const postage = useSelector(selectPostage)
 
-    if(!item) return null
+    if (!item) return null
 
     return <>
         <div className={styles["settings-row"]}>
@@ -24,13 +24,16 @@ export default function SettingsTable({item, handler}: UpdateHandler) {
                 <input type={"number"}
                        step={0.01}
                        min={0}
-                       defaultValue={item.PURCHASEPRICE}
-                       onBlur={(e) => handler("PURCHASEPRICE", parseFloat(e.target.value))}/>
+                       defaultValue={item.prices.purchase}
+                       onBlur={(e) => {
+                           const update = {...item.prices, purchase: parseFloat(e.target.value)}
+                           handler("prices", update)
+                       }}/>
             </div>
             <PackagingSelect handler={handler} item={item}/>
-            <div>£{item.PACKGROUP && packaging?.[item.PACKGROUP] ? packaging[item.PACKGROUP].PRICE : "0.00"}</div>
+            <div>£{packaging?.[item.packaging.group] ? packaging[item.packaging.group].PRICE : "0.00"}</div>
             <PostSelect handler={handler} item={item}/>
-            <div>£{item.POSTID && postage?.[item.POSTID]?.POSTCOSTEXVAT ? postage[item.POSTID].POSTCOSTEXVAT : "0.00"}</div>
+            <div>£{postage?.[item.postage.id]?.POSTCOSTEXVAT ? postage[item.postage.id].POSTCOSTEXVAT : "0.00"}</div>
             <PostModSelect handler={handler} item={item}/>
         </div>
     </>
@@ -46,23 +49,29 @@ function PackagingSelect({item, handler}: UpdateHandler) {
         opts.push(<option key={type.ID} value={type.ID}>{type.NAME}</option>)
     }
 
-    return <select defaultValue={item.PACKGROUP}
-                   onChange={(e) => handler("PACKGROUP", e.target.value)}>{opts}</select>
+    return <select defaultValue={item.packaging.group}
+                   onChange={(e) => {
+                       const update = {...item.packaging, group: e.target.value}
+                       handler("packaging", update)
+                   }}>{opts}</select>
 }
 
 function PostSelect({item, handler}: UpdateHandler) {
 
     const postage = useSelector(selectPostage)
 
-    if(!postage) return null
+    if (!postage) return null
 
     let opts = []
     for (let option of Object.values(postage!)) {
         opts.push(<option key={option.POSTID} value={option.POSTID}>{option.SFORMAT}</option>)
     }
 
-    return <select defaultValue={item.POSTID}
-                   onChange={async (e) => handler("POSTID", e.target.value)}>{opts}</select>
+    return <select defaultValue={item.postage.id}
+                   onChange={(e) => {
+                       const update = {...item.postage, id: e.target.value}
+                       handler("postage", update)
+                   }}>{opts}</select>
 }
 
 function PostModSelect({item, handler}: UpdateHandler) {
@@ -73,6 +82,9 @@ function PostModSelect({item, handler}: UpdateHandler) {
         opts.push(<option key={option} value={option}>{option}</option>)
     }
 
-    return <select defaultValue={item.POSTMODID}
-                   onChange={async (e) => handler("POSTMODID", e.target.value)}>{opts}</select>
+    return <select defaultValue={item.postage.modifier}
+                   onChange={async (e) => {
+                       const update = {...item.postage, modifier: e.target.value}
+                       handler("postage", update)
+                   }}>{opts}</select>
 }

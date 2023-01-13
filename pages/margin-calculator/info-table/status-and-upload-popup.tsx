@@ -11,9 +11,9 @@ export default function StatusAndUploadPopup({item}:{item:MarginItem}){
     const content = <div className={styles.wrapper}>
         <div className={styles.table}>
             <TableTitleRow/>
-            <TableRow channel={"EBAY"} item={item} priceId={"EBAYPRICEINCVAT"}/>
-            <TableRow channel={"AMAZON"} item={item} priceId={"AMZPRICEINCVAT"}/>
-            <TableRow channel={"MAGENTO"} item={item} priceId={"QSPRICEINCVAT"}/>
+            <TableRow channel={"ebay"} item={item}/>
+            <TableRow channel={"amazon"} item={item}/>
+            <TableRow channel={"magento"} item={item}/>
         </div>
         <LinnworksUploadButton item={item}/>
         <CopyFromShopButton item={item}/>
@@ -37,14 +37,15 @@ function TableTitleRow(){
     </div>
 }
 
-function TableRow({channel, priceId, item}:{channel:string, priceId:keyof MarginItem, item:MarginItem}){
+function TableRow({channel, item}:{channel:"ebay" | "amazon" | "magento", item:MarginItem}){
 
     const dispatch = useDispatch()
+    const marginOverrideKey = `${channel}Override` as "ebayOverride" | "amazonOverride" | "magentoOverride"
 
-    let channelPrice = item.CP[channel]?.PRICE ? item.CP[channel].PRICE : "0"
-    let marginPrice = priceId ? priceId : "0"
-    let status = item.CP[channel]?.STATUS ? item.CP[channel]?.STATUS : 0
-    let flag = item.MCOVERRIDES?.[channel]
+    let channelPrice = item.channelPrices[channel].price
+    let marginPrice = item.prices[channel]
+    let status = item.channelPrices[channel].status
+    let flag = item.checkboxStatus.marginCalculator[marginOverrideKey]
 
     let difference = Number(channelPrice) - Number(marginPrice)
 
@@ -72,7 +73,7 @@ function TableRow({channel, priceId, item}:{channel:string, priceId:keyof Margin
             <input type={"checkbox"}
                    defaultChecked={flag}
                    onChange={async (e)=>{
-                       dispatch(updateMCOverrides({item:item, key:channel, value:e.target.checked}))
+                       dispatch(updateMCOverrides({item:item, key:marginOverrideKey, value:e.target.checked}))
                    }}/>
         </div>
     </div>

@@ -20,10 +20,10 @@ export default function AmazonTable() {
         return itemsForCSV.reduce((arr:any[], item)=>{
             arr.push({
                 SKU:item.SKU,
-                TITLE:item.TITLE,
-                PRICE:item.AMZPRICEINCVAT,
-                MARGIN:generateMarginText(item.PURCHASEPRICE, item.MD.AMAZPAVC ),
-                NOTE:item.MARGINNOTE ? item.MARGINNOTE : ""})
+                TITLE:item.title,
+                PRICE:item.prices.amazon,
+                MARGIN:generateMarginText(item.prices.purchase, item.marginData?.amazonPrimeProfitAfterVat ),
+                NOTE:item.marginNote})
             return arr
         },[])
     }

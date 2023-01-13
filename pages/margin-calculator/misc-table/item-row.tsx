@@ -22,8 +22,10 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
         <span>
             <input
                 type={"text"}
-                defaultValue={item.MARGINNOTE}
-                onBlur={async(e)=> await updateItem(item,"MARGINNOTE",e.target.value)}
+                defaultValue={item.marginNote}
+                onBlur={async(e)=> {
+                    await updateItem(item,"marginNote",e.target.value)
+                }}
             /></span>
     </div>
 }

@@ -11,8 +11,8 @@ export default function MarginCell({item}:{item:MarginItem}){
     const [marginText, setMarginText] = useState<string>("")
 
     useEffect(()=>{
-        setTextClass(styles[textColourStyler(item.MD.EBAYUKPAVC)])
-        setMarginText(generateMarginText(item.PURCHASEPRICE, item.MD.EBAYUKPAVC ))
+        setTextClass(styles[textColourStyler(item.marginData.ebayProfitAfterVat)])
+        setMarginText(generateMarginText(item.prices.purchase, item.marginData.ebayProfitAfterVat ))
     },[item])
 
     if(!item) return null
@@ -20,7 +20,7 @@ export default function MarginCell({item}:{item:MarginItem}){
     return <span
         className={textClass}
         onMouseOver={(e)=>{
-            if(!item.EBAYPRICEINCVAT || item.EBAYPRICEINCVAT === "0") return
+            if(!item.prices.ebay) return
             dispatchNotification({type:"tooltip",title:"Ebay Margin Breakdown", content:buildMarginTooltip(item),e:e})
         }}
         onMouseLeave={()=>dispatchNotification({type:undefined})}
@@ -28,15 +28,16 @@ export default function MarginCell({item}:{item:MarginItem}){
 }
 
 function buildMarginTooltip(item:MarginItem){
+    const {postageCost, packagingCost, ebaySalesVat, ebayFees, ebayProfitAfterVat} = item.marginData
     return <div className={styles.tooltip}>
-        <div>Selling Price: £{item.EBAYPRICEINCVAT}</div>
+        <div>Selling Price: £{item.prices.ebay}</div>
         <div>------- Minus -------</div>
-        <div>Purchase Price: {toCurrency(item.PURCHASEPRICE)}</div>
-        <div>Postage: {toCurrency(item.MD.POSTALPRICEUK)}</div>
-        <div>Packaging: {toCurrency(item.MD.PACKAGING)}</div>
-        <div>VAT: {toCurrency(item.MD.EBAYUKSALESVAT)}</div>
-        <div>Channel Fees: {toCurrency(item.MD.EBAYFEES)}</div>
+        <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
+        <div>Postage: {toCurrency(postageCost)}</div>
+        <div>Packaging: {toCurrency(packagingCost)}</div>
+        <div>VAT: {toCurrency(ebaySalesVat)}</div>
+        <div>Channel Fees: {toCurrency(ebayFees)}</div>
         <div>------- Equals -------</div>
-        <div>Profit: {toCurrency(item.MD.EBAYUKPAVC)}</div>
+        <div>Profit: {toCurrency(ebayProfitAfterVat)}</div>
     </div>
 }

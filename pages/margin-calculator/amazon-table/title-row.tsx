@@ -15,14 +15,14 @@ export default function TitleRow({displayTest}: { displayTest: boolean }) {
         <div>Price</div>
         {displayTest ? <MarginTestTitle /> : null}
         <div onClick={() => {
-            dispatch(sortMarginData({key: "AMAZPAVC", ascending: ascendingSort}))
+            dispatch(sortMarginData({key: "amazonPrimeProfitAfterVat", ascending: ascendingSort}))
             ascendingSort === undefined ? setAscendingSort(false) : setAscendingSort(!ascendingSort)
         }}>Amz Margin {currentSort !== "AMAZPAVC" ? "--" : ascendingSort ? "▲" : "▼"}</div>
         <div>
             <Image alt={"prime"} src={"/prime-logo.svg"} width={"20"} height={"20"}/>
         </div>
         <div onClick={() => {
-            dispatch(sortMarginData({key: "PRIMEPAVC", ascending: ascendingSort}))
+            dispatch(sortMarginData({key: "amazonPrimeProfitAfterVat", ascending: ascendingSort}))
             ascendingSort === undefined ? setAscendingSort(false) : setAscendingSort(!ascendingSort)
         }}>Prime Margin {currentSort !== "PRIMEPAVC" ? "--" : ascendingSort ? "▲" : "▼"}</div>
     </div>

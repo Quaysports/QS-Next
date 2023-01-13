@@ -7,15 +7,13 @@ export default function CopyFromShopButton({item}: { item: MarginItem }) {
     const updateItem = useUpdateItemAndCalcMargins()
 
     return <button onClick={async () => {
-        let clone = {
-            ...item,
-            ...{
-                AMZPRICEINCVAT: item.SHOPPRICEINCVAT,
-                EBAYPRICEINCVAT: item.SHOPPRICEINCVAT,
-                QSPRICEINCVAT: item.SHOPPRICEINCVAT
-            }
+        let update = {
+            ...item.prices,
+            ebay: item.prices.shop,
+            amazon: item.prices.shop,
+            magento: item.prices.shop
         }
-        await updateItem(clone)
+        await updateItem(item, "prices", update)
         dispatchNotification()
     }}>Copy prices from RRP</button>
 }

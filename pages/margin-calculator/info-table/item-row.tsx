@@ -41,9 +41,12 @@ export default function ItemRow({item, index}:{item:MarginItem, index:string}){
         </div>
         <div>
             <input type={"checkbox"}
-                   defaultChecked={item.HIDE}
+                   defaultChecked={item.checkboxStatus.marginCalculator.hide}
                    onChange={async(e)=>{
-                       await updateItem(item, "HIDE", e.target.checked)
+                       const update = {
+                           ...item.checkboxStatus,
+                           marginCalculator:{...item.checkboxStatus.marginCalculator, hide:e.target.checked}}
+                       await updateItem(item, "checkboxStatus", update)
                    }}/>
         </div>
         <SkuCell item={item} index={index}/>

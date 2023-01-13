@@ -24,8 +24,6 @@ const useUpdateItemAndCalculateMargins = ():(item:MarginItem, key?:keyof MarginI
             ...await result.json()
         }
 
-        console.log(marginUpdate)
-
         dispatch(updateMarginData(marginUpdate))
     }
 

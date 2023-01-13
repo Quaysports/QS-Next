@@ -11,8 +11,8 @@ export default function MarginCell({item}:{item:MarginItem}){
     const [marginText, setMarginText] = useState<string>("")
 
     useEffect(()=>{
-        setTextClass(styles[textColourStyler(item.MD.AMAZPAVC)])
-        setMarginText(generateMarginText(item.PURCHASEPRICE, item.MD.AMAZPAVC))
+        setTextClass(styles[textColourStyler(item.marginData.amazonPrimeProfitAfterVat)])
+        setMarginText(generateMarginText(item.prices.purchase, item.marginData.amazonPrimeProfitAfterVat))
     },[item])
 
     if(!item) return null
@@ -20,7 +20,7 @@ export default function MarginCell({item}:{item:MarginItem}){
     return <span
         className={textClass}
         onMouseOver={(e)=>{
-            if(!item.AMZPRICEINCVAT || item.AMZPRICEINCVAT === "0") return
+            if(!item.prices.amazon) return
             dispatchNotification({type:"tooltip",title:"Amazon Margin Breakdown", content:buildMarginTooltip(item),e:e})
         }}
         onMouseLeave={()=>dispatchNotification({type:undefined})}
@@ -32,22 +32,26 @@ export function PrimeMarginCell({item}:{item:MarginItem}){
     if(!item) return null
 
     const [textClass, setTextClass] = useState("")
-    useEffect(()=>{setTextClass(styles[textColourStyler(item.MD.PRIMEPAVC)])},[item])
+    useEffect(()=>{setTextClass(styles[textColourStyler(item.marginData.amazonPrimeProfitAfterVat)])},[item])
 
     return <span
-        className={textClass}>{item.AMZPRIME ? generateMarginText(item.PURCHASEPRICE, item.MD.PRIMEPAVC) : ""}</span>
+        className={textClass}>{item.checkboxStatus.prime
+        ? generateMarginText(item.prices.purchase, item.marginData.amazonPrimeProfitAfterVat)
+        : ""
+    }</span>
 }
 
 function buildMarginTooltip(item:MarginItem){
+    let {postageCost, packagingCost, amazonSalesVat, amazonFees, amazonPrimeProfitAfterVat} = item.marginData
     return <div className={styles.tooltip}>
-        <div>Selling Price: £{item.AMZPRICEINCVAT}</div>
+        <div>Selling Price: £{item.prices.amazon}</div>
         <div>------- Minus -------</div>
-        <div>Purchase Price: {toCurrency(item.PURCHASEPRICE)}</div>
-        <div>Postage: {toCurrency(item.MD.POSTALPRICEUK)}</div>
-        <div>Packaging: {toCurrency(item.MD.PACKAGING)}</div>
-        <div>VAT: {toCurrency(item.MD.AMAZSALESVAT)}</div>
-        <div>Channel Fees: {toCurrency(item.MD.AMAZONFEES)}</div>
+        <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
+        <div>Postage: {toCurrency(postageCost)}</div>
+        <div>Packaging: {toCurrency(packagingCost)}</div>
+        <div>VAT: {toCurrency(amazonSalesVat)}</div>
+        <div>Channel Fees: {toCurrency(amazonFees)}</div>
         <div>------- Equals -------</div>
-        <div>Profit: {toCurrency(item.MD.AMAZPAVC)}</div>
+        <div>Profit: {toCurrency(amazonPrimeProfitAfterVat)}</div>
     </div>
 }

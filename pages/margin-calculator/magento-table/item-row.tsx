@@ -23,16 +23,17 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
 
     useEffect(() => {
         if (!inputRef.current) return
-        inputRef.current.value = item.QSPRICEINCVAT
-        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "MAGENTO",)])
+        inputRef.current.value = String(item.prices.magento)
+        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "magento",)])
 
         if (!discountRef.current) return
-        discountRef.current.value = item.QSDISCOUNT ? item.QSDISCOUNT.toString() : "0"
+        discountRef.current.value = String(item.discounts.magento)
+
     }, [item])
 
     const activeIndex = useSelector(selectActiveIndex)
     const [classes, setClasses] = useState(cssClasses())
-    useEffect(()=>{setClasses(cssClasses())},[activeIndex])
+    useEffect(()=>{setClasses(cssClasses())},[activeIndex, domestic])
 
     function cssClasses(){
         let classes = styles.row
@@ -49,21 +50,22 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
             <div>
                 <input ref={discountRef}
                        type={"number"}
-                       defaultValue={item.QSDISCOUNT}
+                       defaultValue={item.discounts.magento}
                        onBlur={async (e) => {
-                           let itemClone = {...item, ...{SHOPDISCOUNT:Number(e.target.value)}}
-                           await updateItem(itemClone, "QSDISCOUNT", Number(e.target.value))
+                           const update = {...item.discounts, magento: Number(e.target.value)}
+                           await updateItem(item, "discounts", update)
                        }}/>
             </div> : null
         }
-        {domestic ? <span>{toCurrency(Number(item.QSPRICEINCVAT) - Number(item.RETAILPRICE))}</span> : null}
+        {domestic ? <span>{toCurrency(Number(item.prices.magento) - Number(item.prices.retail))}</span> : null}
         <div>
             <input ref={inputRef}
                    className={inputClass}
-                   defaultValue={item.QSPRICEINCVAT}
+                   defaultValue={item.prices.magento}
                    readOnly={domestic}
                    onBlur={async (e) => {
-                       await updateItem(item, "QSPRICEINCVAT", e.target.value)
+                          const update = {...item.prices, magento: Number(e.target.value)}
+                       await updateItem(item, "prices", update)
                    }}/>
         </div>
         <MarginCell item={item}/>

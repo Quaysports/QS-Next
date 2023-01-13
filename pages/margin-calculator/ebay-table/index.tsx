@@ -20,10 +20,10 @@ export default function EbayTable() {
         return itemsForCSV.reduce((arr:any[], item)=>{
             arr.push({
                 SKU:item.SKU,
-                TITLE:item.TITLE,
-                PRICE:item.EBAYPRICEINCVAT,
-                MARGIN:generateMarginText(item.PURCHASEPRICE, item.MD.EBAYUKPAVC ),
-                NOTE:item.MARGINNOTE ? item.MARGINNOTE : ""})
+                TITLE:item.title,
+                PRICE:item.prices.ebay,
+                MARGIN:generateMarginText(item.prices.purchase, item.marginData.ebayProfitAfterVat ),
+                NOTE:item.marginNote})
             return arr
         },[])
     }

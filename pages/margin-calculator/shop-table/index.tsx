@@ -18,11 +18,11 @@ export default function ShopTable() {
         return itemsForCSV.reduce((arr:any[], item)=>{
             arr.push({
                 SKU:item.SKU,
-                TITLE:item.TITLE,
-                PRICE:item.SHOPPRICEINCVAT,
-                DISCOUNT:item.SHOPDISCOUNT ? item.SHOPDISCOUNT : "0",
-                MARGIN:generateMarginText(item.PURCHASEPRICE, item.MD.SHOPPAVC ),
-                NOTE:item.MARGINNOTE ? item.MARGINNOTE : ""})
+                TITLE:item.title,
+                PRICE:item.prices.shop,
+                DISCOUNT:item.discounts.shop,
+                MARGIN:generateMarginText(item.prices.shop, item.marginData.shopProfitAfterVat ),
+                NOTE:item.marginNote})
             return arr
         },[])
     }
