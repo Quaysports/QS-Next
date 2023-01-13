@@ -1,7 +1,7 @@
 import {ChangeEventHandler, ReactNode, useState} from "react";
 import styles from './layout-styles.module.css'
 
-export default function SidebarSelect({children, value = undefined, onChange}:{children:ReactNode,value:string | undefined, onChange:ChangeEventHandler<HTMLSelectElement>}) {
+export default function SidebarSelect({children, value = undefined, onChange}:{children:ReactNode,value?:string, onChange:ChangeEventHandler<HTMLSelectElement>}) {
 
     const [selected, setSelected] = useState(value)
 

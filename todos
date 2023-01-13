@@ -1,3 +1,4 @@
 Update margin test item server side.
 Fix margin calculator.
 Fix stock forecast.
+Add stockTake:number to schema.Item.
