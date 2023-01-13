@@ -48,20 +48,21 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
         if(data) store.dispatch(setAllUserData(data))
     }
 
-    if(context.query.tab === "rotas" && typeof context.query.location === "string"){
-        const users = await getRotaNames(context.query.location)
-        if(users) store.dispatch(setUserData({location:context.query.location, users:users}))
+    if(context.query.tab === "rotas"){
+        const location = context.query.location as string ?? "online"
+        const users = await getRotaNames(location)
+        if(users) store.dispatch(setUserData({location:location, users:users}))
 
-        const locationTemplates = await getRotaTemplates(context.query.location)
+        const locationTemplates = await getRotaTemplates(location)
         if(locationTemplates) store.dispatch(setTemplatesNames(locationTemplates))
 
         let currentYear = new Date().getFullYear()
-        const data = await getHolidayCalendar({year:currentYear, location:context.query.location})
+        const data = await getHolidayCalendar({year:currentYear, location:location})
         if(data) store.dispatch(setHolidayCalendar(data))
 
         let oneWeekAgo = new Date(new Date().getTime() - 604800000).toISOString()
 
-        const publishedRotas = await getPublishedRotas(context.query.location, oneWeekAgo)
+        const publishedRotas = await getPublishedRotas(location, oneWeekAgo)
         if(publishedRotas) store.dispatch(setPublishedRotas(publishedRotas))
     }
 
