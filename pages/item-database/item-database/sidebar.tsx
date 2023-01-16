@@ -24,6 +24,7 @@ export default function SideBar() {
 
     async function copyJariloTemplate(item:schema.Item){
         let template = jariloHtml(item.description, `${item.SKU}/${item.images.main.filename}`, item.webTitle)
+        await navigator.clipboard.writeText("")
         await navigator.clipboard.writeText(template)
     }
 
