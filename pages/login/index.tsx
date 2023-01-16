@@ -12,6 +12,7 @@ export default function LoginLandingPage() {
 
     const [local, setLocal] = useState<boolean>(false)
     const [message, setMessage] = useState<string | undefined>(undefined)
+    const router = useRouter()
 
     useEffect(() => {
         const origin = window.location.origin
@@ -32,7 +33,7 @@ export default function LoginLandingPage() {
         }
         let result = await signIn('credentials', details)
         if (result?.ok) {
-            window.location.href = "/"
+            window.location.href = router.query.redirect as string || "/"
         } else {
             setMessage("Incorrect username or password!")
         }
@@ -42,7 +43,7 @@ export default function LoginLandingPage() {
         const details = {pin: pin, redirect: false}
         let result = await signIn('credentials', details)
         if (result?.ok) {
-            window.location.href = "/"
+            window.location.href = router.query.redirect as string || "/"
         } else {
             setMessage("Incorrect PIN!")
         }

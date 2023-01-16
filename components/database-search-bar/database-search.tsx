@@ -16,10 +16,9 @@ interface Props {
  * @property {string} [more] - more items element flag
  *
  */
-export interface DatabaseSearchItem {
-    _id: string
-    SKU: string
-    TITLE: string
+type SearchItem = Pick<schema.Item, "_id" | "SKU" | "title">
+
+export interface DatabaseSearchItem extends SearchItem{
     more?: string
 }
 
@@ -65,8 +64,8 @@ export default function DatabaseSearchBar({handler}: Props) {
                     contains.push(searchResults[i])
                 }
             }
-            if (searchType === "TITLE") {
-                if (searchResults[i].TITLE.toUpperCase().startsWith(value.toUpperCase())) {
+            if (searchType === "title") {
+                if (searchResults[i].title.toUpperCase().startsWith(value.toUpperCase())) {
                     startsWith.push(searchResults[i])
                 } else {
                     contains.push(searchResults[i])
@@ -77,7 +76,7 @@ export default function DatabaseSearchBar({handler}: Props) {
         let length = returnArr.length
         if (length > 10) {
             returnArr = [...startsWith, ...contains].slice(0, 10)
-            returnArr.push({_id: "", SKU: "", TITLE: "", more: `...${length - 10} more results`})
+            returnArr.push({_id: "", SKU: "", title: "", more: `...${length - 10} more results`})
         }
         return (returnArr)
     }
@@ -97,10 +96,10 @@ export default function DatabaseSearchBar({handler}: Props) {
                 {searchType === "SKU"
                     ? <>
                         <div>{item.SKU}</div>
-                        <div className={styles["secondary-info"]}>{item.TITLE}</div>
+                        <div className={styles["secondary-info"]}>{item.title}</div>
                     </>
                     : <>
-                        <div>{item.TITLE}</div>
+                        <div>{item.title}</div>
                         <div className={styles["secondary-info"]}>{item.SKU}</div>
                     </>
                 }

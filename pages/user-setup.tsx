@@ -7,11 +7,12 @@ export default function UserSetup() {
 
     const dispatch = useDispatch()
     const user = useSelector(selectUser)
+    const session = getSession()
 
     useEffect(() => {
         if (user.username !== "") return
-        getSession().then(session =>{ if(session) dispatch(setUserData(session.user))})
-    })
+        getSession().then(session=>{if(session)dispatch(setUserData(session.user))})
+    },[session])
 
     useEffect(()=>{
         if(!user?.theme) return
