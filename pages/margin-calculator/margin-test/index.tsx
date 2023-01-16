@@ -17,7 +17,7 @@ export interface MarginTestTemplate extends Pick<MarginItem, "postage" | "packag
 
 export default function MarginItemTest({initialItem = undefined}:{initialItem?:MarginItem | undefined }) {
 
-    let [item, setItem] = useState<MarginTestTemplate>(initialItem ? {...initialItem, discount:0} : itemTemplate())
+    let [item, setItem] = useState<MarginTestTemplate>(initialItem ? {...itemTemplate(), ...initialItem} : itemTemplate())
 
     if(!item) return null
 
