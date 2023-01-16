@@ -279,9 +279,8 @@ export const itemDatabaseSlice = createSlice({
                 state.item.tags.push(tag)
                 databaseSave(state.item)
             },
-            setItemBrandLabel: (state, action: PayloadAction<{ value: string, key: keyof schema.BrandLabel }>) => {
-                let {value, key} = action.payload
-                state.item.brandLabel[key] = value
+            setItemBrandLabel: (state, action: PayloadAction<schema.BrandLabel>) => {
+                state.item.brandLabel = action.payload
                 databaseSave(state.item)
             },
             setItemShipping: (state, action: PayloadAction<string>) => {

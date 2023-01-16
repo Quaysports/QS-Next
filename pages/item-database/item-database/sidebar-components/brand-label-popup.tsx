@@ -41,10 +41,6 @@ export default function BrandLabelPopUp({print}: Props) {
         return brandImageOptions
     }
 
-    function brandLabelHandler(value: string, key: keyof schema.BrandLabel) {
-        dispatch(setItemBrandLabel({value: value, key: key}))
-    }
-
     const {title1, title2, path} = item.brandLabel
     const {prefix, letter, number} = item.shelfLocation
 
@@ -53,9 +49,13 @@ export default function BrandLabelPopUp({print}: Props) {
             <div className={styles["brand-label-image"]}>
                 <img src={path ? path : ""} alt={item.brand + "image"}/>
                 <select
-                    onChange={(e) => brandLabelHandler(
-                        "http://localhost:4000/brand-label-images/" + e.target.value,
-                        "path")
+                    onChange={(e) => {
+                        let update = {...item.brandLabel,
+                            path:"http://localhost:4000/brand-label-images/" + e.target.value,
+                            image:e.target.value
+                        }
+                        dispatch(setItemBrandLabel(update))
+                    }
                 }>{brandImageOptions()}</select>
             </div>
             <div className={styles["brand-label-info"]}>
@@ -69,12 +69,18 @@ export default function BrandLabelPopUp({print}: Props) {
                     <div>{item.brand}</div>
                     <div className={styles["brand-label-character-count"]}>
                         <input value={title1}
-                               onChange={(e) => brandLabelHandler(e.target.value, "title1")}/>
+                               onChange={(e) => {
+                                   let update = {...item.brandLabel, title1:e.target.value}
+                                   dispatch(setItemBrandLabel(update))
+                               }}/>
                         <div>{title1CharacterCount}/12</div>
                     </div>
                     <div className={styles["brand-label-character-count"]}>
                         <input value={title2}
-                               onChange={(e) => brandLabelHandler(e.target.value, "title2")}/>
+                               onChange={(e) => {
+                                   let update = {...item.brandLabel, title2:e.target.value}
+                                   dispatch(setItemBrandLabel(update))
+                               }}/>
                         <div>{title2CharacterCount}/12</div>
                     </div>
                     <div>{item.shelfLocation ? `${prefix}-${letter}-${number}` : ""}</div>
