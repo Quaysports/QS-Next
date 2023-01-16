@@ -92,8 +92,8 @@ export default function ImageContainer({imageTag}: Props) {
             onDrop={(e) => onDropHandler(e, imageTag)}
             className={`${styles["image-drop-box"]} ${image ? styles["image-dropped"] : ""}`}
         >
-            {item.images[key]?.filename ? <div className={`${styles["image-delete-button"]} button`} onClick={() => {deleteImageHandler(key, item)}}>X</div> : null}
-            <img src={imageSourceHandler(item, imageTag, image, key)} alt={"Image " + imageTag}></img>
+            {item.images[key]?.filename ? <><div className={`${styles["image-delete-button"]} button`} onClick={() => {deleteImageHandler(key, item)}}>X</div>
+                <img src={imageSourceHandler(item, imageTag, image, key)} alt={"Image " + imageTag}></img></> : <div>{"Image " + imageTag}</div>}
         </div>
     )
 }
