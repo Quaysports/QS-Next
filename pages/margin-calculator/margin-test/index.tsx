@@ -11,7 +11,7 @@ export interface UpdateHandler {
     handler: (id: keyof MarginTestTemplate, value: MarginTestValueType) => void
 }
 
-export interface MarginTestTemplate extends Pick<MarginItem, "postage" | "packaging" | "prices" | "marginData">{
+export interface MarginTestTemplate extends Pick<MarginItem, "postage" | "packaging" | "prices" | "marginData" | "tags">{
     discount:number
 }
 
@@ -54,6 +54,7 @@ export default function MarginItemTest({initialItem = undefined}:{initialItem?:M
 
 function itemTemplate():MarginTestTemplate{
     return {
+        tags: [],
         packaging: {editable: false, group: "", items: [], lock: false},
         postage: {id: "", modifier: "", price: 0},
         prices: {amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0, shop: 0},
