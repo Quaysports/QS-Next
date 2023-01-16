@@ -1,7 +1,7 @@
 import {
     BrandItem,
     selectBrandItems, setStockLevel,
-    setStockTakeInfo, StockTake, updateStockTakes
+    setStockTakeInfo, updateStockTakes
 } from "../../../store/stock-reports-slice";
 import {useDispatch, useSelector} from "react-redux";
 import ShopStockTakeRow from "./shop-stock-take-row";
@@ -9,6 +9,7 @@ import SearchBar, {SearchItem} from "../../../components/search-bar";
 import {useEffect, useState} from "react";
 import styles from './shop-stock-take.module.css'
 import CSVButton from "../../../components/csv-button";
+import StockTake = schema.StockTake;
 
 export default function ShopStockTakeTable() {
 
@@ -45,7 +46,7 @@ export default function ShopStockTakeTable() {
             if (!activeItems[index].stockTake?.checked || activeItems[index].stockTake?.date) continue;
 
             if(activeItems[index].stockTake!.quantity || activeItems[index].stockTake!.quantity === 0){
-                let change = activeItems[index].stockTake!.quantity! - activeItems[index].STOCKTOTAL
+                let change = activeItems[index].stockTake!.quantity! - activeItems[index].stock.total
                 linnUpdate.push({SKU:activeItems[index].SKU, QTY:change})
             }
 
@@ -89,8 +90,8 @@ export default function ShopStockTakeTable() {
 
         csvObject.push({
             SKU: activeItems[index].SKU,
-            TITLE: activeItems[index].TITLE,
-            Stock: activeItems[index].STOCKTOTAL,
+            TITLE: activeItems[index].title,
+            Stock: activeItems[index].stock.total,
             Actual: ""
         })
     }

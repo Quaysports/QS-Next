@@ -36,6 +36,8 @@ export default function ItemRow() {
     const items = useSelector(selectRenderedItems)
     if (!items || items.length == 0) return null
 
+
+
     const handleCheckChange = (e: ChangeEvent<HTMLInputElement>, item: StockForecastItem, type: keyof StockForecastChecks) => {
         dispatch(itemCheckboxChange({type:type, index:item.rowId, check:e.target.checked}))
     }
@@ -44,6 +46,7 @@ export default function ItemRow() {
 
     for (let i in items) {
         let item = items[i]
+        const {hide, list} = item.checkboxStatus.stockForecast
         let monthStockLevels = []
         for (let index in item?.months) {
             monthStockLevels.push(<StockForecastCell key={index} item={items[i]} index={Number(index)}/>)
@@ -54,11 +57,11 @@ export default function ItemRow() {
                 <div className={styles.details}>
                     <div><input
                         type={"checkbox"}
-                        checked={item?.CHECK?.SF?.HIDE}
+                        checked={hide}
                         onChange={e => handleCheckChange(e, item, "HIDE")}/></div>
                     <div><input
                         type={"checkbox"}
-                        checked={item.CHECK?.SF?.LIST}
+                        checked={list}
                         onChange={e => handleCheckChange(e, item, 'LIST')}/></div>
                     <SkuCell item={item}/>
                     <StockTotalCell item={item}/>

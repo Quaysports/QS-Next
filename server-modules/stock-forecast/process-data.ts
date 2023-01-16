@@ -139,14 +139,15 @@ export function processData(item: StockForecastItem, index: number) {
     return item
 }
 
-function historicAvg(date: Months, hist: sbt.MonthStockHistory) {
+function historicAvg(date: Months, hist: schema.Item["stockHistory"]) {
     let cd = new Date();
     let years = 0
     let sales = 0
-    for (let y in hist) {
-        if (Number(y) === cd.getFullYear()) continue;
+    for (let year of hist) {
+        if (Number(year[0]) === cd.getFullYear()) continue;
         years++
-        for (const [month, value] of Object.entries(hist[y])) {
+        for (const [month, value] of Object.entries(year)) {
+            if(month === '0') continue
             if (date.month === Number(month)) sales += Number(value)
         }
     }
@@ -160,7 +161,8 @@ function lastFourMonthAvg(hist: schema.Item["stockHistory"]) {
     let days = 0;
 
     for (let i = 0; i <= 3; i++) {
-        if (hist?.[cd.getFullYear()]) {
+        let year = hist.find((year) => Number(year[0]) === cd.getFullYear())
+        if(year !== undefined){
             const monthData = hist[cd.getFullYear()][cd.getMonth() + 1]
             if (monthData) {
                 sales += Number(monthData)
@@ -173,24 +175,38 @@ function lastFourMonthAvg(hist: schema.Item["stockHistory"]) {
     return sales === 0 && days === 0 ? 0 : sales / days
 }
 
-function lastMonthAvg(hist: sbt.MonthStockHistory) {
+function lastMonthAvg(hist: schema.Item["stockHistory"]) {
     let cd = new Date()
     let sales = 0;
     let days = 0;
-    if (hist?.[cd.getFullYear()]) {
-        const stockThisMonth = hist[cd.getFullYear()][cd.getMonth() + 1 as keyof sbt.MonthStockHistoryMonth]
+    let month = cd.getMonth() + 1
+    let year = hist.find((year) => Number(year[0]) === cd.getFullYear())
+    let lastYear = hist.find((year) => Number(year[0]) === cd.getFullYear() - 1)
+    if(year !== undefined && month -1 > 0){
+        const stockThisMonth = year[month]
         if (stockThisMonth) {
             sales += Number(stockThisMonth)
             days += cd.getDate()
         }
         cd.setDate(0)
-        const stockLastMonth = hist[cd.getFullYear()][cd.getMonth() + 1 as keyof sbt.MonthStockHistoryMonth]
+        const stockLastMonth = year[month -1]
         if (stockLastMonth) {
             let eom = cd.getDate()
             let daysTaken = eom - days
             days += daysTaken
             let per = (100 / eom) * daysTaken
             sales += (Number(stockLastMonth) / 100) * per
+        }
+    } else {
+        if(lastYear !== undefined){
+            const stockLastMonth = lastYear[12]
+            if (stockLastMonth) {
+                let eom = cd.getDate()
+                let daysTaken = eom - days
+                days += daysTaken
+                let per = (100 / eom) * daysTaken
+                sales += (Number(stockLastMonth) / 100) * per
+            }
         }
     }
 

@@ -19,9 +19,9 @@ export default function StockForecastCell({item, index}:Props){
                 let endStock = item.months[index].dayBreakdown[item.months[index].dayBreakdown.length-1]?.stock
 
                 const content = []
-                for(let year in item.MONTHSTOCKHIST){
+                for(let year of item.stockHistory){
                     if(Number(year) === (new Date()).getFullYear()) continue;
-                    content.push(<div key={year}>{year}: {item.MONTHSTOCKHIST[year][item.months[index].month]}</div>)
+                    content.push(<div key={year[0]}>{year[0]}: {year[item.months[index].month]}</div>)
                 }
                 content.reverse()
                 content.push(<div key={"est"}>Est: {startStock - endStock}</div>)

@@ -710,6 +710,12 @@ declare namespace schema {
         checkedDate: string
     }
 
+    export interface StockTake {
+        checked?: boolean;
+        date?: string | null;
+        quantity?: number;
+    }
+
     interface ChannelMarginData {
         fees: number;
         profit: number;
@@ -838,6 +844,7 @@ declare namespace schema {
         shelfLocation: ShelfLocation
         channelPrices: ChannelPrices
         stock: Stock
+        stockTake: StockTake
         onOrder:OnOrder[]
         //used to be MD
         marginData: MarginData

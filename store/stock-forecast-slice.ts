@@ -59,11 +59,11 @@ export const forecastSlice = createSlice({
             },
             itemCheckboxChange: (state, action: PayloadAction<{ type: keyof StockForecastChecks, index: number, check: boolean }>) => {
                 let newCheckedState = {
-                    ...state.initialItems[action.payload.index].CHECK!.SF!,
+                    ...state.initialItems[action.payload.index].checkboxStatus.stockForecast,
                     ...{[action.payload.type]: action.payload.check}
                 }
-                state.initialItems[action.payload.index].CHECK!.SF! = newCheckedState
-                state.renderedItems[action.payload.index].CHECK!.SF! = newCheckedState
+                state.initialItems[action.payload.index].checkboxStatus.stockForecast = newCheckedState
+                state.renderedItems[action.payload.index].checkboxStatus.stockForecast = newCheckedState
                 let opts = {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},

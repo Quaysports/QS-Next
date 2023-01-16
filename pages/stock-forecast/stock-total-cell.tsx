@@ -33,5 +33,5 @@ export default function StockTotalCell({item}: Props) {
             dispatchNotification({type:"tooltip", e:e, title:"Stock consumption (per-day)", content:createContent(item)})
         }}
         onMouseLeave={()=>dispatchNotification()}
-    >{item.STOCKTOTAL}</div>
+    >{item.stock.total}</div>
 }

@@ -53,7 +53,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
     if(context.query.brand) {
         let data =  await getItems(
             {"IDBEP.BRAND": context.query.brand, IDBFILTER: "domestic", ISCOMPOSITE: false},
-            {SKU: 1, TITLE: 1, EAN: 1, STOCKTOTAL: 1, stockTake: 1})
+            {SKU: 1, title: 1, EAN: 1, stock: 1, stockTake: 1})
         if(data) store.dispatch(setBrandItems(data as BrandItem[]))
     }
 

@@ -14,20 +14,9 @@ export interface BrandItem {
     _id: string
     SKU: string;
     EAN: string;
-    TITLE: string;
-    STOCKTOTAL: number;
-    stockTake?: StockTake
-}
-
-/**
- * @property {boolean} [checked]
- * @property {string | null} [date]
- * @property {number} [quantity]
- */
-export interface StockTake {
-    checked?: boolean;
-    date?: string | null;
-    quantity?: number;
+    title: string;
+    stock: schema.Stock;
+    stockTake?: schema.StockTake
 }
 
 /**
@@ -121,7 +110,7 @@ export const stockReportsSlice = createSlice({
                 state.brandItems = action.payload
             },
 
-            updateStockTakes: (state, action: PayloadAction<StockTake[]>) => {
+            updateStockTakes: (state, action: PayloadAction<schema.StockTake[]>) => {
                 for (const i in state.brandItems) {
                     state.brandItems[i].stockTake = {...state.brandItems[i].stockTake, ...action.payload[i]}
                 }
@@ -133,7 +122,7 @@ export const stockReportsSlice = createSlice({
                 fetch("/api/items/bulk-update-items", opts)
             },
 
-            setStockTakeInfo: (state, action: PayloadAction<{ index: number, data: StockTake }>) => {
+            setStockTakeInfo: (state, action: PayloadAction<{ index: number, data: schema.StockTake }>) => {
                 state.brandItems[action.payload.index].stockTake = action.payload.data
                 let opts = {
                     method: "POST",
@@ -152,7 +141,7 @@ export const stockReportsSlice = createSlice({
                 for (const item of action.payload) {
                     for (const brandItem of state.brandItems) {
                         if (brandItem.SKU !== item.SKU) continue;
-                        brandItem.STOCKTOTAL = item.StockLevel
+                        brandItem.stock.total = item.StockLevel
                         updateArr.push(brandItem)
                     }
                 }

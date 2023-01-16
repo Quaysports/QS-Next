@@ -1,7 +1,8 @@
 import styles from './shop-stock-take.module.css'
 import {useDispatch} from "react-redux";
-import {BrandItem, setStockTakeInfo, StockTake, unFlagCommit} from "../../../store/stock-reports-slice";
+import {BrandItem, setStockTakeInfo, unFlagCommit} from "../../../store/stock-reports-slice";
 import RegexInput from "../../../components/regex-input";
+import StockTake = schema.StockTake;
 
 interface props {
     item?: BrandItem | null;
@@ -37,8 +38,8 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                 : <div className={styles.row} data-testid={item.SKU}>
                     <div>{item.SKU}</div>
                     <div>{item.EAN}</div>
-                    <div>{item.TITLE}</div>
-                    <div>{item.STOCKTOTAL}</div>
+                    <div>{item.title}</div>
+                    <div>{item.stock.total}</div>
                     <div>{!item.stockTake?.date
                         ? <RegexInput
                             type={"number"}
