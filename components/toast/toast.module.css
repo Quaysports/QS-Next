@@ -1,0 +1,32 @@
+.frame{
+    z-index: 1000;
+    position: fixed;
+    display:grid;
+    bottom: -50px;
+    width: 100%;
+    height: fit-content;
+    color:black;
+    animation-name:toast;
+    animation-duration: 3s;
+    justify-content: center;
+}
+
+.content {
+    width:fit-content;
+    padding:5px 10px;
+    background-color:var(--primary-inactive-text);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+    font-weight:bold;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+@keyframes toast {
+    0%   {left:0; bottom:-50px;}
+    10%   {left:0; bottom:-50px;}
+    25%  {left:0; bottom:50px;}
+    75%  {left:0; bottom:50px;}
+    90%  {left:0; bottom:-50px;}
+    100% {left:0; bottom:-50px;}
+}
