@@ -51,7 +51,7 @@ export default function BrandLabelPopUp({print}: Props) {
                 <select
                     onChange={(e) => {
                         let update = {...item.brandLabel,
-                            path:"http://localhost:4000/brand-label-images/" + e.target.value,
+                            path:"http://192.168.1.200:4000/brand-label-images/" + e.target.value,
                             image:e.target.value
                         }
                         dispatch(setItemBrandLabel(update))

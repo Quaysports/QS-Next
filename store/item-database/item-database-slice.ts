@@ -479,7 +479,7 @@ function itemTemplate(): schema.Item {
             shop: {fees: 0, profit: 0, profitLastYear: 0, salesVAT: 0},
             totalProfitLastYear: 0
         },
-        stockTake: {checked: false, date: undefined, quantity: 0},
+        stockTake: {checked: false, date: null, quantity: 0},
         marginNote: "",
         onOrder: [],
         packaging: {editable: false, group: "", items: [], lock: false},
