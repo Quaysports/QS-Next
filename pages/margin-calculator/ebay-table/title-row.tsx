@@ -15,8 +15,8 @@ export default function TitleRow({test}: { test: boolean}) {
         <div>Price</div>
         {test ? <MarginTestTitle/> : null}
         <div onClick={() => {
-            dispatch(sortMarginData({key: "ebayProfitAfterVat", ascending: ascendingSort}))
+            dispatch(sortMarginData({channel:"ebay", key: "profit", ascending: ascendingSort}))
             ascendingSort === undefined ? setAscendingSort(false) : setAscendingSort(!ascendingSort)
-        }}>Ebay Margin {currentSort !== "ebayProfitAfterVat" ? "--" : ascendingSort ? "▲" : "▼"}</div>
+        }}>Ebay Margin {currentSort !== "ebay-profit" ? "--" : ascendingSort ? "▲" : "▼"}</div>
     </div>
 }

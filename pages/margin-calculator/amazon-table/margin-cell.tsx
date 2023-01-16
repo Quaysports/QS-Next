@@ -11,8 +11,8 @@ export default function MarginCell({item}:{item:MarginItem}){
     const [marginText, setMarginText] = useState<string>("")
 
     useEffect(()=>{
-        setTextClass(styles[textColourStyler(item.marginData.amazonPrimeProfitAfterVat)])
-        setMarginText(generateMarginText(item.prices.purchase, item.marginData.amazonPrimeProfitAfterVat))
+        setTextClass(styles[textColourStyler(item.marginData.amazon.primeProfit)])
+        setMarginText(generateMarginText(item.prices.purchase, item.marginData.amazon.primeProfit))
     },[item])
 
     if(!item) return null
@@ -32,26 +32,27 @@ export function PrimeMarginCell({item}:{item:MarginItem}){
     if(!item) return null
 
     const [textClass, setTextClass] = useState("")
-    useEffect(()=>{setTextClass(styles[textColourStyler(item.marginData.amazonPrimeProfitAfterVat)])},[item])
+    useEffect(()=>{setTextClass(styles[textColourStyler(item.marginData.amazon.primeProfit)])},[item])
 
     return <span
         className={textClass}>{item.checkboxStatus.prime
-        ? generateMarginText(item.prices.purchase, item.marginData.amazonPrimeProfitAfterVat)
+        ? generateMarginText(item.prices.purchase, item.marginData.amazon.primeProfit)
         : ""
     }</span>
 }
 
 function buildMarginTooltip(item:MarginItem){
-    let {postageCost, packagingCost, amazonSalesVat, amazonFees, amazonPrimeProfitAfterVat} = item.marginData
+    let {postage, packaging, amazon} = item.marginData
+    let {fees, profit, salesVAT} = amazon
     return <div className={styles.tooltip}>
         <div>Selling Price: £{item.prices.amazon}</div>
         <div>------- Minus -------</div>
         <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
-        <div>Postage: {toCurrency(postageCost)}</div>
-        <div>Packaging: {toCurrency(packagingCost)}</div>
-        <div>VAT: {toCurrency(amazonSalesVat)}</div>
-        <div>Channel Fees: {toCurrency(amazonFees)}</div>
+        <div>Postage: {toCurrency(postage)}</div>
+        <div>Packaging: {toCurrency(packaging)}</div>
+        <div>VAT: {toCurrency(salesVAT)}</div>
+        <div>Channel Fees: {toCurrency(fees)}</div>
         <div>------- Equals -------</div>
-        <div>Profit: {toCurrency(amazonPrimeProfitAfterVat)}</div>
+        <div>Profit: {toCurrency(profit)}</div>
     </div>
 }

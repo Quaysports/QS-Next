@@ -17,8 +17,8 @@ export default function TitleRow(){
         {domestic ? <div>Discount</div> : null}
         <div>Price</div>
         <div  onClick={()=>{
-            dispatch(sortMarginData({key:"magentoProfitAfterVat", ascending:ascendingSort}))
+            dispatch(sortMarginData({channel:"magento", key:"profit", ascending:ascendingSort}))
             ascendingSort === undefined ? setAscendingSort(false) : setAscendingSort(!ascendingSort)
-        }}>QS Margin  {currentSort !== "magentoProfitAfterVat" ? "--" : ascendingSort ? "▲" : "▼"}</div>
+        }}>QS Margin  {currentSort !== "magento-profit" ? "--" : ascendingSort ? "▲" : "▼"}</div>
     </div>
 }

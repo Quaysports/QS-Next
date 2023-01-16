@@ -40,8 +40,8 @@ function generateTestValues(item: MarginItem, testValue: number | null, fees: Fe
     if (!fees || !testValue) return {testPrice: undefined, testMargin: undefined}
 
     let ebayFlat = item.prices.purchase
-        + item.marginData.postageCost
-        + item.marginData.packagingCost
+        + item.marginData.postage
+        + item.marginData.packaging
         + parseFloat(fees["FLAT"].EBAY)
         + parseFloat(fees["SUBSCRIPTION"].EBAY)
 

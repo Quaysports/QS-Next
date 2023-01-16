@@ -22,7 +22,7 @@ export default function AmazonTable() {
                 SKU:item.SKU,
                 TITLE:item.title,
                 PRICE:item.prices.amazon,
-                MARGIN:generateMarginText(item.prices.purchase, item.marginData?.amazonPrimeProfitAfterVat ),
+                MARGIN:generateMarginText(item.prices.purchase, item.marginData?.amazon.primeProfit ),
                 NOTE:item.marginNote})
             return arr
         },[])

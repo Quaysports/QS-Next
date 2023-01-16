@@ -1,6 +1,7 @@
 import {onOrder} from "../../pages/stock-forecast";
 
-export interface StockForecastItem {
+type StockForecastPick = Pick<schema.Item, "stockHistory" | "stock" | "checkboxStatus" | "SKU" | "title">
+export interface StockForecastItem extends StockForecastPick {
     rowId: number;
     hist: {
         perDay: number;
@@ -10,15 +11,9 @@ export interface StockForecastItem {
     oneMonthOOS: string;
     fourMonthOOS: string;
     oo: number;
-    stock: any;
     oneMonth: number;
     fourMonth: number;
-    MONTHSTOCKHIST: any;
-    STOCKTOTAL: number;
     onOrder: onOrder;
-    CHECK: { SF?: StockForecastChecks };
-    SKU: string;
-    TITLE: string;
     months: Months[];
 }
 
@@ -65,7 +60,7 @@ function dayInfoCalculation(item: StockForecastItem, monthData: Months, day: num
     }
 
     function firstDayOfMonthChecks() {
-        if (!item.onOrder?.late || item.STOCKTOTAL > 0) return
+        if (!item.onOrder?.late || item.stock.total > 0) return
         currentDay.restock = true;
         currentDay.onOrderFlag = true;
     }
@@ -94,23 +89,21 @@ export function processData(item: StockForecastItem, index: number) {
     item.rowId = index
     item.hist = {perDay: 0}
     item.months = timeSpan()
-    item.CHECK ??= {}
-    item.CHECK.SF ??= {}
     item.onOrder ??= {late: 0, total: 0}
-    item.fourMonth = lastFourMonthAvg(item.MONTHSTOCKHIST)
-    item.oneMonth = lastMonthAvg(item.MONTHSTOCKHIST)
+    item.fourMonth = lastFourMonthAvg(item.stockHistory)
+    item.oneMonth = lastMonthAvg(item.stockHistory)
 
     item.fourMonthOOS = ''
     item.oneMonthOOS = ''
     item.stockOOS = ''
 
 
-    let initialStock = item.STOCKTOTAL + item.onOrder?.late
+    let initialStock = item.stock.total + item.onOrder?.late
 
     let cm = 0
 
     for (let month of item.months) {
-        let hist = historicAvg(month, item.MONTHSTOCKHIST);
+        let hist = historicAvg(month, item.stockHistory);
         let day = 0
 
         item.hist.perDay += hist
@@ -161,14 +154,14 @@ function historicAvg(date: Months, hist: sbt.MonthStockHistory) {
     return sales === 0 || years === 0 ? 0 : ((sales / years) * 1.1) / date.eom
 }
 
-function lastFourMonthAvg(hist: sbt.MonthStockHistory) {
+function lastFourMonthAvg(hist: schema.Item["stockHistory"]) {
     let cd = new Date()
     let sales = 0;
     let days = 0;
 
     for (let i = 0; i <= 3; i++) {
         if (hist?.[cd.getFullYear()]) {
-            const monthData = hist[cd.getFullYear()][cd.getMonth() + 1 as keyof sbt.MonthStockHistoryMonth]
+            const monthData = hist[cd.getFullYear()][cd.getMonth() + 1]
             if (monthData) {
                 sales += Number(monthData)
                 days += cd.getDate()

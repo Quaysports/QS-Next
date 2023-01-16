@@ -11,8 +11,8 @@ export default function MarginCell({item}:{item:MarginItem}){
     const [marginText, setMarginText] = useState<string>("")
 
     useEffect(()=>{
-        setTextClass(styles[textColourStyler(item.marginData.ebayProfitAfterVat)])
-        setMarginText(generateMarginText(item.prices.purchase, item.marginData.ebayProfitAfterVat ))
+        setTextClass(styles[textColourStyler(item.marginData.ebay.profit)])
+        setMarginText(generateMarginText(item.prices.purchase, item.marginData.ebay.profit ))
     },[item])
 
     if(!item) return null
@@ -28,16 +28,17 @@ export default function MarginCell({item}:{item:MarginItem}){
 }
 
 function buildMarginTooltip(item:MarginItem){
-    const {postageCost, packagingCost, ebaySalesVat, ebayFees, ebayProfitAfterVat} = item.marginData
+    const {postage, packaging, ebay} = item.marginData
+    const {fees, profit, salesVAT} = ebay
     return <div className={styles.tooltip}>
         <div>Selling Price: £{item.prices.ebay}</div>
         <div>------- Minus -------</div>
         <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
-        <div>Postage: {toCurrency(postageCost)}</div>
-        <div>Packaging: {toCurrency(packagingCost)}</div>
-        <div>VAT: {toCurrency(ebaySalesVat)}</div>
-        <div>Channel Fees: {toCurrency(ebayFees)}</div>
+        <div>Postage: {toCurrency(postage)}</div>
+        <div>Packaging: {toCurrency(packaging)}</div>
+        <div>VAT: {toCurrency(salesVAT)}</div>
+        <div>Channel Fees: {toCurrency(fees)}</div>
         <div>------- Equals -------</div>
-        <div>Profit: {toCurrency(ebayProfitAfterVat)}</div>
+        <div>Profit: {toCurrency(profit)}</div>
     </div>
 }

@@ -67,13 +67,12 @@ export const getServerSideProps = appWrapper.getServerSideProps(
 
             const projection = {
                 SKU: 1,
-                SUPPLIER: 1,
-                TITLE: 1,
-                MONTHSTOCKHIST: 1,
-                ROLLINGAVG: 1,
-                STOCKTOTAL: 1,
-                IDBFILTER: 1,
-                CHECK: 1
+                supplier: 1,
+                title: 1,
+                stockHistory: 1,
+                stock: 1,
+                tags: 1,
+                checkboxStatus: 1
             }
 
             const sort = {SKU: 1}
@@ -145,12 +144,12 @@ async function filterDataBasedOnToggles(items: StockForecastItem[], pageQuery: N
     let filter: StockForecastItem[] = []
     for (const v of items) {
         if (pageQuery.list === 'true') {
-            if (v.CHECK?.SF?.LIST) filter.push(v)
+            if (v.checkboxStatus.stockForecast.list) filter.push(v)
             continue
         }
 
         if (pageQuery.show === 'false') {
-            if (!v.CHECK?.SF?.HIDE) filter.push(v)
+            if (!v.checkboxStatus.stockForecast.hide) filter.push(v)
             continue
         }
 

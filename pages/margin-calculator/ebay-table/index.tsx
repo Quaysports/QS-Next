@@ -22,7 +22,7 @@ export default function EbayTable() {
                 SKU:item.SKU,
                 TITLE:item.title,
                 PRICE:item.prices.ebay,
-                MARGIN:generateMarginText(item.prices.purchase, item.marginData.ebayProfitAfterVat ),
+                MARGIN:generateMarginText(item.prices.purchase, item.marginData.ebay.profit ),
                 NOTE:item.marginNote})
             return arr
         },[])

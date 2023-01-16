@@ -27,7 +27,7 @@ function TitleRow(){
 
 interface ItemRowProps{
     item:MarginTestTemplate
-    channel: string
+    channel: "amazon" | "ebay" | "magento" | "shop"
 }
 function ItemRow({item, channel}:ItemRowProps){
 
@@ -57,12 +57,6 @@ function ItemRow({item, channel}:ItemRowProps){
     </div>
 }
 
-function selectProfitAndPrice(item:MarginTestTemplate, channel:string):{price:number, profit?:number}{
-    switch(channel){
-        case "ebay": return {price:item.prices.ebay, profit:item.marginData.ebayProfitAfterVat}
-        case "amazon": return {price:item.prices.amazon, profit:item.marginData.amazonProfitAfterVat}
-        case "magento": return {price:item.prices.magento, profit:item.marginData.magentoProfitAfterVat}
-        case "shop": return {price:item.prices.shop, profit:item.marginData.shopProfitAfterVat}
-        default: return {price:0}
-    }
+function selectProfitAndPrice(item:MarginTestTemplate, channel:"amazon" | "ebay" | "magento" | "shop"):{price:number, profit?:number}{
+    return {price:item.prices[channel], profit:item.marginData[channel].profit}
 }

@@ -21,7 +21,7 @@ export default function ShopTable() {
                 TITLE:item.title,
                 PRICE:item.prices.shop,
                 DISCOUNT:item.discounts.shop,
-                MARGIN:generateMarginText(item.prices.shop, item.marginData.shopProfitAfterVat ),
+                MARGIN:generateMarginText(item.prices.shop, item.marginData.shop.profit),
                 NOTE:item.marginNote})
             return arr
         },[])

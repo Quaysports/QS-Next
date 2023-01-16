@@ -3,6 +3,7 @@ import {HYDRATE} from "next-redux-wrapper";
 import {Fees} from "../server-modules/fees/fees";
 import {Postage} from "../server-modules/postage/postage";
 import {Packaging} from "../server-modules/packaging/packaging";
+import ChannelMarginData = schema.ChannelMarginData;
 
 export type MarginItem = Pick<schema.Item,
     "SKU" |
@@ -155,13 +156,13 @@ export const marginCalculatorSlice = createSlice({
                 state.activeIndex = null
                 state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
             },
-            sortMarginData: (state, action: PayloadAction<{ key: keyof MarginItem["marginData"], ascending?: boolean }>) => {
-                const key = action.payload.key
-                state.currentSort = key
+            sortMarginData: (state, action: PayloadAction<{ channel:"amazon" | "ebay" | "magento" | "shop", key: keyof ChannelMarginData, ascending?: boolean }>) => {
+                const {channel, key} = action.payload
+                state.currentSort = `${channel}-${key}`
                 const asc = action.payload.ascending === undefined ? true : action.payload.ascending
                 state.searchItems.sort((a, b) => {
-                    if (a.marginData[key]! > b.marginData[key]!) return asc ? 1 : -1
-                    if (b.marginData[key]! > a.marginData[key]!) return asc ? -1 : 1
+                    if (a.marginData[channel][key]! > b.marginData[channel][key]!) return asc ? 1 : -1
+                    if (b.marginData[channel][key]! > a.marginData[channel][key]!) return asc ? -1 : 1
                     return 0
                 })
                 state.renderedItems = state.searchItems.slice(0, state.maxThreshold)

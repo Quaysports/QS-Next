@@ -25,6 +25,6 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string}
         {settings?.displayPackaging ? <div>{packaging ? toCurrency(packaging[item.packaging.group].PRICE) : ""}</div> : null}
         <div><PostSelect item={item}/></div>
         <div><PostModSelect item={item}/></div>
-        <div>{toCurrency(item.marginData.postageCost)}</div>
+        <div>{toCurrency(item.marginData.postage)}</div>
     </div>
 }

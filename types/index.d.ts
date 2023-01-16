@@ -709,27 +709,24 @@ declare namespace schema {
         //map from INVCHECKDATE
         checkedDate: string
     }
+
+    interface ChannelMarginData {
+        fees: number;
+        profit: number;
+        profitLastYear: number;
+        salesVAT: number;
+    }
+    interface AmazonMarginData extends ChannelMarginData {
+        primeProfit: number
+        primePostage: number
+    }
     interface MarginData {
-        amazonFees: number,
-        amazonProfitAfterVat: number,
-        amazonProfitLastYear: number,
-        amazonSalesVat: number,
-        ebayFees: number,
-        ebayProfitLastYear: number
-        ebayProfitAfterVat: number
-        ebaySalesVat: number
-        packagingCost: number
-        postageCost: number
-        amazonPrimeProfitAfterVat: number
-        amazonPrimePostageCost: number
-        magentoFees: number
-        magentoProfitAfterVat: number
-        magentoProfitLastYear: number
-        magentoSalesVat: number
-        shopFees: number
-        shopProfitAfterVat: number
-        shopProfitLastYear: number
-        shopSalesVat: number
+        amazon:AmazonMarginData
+        ebay:ChannelMarginData
+        magento:ChannelMarginData
+        shop:ChannelMarginData
+        packaging: number
+        postage: number
         totalProfitLastYear: number
     }
     interface CheckboxStatus {

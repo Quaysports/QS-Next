@@ -21,7 +21,7 @@ export default function MagentoTable() {
                 TITLE:item.title,
                 PRICE:item.prices.magento,
                 DISCOUNT:item.discounts.magento,
-                MARGIN:generateMarginText(item.prices.purchase, item.marginData.magentoProfitAfterVat ),
+                MARGIN:generateMarginText(item.prices.purchase, item.marginData.magento.profit ),
                 NOTE:item.marginNote})
             return arr
         },[])
