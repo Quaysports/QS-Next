@@ -23,7 +23,7 @@ export default function ImageContainer({imageTag}: Props) {
         event.currentTarget.style.background = "var(--primary-color)"
     }
 
-    function onDropHandler(event: DragEvent<HTMLDivElement>, index: string) {
+    function onDropHandler(event: DragEvent<HTMLDivElement>, index: keyof schema.Images) {
         event.stopPropagation()
         event.preventDefault()
         let image = event.dataTransfer.files[0]
@@ -40,7 +40,7 @@ export default function ImageContainer({imageTag}: Props) {
                     setImage(event.target?.result?.toString())
                     dispatch(setItemImages({
                         image: event.target!.result!.toString(),
-                        index: index as keyof schema.Images,
+                        index: index,
                         extension: imageExtension
                     }))
                 }
@@ -89,7 +89,7 @@ export default function ImageContainer({imageTag}: Props) {
                 dragLeaveHandler(e)
             }}
             onDragOver={(e) => dragOverHandler(e)}
-            onDrop={(e) => onDropHandler(e, imageTag)}
+            onDrop={(e) => onDropHandler(e, key)}
             className={`${styles["image-drop-box"]} ${image ? styles["image-dropped"] : ""}`}
         >
             {item.images[key]?.filename ? <><div className={`${styles["image-delete-button"]} button`} onClick={() => {deleteImageHandler(key, item)}}>X</div>

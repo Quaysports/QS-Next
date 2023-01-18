@@ -13,10 +13,11 @@ export default function ShippingSelect(){
     const shippingOptions = () => {
         return (
             <>
+                <option/>
                 <option value={"RM Large Letter"}>Large Letter</option>
                 <option value={"RM Packet"}>Packet</option>
                 <option value={"RM Packet 24"}>Packet 24</option>
-                <option>Courier</option>
+                <option value={"Courier"}>Courier</option>
             </>
         )
     }
