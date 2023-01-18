@@ -107,11 +107,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         testForProperty('Short Description', item.shortDescription);
         let searchTerms:string = ""
         let extendedProperties = item.mappedExtendedProperties
-        searchTerms += extendedProperties.searchTerm1 ? extendedProperties.searchTerm1 + ' ' : null;
-        searchTerms += extendedProperties.searchTerm2 ? extendedProperties.searchTerm2 + ' ' : null;
-        searchTerms += extendedProperties.searchTerm3 ? extendedProperties.searchTerm3 + ' ' : null;
-        searchTerms += extendedProperties.searchTerm4 ? extendedProperties.searchTerm4 + ' ' : null;
-        searchTerms += extendedProperties.searchTerm5 ? extendedProperties.searchTerm5 + ' ' : null;
+        searchTerms += extendedProperties.searchTerm1 ? extendedProperties.searchTerm1 + ' ' : "";
+        searchTerms += extendedProperties.searchTerm2 ? extendedProperties.searchTerm2 + ' ' : "";
+        searchTerms += extendedProperties.searchTerm3 ? extendedProperties.searchTerm3 + ' ' : "";
+        searchTerms += extendedProperties.searchTerm4 ? extendedProperties.searchTerm4 + ' ' : "";
+        searchTerms += extendedProperties.searchTerm5 ? extendedProperties.searchTerm5 + ' ' : "";
         testForProperty('Search Terms', searchTerms);
 
         if (newExtendedProperties.length > 0) {
