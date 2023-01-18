@@ -1,11 +1,17 @@
 import {PublishedRota} from "../../../../server-modules/rotas/rotas";
 import styles from "../rotas.module.css";
-import {editPublishedRota, selectPublishedRotas} from "../../../../store/dashboard/rotas-slice";
+import {
+    editPublishedRota,
+    getRotasForRowPrint,
+    rotaWrapper,
+    selectPublishedRotas
+} from "../../../../store/dashboard/rotas-slice";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
 import PublishRota from "../publish";
 import RotaWeek from "../rota";
 import PublishSidebar from "../publish/publish-sidebar";
 import {useDispatch, useSelector} from "react-redux";
+import InfoPanel from "../publish/publish-info-panel";
 
 export default function PublishedRotaList() {
 
@@ -24,7 +30,7 @@ export default function PublishedRotaList() {
 
 function Rota({rota}: { rota: PublishedRota }) {
     const dispatch = useDispatch()
-
+    const printRowData = useSelector((state:rotaWrapper)=>getRotasForRowPrint(state, rota))
     async function deleteRota() {
         console.log("delete")
         let opts = {
@@ -53,7 +59,7 @@ function Rota({rota}: { rota: PublishedRota }) {
                     <button onClick={() => {
                         if(!window) return
                         window.open("/print?app=rotas&print=rows", "_blank")
-                        window.localStorage.setItem("rota", JSON.stringify(rota))
+                        window.localStorage.setItem("rota", JSON.stringify(printRowData))
                     }}>Print Rows</button>
                     <button onClick={() => {
                         if(!window) return
@@ -64,7 +70,8 @@ function Rota({rota}: { rota: PublishedRota }) {
                 <div>Week starting {new Date(rota.weekData.monday).toLocaleDateString('en-GB')}</div>
                 <div>Week Number: {rota.weekData.week}</div>
             </div>
-            <div className={styles["published-rota-and-sidebar"]}>
+            <div className={styles["info-panel-rota-sidebar"]}>
+                <InfoPanel rota={rota}/>
                 <RotaWeek rota={rota} weekData={rota.weekData} holiday={rota.holidays}/>
                 <PublishSidebar rota={rota} editable={false}/>
             </div>

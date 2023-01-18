@@ -1,5 +1,5 @@
 import {Rota, UserHours, WeekData} from "../../../server-modules/rotas/rotas";
-import styles from "./print-rota.module.css";
+import styles from "./print-rota-rows.module.css";
 import {getTinyDate} from "../../../components/rota-utils/time-utils";
 
 export default function PrintRotaRows(){
@@ -9,10 +9,16 @@ export default function PrintRotaRows(){
     let rotaString = global.window.localStorage.getItem("rota")
     if(!rotaString) return null
 
-    const rota = JSON.parse(rotaString)
+
+    const rotas = JSON.parse(rotaString)
+
+    let printRotas = []
+    for(let rota of rotas) {
+        printRotas.push(<RotaWeek holiday={rota.holiday} rota={rota} weekData={rota.weekData}/>)
+    }
 
     return (
-        <div className={styles["local-body"]}><RotaWeek holiday={rota.holiday} rota={rota} weekData={rota.weekData}/></div>
+        <div className={styles["local-body"]}>{printRotas}</div>
     )
 }
 

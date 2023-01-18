@@ -1,0 +1,86 @@
+.info {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+}
+
+.week {
+    background: white;
+    display:grid;
+    grid-template-rows: auto;
+    grid-gap: 10px;
+    padding:10px;
+    color:black;
+    width:fit-content;
+}
+
+
+@page {
+    size: landscape;
+    margin: 10mm;
+    padding: 0;
+}
+
+@media print {
+    .local-body {
+        width: 210mm;
+        height: 297mm;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+    }
+}
+
+
+/* ------------------- week grid ----------------- */
+.week-grid{
+    display:grid;
+    grid-template-rows: auto 1fr;
+    color:black;
+    width:fit-content;
+    text-align: center;
+}
+
+.week-title-row {
+    display:grid;
+    grid-template-columns: 60px repeat(7,100px);
+    border-top:1px solid black;
+}
+.week-column-wrapper{
+    display:grid;
+    grid-template-columns: 60px repeat(7,100px);
+    border-top:1px solid black;
+}
+.week-name-column {
+    width:60px;
+}
+
+.week-column {
+    width:100px;
+    display:grid;
+    font-size:0.9em;
+}
+.grid-cell, .grid-title-cell{
+    display:grid;
+    border-left:1px solid black;
+    padding:5px;
+}
+.week-column:last-child, .grid-title-cell:last-child {
+    border-right:1px solid black;
+}
+.grid-cell{
+    grid-template-rows: 1fr 1fr;
+    height:60px;
+    border-bottom:1px solid black;
+}
+.weeks-notes{
+    display:grid;
+    grid-template-rows: auto;
+    grid-gap:20px;
+    padding:10px;
+}
+.week-note-container{
+    display:grid;
+    grid-template-columns: 100px 1fr;
+    padding: 5px;
+    border-bottom:1px solid black;
+}
