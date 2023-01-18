@@ -22,7 +22,7 @@ export default function QuickLinkTableAddButton({itemIndex}: Props) {
         dispatch(addItemToLinks({
             linksIndex: linksIndex,
             itemIndex: itemIndex,
-            data: {SKU: res.SKU, SHOPPRICEINCVAT: "0", TITLE: res.TITLE}
+            data: {SKU: res.SKU, SHOPPRICEINCVAT: "0", TITLE: res.title}
         }))
     }
 
