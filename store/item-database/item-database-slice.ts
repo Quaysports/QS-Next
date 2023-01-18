@@ -224,15 +224,17 @@ export const itemDatabaseSlice = createSlice({
             },
             setItemImages: (state, action: PayloadAction<{ image: string, index: keyof schema.Images, extension: string }>) => {
                 let {image, index, extension} = action.payload
+                let filename = `${index === "main" ? "0" : index}.${extension}`
+                console.log(index)
                 state.item.images[index] = {
                     ...state.item.images[index],
-                    ...{filename: `${index === "main" ? "0" : index}.${extension}`}
+                    ...{filename: filename}
                 }
                 let body = {
                     _id: state.item._id,
                     SKU: state.item.SKU,
                     id: index === "main" ? "main" : "image" + index,
-                    filename: `${index}.${extension}`,
+                    filename: filename,
                     image: image
                 }
                 const opts = {
