@@ -34,13 +34,15 @@ function TitleRow(){
 function UserRow({user, bookedDays}:{user:User, bookedDays:{[_:string]:number}}){
 
     let bookedDaysCount = bookedDays[user.username] || 0
+    const cy = new Date().getFullYear()
+    const holiday = user.holiday?.find(userHoliday => userHoliday.year === cy) || {year:cy, days:0}
 
     return <div className={styles["info-row"]}>
         <div style={{background:user.colour}}
              className={calendarStyles["booked-dot"]}></div>
         <div>{user.username}</div>
-        <div className={styles["info-cell"]}>{user.holiday}</div>
+        <div className={styles["info-cell"]}>{holiday.days}</div>
         <div className={styles["info-cell"]}>{bookedDaysCount}</div>
-        <div className={styles["info-cell"]}>{user.holiday? Number(user.holiday) - bookedDaysCount : user.holiday}</div>
+        <div className={styles["info-cell"]}>{holiday.days - bookedDaysCount}</div>
     </div>
 }

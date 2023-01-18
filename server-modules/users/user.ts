@@ -5,14 +5,25 @@ export interface User {
     theme: UserTheme;
     _id?: string;
     username: string;
-    pin?: string;
-    password?: string;
+    pin: string;
+    password: string;
     role: string;
-    rota?: string;
-    colour?: string;
+    rota: string;
+    colour: string;
     permissions: Permissions;
     settings: Settings;
-    holiday?: string;
+    holiday: UserHoliday[];
+    sick: UserSick;
+}
+
+export interface UserHoliday {
+    year: number;
+    days: number;
+}
+
+export interface UserSick {
+    paid: {year:number, days: number}[];
+    unpaid: {year:number, days: number}[];
 }
 
 export interface UserTheme {

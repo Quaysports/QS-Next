@@ -19,12 +19,8 @@ export interface UserTableProps {
  * User Table component. Takes user data from database and turns into table.
  */
 export default function UserTable({userInfo}: UserTableProps) {
-    const dispatch = useDispatch()
-
-    function updateUserData(index: string, user: User) {
-        dispatch(setUserData({index: Number(index), user: user}))
-    }
-
+    const cy = new Date().getFullYear()
+    const ny = cy + 1
 
     const userArray: ReactElement[] = [
         <div key="title" className={style["user-table-row"]}>
@@ -38,31 +34,50 @@ export default function UserTable({userInfo}: UserTableProps) {
             <span>Username</span>
             <span>Role</span>
             <span>Rota</span>
-            <span>Holiday</span>
+            <span>{cy} Holiday</span>
+            <span>{ny} Holiday</span>
             <span>Password</span>
             <span>Pin</span>
             <span>User Colour</span>
         </div>
     ]
 
+    if (!userInfo || userInfo.length === 0) return null
+
+    for (const [index, user] of Object.entries(userInfo)) {
+        userArray.push(
+            <UserRow key={index} index={index} user={user}/>
+        )
+    }
+    return <div className={style["user-table"]}>{userArray}</div>
+}
+
+function UserRow({index, user}:{index:string, user:User}) {
+
+    const dispatch = useDispatch()
+    const cy = new Date().getFullYear()
+
+    const currentYearHoliday = {...user.holiday?.find(h => h.year === cy) || {year: cy, days: 0}}
+    const nextYearHoliday = {...user.holiday?.find(h => h.year === cy + 1) || {year: cy + 1, days: 0}}
     const selectOptions = (values: string[]) => {
         const options = []
         for (const value of values) options.push(<option key={options.length} value={value}>{value}</option>)
         return options
     }
 
-    if (!userInfo || userInfo.length === 0) return null
+    function updateHoliday(year: number, days: number) {
+        console.log(year, days)
+        const clone = structuredClone(user)
+        clone.holiday ??= []
+        const pos = clone.holiday.findIndex(h => h.year === year) || -1
+        pos === -1
+            ? clone.holiday.push({year: year, days: days})
+            : clone.holiday[pos].days = days
+        console.log(clone)
+        dispatch(setUserData({index: Number(index), user: clone}))
+    }
 
-    for (const [index, user] of Object.entries(userInfo)) {
-
-        let loadedUser = {...user}
-        const pinHandler = (value: string) => {
-            loadedUser.pin = value
-            updateUserData(index, loadedUser)
-        }
-
-        userArray.push(
-            <div key={index} data-testid={"user-table-row"} className={style["user-table-row"]}>
+    return(<div data-testid={"user-table-row"} className={style["user-table-row"]}>
                 <span><button onClick={() => {
                     dispatchNotification({
                         type: "confirm",
@@ -72,53 +87,55 @@ export default function UserTable({userInfo}: UserTableProps) {
                     });
                 }}>X</button></span>
 
-                <span><button onClick={() => {
-                    dispatchNotification({
-                        type: "popup",
-                        title: 'User Permissions',
-                        content: <PermissionsPopup index={index}/>
-                    });
-                }}>Permissions</button></span>
+        <span><button onClick={() => {
+            dispatchNotification({
+                type: "popup",
+                title: 'User Permissions',
+                content: <PermissionsPopup index={index}/>
+            });
+        }}>Permissions</button></span>
 
-                <span><input type="text" defaultValue={user.username} onBlur={(e) => {
-                    loadedUser.username = e.target.value
-                    updateUserData(index, loadedUser)
-                }
-                }/></span>
+        <span><input type="text" defaultValue={user.username} onBlur={(e) => {
+            const update = {...user, username:e.target.value}
+            dispatch(setUserData({index: Number(index), user: update}))
+        }
+        }/></span>
 
-                <span><select defaultValue={user.role} onChange={(e) => {
-                    loadedUser.role = e.target.value
-                    updateUserData(index, loadedUser)
-                }}>
+        <span><select defaultValue={user.role} onChange={(e) => {
+            const update = {...user, role:e.target.value}
+            dispatch(setUserData({index: Number(index), user: update}))
+        }}>
                     {selectOptions(['admin', 'senior', 'user'])}
                 </select></span>
 
-                <span><select defaultValue={user.rota} onChange={(e) => {
-                    loadedUser.rota = e.target.value
-                    updateUserData(index, loadedUser)
-                }}>
-                    {selectOptions(['online', 'shop'])}
+        <span><select defaultValue={user.rota} onChange={(e) => {
+            const update = {...user, rota:e.target.value}
+            dispatch(setUserData({index: Number(index), user: update}))
+        }}>
+                    {selectOptions(['online', 'shop'])}s
                 </select></span>
 
-                <span><input type="number" defaultValue={user.holiday} onBlur={(e) => {
-                    loadedUser.holiday = e.target.value
-                    updateUserData(index, loadedUser)
-                }}/></span>
-                <span><input type="text" defaultValue={user.password} onBlur={(e) => {
-                    loadedUser.password = e.target.value
-                    updateUserData(index, loadedUser)
-                }}/></span>
-                <span>
+        <span><input type="number" defaultValue={currentYearHoliday.days} onBlur={(e) => {
+            updateHoliday(currentYearHoliday.year, Number(e.target.value))
+        }}/></span>
+        <span><input type="number" defaultValue={nextYearHoliday.days} onBlur={(e) => {
+            updateHoliday(nextYearHoliday.year, Number(e.target.value))
+        }}/></span>
+        <span><input type="text" defaultValue={user.password} onBlur={(e) => {
+            const update = {...user, password:e.target.value}
+            dispatch(setUserData({index: Number(index), user: update}))
+        }}/></span>
+        <span>
                     <RegexInput type={"pin"} value={user.pin ? user.pin : ""}
                                 errorMessage={"Pin must contain only numbers and be exactly four digits long."}
-                                handler={pinHandler}/>
+                                handler={(value)=>{
+                                    const update = {...user, pin:value}
+                                    dispatch(setUserData({index: Number(index), user: update}))
+                                }}/>
                 </span>
-                <span><input type="color" defaultValue={user.colour} onBlur={(e) => {
-                    loadedUser.colour = e.target.value
-                    updateUserData(index, loadedUser)
-                }}/></span>
-            </div>
-        )
-    }
-    return <div className={style["user-table"]}>{userArray}</div>
+        <span><input type="color" defaultValue={user.colour} onBlur={(e) => {
+            const update = {...user, colour:e.target.value}
+            dispatch(setUserData({index: Number(index), user: update}))
+        }}/></span>
+    </div>)
 }
