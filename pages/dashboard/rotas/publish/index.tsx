@@ -13,6 +13,7 @@ import {useEffect, useState} from "react";
 import {getWeek, toDateInputValue} from "../../../../components/rota-utils/time-utils";
 import {selectCalendar} from "../../../../store/dashboard/holiday-slice";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
+import InfoPanel from "./publish-info-panel";
 
 export default function PublishRota() {
     const template = useSelector(selectTemplate)
@@ -64,7 +65,8 @@ export default function PublishRota() {
                 <div>Week Number: {weekData.week}</div>
             </> : null}
         </div>
-        <div className={styles["rota-and-sidebar"]}>
+        <div className={styles["info-panel-rota-sidebar"]}>
+            <InfoPanel rota={template}/>
             <RotaWeek rota={template} holiday={holiday} weekData={weekData}/>
             <PublishSidebar rota={template}/>
         </div>

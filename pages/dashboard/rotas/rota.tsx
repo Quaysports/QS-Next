@@ -23,10 +23,7 @@ function RotaDay({dayOfWeek, userHours, weekData, holiday}: { dayOfWeek: number,
 
     let userRows = []
 
-    console.log(userHours)
-
     for (let i in userHours) {
-        console.log(i)
         userRows.push(<UserRow key={i} userIndex={Number(i)} userHours={userHours[i]} dayOfWeek={dayOfWeek} holiday={holiday}/>)
     }
 
