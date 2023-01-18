@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import {login, pinLogin} from '../../../server-modules/users/user'
 
 export const authOptions = {
+    site: process.env.NEXTAUTH_URL,
     providers: [
         CredentialsProvider({
             id: 'credentials',
