@@ -100,7 +100,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     break;
             }
         }
-        testForProperty('Tags', item.tags.reduce((string, tag)=>{return `${string}, ${tag}`},""));
+        testForProperty('Tags', item.tags.reduce((string, tag)=>{
+            return string === "" ? tag : `${string}, ${tag}`
+        },""));
         testForProperty('Brand', item.brand);
         testForProperty('Short Description', item.shortDescription);
         let searchTerms:string = ""
