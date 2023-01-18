@@ -3,6 +3,8 @@ import styles from "../rotas.module.css";
 
 export default function InfoPanel({rota}:{rota:Rota}) {
 
+    if(!rota) return null;
+
     let hours = rota.rota.reduce((acc:{[key:string]:number}, val) => {
         for(let user of val) {
             if(!acc[user.username]) acc[user.username] = 0
