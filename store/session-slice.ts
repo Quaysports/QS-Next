@@ -12,6 +12,13 @@ export interface sessionState {
 
 const initialState: sessionState = {
     user: {
+        _id: "",
+        colour: "",
+        holiday: [],
+        password: "",
+        pin: "",
+        rota: "",
+        sick: {paid: [], unpaid: []},
         username: "",
         role: "",
         permissions: {},
@@ -31,7 +38,7 @@ const initialState: sessionState = {
                 },
                 displayTitles: false,
                 displayRetail: true,
-                displayPackaging:true,
+                displayPackaging: true,
             },
             dashboard: {
                 holiday: {
