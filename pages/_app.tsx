@@ -6,6 +6,7 @@ import UserSetup from './user-setup'
 import NotificationWrapper from "../components/notification/notification-wrapper";
 import {Provider} from "react-redux";
 import ActivityTracker from "../components/activity-tracker";
+import ToastWrapper from "../components/toast/toast-wrapper";
 
 export default function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
     const {store, props} = appWrapper.useWrappedStore(pageProps);
@@ -15,6 +16,7 @@ export default function App({Component, pageProps:{session, ...pageProps}}: AppP
             <SessionProvider session={session}>
                 <UserSetup {...props}/>
                 <NotificationWrapper />
+                <ToastWrapper />
                 <ActivityTracker />
                 <Component {...props}></Component>
             </SessionProvider>
