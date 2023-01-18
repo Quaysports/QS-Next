@@ -10,8 +10,10 @@
     grid-template-rows: auto;
     grid-gap: 5px;
     padding:0 10px;
+    margin:10px;
     color:black;
     width:fit-content;
+    height:100%
 }
 
 .day-row, .day-title-row, .day-sidebar-row{
@@ -35,7 +37,6 @@
 
 .day-cell, .day-title-cell {
     display:grid;
-    height:22px;
     text-align: center;
     align-items: center;
     user-select: none;
@@ -67,8 +68,8 @@ padding: 0 5px;
 }
 
 @page {
-    size: A4;
-    margin: 10mm;
+    size: A4 landscape;
+    margin: 0;
     padding: 0;
 }
 .local-body {
@@ -76,16 +77,7 @@ padding: 0 5px;
     grid-template-columns: 1fr 1fr;
     width: 297mm;
     height: 210mm;
+    scale:0.95;
     -webkit-print-color-adjust:exact !important;
     print-color-adjust:exact !important;
-}
-@media print {
-    .local-body {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        width: 297mm;
-        height: 210mm;
-        -webkit-print-color-adjust:exact !important;
-        print-color-adjust:exact !important;
-    }
 }
