@@ -189,8 +189,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         imageDetails.IsMain = image === "main"
 
         imageDetails.ImageUrl = item.images[imageKey].link
-            ? `http://141.195.190.47/images/${item.images[imageKey].link}/${item.images[imageKey].filename}`
-            : `http://141.195.190.47/images/${item.SKU}/${item.images[imageKey].filename}`
+            ? `http://141.195.190.47:4000/images/${item.images[imageKey].link}/${item.images[imageKey].filename}`
+            : `http://141.195.190.47:4000/images/${item.SKU}/${item.images[imageKey].filename}`
 
         await updateItemImage(imageDetails).catch(err => err)
         console.log("Linnworks Update 501!")
