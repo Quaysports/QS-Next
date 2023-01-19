@@ -22,5 +22,5 @@ export default function ShippingSelect(){
         )
     }
 
-    return <select defaultValue={item.mappedExtendedProperties.shippingFormat} onChange={(e) => shippingHandler(e.target.value)}>{shippingOptions()}</select>
+    return <select value={item.mappedExtendedProperties.shippingFormat} onChange={(e) => shippingHandler(e.target.value)}>{shippingOptions()}</select>
 }
