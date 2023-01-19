@@ -16,16 +16,13 @@
     overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
-    margin: 5px;
 }
 
 .price {
     font-size: 1.3em;
-    margin: 5px;
 }
 
 .sku {
     font-size: 10px;
-    margin: 5px;
     height: 10px;
 }
