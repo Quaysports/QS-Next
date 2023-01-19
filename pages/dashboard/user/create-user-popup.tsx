@@ -1,20 +1,26 @@
 import style from './user.module.css'
+import {User} from "../../../server-modules/users/user";
 
 /**
  * Create user component. Used in popup call.
  */
 export default function CreateUser(){
 
-    let userTemplate = {
+    let userTemplate:User = {
         "username": "",
         "colour": "#ffffff",
         "password": "indiahoteL76",
         "pin": "",
         "role": "user",
         "rota": "online",
-        "holiday": "",
+        "holiday": [],
+        "sick":{
+            "paid":[],
+            "unpaid":[]
+        },
         "permissions":{},
-        "theme":{}
+        "theme":{},
+        "settings":{}
     }
 
     return (
