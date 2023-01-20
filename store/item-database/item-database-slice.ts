@@ -233,7 +233,7 @@ export const itemDatabaseSlice = createSlice({
                 let body = {
                     _id: state.item._id,
                     SKU: state.item.SKU,
-                    id: index === "main" ? "main" : "image" + index,
+                    id: index === "main" ? "main" : index,
                     filename: filename,
                     image: image
                 }
