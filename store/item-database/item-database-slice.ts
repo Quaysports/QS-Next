@@ -287,6 +287,7 @@ export const itemDatabaseSlice = createSlice({
             },
             setItemShipping: (state, action: PayloadAction<string>) => {
                 state.item.mappedExtendedProperties.shippingFormat = action.payload
+                databaseSave(state.item)
             },
             setSuppliers: (state, action) => {
                 state.suppliers = action.payload

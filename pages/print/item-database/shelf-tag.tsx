@@ -22,6 +22,7 @@ export default function ShelfTag() {
                     @page {
     size: 1.5in 1in;
     color: black;
+    margin:5px;
 }
 `}</style>
             <div className={styles["container"]}>
