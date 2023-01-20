@@ -166,9 +166,9 @@
     position: absolute;
     top: 3px;
     right:3px;
-    width: 10%;
+    width: 20px;
     text-align: center;
-    height: 11%;
+    aspect-ratio: 1/1;
 }
 
 /*-----------Amazon Properties------------*/
