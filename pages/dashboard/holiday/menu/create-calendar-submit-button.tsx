@@ -58,7 +58,7 @@ export default function CreateCalendarSubmitButton({location, year, bankHolidays
                 calendar.template[date.getMonth()].days[date.getDate() - 1].bankHol = true
                 for (let v of users.online) {
                     calendar.template[date.getMonth()].days[date.getDate() - 1].booked ??= {}
-                    calendar.template[date.getMonth()].days[date.getDate() - 1].booked![v.username] = true
+                    calendar.template[date.getMonth()].days[date.getDate() - 1].booked![v.username] = {type: "holiday", paid: true, duration: 100}
                 }
             }
 
