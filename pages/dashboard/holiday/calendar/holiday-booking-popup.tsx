@@ -18,6 +18,10 @@ export default function HolidayBookingPopup({dateString}:{dateString:sbt.holiday
     const [bookedDate, setBookedDate] = useState<string>(date ? date.toISOString().slice(0,10) : "")
     const [numOfDays, setNumOfDays] = useState<number>(1)
     const [halfDay, setHalfDay] = useState<boolean>(false)
+    const [bookingType, setBookingType] = useState<{paid:boolean, unpaid:boolean, holiday:boolean}>(
+        {paid: false, unpaid: false, holiday: true}
+    )
+
 
     if(!dateString) return null
 
@@ -83,6 +87,26 @@ export default function HolidayBookingPopup({dateString}:{dateString:sbt.holiday
             <input type={"number"}
                    value={numOfDays}
                    onChange={e=>setNumOfDays(Number(e.target.value))}/>
+        </div>
+        <div>
+            <label htmlFor={"paid-sick-radio"}>Paid</label>
+            <input id={"paid-sick-radio"}
+                   type={"radio"}
+                   name={"type-select"}
+                   checked={bookingType.paid}
+                   onChange={(e)=>setBookingType({holiday: false, unpaid: false, paid:e.target.checked})}/>
+            <label htmlFor={"unpaid-sick-radio"}>Unpaid</label>
+            <input id={"unpaid-sick-radio"}
+                   type={"radio"}
+                   name={"type-select"}
+                   checked={bookingType.unpaid}
+                   onChange={(e)=>setBookingType({holiday: false, unpaid: e.target.checked, paid:false})}/>
+            <label htmlFor={"holiday-radio"}>Holiday</label>
+            <input id={"holiday-radio"}
+                   type={"radio"}
+                   name={"type-select"}
+                   checked={bookingType.holiday}
+                   onChange={(e)=>setBookingType({holiday: e.target.checked, unpaid: false, paid:false})}/>
         </div>
         <div className={styles["booking-split-row"]}>
             <div>

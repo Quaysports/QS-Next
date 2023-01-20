@@ -32,6 +32,7 @@ export default function AppsMenu({showAppsMenu, appsMenuHandler}:Props) {
         return (
             <div key={24} id="apps-menu" onMouseLeave={appsMenuHandler}>
                 <div onClick={appsMenuHandler}><Link href="/dashboard?tab=home">Dashboard</Link></div>
+                {permissions?.dev?.auth ? <div onClick={appsMenuHandler}><Link href="/dev">Developer</Link></div> : null}
                 {permissions?.shopOrders?.auth ? <div onClick={appsMenuHandler}><Link href="/shop-orders?tab=orders">Shop Orders</Link></div> : null}
                 {permissions?.shopTills?.auth ? <div onClick={appsMenuHandler}><Link href="/shop-tills">Shop Tills</Link></div> : null}
                 {permissions?.stockReports?.auth ? <div onClick={appsMenuHandler}><Link href="/stock-reports?tab=incorrect-stock">Stock Reports</Link></div> : null}
