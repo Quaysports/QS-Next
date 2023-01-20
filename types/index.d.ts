@@ -316,7 +316,11 @@ declare namespace sbt {
     }
 
     interface bookedUser {
-        [key: string]: boolean | "half"
+        [key: string]: HolidayOrSickBooking
+    }
+
+    interface HolidayOrSickBooking {
+        type:"holiday" | "sick", paid:boolean, duration:100 | 75 | 50 | 25
     }
 
     interface holidayDay {

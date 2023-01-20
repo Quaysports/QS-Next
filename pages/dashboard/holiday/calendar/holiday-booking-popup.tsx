@@ -51,10 +51,10 @@ export default function HolidayBookingPopup({dateString}:{dateString:sbt.holiday
                 days[startDay + i].booked ??= {}
                 if (halfDay) {
                     newCalendar.booked[staffMember] += 0.5
-                    days[startDay + i].booked![staffMember] = "half"
+                    days[startDay + i].booked![staffMember] = {type: "holiday", paid:true, duration: 50}
                 } else {
                     newCalendar.booked[staffMember] += 1
-                    days[startDay + i].booked![staffMember] = true
+                    days[startDay + i].booked![staffMember] = {type: "holiday", paid:true, duration: 100}
                 }
             } else {
                 dispatchNotification({
