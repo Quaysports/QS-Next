@@ -4,6 +4,7 @@ import ColumnLayout from "../../components/layouts/column-layout";
 import {useSelector} from "react-redux";
 import {selectUser} from "../../store/session-slice";
 import Geoff from "./geoff";
+import Richard from "./richard";
 
 export default function DevPage() {
     const user = useSelector(selectUser)
@@ -13,7 +14,7 @@ export default function DevPage() {
             <Menu><></></Menu>
             <ColumnLayout>
                 {user?.username === "Geoff" ? <Geoff/> : <></>}
-                {user?.username === "Richard" ? <Geoff/> : <></>}
+                {user?.username === "Richard" ? <Richard/> : <></>}
             </ColumnLayout>
         </OneColumn>
     )
