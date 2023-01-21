@@ -160,9 +160,6 @@ export const getRotasForRowPrint = (state:rotaWrapper, rota:PublishedRota | unde
     if(!rota) return undefined
     let pos = state.rota.publishedRotas.findIndex(stateRota => stateRota.weekData.monday === rota.weekData.monday)
     if(pos === -1) return undefined
-    console.log("rota pos", pos)
-    console.log("state length", state.rota.publishedRotas.length)
-    console.log("test", pos+1 >=state.rota.publishedRotas.length)
     if(pos+1 >=state.rota.publishedRotas.length) return [state.rota.publishedRotas[pos]]
     return state.rota.publishedRotas.slice(pos,2)
 }

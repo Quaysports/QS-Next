@@ -16,7 +16,17 @@ export default function CreateRota() {
     return (
         <div>
             <div className={styles.menu}>
-                <button onClick={() => {}}>Delete</button>
+                <button onClick={() => {
+                    let opts = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(template)
+                    }
+                    fetch("/api/rotas/delete-template", opts).then(()=>global.window.location.reload())
+
+                }}>Delete</button>
                 <button onClick={()=>{
                     dispatch(saveTemplate(inputRef.current && inputRef.current.value !== "" ? inputRef.current.value : Date.now().toString()))
                     dispatchNotification()
