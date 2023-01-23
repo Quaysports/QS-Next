@@ -12,7 +12,7 @@ export default function BrandInput() {
 
     return (
         <div>
-            <input defaultValue={item.brand} onBlur={(e) => {
+            <input defaultValue={item.brand || ""} onBlur={(e) => {
                 brandHandler(e.target.value)
             }}/>
         </div>

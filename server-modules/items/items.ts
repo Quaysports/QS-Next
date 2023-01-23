@@ -190,7 +190,7 @@ export const getBrands = async (filter = {}) => {
 }
 
 export const getTags = async () => {
-    const tags = await mongoI.findDistinct("New-Items", "tags")
+    const tags = await mongoI.findDistinct("New-Items", "tags", {tags:{$not:{$size:0}}})
     return tags ? tags : []
 }
 
