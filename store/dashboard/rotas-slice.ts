@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {User} from "../../server-modules/users/user";
 import {PublishedRota, Rota, UserHours, WeekData} from "../../server-modules/rotas/rotas";
+import {dispatchToast} from "../../components/toast/dispatch-toast";
 
 export type RotaUserPick = Pick<User, '_id' | 'username' | 'colour'>
 export interface rotaWrapper {
@@ -119,8 +120,8 @@ export const rotaSlice = createSlice({
                     body: JSON.stringify(template)
                 }
 
-                fetch('/api/rotas/update-template', opts).then(res => res.json()).then(data => {
-                    console.log(data)
+                fetch('/api/rotas/update-template', opts).then(res => res.json()).then(() => {
+                    dispatchToast({content:"Template Updated"})
                 })
             },
             publishRota(state){
@@ -133,8 +134,8 @@ export const rotaSlice = createSlice({
                     body: JSON.stringify(publishedRota)
                 }
 
-                fetch('/api/rotas/publish-rota', opts).then(res => res.json()).then(data => {
-                    console.log(data)
+                fetch('/api/rotas/publish-rota', opts).then(res => res.json()).then(() => {
+                    dispatchToast({content:"Template Published"})
                 })
             },
             editPublishedRota(state,action:PayloadAction<PublishedRota>){
