@@ -18,8 +18,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     let promises = []
 
-    console.log("Linnworks Update!")
-
     let dbUpdate = await updateItem(req.body)
     const item: schema.Item = req.body
     if (!dbUpdate.acknowledged) {
@@ -122,8 +120,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
     }
 
-    console.log("Linnworks Update 101!")
-
     let amazonTitle = {
         "pkRowId": guid(),
         "Source": "AMAZON",
@@ -147,7 +143,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     let websitesTitleString = 'inventoryItemTitles=' + JSON.stringify([amazonTitle, websiteTitle, ebayTitle]);
     promises.push(await updateLinnItem('//api/Inventory/UpdateInventoryItemTitles', websitesTitleString).catch(err => err))
-    console.log("Linnworks Update 201!")
 
     let amazonDesc = {
         "pkRowId": guid(),
@@ -172,11 +167,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     let descString = 'inventoryItemDescriptions=' + JSON.stringify([amazonDesc, websiteDesc, ebayDesc]);
     promises.push(await updateLinnItem('//api/Inventory/UpdateInventoryItemDescriptions', descString).catch(err => err))
-    console.log("Linnworks Update 301!")
 
     let titleString = `inventoryItemId=${item.linnId}&fieldName=Title&fieldValue=${fixedEncodeURIComponent(item.title)}`;
     await updateLinnItem('//api/Inventory/UpdateInventoryItemField', titleString).catch(err => err)
-    console.log("Linnworks Update 401!")
 
     for (let image in item.images) {
         let imageDetails = {
@@ -195,9 +188,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             : `http://141.195.190.47:4000/images/${item.SKU}/${item.images[imageKey].filename}`
 
         await updateItemImage(imageDetails).catch(err => err)
-        console.log("Linnworks Update 501!")
 
     }
-    console.log("Bunch of promises",promises)
     return await Promise.all(promises)
 }
