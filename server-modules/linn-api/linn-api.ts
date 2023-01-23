@@ -331,6 +331,7 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
             }
         }
         if(imageRes.data.ImageId) item.images[imageKey].id = imageRes.data.ImageId
+        if(imageRes.data.ImageUrl) item.images[imageKey].url = imageRes.data.ImageUrl
         results['Update Image'] = imageRes.code
     }
     await setData("New-Items", {SKU:item.SKU}, item)
