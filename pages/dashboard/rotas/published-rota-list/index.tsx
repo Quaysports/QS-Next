@@ -70,7 +70,7 @@ function Rota({rota}: { rota: PublishedRota }) {
                 <div>Week starting {new Date(rota.weekData.monday).toLocaleDateString('en-GB')}</div>
                 <div>Week Number: {rota.weekData.week}</div>
             </div>
-            <div className={styles["info-panel-rota-sidebar"]}>
+            <div className={styles["info-panel-rota-sidebar"]} style={{maxHeight:"initial"}}>
                 <InfoPanel rota={rota}/>
                 <RotaWeek rota={rota} weekData={rota.weekData} holiday={rota.holidays}/>
                 <PublishSidebar rota={rota} editable={false}/>
