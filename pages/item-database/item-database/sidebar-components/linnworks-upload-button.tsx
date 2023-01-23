@@ -15,6 +15,7 @@ export default function LinnworksUploadButton(){
             body: JSON.stringify(item)
         }
         fetch("/api/item-database/update-linnworks", opts)
+            .then(res => res.json())
             .then(res => console.log(res))
     }
 

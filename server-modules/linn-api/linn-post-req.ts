@@ -16,13 +16,19 @@ const postOpts = async (path: string) => {
         }
     }
 }
-export const postReq = (path: string, postData: string, withStatus?: boolean) => {
-    return new Promise<object>(async(resolve) => {
+
+interface DataWithStatus extends Object {
+    code:number
+    data:object
+}
+export const postReq = (path: string, postData: string, withStatus: boolean = false) => {
+    return new Promise<object | DataWithStatus>(async(resolve) => {
         let str = "";
         let postReq = https.request(await postOpts(path), res => {
             res.setEncoding('utf8');
             res.on('data', chunk => str += chunk);
             res.on('end', () => {
+                if(res.statusCode && res.statusCode >= 300) console.log(JSON.parse(str))
                 withStatus
                     ? resolve({code:res.statusCode,data:str !== "" ? JSON.parse(str) : {}})
                     : resolve(str !== "" ? JSON.parse(str) : {})
