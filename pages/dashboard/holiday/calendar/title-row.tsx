@@ -2,18 +2,17 @@ import styles from "./calendar.module.css";
 
 interface Props {
     year: number;
-    maxDays: number,
-    dayCellWidth:string
+    maxDays: number
 }
 
-export default function TitleRow({year, maxDays, dayCellWidth}: Props){
+export default function TitleRow({year, maxDays}: Props){
     let elements = [<div key={"year"} className={styles.title}>{year}</div>]
 
     for(let i = 0; i < maxDays; i++){
         elements.push(<TitleCell key={i} index={i}/>)
     }
 
-    return <div style={{gridTemplateColumns:`repeat(${maxDays + 1}, ${dayCellWidth})`}} className={styles.row}>{elements}</div>
+    return <div style={{gridTemplateColumns:`repeat(${maxDays + 1}, 1fr)`}} className={styles.row}>{elements}</div>
 }
 
 function TitleCell({index}: {index: number}){

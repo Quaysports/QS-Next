@@ -21,21 +21,37 @@
 }
 
 .menu{
-    grid-template-columns: 100px 120px 100px 100px;
+    grid-template-columns: 100px 120px 100px 100px 100px 260px;
 }
 
 .menu-collapsed {
-    grid-template-columns: 100px 100px 100px;
+    grid-template-columns: 100px 100px 100px 100px 260px;
+}
+
+.dot-key{
+    display: grid;
+    padding: 0 5px;
+    align-content: center;
+    grid-template-columns: auto auto auto;
+    grid-gap:10px;
+    background: var(--primary-table-cell-background);
+    border-radius: var(--primary-border-radius);
+}
+.dot-key-label {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items:center;
+    font-size: 0.8em;
 }
 
 .info-table {
     display:grid;
-    width: 430px;
+    width: 630px;
     grid-template-rows: auto;
 }
 .info-row {
     display:grid;
-    grid-template-columns: 20px 100px 100px 100px 100px;
+    grid-template-columns: 20px 100px 100px 100px 100px 100px 100px;
     padding:2px 5px;
     background: var(--primary-table-cell-background);
 }
@@ -51,6 +67,7 @@
 .info-cell{
     text-align: center;
 }
+
 /*------------------- create calendar popup -------------------*/
 .create-calendar-options {
     width:510px;

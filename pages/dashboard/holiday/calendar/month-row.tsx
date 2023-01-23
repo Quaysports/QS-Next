@@ -1,17 +1,17 @@
 import styles from "./calendar.module.css";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
-import HolidayBookingPopup from "./holiday-booking-popup";
-import UserDot from "./UserDot";
+import HolidayBookingPopup from "../calendar/holiday-booking-popup";
+import UserDot from "./user-dot";
 import {useSelector} from "react-redux";
 import {selectUser} from "../../../../store/session-slice";
+import {useRouter} from "next/router";
 
 interface Props {
     month: sbt.holidayMonth;
     maxDays: number;
-    dayCellWidth:string;
 }
 
-export default function MonthRow({ month, maxDays, dayCellWidth }: Props) {
+export default function MonthRow({ month, maxDays }: Props) {
 
     if(!month) return null
 
@@ -21,12 +21,13 @@ export default function MonthRow({ month, maxDays, dayCellWidth }: Props) {
         elements.push(<MonthCell key={i} index={i} month={month}/>)
     }
 
-    return <div style={{gridTemplateColumns:`repeat(${maxDays + 1}, ${dayCellWidth})`}} className={styles.row}>{elements}</div>
+    return <div style={{gridTemplateColumns:`repeat(${maxDays + 1}, 1fr)`}} className={styles.row}>{elements}</div>
 }
 
 function MonthCell({ index, month }: { index: number, month:sbt.holidayMonth }) {
 
     const session = useSelector(selectUser)
+    const router = useRouter()
 
     const {offset, days} = month
     const loop = Math.floor(index / 7)
@@ -53,6 +54,7 @@ function MonthCell({ index, month }: { index: number, month:sbt.holidayMonth }) 
         let booked = month.days[index - offset]?.booked
         if(booked){
             for(const [user, value] of Object.entries(booked)){
+                if(router.query.type === "both" || router.query.type === value.type)
                 dots.push(<UserDot key={user} booked={value} user={user}/>)
             }
         }

@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
 import InfoPanel from "./info-panel";
 import CreateCalendarPopup from "./create-calendar-popup";
+import UserDot from "../calendar/user-dot";
 
 export default function HolidayMenu(){
 
@@ -40,7 +41,7 @@ export default function HolidayMenu(){
                     newDashboardSettings.holiday.location = e.target.value as "shop" | "online"
                     dispatch(updateDashboardSetting(newDashboardSettings))
 
-                    await router.push({query:{tab:"holidays", location:e.target.value}})
+                    await router.push({query:{tab:"holidays", location:e.target.value, type:router.query.type}})
                 }}>
             <option value={"shop"}>Shop</option>
             <option value={"online"}>Online</option>
@@ -49,5 +50,16 @@ export default function HolidayMenu(){
             setYear(Number(e.target.value))
             await router.push({query:{...router.query, ...{year:e.target.value}}})
         }}>{yearOptions}</select>
+        <select value={router.query.type}
+                onChange={(e)=>router.push({pathname:router.pathname, query:{...router.query, type:e.target.value}})}>
+            <option value={"holiday"}>Holiday</option>
+            <option value={"sick"}>Sick</option>
+            <option value={"both"}>Both</option>
+        </select>
+        <div className={styles["dot-key"]}>
+            <div className={styles["dot-key-label"]}>Holiday: <UserDot user={"example"} booked={{duration: 100, paid: true, type:"holiday"}}/></div>
+            <div className={styles["dot-key-label"]}>Paid Sick: <UserDot user={"example"} booked={{duration: 100, paid: true, type:"sick"}}/></div>
+            <div className={styles["dot-key-label"]}>Un-paid Sick: <UserDot user={"example"} booked={{duration: 100, paid: false, type:"sick"}}/></div>
+        </div>
     </div>
 }
