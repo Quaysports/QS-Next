@@ -1,9 +1,17 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {deleteImage} from "../../../server-modules/items/items";
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse){
-    let body = JSON.parse(req.body)
-    res.status(200).send(
-        await deleteImage(body.id, body.item)
-    )
+    console.log(req.body)
+    const opt = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "token": "9b9983e5-30ae-4581-bdc1-3050f8ae91cc"
+        },
+        body:JSON.stringify(req.body)
+    }
+
+    const result = await fetch('http://localhost:4000/Items/DeleteImage', opt)
+
+    res.send(result)
 }
