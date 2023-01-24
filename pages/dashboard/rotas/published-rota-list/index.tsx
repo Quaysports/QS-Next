@@ -11,7 +11,7 @@ import PublishRota from "../publish";
 import RotaWeek from "../rota";
 import PublishSidebar from "../publish/publish-sidebar";
 import {useDispatch, useSelector} from "react-redux";
-import InfoPanel from "../publish/publish-info-panel";
+import InfoPanel from "../info-panel";
 
 export default function PublishedRotaList() {
 

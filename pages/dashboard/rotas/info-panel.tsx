@@ -1,5 +1,5 @@
-import {Rota} from "../../../../server-modules/rotas/rotas";
-import styles from "../rotas.module.css";
+import {Rota} from "../../../server-modules/rotas/rotas";
+import styles from "./rotas.module.css";
 
 export default function InfoPanel({rota}:{rota:Rota}) {
 
