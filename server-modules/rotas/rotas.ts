@@ -64,28 +64,25 @@ export const getRotaNames = async (query: string) => {
 }
 
 export const publishRota = async (data:PublishedRota) => {
+    if(data._id !== undefined) delete data._id;
     return await mongoI.setData(
         "Published-Rotas",
         {$and: [{"weekData.monday": {$eq: data.weekData.monday}}, {location: data.location}]},
-        data
-    )
+        data)
 }
 
 export const getPublishedRotas = async (location:string, date:string) => {
-    let query = {location:location, "weekData.6":{$gt:  date}}
-    console.log(query)
-    return await mongoI.find<PublishedRota>("Published-Rotas", {location:location, "weekData.monday":{$gt:  date}}, {}, {"weekData.week": 1})
+    return await mongoI.find<PublishedRota>(
+        "Published-Rotas",
+        {location:location, "weekData.monday":{$gt:  date}},
+        {},
+        {"weekData.week": 1})
 }
 
 export const deletePublishedRotas = async (rota:PublishedRota) => {
-    let query;
-    if (rota._id !== undefined){
-        query = {_id: new ObjectId(rota._id)}
-        delete rota._id
-    } else {
-        query = {$and: [{"weekData.monday": {$eq: rota.weekData.monday}}, {location: rota.location}]}
-    }
-    return await mongoI.deleteOne("Published-Rotas", query)
+    return await mongoI.deleteOne(
+        "Published-Rotas",
+        {$and: [{"weekData.monday": {$eq: rota.weekData.monday}}, {location: rota.location}]})
 }
 
 export const updateRotaTemplate = async (data:Rota) => {
