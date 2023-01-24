@@ -225,7 +225,6 @@ export const itemDatabaseSlice = createSlice({
             setItemImages: (state, action: PayloadAction<{ image: string, index: keyof schema.Images, extension: string }>) => {
                 let {image, index, extension} = action.payload
                 let filename = `${index === "main" ? "0" : index}.${extension}`
-                console.log(index)
                 state.item.images[index] = {
                     ...state.item.images[index],
                     ...{filename: filename}
@@ -430,18 +429,18 @@ function itemTemplate(): schema.Item {
         discounts: {magento: 0, shop: 0},
         extendedProperties: [],
         images: {
-            image1: {filename: "", id: "", link: ""},
-            image2: {filename: "", id: "", link: ""},
-            image3: {filename: "", id: "", link: ""},
-            image4: {filename: "", id: "", link: ""},
-            image5: {filename: "", id: "", link: ""},
-            image6: {filename: "", id: "", link: ""},
-            image7: {filename: "", id: "", link: ""},
-            image8: {filename: "", id: "", link: ""},
-            image9: {filename: "", id: "", link: ""},
-            image10: {filename: "", id: "", link: ""},
-            image11: {filename: "", id: "", link: ""},
-            main: {filename: "", id: "", link: ""}
+            image1: {filename: "", id: "", url:"", link: ""},
+            image2: {filename: "", id: "", url:"", link: ""},
+            image3: {filename: "", id: "", url:"", link: ""},
+            image4: {filename: "", id: "", url:"", link: ""},
+            image5: {filename: "", id: "", url:"", link: ""},
+            image6: {filename: "", id: "", url:"", link: ""},
+            image7: {filename: "", id: "", url:"", link: ""},
+            image8: {filename: "", id: "", url:"", link: ""},
+            image9: {filename: "", id: "", url:"", link: ""},
+            image10: {filename: "", id: "", url:"", link: ""},
+            image11: {filename: "", id: "", url:"", link: ""},
+            main: {filename: "", id: "", url:"", link: ""}
         },
         isComposite: false,
         isListingVariation: false,

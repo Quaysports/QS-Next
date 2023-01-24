@@ -598,6 +598,7 @@ declare namespace linn {
 declare namespace schema {
     interface Image {
         id: string;
+        url:string;
         filename: string;
         link: string;
     }
