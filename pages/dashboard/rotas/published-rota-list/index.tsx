@@ -64,7 +64,7 @@ function Rota({rota}: { rota: PublishedRota }) {
                     <button onClick={() => {
                         if(!window) return
                         window.open("/print?app=rotas&print=grid", "_blank")
-                        window.localStorage.setItem("rota", JSON.stringify(rota))
+                        window.localStorage.setItem("rota", JSON.stringify(printRowData))
                     }}>Print Grid</button>
                 </div>
                 <div>Week starting {new Date(rota.weekData.monday).toLocaleDateString('en-GB')}</div>

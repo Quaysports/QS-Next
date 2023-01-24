@@ -6,28 +6,24 @@
 
 .week {
     background: white;
-    display:grid;
-    grid-template-rows: auto;
     grid-gap: 10px;
     padding:10px;
     color:black;
     width:fit-content;
 }
 
-
 @page {
-    size: landscape;
-    margin: 10mm;
+    size: A4 landscape;
+    margin: 0;
     padding: 0;
 }
-
-@media print {
-    .local-body {
-        width: 210mm;
-        height: 297mm;
-        -webkit-print-color-adjust:exact !important;
-        print-color-adjust:exact !important;
-    }
+.local-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 297mm;
+    height: 210mm;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
 }
 
 
