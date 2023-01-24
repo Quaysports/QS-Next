@@ -15,7 +15,7 @@ export default function LinnworksUploadButton(){
             },
             body: JSON.stringify(item)
         }
-        dispatchNotification({type:"loading"})
+        dispatchNotification({type:"loading", content:"Uploading to Linnworks, please wait"})
         fetch("/api/item-database/update-linnworks", opts)
             .then(res => res.json())
             .then(() => {
