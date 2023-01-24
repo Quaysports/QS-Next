@@ -1,8 +1,8 @@
 import styles from "../../item-database.module.css"
-import {DragEvent, useState} from 'react'
+import {DragEvent} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
-import {selectItem, setItemImages} from "../../../../store/item-database/item-database-slice";
+import {selectItem, setItem, setItemImages} from "../../../../store/item-database/item-database-slice";
 import {dispatchToast} from "../../../../components/toast/dispatch-toast";
 
 interface Props {
@@ -83,7 +83,16 @@ export default function ImageContainer({imageTag}: Props) {
             body: JSON.stringify({id: key, item: item})
         }
         fetch('api/item-database/delete-image', opts)
-            .then((res) => console.log(res))
+            .then((res) => res.json())
+            .then((res) => {
+                if(res != 400) {
+                    dispatch(setItem(res))
+                    dispatchToast({content:"Image deleted"})
+                } else {
+                    dispatchToast({content:"Image deletion failed"})
+                }
+                console.log(res)
+        })
     }
 
     return item.images[key]?.filename
@@ -102,6 +111,7 @@ export default function ImageContainer({imageTag}: Props) {
             <img src={imageSourceHandler(item, imageTag, key)} alt={"Image " + imageTag}/>
         </div>
         : <div className={`${styles["image-drop-box"]}`}
+               style={{background:"unset"}}
                onDragLeave={(e) => {
                    dragLeaveHandler(e)
                }}
