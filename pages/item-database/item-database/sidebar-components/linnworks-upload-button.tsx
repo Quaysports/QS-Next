@@ -18,8 +18,7 @@ export default function LinnworksUploadButton(){
         dispatchNotification({type:"loading"})
         fetch("/api/item-database/update-linnworks", opts)
             .then(res => res.json())
-            .then(res => {
-                console.log(res)
+            .then(() => {
                 global.window.location.reload()
             })
 
