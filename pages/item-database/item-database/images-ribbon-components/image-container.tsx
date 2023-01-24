@@ -43,7 +43,6 @@ export default function ImageContainer({imageTag}: Props) {
                         index: index,
                         extension: imageExtension
                     }))
-                    setImage(event.target?.result?.toString())
                 }
                 fileReader.readAsDataURL(image)
             } else {
