@@ -50,7 +50,7 @@ export default function DatabaseSearchBar({handler}: Props) {
 
     function searchTypeHandler(checked: boolean, type: string) {
         if (type === "SKU" && checked) setSearchType("SKU")
-        if (type === "TITLE" && checked) setSearchType("TITLE")
+        if (type === "title" && checked) setSearchType("title")
     }
 
     function searchArray(value: string, searchResults: DatabaseSearchItem[]) {
@@ -123,7 +123,7 @@ export default function DatabaseSearchBar({handler}: Props) {
                 type="radio"
                 name="search-radio"
                 id={"title-radio"}
-                onChange={e => searchTypeHandler(e.target.checked, "TITLE")}
+                onChange={e => searchTypeHandler(e.target.checked, "title")}
             />
             <input
                 className={styles["search-bar-input"]}
