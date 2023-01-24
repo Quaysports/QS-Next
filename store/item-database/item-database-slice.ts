@@ -246,6 +246,7 @@ export const itemDatabaseSlice = createSlice({
                 fetch("api/item-database/upload-image", opts).then(res => {
                     if (res.ok) {
                         console.log("Uploaded image")
+                        state.item.images[index].filename = filename
                     } else {
                         throw new Error(`Status: ${res.status}, ${res.statusText}`)
                     }
