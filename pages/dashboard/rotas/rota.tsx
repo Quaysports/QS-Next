@@ -5,26 +5,26 @@ import {useDispatch} from "react-redux";
 import {updateTemplate} from "../../../store/dashboard/rotas-slice";
 import {getTinyDate} from "../../../components/rota-utils/time-utils";
 
-export default function RotaWeek({rota, weekData, holiday}: { rota: Rota, weekData:WeekData | null, holiday:sbt.holidayDay[] | null }) {
+export default function RotaWeek({rota, weekData, holiday, edit=true}: { rota: Rota, weekData:WeekData | null, holiday:sbt.holidayDay[] | null, edit?: boolean }) {
 
     if(!rota) return null
 
     let days = []
     for (let i in rota.rota) {
-        days.push(<RotaDay key={i} dayOfWeek={Number(i)} userHours={rota.rota[i]} holiday={holiday} weekData={weekData}/>)
+        days.push(<RotaDay key={i} dayOfWeek={Number(i)} userHours={rota.rota[i]} holiday={holiday} weekData={weekData} edit={edit}/>)
     }
 
     return <div className={styles["week"]}>{days}</div>
 }
 
-function RotaDay({dayOfWeek, userHours, weekData, holiday}: { dayOfWeek: number, userHours: UserHours[], weekData:WeekData | null, holiday:sbt.holidayDay[] | null }) {
+function RotaDay({dayOfWeek, userHours, weekData, holiday, edit}: { dayOfWeek: number, userHours: UserHours[], weekData:WeekData | null, holiday:sbt.holidayDay[] | null, edit:boolean }) {
 
     if(!userHours) return null
 
     let userRows = []
 
     for (let i in userHours) {
-        userRows.push(<UserRow key={i} userIndex={Number(i)} userHours={userHours[i]} dayOfWeek={dayOfWeek} holiday={holiday}/>)
+        userRows.push(<UserRow key={i} userIndex={Number(i)} userHours={userHours[i]} dayOfWeek={dayOfWeek} holiday={holiday} edit={edit}/>)
     }
 
     return (
@@ -55,7 +55,7 @@ function DayTitle({dayOfWeek, weekData}: { dayOfWeek: number, weekData:WeekData 
     )
 }
 
-function UserRow({userIndex, userHours, dayOfWeek, holiday}: { userIndex: number, userHours: UserHours, dayOfWeek: number, holiday:sbt.holidayDay[] | null }) {
+function UserRow({userIndex, userHours, dayOfWeek, holiday, edit}: { userIndex: number, userHours: UserHours, dayOfWeek: number, holiday:sbt.holidayDay[] | null, edit:boolean }) {
 
     if(!userHours) return null
 
@@ -79,6 +79,7 @@ function UserRow({userIndex, userHours, dayOfWeek, holiday}: { userIndex: number
             <div key={k}
                  className={`${styles["day-cell"]} ${styles["pickable"]}`}
                  onClick={() => {
+                     if(!edit) return
                      if (tracking) {
                          let newUserHours = {...userHours}
                          newUserHours.hours = hours
