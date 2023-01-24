@@ -12,7 +12,6 @@ interface Props {
 export default function ImageContainer({imageTag}: Props) {
 
     const item = useSelector(selectItem)
-    const [image, setImage] = useState<string | undefined>(undefined)
     const dispatch = useDispatch()
     const key: keyof schema.Images = imageTag === "Main" ? "main" : "image" + imageTag as keyof schema.Images
 
@@ -68,15 +67,11 @@ export default function ImageContainer({imageTag}: Props) {
         dispatchToast({content:"Delete old image first before dropping a new one", })
     }
 
-    function imageSourceHandler(item: schema.Item, imageTag: string, image: string | undefined, key: keyof schema.Images) {
+    function imageSourceHandler(item: schema.Item, imageTag: string, key: keyof schema.Images) {
 
-        if (!item.images) return image
-
-        return item.images[key] ?
-            item.images[key].link
+        return item.images[key].link
                 ? `http://192.168.1.200:4000/images/${item.images[key].link!.replace(/([ \/])+/g, "-")}/${item.images[key].filename}`
                 : `http://192.168.1.200:4000/images/${item.SKU.replace(/([ \/])+/g, "-")}/${item.images[key].filename}`
-            : image
     }
 
     function deleteImageHandler(key: keyof schema.Images, item: schema.Item) {
@@ -89,11 +84,10 @@ export default function ImageContainer({imageTag}: Props) {
         }
         fetch('api/item-database/delete-image', opts)
             .then((res) => console.log(res))
-        setImage(undefined)
     }
 
     return item.images[key]?.filename
-        ? <div className={`${styles["image-drop-box"]} ${image ? styles["image-dropped"] : ""}`}
+        ? <div className={`${styles["image-drop-box"]} ${styles["image-dropped"]}`}
                onDragLeave={(e) => {
                    dragLeaveHandler(e)
                }}
@@ -105,9 +99,9 @@ export default function ImageContainer({imageTag}: Props) {
                  }}>
                 X
             </div>
-            <img src={imageSourceHandler(item, imageTag, image, key)} alt={"Image " + imageTag}/>
+            <img src={imageSourceHandler(item, imageTag, key)} alt={"Image " + imageTag}/>
         </div>
-        : <div className={`${styles["image-drop-box"]} ${image ? styles["image-dropped"] : ""}`}
+        : <div className={`${styles["image-drop-box"]}`}
                onDragLeave={(e) => {
                    dragLeaveHandler(e)
                }}
