@@ -38,12 +38,12 @@ export default function ImageContainer({imageTag}: Props) {
             if (image.type === "image/jpeg" || image.type === "image/png") {
                 const fileReader = new FileReader()
                 fileReader.onload = (event) => {
-                    setImage(event.target?.result?.toString())
                     dispatch(setItemImages({
                         image: event.target!.result!.toString(),
                         index: index,
                         extension: imageExtension
                     }))
+                    setImage(event.target?.result?.toString())
                 }
                 fileReader.readAsDataURL(image)
             } else {
