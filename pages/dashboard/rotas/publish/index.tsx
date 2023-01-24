@@ -13,7 +13,7 @@ import {useEffect, useState} from "react";
 import {getWeek, toDateInputValue} from "../../../../components/rota-utils/time-utils";
 import {selectCalendar} from "../../../../store/dashboard/holiday-slice";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
-import InfoPanel from "./publish-info-panel";
+import InfoPanel from "../info-panel";
 
 export default function PublishRota() {
     const template = useSelector(selectTemplate)

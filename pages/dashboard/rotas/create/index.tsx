@@ -4,6 +4,7 @@ import {saveTemplate, selectTemplate} from "../../../../store/dashboard/rotas-sl
 import styles from "../rotas.module.css";
 import {useRef} from "react";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
+import InfoPanel from "../info-panel";
 
 export default function CreateRota() {
 
@@ -39,7 +40,7 @@ export default function CreateRota() {
                 />
             </div>
         <div className={styles["rota-container"]}>
-
+            <InfoPanel rota={template}/>
             <RotaWeek rota={template}  holiday={null} weekData={null}/>
         </div>
         </div>
