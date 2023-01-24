@@ -72,7 +72,7 @@ function Rota({rota}: { rota: PublishedRota }) {
             </div>
             <div className={styles["info-panel-rota-sidebar"]} style={{maxHeight:"initial"}}>
                 <InfoPanel rota={rota}/>
-                <RotaWeek rota={rota} weekData={rota.weekData} holiday={rota.holidays}/>
+                <RotaWeek rota={rota} weekData={rota.weekData} holiday={rota.holidays} edit={false}/>
                 <PublishSidebar rota={rota} editable={false}/>
             </div>
         </div>
