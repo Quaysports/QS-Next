@@ -13,16 +13,19 @@
 }
 
 @page {
-    size: A4 landscape;
+    size: A4 portrait;
     margin: 0;
-    padding: 20px;
+    padding: 0;
 }
 .local-body {
     display: grid;
+    align-content: center;
+    justify-content: center;
     background:white;
-    grid-template-columns: 1fr 1fr;
-    width: 297mm;
-    height: 210mm;
+    grid-template-rows: auto 1fr;
+    grid-gap:10px;
+    width: 210mm;
+    height: 297mm;
     -webkit-print-color-adjust:exact !important;
     print-color-adjust:exact !important;
 }
