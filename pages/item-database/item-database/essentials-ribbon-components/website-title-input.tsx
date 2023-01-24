@@ -13,7 +13,7 @@ export default function WebsiteTitleInput() {
 
     return (
         <div>
-            <input className={styles["title-inputs"]} defaultValue={item.webTitle || ""} onBlur={(e) => {
+            <input className={styles["title-inputs"]} defaultValue={item.webTitle} onBlur={(e) => {
                 websiteTitleHandler(e.target.value)
             }}/>
         </div>

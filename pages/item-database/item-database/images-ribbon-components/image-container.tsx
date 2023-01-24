@@ -3,6 +3,7 @@ import {DragEvent, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
 import {selectItem, setItemImages} from "../../../../store/item-database/item-database-slice";
+import {dispatchToast} from "../../../../components/toast/dispatch-toast";
 
 interface Props {
     imageTag: string;
@@ -23,7 +24,7 @@ export default function ImageContainer({imageTag}: Props) {
         event.currentTarget.style.background = "var(--primary-color)"
     }
 
-    function onDropHandler(event: DragEvent<HTMLDivElement>, index: keyof schema.Images) {
+    function newImageDropHandler(event: DragEvent<HTMLDivElement>, index: keyof schema.Images) {
         event.stopPropagation()
         event.preventDefault()
         let image = event.dataTransfer.files[0]
@@ -37,12 +38,12 @@ export default function ImageContainer({imageTag}: Props) {
             if (image.type === "image/jpeg" || image.type === "image/png") {
                 const fileReader = new FileReader()
                 fileReader.onload = (event) => {
-                    setImage(event.target?.result?.toString())
                     dispatch(setItemImages({
                         image: event.target!.result!.toString(),
                         index: index,
                         extension: imageExtension
                     }))
+                    setImage(event.target?.result?.toString())
                 }
                 fileReader.readAsDataURL(image)
             } else {
@@ -59,7 +60,16 @@ export default function ImageContainer({imageTag}: Props) {
         event.currentTarget.style.background = ""
     }
 
-    function imageSourceHandler(item: schema.Item, imageTag:string, image: string | undefined, key:keyof schema.Images) {
+    function oldImageDropHandler(event: DragEvent<HTMLDivElement>){
+        event.stopPropagation()
+        event.preventDefault()
+        event.currentTarget.style.boxShadow = ""
+        event.currentTarget.style.transform = "scale(1)"
+        event.currentTarget.style.background = ""
+        dispatchToast({content:"Delete old image first before dropping a new one", })
+    }
+
+    function imageSourceHandler(item: schema.Item, imageTag: string, image: string | undefined, key: keyof schema.Images) {
 
         if (!item.images) return image
 
@@ -70,30 +80,40 @@ export default function ImageContainer({imageTag}: Props) {
             : image
     }
 
-    function deleteImageHandler(key:keyof schema.Images, item:schema.Item) {
+    function deleteImageHandler(key: keyof schema.Images, item: schema.Item) {
         const opts = {
             method: "POST",
-            headers:{
-                'Content-Type':'application/json'
+            headers: {
+                'Content-Type': 'application/json'
             },
-            body:JSON.stringify({id:key, item:item})
+            body: JSON.stringify({id: key, item: item})
         }
         fetch('api/item-database/delete-image', opts)
-            .then((res) =>  console.log(res))
+            .then((res) => console.log(res))
         setImage(undefined)
     }
 
-    return (
-        <div
-            onDragLeave={(e) => {
-                dragLeaveHandler(e)
-            }}
-            onDragOver={(e) => dragOverHandler(e)}
-            onDrop={(e) => onDropHandler(e, key)}
-            className={`${styles["image-drop-box"]} ${image ? styles["image-dropped"] : ""}`}
-        >
-            {item.images[key]?.filename ? <><div className={`${styles["image-delete-button"]} button`} onClick={() => {deleteImageHandler(key, item)}}>X</div>
-                <img src={imageSourceHandler(item, imageTag, image, key)} alt={"Image " + imageTag}></img></> : <div>{"Image " + imageTag}</div>}
+    return item.images[key]?.filename
+        ? <div className={`${styles["image-drop-box"]} ${image ? styles["image-dropped"] : ""}`}
+               onDragLeave={(e) => {
+                   dragLeaveHandler(e)
+               }}
+               onDragOver={(e) => dragOverHandler(e)}
+               onDrop={(e) => oldImageDropHandler(e)}>
+            <div className={`${styles["image-delete-button"]} button`}
+                 onClick={() => {
+                     deleteImageHandler(key, item)
+                 }}>
+                X
+            </div>
+            <img src={imageSourceHandler(item, imageTag, image, key)} alt={"Image " + imageTag}/>
         </div>
-    )
+        : <div className={`${styles["image-drop-box"]} ${image ? styles["image-dropped"] : ""}`}
+               onDragLeave={(e) => {
+                   dragLeaveHandler(e)
+               }}
+               onDragOver={(e) => dragOverHandler(e)}
+               onDrop={(e) => newImageDropHandler(e, key)}>
+            {"Image " + imageTag}
+        </div>
 }

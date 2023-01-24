@@ -13,7 +13,7 @@ export default function TitleInput() {
 
     return (
         <div>
-            <input className={styles["title-inputs"]} defaultValue={item.title || ""}
+            <input className={styles["title-inputs"]} defaultValue={item.title}
                    onBlur={(e) => titleHandler(e.target.value)}/>
         </div>
     )
