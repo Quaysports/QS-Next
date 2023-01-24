@@ -7,21 +7,24 @@ export default function PrintRotaGrid() {
     if(!global.window) return null
 
     let rotaString = global.window.localStorage.getItem("rota")
-    if (!rotaString) return null
+    if(!rotaString) return null
 
-    const rota = JSON.parse(rotaString)
+    const rotas = JSON.parse(rotaString)
+
+    let printRotas = []
+    for(let rota of rotas) {
+        printRotas.push(<div className={styles.week}>
+            <div className={styles.info}>
+                <div>Week Start: {new Date(rota.weekData.monday).toDateString()}</div>
+                <div>Week Number: {rota.weekData.week}</div>
+            </div>
+            <RotaWeek holiday={rota.holidays} rota={rota} weekData={rota.weekData}/>
+            <WeekNotes rota={rota}/>
+        </div>)
+    }
 
     return (
-        <div className={styles["local-body"]}>
-            <div className={styles.week}>
-                <div className={styles.info}>
-                    <div>Week Start: {new Date(rota.weekData.monday).toDateString()}</div>
-                    <div>Week Number: {rota.weekData.week}</div>
-                </div>
-                <RotaWeek holiday={rota.holidays} rota={rota} weekData={rota.weekData}/>
-                <WeekNotes rota={rota}/>
-            </div>
-        </div>
+        <div className={styles["local-body"]}>{printRotas}</div>
     )
 }
 
