@@ -97,7 +97,7 @@ export const itemDatabaseSlice = createSlice({
         },
         reducers: {
             setItem: (state, action) => {
-                state.item = {...itemTemplate(), ...action.payload}
+                state.item = action.payload
             },
             setItemBrand: (state, action: PayloadAction<string>) => {
                 state.item.brand = action.payload
