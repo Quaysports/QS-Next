@@ -10,7 +10,7 @@ export default function ToastWrapper() {
     const element = useRef<HTMLDivElement>(null)
 
     const [toastContent, setToastContent] = useState<Options & {key:string}| undefined>()
-    const [toastRender, setToastRender] = useState<{ [key: string]: { duration: number, options: Options } }>({})
+    const [toastRender, setToastRender] = useState<{ [key: string]: Options  }>({})
 
 
     useEffect(() => {
@@ -23,7 +23,7 @@ export default function ToastWrapper() {
     useEffect(() => {
         if (Object.keys(toastRender).length === 0) return
         const key = Object.keys(toastRender)[0]
-        setToastContent({...toastRender[key].options, key: key})
+        setToastContent({...toastRender[key], key: key})
     }, [toastRender])
 
     function toastAnimationHandler(key:string){
@@ -34,7 +34,7 @@ export default function ToastWrapper() {
     function toastEventHandler(e: Event) {
         setToastRender(msg => ({
                 ...msg,
-                ...{[guid()]: {duration: 5, options: (e as CustomEvent).detail as Options}}
+                ...{[guid()]: (e as CustomEvent).detail as Options}
             })
         )
     }
