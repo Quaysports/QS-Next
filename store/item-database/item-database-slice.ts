@@ -236,7 +236,6 @@ export const itemDatabaseSlice = createSlice({
                     filename: filename,
                     image: image
                 }
-                state.item.images[index].filename = filename
                 const opts = {
                     headers: {
                         "Content-Type": "application/json",
@@ -254,6 +253,7 @@ export const itemDatabaseSlice = createSlice({
                     .catch((error) => {
                         dispatchNotification({type: "alert", content: error.message, title: "Upload Failed"})
                     })
+                state.item.images[index].filename = filename
             },
             setTags: (state, action: PayloadAction<string[]>) => {
                 state.tags = action.payload

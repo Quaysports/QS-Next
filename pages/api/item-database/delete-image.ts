@@ -1,6 +1,8 @@
 import {NextApiRequest, NextApiResponse} from "next";
+import {getItem} from "../../../server-modules/items/items";
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse){
+    const SKU = req.body.item.SKU
     const opt = {
         method: 'POST',
         headers: {
@@ -11,7 +13,12 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
     }
 
     
-    const result = await fetch('http://localhost:4000/Items/DeleteImage', opt)
+    const json = await fetch('http://localhost:4000/Items/DeleteImage', opt)
+    const result = await json.json()
+    if(result.status === "Deleted"){
+        res.send(await getItem({SKU:SKU}))
+    } else {
+        res.send(400)
+    }
 
-    res.send(result)
 }
