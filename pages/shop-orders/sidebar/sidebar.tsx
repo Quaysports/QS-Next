@@ -23,7 +23,7 @@ export default function SideBar() {
         for (const i in sideBarContent.content) {
             let sideBarText = `${Object.keys(sideBarContent.content[i])}(${Object.values(sideBarContent.content[i])})`
             elementArray.push(
-                <SidebarButton className={`${styles["sidebar-rows"]} ${"button"}`} key={"sidebar" + i}
+                <SidebarButton className={`${styles["sidebar-rows"]} button`} key={"sidebar" + i}
                                onClick={() => router.push({query: {...router.query, index: i, brand: "All Items"}})}>
                     {sideBarText}
                 </SidebarButton>

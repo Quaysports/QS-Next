@@ -1,6 +1,7 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 
 import {LinnOrdersSQLResult} from "./orders";
+import {sbt} from "../../types";
 
 export const processNewOrder = async (data:LinnOrdersSQLResult[]) => {
     let arr = []

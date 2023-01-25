@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import styles from "./css/tag.module.css"
+import {schema} from "../../../types";
 
 export default function Tag() {
 

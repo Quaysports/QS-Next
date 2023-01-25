@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {rodLocationObject} from "../../pages/item-database";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
+import {schema} from "../../types";
 
 /**
  * @property {itemDatabaseState} itemDatabase
@@ -490,7 +491,7 @@ function itemTemplate(): schema.Item {
         prices: {amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0, shop: 0},
         shelfLocation: {letter: "", number: "", prefix: ""},
         shortDescription: "",
-        stock: {checkedDate: "", default: 0, minimum: 0, total: 0, value: 0, warehouse: 0},
+        stock: {default: 0, minimum: 0, total: 0, value: 0, warehouse: 0},
         stockHistory: [],
         supplier: "",
         suppliers: [],

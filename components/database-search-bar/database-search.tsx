@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react"
 import styles from './database-search-bar.module.css'
+import {schema} from "../../types";
 
 /**
  * @property {handler} handler - Function passed in to receive search result for further processing.

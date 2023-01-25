@@ -1,6 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {selectItem, selectTags, setItemTags} from "../../../../store/item-database/item-database-slice";
 import styles from "../../item-database.module.css"
+import {schema} from "../../../../types";
 
 export default function TagsCheckboxList(){
 

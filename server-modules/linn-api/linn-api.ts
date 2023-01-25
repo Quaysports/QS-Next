@@ -3,6 +3,7 @@ import {updateItem} from "../items/items";
 import {guid} from "../core/core";
 import {jariloHtml} from "../../components/jarilo-template";
 import {setData} from "../mongo-interface/mongo-interface";
+import {linn, schema} from "../../types";
 
 export const getLinnChannelPrices = async (id: string) => {
     return await postReq(

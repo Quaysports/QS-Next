@@ -3,6 +3,7 @@ import UserDot from "../user-dot";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCalendar, updateHolidayCalendar} from "../../../../../store/dashboard/holiday-slice";
 import {useRouter} from "next/router";
+import {sbt} from "../../../../../types";
 
 export default function UserList({dateString}:{dateString:sbt.holidayDay["date"]}){
 

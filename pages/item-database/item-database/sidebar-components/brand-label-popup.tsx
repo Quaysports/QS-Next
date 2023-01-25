@@ -2,6 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectItem, setItemBrandLabel} from "../../../../store/item-database/item-database-slice";
 import {useEffect, useState} from "react";
 import styles from '../../item-database.module.css'
+import {schema} from "../../../../types";
 
 interface Props {
     print: (x: string, item:schema.Item) => void

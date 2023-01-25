@@ -4,6 +4,7 @@ import {UserOptions} from "./index";
 import {useDispatch, useSelector} from "react-redux";
 import {selectNewBooking, setNewBooking, submitNewBooking} from "../../../../../store/dashboard/holiday-slice";
 import {toDateInputValue} from "../../../../../components/rota-utils/time-utils";
+import {sbt} from "../../../../../types";
 
 interface Props {
     dateString: sbt.holidayDay["date"]

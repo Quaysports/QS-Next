@@ -9,6 +9,7 @@ import LinnworksUploadButton from "./sidebar-components/linnworks-upload-button"
 import NewTagPopUp from "./sidebar-components/new-tag-popup";
 import ImportDetailsPopUp from "./sidebar-components/import-details-popup";
 import {jariloHtml} from "../../../components/jarilo-template";
+import {schema} from "../../../types";
 
 /**
  * Side Bar Component

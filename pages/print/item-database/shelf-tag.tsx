@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import styles from "./css/shelf-tag.module.css";
+import {schema} from "../../../types";
 
 export default function ShelfTag() {
 

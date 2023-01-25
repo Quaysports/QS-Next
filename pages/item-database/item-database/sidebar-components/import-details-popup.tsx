@@ -4,6 +4,7 @@ import styles from "../../item-database.module.css"
 import {useDispatch} from "react-redux";
 import {setItemImportDetails} from "../../../../store/item-database/item-database-slice";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
+import {schema} from "../../../../types";
 
 export default function ImportDetailsPopUp() {
 

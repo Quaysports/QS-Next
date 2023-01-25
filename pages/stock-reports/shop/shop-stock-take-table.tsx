@@ -10,6 +10,7 @@ import {useEffect, useState} from "react";
 import styles from './shop-stock-take.module.css'
 import CSVButton from "../../../components/csv-button";
 import StockTake = schema.StockTake;
+import {schema} from "../../../types";
 
 export default function ShopStockTakeTable() {
 

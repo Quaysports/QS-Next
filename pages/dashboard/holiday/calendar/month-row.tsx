@@ -5,6 +5,7 @@ import UserDot from "./user-dot";
 import {useSelector} from "react-redux";
 import {selectUser} from "../../../../store/session-slice";
 import {useRouter} from "next/router";
+import {sbt} from "../../../../types";
 
 interface Props {
     month: sbt.holidayMonth;

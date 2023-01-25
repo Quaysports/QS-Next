@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {StockError} from "../server-modules/shop/shop";
+import {linn, schema} from "../types";
 
 /**
  * @property {string} _id

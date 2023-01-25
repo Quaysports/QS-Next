@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {selectItem} from "../../../../store/item-database/item-database-slice";
 import SidebarButton from "../../../../components/layouts/sidebar-button";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
+import {schema} from "../../../../types";
 
 export default function LinnworksUploadButton(){
 

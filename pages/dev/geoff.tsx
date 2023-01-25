@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {sbt} from "../../types";
 
 export default function Geoff() {
     const [calendars, setCalendars] = useState<sbt.holidayCalendar[]>([])

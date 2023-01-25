@@ -1,5 +1,6 @@
 import styles from './css/branded-label.module.css'
 import {useEffect, useState} from "react";
+import {schema} from "../../../types";
 
 export default function BrandedLabel() {
 

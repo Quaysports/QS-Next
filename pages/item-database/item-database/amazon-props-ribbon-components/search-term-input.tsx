@@ -1,6 +1,7 @@
 import styles from "../../item-database.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {selectItem, setItemSearchTerms} from "../../../../store/item-database/item-database-slice";
+import {schema} from "../../../../types";
 
 interface Props{
     index: number

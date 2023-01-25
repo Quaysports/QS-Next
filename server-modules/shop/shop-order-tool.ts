@@ -1,5 +1,6 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import * as linn from "../linn-api/linn-api";
+import {schema} from "../../types";
 export interface shopOrder {
     _id?: string
     arrived: orderObject[]

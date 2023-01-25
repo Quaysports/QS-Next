@@ -1,6 +1,7 @@
 import {selectItem, setItemLocation} from "../../../../store/item-database/item-database-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {Fragment} from "react";
+import {schema} from "../../../../types";
 
 export default function ItemLocation() {
 

@@ -4,6 +4,7 @@ import {Fees} from "../server-modules/fees/fees";
 import {Postage} from "../server-modules/postage/postage";
 import {Packaging} from "../server-modules/packaging/packaging";
 import ChannelMarginData = schema.ChannelMarginData;
+import {schema} from "../types";
 
 export type MarginItem = Pick<schema.Item,
     "SKU" |

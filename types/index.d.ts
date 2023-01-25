@@ -712,7 +712,6 @@ declare namespace schema {
         //map from STOCKVAL
         value: number
         //map from INVCHECKDATE
-        checkedDate: string
     }
 
     export interface StockTake {
@@ -870,4 +869,91 @@ declare namespace schema {
         tags: string[]
         brandLabel:BrandLabel
     }
+}
+
+export namespace  till {
+    export interface Order {
+        _id?:string,
+        address: {
+            email:string,
+            number:string,
+            phone:string,
+            postcode:string
+        },
+        discountReason:string,
+        flatDiscount:string,
+        giftCardDiscount:string,
+        grandTotal:string,
+        id:string,
+        linnid:string,
+        linnstatus:{
+            Message:string,
+            OrderId:string,
+            Processed:string
+        },
+        order: OrderItem[],
+        paid:string,
+        perDiscount:string,
+        perDiscountAmount:string,
+        processedBy:string,
+        returns:{
+            date:string,
+            id:string,
+            reason?:string,
+            total?:string,
+            items: OrderItem[]
+        }[],
+        rmas:{
+            date:string,
+            id:string,
+            reason?:string,
+            items: OrderItem[]
+        }[],
+        till:string,
+        total:string,
+        transaction: OrderTransaction
+    }
+
+    export interface OrderItem {
+        _id:string,
+        EAN:string,
+        isReturned:boolean,
+        isTrade:boolean,
+        linnId:string,
+        prices:{
+            purchase:number
+            retail:number
+            amazon:number
+            ebay:number
+            magento:number
+            shop:number
+        },
+        quantity:number,
+        returnQuantity:number,
+        setQuantity:boolean,
+        SKU:string,
+        stock:{
+            default: number,
+            warehouse: number
+            total: number
+            minimum: number
+            value: number
+        },
+        title:string,
+        total:number
+    }
+
+    export interface OrderTransaction {
+        amount: string,
+        authCode: string,
+        bank: string,
+        cash: number,
+        change: number,
+        date: string,
+        flatDiscount: number,
+        giftCard: number,
+        mask: string,
+        type: string
+    }
+
 }

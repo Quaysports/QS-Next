@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
 import {selectItem, setItem, setItemImages} from "../../../../store/item-database/item-database-slice";
 import {dispatchToast} from "../../../../components/toast/dispatch-toast";
+import {schema} from "../../../../types";
 
 interface Props {
     imageTag: string;

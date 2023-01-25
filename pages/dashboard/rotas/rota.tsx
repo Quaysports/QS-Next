@@ -4,6 +4,7 @@ import {Rota, UserHours, WeekData} from "../../../server-modules/rotas/rotas";
 import {useDispatch} from "react-redux";
 import {updateTemplate} from "../../../store/dashboard/rotas-slice";
 import {getTinyDate} from "../../../components/rota-utils/time-utils";
+import {sbt} from "../../../types";
 
 export default function RotaWeek({rota, weekData, holiday, edit=true}: { rota: Rota, weekData:WeekData | null, holiday:sbt.holidayDay[] | null, edit?: boolean }) {
 

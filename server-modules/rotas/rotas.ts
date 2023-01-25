@@ -1,6 +1,7 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import {setData} from "../mongo-interface/mongo-interface";
 import {ObjectId} from "mongodb";
+import {sbt} from "../../types";
 
 export interface Rota{
     _id?:string

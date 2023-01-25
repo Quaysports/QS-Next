@@ -1,5 +1,6 @@
 "use strict";
 import * as mongoDB from 'mongodb'
+import {schema} from "../../types";
 
 export const connect = async () => {
   return await new mongoDB.MongoClient(process.env.DB_URL!).connect()

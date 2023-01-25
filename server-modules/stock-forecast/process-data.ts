@@ -1,4 +1,5 @@
 import {onOrder} from "../../pages/stock-forecast";
+import {schema} from "../../types";
 
 type StockForecastPick = Pick<schema.Item, "stockHistory" | "stock" | "checkboxStatus" | "SKU" | "title">
 export interface StockForecastItem extends StockForecastPick {

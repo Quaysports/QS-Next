@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {User} from "../../server-modules/users/user";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
+import {sbt} from "../../types";
 
 export interface holidaysWrapper {
     holidays: holidaysState

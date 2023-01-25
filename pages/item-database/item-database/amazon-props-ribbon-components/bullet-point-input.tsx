@@ -1,5 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {selectItem, setItemAmazonBulletPoints} from "../../../../store/item-database/item-database-slice";
+import {schema} from "../../../../types";
 
 interface Props {
     index: number

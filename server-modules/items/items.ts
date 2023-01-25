@@ -1,4 +1,5 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
+import {schema} from "../../types";
 
 const fs = require("fs");
 

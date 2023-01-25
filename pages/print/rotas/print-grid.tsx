@@ -1,6 +1,7 @@
 import {Rota, UserHours, WeekData} from "../../../server-modules/rotas/rotas";
 import styles from "./print-rota-grid.module.css";
 import {getTinyDate} from "../../../components/rota-utils/time-utils";
+import {sbt} from "../../../types";
 
 export default function PrintRotaGrid() {
 

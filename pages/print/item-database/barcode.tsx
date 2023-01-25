@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import Barcode from 'react-barcode'
 import styles from "./css/barcode.module.css"
+import {schema} from "../../../types";
 
 export default function CreateBarcode() {
 

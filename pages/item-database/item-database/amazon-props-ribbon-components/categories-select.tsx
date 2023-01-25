@@ -2,6 +2,7 @@ import {AmzCats, AmzCatsType} from "../../../../server-modules/amazon-categories
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {selectItem, setItemAmazonCategories} from "../../../../store/item-database/item-database-slice";
+import {schema} from "../../../../types";
 
 interface Props {
     id: number

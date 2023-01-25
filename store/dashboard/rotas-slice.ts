@@ -3,6 +3,7 @@ import {HYDRATE} from "next-redux-wrapper";
 import {User} from "../../server-modules/users/user";
 import {PublishedRota, Rota, UserHours, WeekData} from "../../server-modules/rotas/rotas";
 import {dispatchToast} from "../../components/toast/dispatch-toast";
+import {sbt} from "../../types";
 
 export type RotaUserPick = Pick<User, '_id' | 'username' | 'colour'>
 export interface rotaWrapper {
