@@ -227,7 +227,7 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
                     break;
             }
         }
-        testForProperty('Tags', item.tags.reduce((string, tag) => {
+        if(item.tags.length > 0) testForProperty('Tags', item.tags.reduce((string, tag) => {
             return string === "" ? tag : `${string}, ${tag}`
         }, ""));
         testForProperty('Brand', item.brand);
