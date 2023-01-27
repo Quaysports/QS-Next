@@ -3,49 +3,35 @@ import * as mongoI from '../mongo-interface/mongo-interface';
 
 export interface Fees {
     _id?: { $oid: string };
-    LISTING: Listing;
-    FLAT: Flat
-    VATAPP: VatApplicable
+    listing: Channels;
+    flat: Channels
+    vatApplicable: VatApplicable
     VAT: number;
-    LASTUPDATE: string;
-    SUBSCRIPTION: Subscription
+    lastUpdate: string;
+    subscription: Channels
 }
 
-export interface Listing {
-    SHOP: string;
-    QS: string;
-    EBAY: string;
-    AMAZ: string
-}
-
-export interface Flat {
-    SHOP: string;
-    QS: string;
-    EBAY: string;
-    AMAZ: string
-}
-
-export interface Subscription {
-    SHOP: string;
-    QS: string;
-    EBAY: string;
-    AMAZ: string
+export interface Channels {
+    shop: string;
+    magento: string;
+    ebay: string;
+    amazon: string
 }
 
 export interface VatApplicable {
-    SHOP: boolean;
-    QS: boolean;
-    EBAY: boolean;
-    AMAZ: boolean
+    shop: boolean;
+    magento: boolean;
+    ebay: boolean;
+    amazon: boolean
 }
 
 export const get = async () => {
-    let result = await mongoI.findOne<Fees>("Fees")
+    let result = await mongoI.findOne<Fees>("New-Fees")
     return result!
 }
 
 export const update = async (data: Fees) => {
     let query = {_id: objectId(data._id)};
     delete data._id
-    return await mongoI.setData("Fees", query, data)
+    return await mongoI.setData("New-Fees", query, data)
 }

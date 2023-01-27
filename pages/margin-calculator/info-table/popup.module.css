@@ -25,13 +25,36 @@
 }
 
 .Confirmed, .green-text{
-    color: #87ee87;
+    color: var(--traffic-light-green);
 }
 
 .Error, .red-text {
-    color:#ff7878;
+    color: var(--traffic-light-red);
 }
 
 .Pending{
-    color: #ffe551;
+    color: var(--traffic-light-orange);
+}
+
+.upload-button{
+    color:black;
+    background-color: var(--traffic-light-green);
+}
+
+.upload-button:hover{
+    background-color: var(--traffic-light-green-border);
+}
+
+.upload-button-mismatch {
+    color:black;
+    background-color: var(--traffic-light-red);
+}
+
+.upload-button-mismatch:hover{
+    background-color: var(--traffic-light-red-border);
+}
+
+.upload-button-uploaded {
+    color:var(--primary-inactive-text);
+    background-color: var(--primary-table-background);
 }

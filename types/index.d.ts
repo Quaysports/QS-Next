@@ -320,7 +320,9 @@ declare namespace sbt {
     }
 
     interface HolidayOrSickBooking {
-        type:"holiday" | "sick", paid:boolean, duration:100 | 75 | 50 | 25
+        type: "holiday" | "sick",
+        paid: boolean,
+        duration: 100 | 75 | 50 | 25
     }
 
     interface holidayDay {
@@ -359,6 +361,7 @@ declare namespace sbt {
             change?: number,
             authCode?: string,
             date?: string
+            flatDiscount?: number,
         },
         address?: {
             number?: string,
@@ -379,8 +382,10 @@ declare namespace sbt {
         till: string,
         linnid?: string,
         linnstatus?: {
+            Error: string,
+            Message: string,
             OrderId?: string,
-            Processed?: boolean
+            Processed?: string
         },
         rmas?: TillOrderRmas[],
         returns?: TillOrderReturns[],
@@ -393,6 +398,7 @@ declare namespace sbt {
         LINNID: string,
         TITLE: string,
         SHOPPRICEINCVAT: number,
+        SHOPDISCOUNT: number,
         QTY: number,
         PRICE: number,
         TOTAL: number,
@@ -598,15 +604,17 @@ declare namespace linn {
 declare namespace schema {
     interface Image {
         id: string;
-        url:string;
+        url: string;
         filename: string;
         link: string;
     }
+
     interface ChannelData {
         year: number;
         source: string;
         quantity: number;
     }
+
     interface CompositeItems {
         title: string;
         SKU: string;
@@ -614,18 +622,21 @@ declare namespace schema {
         purchasePrice: number;
         weight: number;
     }
+
     interface LinnExtendedProperty {
         epName: string;
         epType: string;
         epValue: string;
         pkRowId: string;
     }
+
     interface OnOrder {
         confirmed: boolean;
         due: string;
         id: string;
         quantity: number;
     }
+
     interface MappedExtendedProperties {
         amazonLatency: number
         COMISO2: string
@@ -650,58 +661,66 @@ declare namespace schema {
         //used to be SHIPFORMAT, move to extended properties?
         shippingFormat: string
         //used to be TILLFILTER
-        tillFilter:string
+        tillFilter: string
     }
+
     interface LegacyShipping {
         //used to be SHIPCOURIERSTD, remove?
-        standard:string
+        standard: string
         //used to be SHIPCOURIEREXP
         expedited: string
         //used to be SHIPEBAYSTD, remove?
-        standardEbay:string
+        standardEbay: string
         //used to be SHIPAMAZONEXP, remove?
         expeditedAmazon: string
     }
+
     interface Prices {
         //used to be PURCHASEPRICE
-        purchase:number
+        purchase: number
         //used to be RETAILPRICE
-        retail:number
+        retail: number
         //used to be AMZPRICEINCVAT
-        amazon:number
+        amazon: number
         //used to be EBAYPRICEINCVAT
-        ebay:number
+        ebay: number
         //used to be QSPRICEINCVAT
-        magento:number
+        magento: number
         //used to be SHOPPRICEINCVAT
-        shop:number
+        shop: number
     }
+
     interface ShelfLocation {
-        prefix:string
-        letter:string
-        number:string
+        prefix: string
+        letter: string
+        number: string
     }
+
     interface Discounts {
-        shop:number
-        magento:number
+        shop: number
+        magento: number
     }
+
     interface ChannelPrices {
         amazon: LinnChannelPriceData
         ebay: LinnChannelPriceData
         magento: LinnChannelPriceData
         shop: BaseChannelPriceData
     }
+
     interface BaseChannelPriceData {
         status: number,
         price: string
     }
-    interface LinnChannelPriceData extends BaseChannelPriceData{
+
+    interface LinnChannelPriceData extends BaseChannelPriceData {
         subSource: string,
         updated: string,
         id: string,
         updateRequired: boolean
     }
-    interface Stock  {
+
+    interface Stock {
         //renamed from yelland?
         default: number,
         warehouse: number
@@ -726,84 +745,95 @@ declare namespace schema {
         profitLastYear: number;
         salesVAT: number;
     }
+
     interface AmazonMarginData extends ChannelMarginData {
         primeProfit: number
         primePostage: number
     }
+
     interface MarginData {
-        amazon:AmazonMarginData
-        ebay:ChannelMarginData
-        magento:ChannelMarginData
-        shop:ChannelMarginData
+        amazon: AmazonMarginData
+        ebay: ChannelMarginData
+        magento: ChannelMarginData
+        shop: ChannelMarginData
         packaging: number
         postage: number
         totalProfitLastYear: number
     }
+
     interface CheckboxStatus {
         stockForecast: StockForecastStatus
         done: DoneStatus
         ready: ReadyStatus
-        notApplicable:NotApplicableStatus
+        notApplicable: NotApplicableStatus
         //map from AMZPRIME
-        prime:boolean
-        marginCalculator:MarginCalculatorStatus
+        prime: boolean
+        marginCalculator: MarginCalculatorStatus
     }
-    interface StockForecastStatus{
-        list:boolean
-        hide:boolean
+
+    interface StockForecastStatus {
+        list: boolean
+        hide: boolean
     }
-    interface DoneStatus{
-        goodsReceived:boolean
-        addedToInventory:boolean
-        EAN:boolean
-        photos:boolean
-        marginsCalculated:boolean
-        jariloTemplate:boolean
-        ebayDraft:boolean
-        inventoryLinked:boolean
-        ebay:boolean
-        amazon:boolean
-        magento:boolean
-        zenTackle:boolean
-        amazonStore:boolean
+
+    interface DoneStatus {
+        goodsReceived: boolean
+        addedToInventory: boolean
+        EAN: boolean
+        photos: boolean
+        marginsCalculated: boolean
+        jariloTemplate: boolean
+        ebayDraft: boolean
+        inventoryLinked: boolean
+        ebay: boolean
+        amazon: boolean
+        magento: boolean
+        zenTackle: boolean
+        amazonStore: boolean
     }
-    interface ReadyStatus{
-        ebay:boolean
-        amazon:boolean
-        magento:boolean
-        zenTackle:boolean
-        amazonStore:boolean
+
+    interface ReadyStatus {
+        ebay: boolean
+        amazon: boolean
+        magento: boolean
+        zenTackle: boolean
+        amazonStore: boolean
     }
-    interface NotApplicableStatus{
-        ebay:boolean
-        amazon:boolean
-        magento:boolean
-        zenTackle:boolean
-        amazonStore:boolean
+
+    interface NotApplicableStatus {
+        ebay: boolean
+        amazon: boolean
+        magento: boolean
+        zenTackle: boolean
+        amazonStore: boolean
     }
-    interface MarginCalculatorStatus{
+
+    interface MarginCalculatorStatus {
         //map from MCOVERRIDES
-        hide:boolean
-        amazonOverride:boolean
-        ebayOverride:boolean
-        magentoOverride:boolean
+        hide: boolean
+        amazonOverride: boolean
+        ebayOverride: boolean
+        magentoOverride: boolean
     }
-    interface Postage{
+
+    interface Postage {
         // used to be POSTID?
         id: string
         //used to be POSTALPRICEUK
-        price:number
+        price: number
         //used to be POSTMODID
-        modifier:string
+        modifier: string
     }
-    interface Packaging{
+
+    interface Packaging {
         lock: boolean,
         items: string[]
         editable: boolean
         //used to be PACKGROUP
         group: string
     }
-    interface Images{
+
+    interface Images {
         main: Image,
         image1: Image,
         image2: Image,
@@ -817,14 +847,16 @@ declare namespace schema {
         image10: Image,
         image11: Image
     }
-    interface BrandLabel{
+
+    interface BrandLabel {
         image: string,
         path: string,
         brand: string
         title1: string,
         title2: string,
-        location:string
+        location: string
     }
+
     interface Item {
         _id?: string
         EAN: string
@@ -835,13 +867,13 @@ declare namespace schema {
         title: string
         webTitle: string
         weight: number
-        supplier:string
-        suppliers:string[]
-        brand:string
+        supplier: string
+        suppliers: string[]
+        brand: string
         description: string
         shortDescription: string
         lastUpdate: string
-        marginNote:string
+        marginNote: string
         legacyShipping: LegacyShipping
         prices: Prices
         discounts: Discounts
@@ -849,7 +881,7 @@ declare namespace schema {
         channelPrices: ChannelPrices
         stock: Stock
         stockTake: StockTake
-        onOrder:OnOrder[]
+        onOrder: OnOrder[]
         //used to be MD
         marginData: MarginData
         //used to be CD is it dynamically generated and still used?
@@ -860,91 +892,83 @@ declare namespace schema {
         mappedExtendedProperties: MappedExtendedProperties
         compositeItems: CompositeItems[]
         extendedProperties: LinnExtendedProperty[]
-        postage:Postage
+        postage: Postage
         packaging: Packaging
-        images:Images
+        images: Images
         stockHistory: number[][]
         linkedSKUS: string[]
         //move items from IDBFILTER into tags
         tags: string[]
-        brandLabel:BrandLabel
+        brandLabel: BrandLabel
     }
 }
 
-export namespace  till {
+export namespace till {
     export interface Order {
-        _id?:string,
+        _id?: string,
         address: {
-            email:string,
-            number:string,
-            phone:string,
-            postcode:string
+            email: string,
+            number: string,
+            phone: string,
+            postcode: string
         },
-        discountReason:string,
-        flatDiscount:string,
-        giftCardDiscount:string,
-        grandTotal:string,
-        id:string,
-        linnid:string,
-        linnstatus:{
-            Message:string,
-            OrderId:string,
-            Processed:string
+        discountReason: string,
+        flatDiscount: number,
+        giftCardDiscount: number,
+        grandTotal: number,
+        id: string,
+        linnstatus: {
+            Error: string,
+            Message: string,
+            OrderId: string,
+            Processed: string
         },
-        order: OrderItem[],
-        paid:string,
-        perDiscount:string,
-        perDiscountAmount:string,
-        processedBy:string,
-        returns:{
-            date:string,
-            id:string,
-            reason?:string,
-            total?:string,
-            items: OrderItem[]
-        }[],
-        rmas:{
-            date:string,
-            id:string,
-            reason?:string,
-            items: OrderItem[]
-        }[],
-        till:string,
-        total:string,
+        items: OrderItem[],
+        paid: boolean,
+        percentageDiscount: number,
+        percentageDiscountAmount: number,
+        processedBy: string,
+        returns: OrderReturn[],
+        rmas: OrderRma[],
+        till: string,
+        total: number,
         transaction: OrderTransaction
     }
 
     export interface OrderItem {
-        _id:string,
-        EAN:string,
-        isReturned:boolean,
-        isTrade:boolean,
-        linnId:string,
-        prices:{
-            purchase:number
-            retail:number
-            amazon:number
-            ebay:number
-            magento:number
-            shop:number
+        _id: string,
+        EAN: string,
+        isReturned: boolean,
+        isTrade: boolean,
+        linnId: string,
+        prices: {
+            purchase: number
+            retail: number
+            amazon: number
+            ebay: number
+            magento: number
+            shop: number
         },
-        quantity:number,
-        returnQuantity:number,
-        setQuantity:boolean,
-        SKU:string,
-        stock:{
+        discounts: {
+            shop: number
+            magento: number
+        }
+        quantity: number,
+        returnQuantity: number,
+        SKU: string,
+        stock: {
             default: number,
             warehouse: number
             total: number
             minimum: number
             value: number
         },
-        title:string,
-        total:number
+        title: string,
+        total: number
     }
 
     export interface OrderTransaction {
-        amount: string,
+        amount: number,
         authCode: string,
         bank: string,
         cash: number,
@@ -954,6 +978,24 @@ export namespace  till {
         giftCard: number,
         mask: string,
         type: string
+    }
+
+    export interface OrderReturn {
+        date: string,
+        id: string,
+        reason: string,
+        total: number,
+        items: OrderItem[]
+        transaction: Pick<OrderTransaction, "amount" | "date" | "mask" | "type">
+        user: string
+    }
+
+    export interface OrderRma{
+        date: string,
+        id: string,
+        reason: string,
+        items: OrderItem[]
+        user: string
     }
 
 }

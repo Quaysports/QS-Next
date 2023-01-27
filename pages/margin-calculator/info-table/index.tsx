@@ -44,7 +44,7 @@ export default function InfoTable(){
         return elements
     }
 
-    return <div className={styles["sub-table"]}>
+    return <div className={`${styles["sub-table"]} ${styles["sticky-table"]}`}>
         {createTable()}
     </div>
 }

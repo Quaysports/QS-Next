@@ -38,9 +38,12 @@
     --primary-box-shadow: 1px 1px 2px 1px #1c1c1c;
     --primary-border-radius: 5px;
 
-    --traffic-light-red: #b70202;
-    --traffic-light-orange: #E09112;
-    --traffic-light-green: #019972;
+    --traffic-light-red: #ff6e68;
+    --traffic-light-red-border: red;
+    --traffic-light-orange: #ffe551;
+    --traffic-light-orange-border: goldenrod;
+    --traffic-light-green: #a2ffa2;
+    --traffic-light-green-border: green;
 
     --sidebar-width: 250px;
     --sidebar-border-radius: 5px;
