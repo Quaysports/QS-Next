@@ -21,7 +21,6 @@ export default function DisplayOnOrder() {
     const loadedOrder = orders? orders[Number(router.query.index)] : null
     const dispatch = useDispatch()
     const [saveOrder, setSaveOrder] = useState<boolean>(false)
-    console.log(orders)
 
     function arrivedHandler(quantity:string, index:number) {
         dispatch(setArrivedHandler({order: router.query.index as string, index: index, value: Number(quantity)}))

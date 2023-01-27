@@ -119,7 +119,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     }
 
     if (context.query.tab === "orders") {
-        console.log("orders!")
         store.dispatch(setOpenOrders(orders))
         let tempArray = orders.map((item,index) => ({[(index + 1).toString() + " - " + item.supplier]: item.id}))
         store.dispatch(setSideBarContent({content: tempArray, title: "Orders"}))

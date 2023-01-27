@@ -8,6 +8,7 @@ import styles from "../shop-orders.module.css"
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 import CurrentOrderList from "./build-order-list";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 /**
  * Order List Component
@@ -42,7 +43,6 @@ export default function OrderList() {
                 <div>
                     <button
                         onClick={() => {
-                            console.log(newProduct)
                             dispatch(setChangeOrderArray({item: newProduct, type: "new"}));
                             dispatchNotification();
                         }}>Submit
@@ -69,7 +69,7 @@ export default function OrderList() {
                             <button onClick={() => newProductHandler()}>Add New Item</button>
                         </span>
                 <span id={styles["order-total"]}
-                >Total Order: £{totalPrice.toFixed(2)}</span>
+                >Total Order: {toCurrency(totalPrice)}</span>
             </div>
             <div className={`${styles["shop-orders-table"]} ${styles["order-list-grid"]}`}>
                 <span/>

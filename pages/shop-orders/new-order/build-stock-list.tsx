@@ -10,6 +10,7 @@ import * as React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Image from "next/image";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
+import {toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
 
 export default function BuildStockList() {
 
@@ -21,7 +22,6 @@ export default function BuildStockList() {
 
     function buildListRow(item: orderObject, index: number, allItems: boolean) {
         let tempArray = []
-        console.log(item)
         tempArray.push(
             <div key={item.SKU}
                  className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["new-order-list-grid"]}`}
@@ -40,7 +40,7 @@ export default function BuildStockList() {
                 <input defaultValue={renderedArray[index].tradePack} onChange={(e) => {
                     inputChangeHandler(e.target.value, "tradePack", index)
                 }}/>
-                <span className={"center-align"}>£{item.prices.purchase.toFixed(2)}</span>
+                <span className={"center-align"}>{toCurrencyInput(item.prices.purchase)}</span>
                 <span className={styles["dead-stock-image-parent"]}>{item.deadStock ? imageCheck(item) : null}
                     </span>
             </div>

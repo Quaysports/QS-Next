@@ -105,7 +105,6 @@ export default function StockList() {
 
     function buildBrandFilters() {
         let tempArray: JSX.Element[] = []
-        console.log(brandList)
         if (brandList.length > 2) {
             for (const brand of brandList) {
                 tempArray.push(<option key={brand}>{brand}</option>)
