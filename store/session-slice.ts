@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {DashboardSettings, MarginSettings, Settings, User, UserTheme} from "../server-modules/users/user";
+import {dispatchToast} from "../components/toast/dispatch-toast";
 
 export interface sessionWrapper {
     session: sessionState
@@ -71,7 +72,9 @@ export const sessionSlice = createSlice({
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(state.user)
                 }
-                fetch('/api/user/update-user', opt).then(res => console.log(res))
+                fetch('/api/user/update-user', opt).then(
+                    () => dispatchToast({content:"User updated"})
+                )
             },
             updateSettings: (state, action: PayloadAction<Settings>) => {
                 state.user.settings = {...state.user.settings, ...action.payload}
@@ -82,22 +85,28 @@ export const sessionSlice = createSlice({
             updateMarginSetting: (state, action: PayloadAction<MarginSettings>) => {
                 if (!state.user) return
                 state.user.settings.marginCalculator = action.payload
+                let update = {username: state.user.username, settings: {...state.user.settings, marginCalculator: action.payload}}
                 const opt = {
                     method: 'POST',
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(state.user)
+                    body: JSON.stringify(update)
                 }
-                fetch('/api/user/update-user', opt).then(res => console.log(res))
+                fetch('/api/user/update-user', opt).then(
+                    () => dispatchToast({content:"User margin settings updated"})
+                )
             },
             updateDashboardSetting: (state, action: PayloadAction<DashboardSettings>) => {
                 if (!state.user) return
                 state.user.settings.dashboard = action.payload
+                let update = {username: state.user.username, settings: {...state.user.settings, dashboard: action.payload}}
                 const opt = {
                     method: 'POST',
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(state.user)
+                    body: JSON.stringify(update)
                 }
-                fetch('/api/user/update-user', opt).then(res => console.log(res))
+                fetch('/api/user/update-user', opt).then(
+                    () => dispatchToast({content:"User dashboard settings updated"})
+                )
             }
         },
     })
