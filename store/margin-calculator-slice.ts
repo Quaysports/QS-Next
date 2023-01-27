@@ -42,6 +42,7 @@ export interface marginCalculatorState {
     searchItems: MarginItem[]
     renderedItems: MarginItem[]
     activeIndex: string | null
+    uploadedIndexes: string[]
     displayTitles: boolean
     threshold: number
     maxThreshold: number
@@ -76,6 +77,7 @@ const initialState: marginCalculatorState = {
     searchItems: [],
     renderedItems: [],
     activeIndex: null,
+    uploadedIndexes: [],
     displayTitles: false,
     threshold: 50,
     maxThreshold: 50,
@@ -217,6 +219,9 @@ export const marginCalculatorSlice = createSlice({
             setActiveIndex: (state, action: PayloadAction<string | null>) => {
                 action.payload !== state.activeIndex ? state.activeIndex = action.payload : state.activeIndex = null
             },
+            updateUploadedIndexes: (state, action: PayloadAction<string>) => {
+                if(!state.uploadedIndexes.includes(action.payload)) state.uploadedIndexes.push(action.payload)
+            },
             setMarginTest: (state, action: PayloadAction<{ type: string, value: number }>) => {
                 switch (action.payload.type) {
                     case "Amazon": {
@@ -247,6 +252,7 @@ export const {
     updateMCOverrides,
     sortMarginData,
     setActiveIndex,
+    updateUploadedIndexes,
     incrementThreshold,
     setSearchItems,
     setMarginTest
@@ -260,6 +266,7 @@ export const selectFees = (state: marginCalculatorWrapper) => state.marginCalcul
 export const selectPostage = (state: marginCalculatorWrapper) => state.marginCalculator.postage
 export const selectPackaging = (state: marginCalculatorWrapper) => state.marginCalculator.packaging
 export const selectActiveIndex = (state: marginCalculatorWrapper) => state.marginCalculator.activeIndex
+export const selectUploadedIndexes = (state: marginCalculatorWrapper) => state.marginCalculator.uploadedIndexes
 export const selectDisplayTitles = (state: marginCalculatorWrapper) => state.marginCalculator.displayTitles
 export const selectRenderedItems = (state: marginCalculatorWrapper) => state.marginCalculator.renderedItems
 export const selectCurrentSort = (state: marginCalculatorWrapper) => state.marginCalculator.currentSort

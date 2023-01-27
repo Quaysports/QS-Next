@@ -1,8 +1,11 @@
-import {MarginItem} from "../../../store/margin-calculator-slice";
+import {MarginItem, updateUploadedIndexes} from "../../../store/margin-calculator-slice";
 import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margins";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
+import {useDispatch} from "react-redux";
 
-export default function LinnworksUploadButton({item}:{item:MarginItem}){
+export default function LinnworksUploadButton({item, index}:{item:MarginItem, index:string}){
+
+    const dispatch = useDispatch()
     const updateItem = useUpdateItemAndCalculateMargins()
 
     return <button onClick={()=>{
@@ -18,6 +21,7 @@ export default function LinnworksUploadButton({item}:{item:MarginItem}){
         fetch("/api/linnworks/update-channel-prices", opts).then(async()=>{
             await updateItem(item)
             dispatchNotification()
+            dispatch(updateUploadedIndexes(index))
         })
 
     }}>Upload to Linnworks</button>
