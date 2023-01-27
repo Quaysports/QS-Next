@@ -24,13 +24,11 @@ export default function SubmitToLinnworksButtons() {
 
     async function submitToLinnworks() {
         let data = []
-        console.log(loadedOrder)
         for (let item of loadedOrder!.arrived) {
             if (item.quantity > 0 && !item.submitted && !item.newProduct) {
                 data.push({SKU: item.SKU, quantity: item.tradePack * item.quantity})
             }
         }
-        console.log(data)
 
         if (data.length > 0) {
             const opts = {

@@ -293,6 +293,9 @@ export const shopOrdersSlice = createSlice({
             },
             setSubmittedOrder: (state, action: PayloadAction<{ res: linn.ItemStock[], order: string }>) => {
                 const openOrder = state.openOrders![Number(action.payload.order)]
+                for(const item of openOrder.arrived){
+                    if (item.newProduct) item.submitted = true
+                }
                 for (const item of action.payload.res) {
                     let posNew = openOrder.arrived.map(order => order.SKU).indexOf(item.SKU)
                     if (Number(openOrder.arrived[posNew].quantity) <= Number(item["StockLevel"])) {
