@@ -4,6 +4,7 @@ import styles from "./popup-styles.module.css"
 import {Postage} from "../../../server-modules/postage/postage";
 import {MenuState} from "./margin-menu-popup";
 import {ChangeEvent} from "react";
+import {currencyToLong, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
 
 export default function PostageMenu({menuState}: { menuState: MenuState }){
     const postage = useSelector(selectPostage)
@@ -12,8 +13,8 @@ export default function PostageMenu({menuState}: { menuState: MenuState }){
     const updateHandler = (e: ChangeEvent<HTMLInputElement>, postage: Postage, text = false)=> {
         let newPostage = structuredClone(postage)
         text
-            ? newPostage.SFORMAT = e.target.value
-            : newPostage.POSTCOSTEXVAT = parseFloat(e.target.value);
+            ? newPostage.tag = e.target.value
+            : newPostage.cost = currencyToLong(e.target.value);
         dispatch(updatePostage(newPostage))
         menuState.updateRequired = true
     }
@@ -36,14 +37,14 @@ function ItemRow({postage, updateHandler}:{
             <input type={"number"}
                    step={0.01}
                    min={0}
-                   defaultValue={postage.POSTCOSTEXVAT}
+                   defaultValue={toCurrencyInput(postage.cost)}
                    onChange={(e)=>updateHandler(e,postage)}/>
         </div>
         <div>
             <input type={"text"}
-                   defaultValue={postage.SFORMAT}
+                   defaultValue={postage.tag}
                    onChange={(e)=>updateHandler(e,postage, true)}/>
         </div>
-        <div>{postage.POSTALFORMAT}</div>
+        <div>{postage.format}</div>
     </div>
 }

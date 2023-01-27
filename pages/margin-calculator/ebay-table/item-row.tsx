@@ -6,6 +6,7 @@ import {inputStatusColour} from "../../../components/margin-calculator-utils/mar
 import MarginTestResults from "./margin-test-results";
 import MarginCell from "./margin-cell";
 import {useSelector} from "react-redux";
+import {currencyToLong, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
 
 export default function ItemRow({item, displayTest, index}: { item: MarginItem, displayTest: boolean, index:string}) {
 
@@ -16,7 +17,7 @@ export default function ItemRow({item, displayTest, index}: { item: MarginItem, 
 
     useEffect(() => {
         if(!inputRef.current) return
-        inputRef.current.value = String(item.prices.ebay)
+        inputRef.current.value = String(toCurrencyInput(item.prices.ebay))
         setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "ebay",)])
     }, [item])
 
@@ -39,9 +40,9 @@ export default function ItemRow({item, displayTest, index}: { item: MarginItem, 
             <input
                 ref={inputRef}
                 className={inputClass}
-                defaultValue={item.prices.ebay}
+                defaultValue={toCurrencyInput(item.prices.ebay)}
                 onBlur={async(e)=>{
-                    const update = {...item.prices, ebay: Number(e.target.value)}
+                    const update = {...item.prices, ebay: currencyToLong(e.target.value)}
                     await updateItem(item,"prices", update)
                 }}/>
         </div>

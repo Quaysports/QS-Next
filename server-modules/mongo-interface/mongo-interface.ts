@@ -77,7 +77,7 @@ export const bulkUpdateItems = async (items:schema.Item[]) => {
   for (const bulk of bulkUpdateOps) {
     try {
       const db = client.db(process.env.DB_NAME);
-      let result = await db.collection("Items").bulkWrite(bulk)
+      let result = await db.collection("New-Items").bulkWrite(bulk)
       if (result) updatedItems += result.modifiedCount
     } catch (e) {
       console.error(e)
@@ -89,6 +89,7 @@ export const bulkUpdateItems = async (items:schema.Item[]) => {
 }
 
 export const bulkUpdateAny = async (collection: string, arr: mongoDB.Document[], updateKey: string) => {
+  console.log("bulkUpdateAny", collection, arr.length, updateKey)
   const client = await connect()
   let bulkUpdateOps: mongoDB.AnyBulkWriteOperation<mongoDB.Document>[][] = []
   let index = 0

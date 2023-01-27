@@ -8,7 +8,7 @@ import styles from "../margin-calculator.module.css";
 import {inputStatusColour} from "../../../components/margin-calculator-utils/margin-styler";
 import MarginCell from "./margin-cell";
 import {useRouter} from "next/router"
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {currencyToLong, toCurrency, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
 import {useSelector} from "react-redux";
 
 export default function ItemRow({item, index}: { item: MarginItem, index:string }) {
@@ -23,7 +23,7 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
 
     useEffect(() => {
         if (!inputRef.current) return
-        inputRef.current.value = String(item.prices.magento)
+        inputRef.current.value = String(toCurrencyInput(item.prices.magento))
         setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "magento",)])
 
         if (!discountRef.current) return
@@ -61,10 +61,10 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
         <div>
             <input ref={inputRef}
                    className={inputClass}
-                   defaultValue={item.prices.magento}
+                   defaultValue={toCurrencyInput(item.prices.magento)}
                    readOnly={domestic}
                    onBlur={async (e) => {
-                          const update = {...item.prices, magento: Number(e.target.value)}
+                          const update = {...item.prices, magento: currencyToLong(e.target.value)}
                        await updateItem(item, "prices", update)
                    }}/>
         </div>

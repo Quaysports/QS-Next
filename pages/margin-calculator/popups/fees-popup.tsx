@@ -4,6 +4,7 @@ import styles from "./popup-styles.module.css"
 import {Fees} from "../../../server-modules/fees/fees";
 import {MenuState} from "./margin-menu-popup";
 import {ChangeEvent} from "react";
+import {currencyToLong, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
 
 export default function FeesMenu({menuState}: { menuState: MenuState }) {
 
@@ -20,9 +21,9 @@ export default function FeesMenu({menuState}: { menuState: MenuState }) {
         <ItemRow fees={fees} menuState={menuState} channel={"shop"} />
         <div className={styles["fees-row"]}>
             <div>VAT</div>
-            <div><input type={"number"} step={"0.01"} min={0} defaultValue={fees?.VAT} onChange={(e) => {
+            <div><input type={"number"} step={"0.01"} min={0} defaultValue={toCurrencyInput(fees?.VAT)} onChange={(e) => {
                 let newFees = structuredClone(fees)
-                newFees.VAT = parseFloat(e.target.value)
+                newFees.VAT = currencyToLong(e.target.value)
                 dispatch(updateFees(newFees))
                 menuState.updateRequired = true
             }}/></div>
@@ -57,7 +58,7 @@ function ItemRow({fees, menuState, channel}: ItemRowProps) {
         let newFees = structuredClone(fees)
         checkbox
             ? newFees[id][channel] = e.target.checked
-            : newFees[id][channel] = e.target.value;
+            : newFees[id][channel] = currencyToLong(e.target.value);
         dispatch(updateFees(newFees))
         menuState.updateRequired = true
     }
@@ -68,21 +69,21 @@ function ItemRow({fees, menuState, channel}: ItemRowProps) {
             <input type={"number"}
                    step={"0.01"}
                    min={0}
-                   defaultValue={fees?.listing[channel]}
+                   defaultValue={toCurrencyInput(fees?.listing[channel])}
                    onChange={(e) => { updateHandler(e, "listing", channel)}}/>
         </div>
         <div>
             <input type={"number"}
                     step={"0.01"}
                     min={0}
-                    defaultValue={fees?.flat[channel]}
+                    defaultValue={toCurrencyInput(fees?.flat[channel])}
                     onChange={(e) => { updateHandler(e, "flat", channel)}}/>
         </div>
         <div>
             <input type={"number"}
                    step={"0.01"}
                    min={0}
-                   defaultValue={fees?.subscription[channel]}
+                   defaultValue={toCurrencyInput(fees?.subscription[channel])}
                    onChange={(e) => { updateHandler(e, "subscription", channel)}}/>
         </div>
         <div>

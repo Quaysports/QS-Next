@@ -31,7 +31,7 @@ function buildMarginTooltip(item:MarginItem){
     const {postage, packaging, ebay} = item.marginData
     const {fees, profit, salesVAT} = ebay
     return <div className={styles.tooltip}>
-        <div>Selling Price: £{item.prices.ebay}</div>
+        <div>Selling Price: {toCurrency(item.prices.ebay)}</div>
         <div>------- Minus -------</div>
         <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
         <div>Postage: {toCurrency(postage)}</div>

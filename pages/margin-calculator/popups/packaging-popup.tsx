@@ -4,6 +4,7 @@ import styles from "./popup-styles.module.css"
 import {Packaging} from "../../../server-modules/packaging/packaging";
 import {MenuState} from "./margin-menu-popup";
 import {ChangeEvent} from "react";
+import {currencyToLong, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
 
 export default function PackagingMenu({menuState}: { menuState: MenuState }){
     const packaging = useSelector(selectPackaging)
@@ -11,7 +12,7 @@ export default function PackagingMenu({menuState}: { menuState: MenuState }){
 
     const updateHandler = (e: ChangeEvent<HTMLInputElement>, packaging: Packaging)=> {
         let newPackaging = structuredClone(packaging)
-        newPackaging.PRICE = parseFloat(e.target.value)
+        newPackaging.price = currencyToLong(e.target.value)
         dispatch(updatePackaging(newPackaging))
         menuState.updateRequired = true
     }
@@ -28,7 +29,7 @@ export default function PackagingMenu({menuState}: { menuState: MenuState }){
 
 function ItemRow({packaging, updateHandler}:{packaging:Packaging, updateHandler:(e: ChangeEvent<HTMLInputElement>, packaging: Packaging)=>void}){
     return <div className={styles["packaging-row"]}>
-        <div>{packaging.NAME}</div>
-        <div>£<input type={"number"} step={0.01} min={0} defaultValue={packaging.PRICE} onChange={(e)=>updateHandler(e, packaging)}/></div>
+        <div>{packaging.name}</div>
+        <div>£<input type={"number"} step={0.01} min={0} defaultValue={toCurrencyInput(packaging.price)} onChange={(e)=>updateHandler(e, packaging)}/></div>
     </div>
 }

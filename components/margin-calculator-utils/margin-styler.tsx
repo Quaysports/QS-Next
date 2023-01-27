@@ -35,6 +35,6 @@ export function generateMarginText(purchasePrice:number, profitAfterVAT:number |
         ? (100 / purchasePrice) * profitAfterVAT
         : 0;
     return `£${profitAfterVAT
-        ? profitAfterVAT.toFixed(2)
+        ? (profitAfterVAT / 100).toFixed(2)
         : (0).toFixed(2)} | ${marginPercentage.toFixed(0)}%`
 }

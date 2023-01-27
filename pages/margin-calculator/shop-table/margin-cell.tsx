@@ -35,7 +35,7 @@ export default function MarginCell({item}: { item: MarginItem }) {
 function buildMarginTooltip(item: MarginItem) {
     const {fees, salesVAT, profit} = item.marginData.shop
     return <div className={styles.tooltip}>
-            <div>Selling Price: £{item.prices.shop}</div>
+            <div>Selling Price: {toCurrency(item.prices.shop)}</div>
             <div>------- Minus -------</div>
             <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
             <div>VAT: {toCurrency(salesVAT)}</div>

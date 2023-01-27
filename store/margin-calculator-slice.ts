@@ -124,7 +124,7 @@ export const marginCalculatorSlice = createSlice({
             setPostage: (state, action: PayloadAction<Postage[]>) => {
                 if (!action.payload) return
                 let idMappedObj: { [key: string]: Postage } = {}
-                for (let value of action.payload) idMappedObj[value.POSTID] = value
+                for (let value of action.payload) idMappedObj[value.id] = value
                 state.postage = idMappedObj
             },
             updatePostage: (state, action: PayloadAction<Postage>) => {
@@ -140,7 +140,7 @@ export const marginCalculatorSlice = createSlice({
             setPackaging: (state, action: PayloadAction<Packaging[]>) => {
                 if (!action.payload) return
                 let idMappedObj: { [key: string]: Packaging } = {}
-                for (let value of action.payload) idMappedObj[value.ID] = value
+                for (let value of action.payload) idMappedObj[value.id] = value
                 state.packaging = idMappedObj
             },
             updatePackaging: (state, action: PayloadAction<Packaging>) => {

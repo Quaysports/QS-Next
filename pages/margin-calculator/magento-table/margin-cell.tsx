@@ -36,7 +36,7 @@ function buildMarginTooltip(item: MarginItem) {
     const {postage, packaging, magento} = item.marginData
     const {fees, profit, salesVAT} = magento
     return <div className={styles.tooltip}>
-            <div>Selling Price: £{item.prices.magento}</div>
+            <div>Selling Price: {toCurrency(item.prices.magento)}</div>
             <div>------- Minus -------</div>
             <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
             {item.prices.magento < 25

@@ -1,14 +1,7 @@
-import {useEffect, useState} from "react";
-import {sbt} from "../../types";
-
 export default function Geoff() {
-    const [calendars, setCalendars] = useState<sbt.holidayCalendar[]>([])
+    //const [calendars, setCalendars] = useState<sbt.holidayCalendar[]>([])
 
-    useEffect(()=>{
-        fetch('/api/dev/get-calendars').then(res=>res.json()).then(data=>setCalendars(data))
-    },[])
-
-    function convertCalendars(calendars:sbt.holidayCalendar[]){
+    /*function convertCalendars(calendars:sbt.holidayCalendar[]){
         console.log(calendars)
         for(let calendar of calendars){
             let clone = structuredClone(calendar)
@@ -40,12 +33,57 @@ export default function Geoff() {
                 booked[user] = {type:"holiday", paid:true, duration:50}
             }
         }
+    }*/
+
+    function mapItem(k:any, v:any, merge:any) {
+        if (!v) return
+        if (typeof v !== "object") {
+            merge[k] = typeof v
+        } else {
+            if (Array.isArray(v)) {
+                let arrayType:any = {}
+                if (typeof v[0] !== "object") {
+                    if (v[0] !== undefined) merge[k] = [typeof v[0]]
+                } else {
+                    for (let [ak1, av1] of Object.entries(v[0])) {
+                        arrayType[ak1] = typeof av1
+                    }
+                    merge[k] = [arrayType]
+                }
+            } else {
+                for (let [k1, v1] of Object.entries(v)) {
+                    merge[k] ??= {}
+                    mapItem(k1, v1, merge[k])
+                }
+            }
+        }
+    }
+
+    function processItemTypes(item:any, merge:any) {
+        for (let [k, v] of Object.entries(item)) {
+            mapItem(k, v, merge);
+        }
+        return merge
     }
 
     return (
         <div>
             <h1>Hi Geoff!</h1>
-            <button onClick={()=>convertCalendars(calendars)}>Convert Holiday</button>
+            <button onClick={()=>{
+                fetch('/api/dev/convert-shop-to-till-transactions')}
+            }>Convert Till Transactions</button>
+            <button onClick={()=>{
+                fetch('/api/dev/convert-fees')}
+            }>Convert Fees</button>
+            <button onClick={()=>{
+                fetch('/api/dev/convert-postage')}
+            }>Convert Postage</button>
+            <button onClick={()=>{
+                fetch('/api/dev/convert-packaging')}
+            }>Convert Packaging</button>
+            <button onClick={()=>{
+                fetch('/api/dev/convert-prices')}
+            }>Convert Prices</button>
         </div>
     )
 }

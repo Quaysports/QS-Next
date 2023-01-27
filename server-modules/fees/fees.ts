@@ -12,10 +12,10 @@ export interface Fees {
 }
 
 export interface Channels {
-    shop: string;
-    magento: string;
-    ebay: string;
-    amazon: string
+    shop: number;
+    magento: number;
+    ebay: number;
+    amazon: number
 }
 
 export interface VatApplicable {
