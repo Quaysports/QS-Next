@@ -31,9 +31,9 @@ export default function SettingsTable({item, handler}: UpdateHandler) {
                        }}/>
             </div>
             <PackagingSelect handler={handler} item={item}/>
-            <div>£{packaging?.[item.packaging.group] ? packaging[item.packaging.group].PRICE : "0.00"}</div>
+            <div>£{packaging?.[item.packaging.group] ? packaging[item.packaging.group].price : "0.00"}</div>
             <PostSelect handler={handler} item={item}/>
-            <div>£{postage?.[item.postage.id]?.POSTCOSTEXVAT ? postage[item.postage.id].POSTCOSTEXVAT : "0.00"}</div>
+            <div>£{postage?.[item.postage.id]?.cost ? postage[item.postage.id].cost : "0.00"}</div>
             <PostModSelect handler={handler} item={item}/>
         </div>
     </>
@@ -46,7 +46,7 @@ function PackagingSelect({item, handler}: UpdateHandler) {
 
     const opts = []
     for (let type of Object.values(packaging)) {
-        opts.push(<option key={type.ID} value={type.ID}>{type.NAME}</option>)
+        opts.push(<option key={type.id} value={type.id}>{type.name}</option>)
     }
 
     return <select defaultValue={item.packaging.group}
@@ -64,7 +64,7 @@ function PostSelect({item, handler}: UpdateHandler) {
 
     let opts = []
     for (let option of Object.values(postage!)) {
-        opts.push(<option key={option.POSTID} value={option.POSTID}>{option.SFORMAT}</option>)
+        opts.push(<option key={option.id} value={option.id}>{option.tag}</option>)
     }
 
     return <select defaultValue={item.postage.id}
