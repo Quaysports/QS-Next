@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import styles from "./css/tag.module.css"
 import {schema} from "../../../types";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 export default function Tag() {
 
@@ -28,7 +29,7 @@ export default function Tag() {
 
                 <div className={styles["sku"]}>{item.SKU}</div>
                 <div
-                    className={styles["price"]}>£{item.prices.shop ? item.prices.shop.toFixed(2) : item.prices.magento!.toFixed(2)}</div>
+                    className={styles["price"]}>{item.prices.shop ? toCurrency(item.prices.shop) : toCurrency(item.prices.magento)}</div>
                 <div className={styles["title"]}>{item.title}</div>
             </div>
         </>
