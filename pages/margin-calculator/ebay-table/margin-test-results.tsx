@@ -42,8 +42,8 @@ function generateTestValues(item: MarginItem, testValue: number | null, fees: Fe
     let ebayFlat = item.prices.purchase
         + item.marginData.postage
         + item.marginData.packaging
-        + parseFloat(fees.flat.ebay)
-        + parseFloat(fees.subscription.ebay)
+        + fees.flat.ebay
+        + fees.subscription.ebay
 
     let targetMargin = ((item.prices.purchase / 100) * testValue)
     let adjustedPrice = (ebayFlat + targetMargin) / 0.724333
