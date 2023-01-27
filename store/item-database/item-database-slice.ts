@@ -1,7 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {rodLocationObject} from "../../pages/item-database";
-import {dispatchNotification} from "../../components/notification/dispatch-notification";
 import {schema} from "../../types";
 
 /**
@@ -223,38 +222,12 @@ export const itemDatabaseSlice = createSlice({
                 }
                 databaseSave(state.item)
             },
-            setItemImages: (state, action: PayloadAction<{ image: string, index: keyof schema.Images, extension: string }>) => {
-                let {image, index, extension} = action.payload
-                let filename = `${index === "main" ? "0" : index}.${extension}`
+            setItemImages: (state, action: PayloadAction<{ index: keyof schema.Images, filename: string }>) => {
+                let {index, filename} = action.payload
                 state.item.images[index] = {
                     ...state.item.images[index],
                     ...{filename: filename}
                 }
-                let body = {
-                    _id: state.item._id,
-                    SKU: state.item.SKU,
-                    id: index === "main" ? "main" : index,
-                    filename: filename,
-                    image: image
-                }
-                const opts = {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(body)
-                }
-                fetch("api/item-database/upload-image", opts).then(res => {
-                    if (res.ok) {
-                        console.log("Uploaded image")
-                    } else {
-                        throw new Error(`Status: ${res.status}, ${res.statusText}`)
-                    }
-                })
-                    .catch((error) => {
-                        dispatchNotification({type: "alert", content: error.message, title: "Upload Failed"})
-                    })
-                state.item.images[index].filename = filename
             },
             setTags: (state, action: PayloadAction<string[]>) => {
                 state.tags = action.payload

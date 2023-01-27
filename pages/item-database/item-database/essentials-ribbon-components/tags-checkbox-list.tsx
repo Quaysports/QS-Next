@@ -8,12 +8,9 @@ export default function TagsCheckboxList(){
     const tags = useSelector(selectTags)
     const item = useSelector(selectItem)
     const dispatch = useDispatch()
-
-
     function checklist(tags:string[], item:schema.Item){
         let itemTags: string[] = !item.tags ? [] : item.tags
         let tagsCheckListArray:JSX.Element[] = []
-
         const checkboxCheck = (itemTags:string[], tag: string) => {
             for(const itemTag of itemTags){
                 if (itemTag === tag){

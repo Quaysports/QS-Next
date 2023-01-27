@@ -38,11 +38,35 @@ export default function ImageContainer({imageTag}: Props) {
             if (image.type === "image/jpeg" || image.type === "image/png") {
                 const fileReader = new FileReader()
                 fileReader.onload = (event) => {
-                    dispatch(setItemImages({
-                        image: event.target!.result!.toString(),
-                        index: index,
-                        extension: imageExtension
-                    }))
+                    let filename = `${index === "main" ? "0" : index}.${imageExtension}`
+                    let body = {
+                        _id: item._id,
+                        SKU: item.SKU,
+                        id: index === "main" ? "main" : index,
+                        filename: filename,
+                        image: event.target!.result!.toString()
+                    }
+                    const opts = {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        method: 'POST',
+                        body: JSON.stringify(body)
+                    }
+                    fetch("api/item-database/upload-image", opts).then(res => {
+                        if (res.ok) {
+                            dispatch(setItemImages({
+                                index: index,
+                                filename:filename
+                            }))
+                        } else {
+                            throw new Error(`Status: ${res.status}, ${res.statusText}`)
+                        }
+                    })
+                        .catch((error) => {
+                            dispatchNotification({type: "alert", content: error.message, title: "Upload Failed"})
+                        })
+
                 }
                 fileReader.readAsDataURL(image)
             } else {
