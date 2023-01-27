@@ -24,6 +24,7 @@ export default function DisplayArrived() {
     }
 
     function arrivedTableCells() {
+        console.log(loadedOrder!.arrived)
         let tempArray = []
         for (let i = 0; i < loadedOrder!.arrived.length; i++) {
             tempArray.push(

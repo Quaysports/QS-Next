@@ -157,19 +157,23 @@ export const shopOrdersSlice = createSlice({
             setArrivedHandler: (state, action: PayloadAction<{ order: string, index: number, value: number }>) => {
                 state.openOrders![Number(action.payload.order)].order[action.payload.index].arrived = action.payload.value
             },
-            setBookedInState: (state, action: PayloadAction<{ bookedIn: string, index: number, order: string }>) => {
-                let openOrder = state.openOrders![Number(action.payload.order)]
-                if (action.payload.bookedIn === "false") {
-                    openOrder.order[action.payload.index].bookedIn = action.payload.bookedIn
-                    openOrder.arrived.push(openOrder.order[action.payload.index])
-                    openOrder.order.splice(action.payload.index, 1)
+            setBookedInState: (state, action: PayloadAction<{ bookedIn: string, index: number, orderId: number }>) => {
+                let { bookedIn, index, orderId } = action.payload
+                let { order, arrived } = structuredClone(current(state.openOrders![action.payload.orderId]))
+                if (bookedIn === "false") {
+                    order[index].bookedIn = bookedIn
+                    arrived.push(order[index])
+                    order.splice(index, 1)
                 }
                 if (action.payload.bookedIn === "partial") {
-                    openOrder.order[action.payload.index].quantity = (openOrder.order[action.payload.index].quantity - openOrder.order[action.payload.index].arrived!)
-                    openOrder.arrived.push(openOrder.order[action.payload.index])
-                    openOrder.arrived[(openOrder.arrived.length - 1)].quantity = openOrder.order[action.payload.index].arrived!
-                    openOrder.order[action.payload.index].arrived = 0
+                    let amount = state.openOrders![orderId].order[index].arrived!
+                    let item = structuredClone(order[index])
+                    order[index].quantity = (order[index].quantity - amount)
+                    arrived.push(item)
+                    arrived[(arrived.length - 1)] = {...arrived[(arrived.length - 1)], quantity:amount, arrived:amount}
+                    order[index].arrived = 0
                 }
+                state.openOrders![orderId] = {...state.openOrders![orderId], order:order, arrived:arrived}
             },
             setRemoveFromBookedInState: (state, action: PayloadAction<{ index: number, SKU: string, order: string }>) => {
                 let openOrder = state.openOrders![Number(action.payload.order)]

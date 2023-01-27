@@ -53,7 +53,7 @@ export default function DisplayOnOrder() {
 
         if ((order.order[index].quantity - order.order[index].arrived!) === 0) {
             setSaveOrder(true)
-            dispatch(setBookedInState({bookedIn: "false", index: index, order: router.query.index as string}))
+            dispatch(setBookedInState({bookedIn: "false", index: index, orderId:Number(router.query.index)}))
             return
         }
 
@@ -67,7 +67,7 @@ export default function DisplayOnOrder() {
 
             function partialBookIn() {
                 setSaveOrder(true)
-                dispatch(setBookedInState({bookedIn: "partial", index: index, order: router.query.index as string}))
+                dispatch(setBookedInState({bookedIn: "partial", index: index, orderId: Number(router.query.index)}))
             }
         }
     }
