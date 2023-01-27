@@ -11,6 +11,7 @@ import WebsiteTitleInput from "./website-title-input";
 import TagsCheckboxList from "./tags-checkbox-list";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
 import ShippingSelect from "./shipping-select";
+import {toCurrency} from "../../../../components/margin-calculator-utils/utils";
 
 /**
  * Essentials Ribbon Component
@@ -54,10 +55,10 @@ export default function EssentialsRibbon(){
             </div>
             <div className={styles["essentials-inputs-2"]}>
                 <div/>
-                <div>£{item.prices.ebay}</div>
-                <div>£{item.prices.amazon}</div>
-                <div>£{item.prices.magento}</div>
-                <div>£{item.prices.shop}</div>
+                <div>{toCurrency(item.prices.ebay)}</div>
+                <div>{toCurrency(item.prices.amazon)}</div>
+                <div>{toCurrency(item.prices.magento)}</div>
+                <div>{toCurrency(item.prices.shop)}</div>
                 <div/>
                 <div className={`${styles["tags-button"]} button`} onClick={() => {
                     dispatchNotification({type:"popup", content:<TagsCheckboxList/>, title:"Tags"}

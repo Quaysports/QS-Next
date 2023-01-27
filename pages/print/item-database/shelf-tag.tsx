@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import styles from "./css/shelf-tag.module.css";
 import {schema} from "../../../types";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 export default function ShelfTag() {
 
@@ -29,7 +30,7 @@ export default function ShelfTag() {
             <div className={styles["container"]}>
                 <div className={styles["sku"]}>{item.SKU}</div>
                 <div
-                    className={styles["price"]}>£{item.prices.shop ? item.prices.shop.toFixed(2) : item.prices.magento.toFixed(2)}</div>
+                    className={styles["price"]}>{item.prices.shop ? toCurrency(item.prices.shop) : toCurrency(item.prices.magento)}</div>
             </div>
             <div className={styles["title"]}>{item.title}</div>
         </>

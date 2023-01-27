@@ -9,7 +9,6 @@ export default function ShowOrder() {
     if (orderContents) {
         let tempArray:JSX.Element[] = []
         orderContents.arrived.forEach((item, index) => {
-            console.log(item)
                 tempArray.push(
                     <div key={index}
                          className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["completed-orders-list-grid"]}`}>

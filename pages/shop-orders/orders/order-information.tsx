@@ -6,6 +6,7 @@ import {OpenOrdersObject, selectOpenOrders} from "../../../store/shop-orders-sli
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import CSVButton from "../../../components/csv-button";
 import {useRouter} from "next/router";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 /**
  * Order Information Component
@@ -61,7 +62,7 @@ export default function OrderInformation() {
             <div key={1} className={styles["shop-orders-table-containers"]}>
                 <div className={styles["shop-order-information"]} key={loadedOrder.date}>
                     <span>ID: {loadedOrder.supplier}({loadedOrder.id})</span>
-                    <span>Cost: £{loadedOrder.price ? loadedOrder.price.toFixed(2) : 0}</span>
+                    <span>Cost: {loadedOrder.price ? toCurrency(loadedOrder.price) : 0}</span>
                     <span className={styles["primary-buttons"]}>
                     <button onClick={() => deleteOrder(loadedOrder)}>Delete Order</button>
                     <CSVButton objectArray={csvObject} fileName={`${loadedOrder.supplier}-${loadedOrder.id}`}/>

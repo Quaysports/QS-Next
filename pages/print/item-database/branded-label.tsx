@@ -1,6 +1,7 @@
 import styles from './css/branded-label.module.css'
 import {useEffect, useState} from "react";
 import {schema} from "../../../types";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 export default function BrandedLabel() {
 
@@ -33,7 +34,7 @@ export default function BrandedLabel() {
                 <div className={styles["brand"]}>{item.brand}</div>
                 <div className={styles["title1"]}>{item.brandLabel.title1}</div>
                 <div className={styles["title2"]}>{item.brandLabel.title2}</div>
-                <div className={styles["price"]}>£{item.prices.shop}</div>
+                <div className={styles["price"]}>{item.prices.shop ? toCurrency(item.prices.shop) : toCurrency(item.prices.magento)}</div>
                 <div className={styles["loc"]}>{prefix}-{letter}-{number}</div>
             </div>
         </div>

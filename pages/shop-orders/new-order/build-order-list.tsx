@@ -3,6 +3,7 @@ import styles from "../shop-orders.module.css";
 import {selectNewOrderArray, setChangeOrderArray, setChangeOrderQty} from "../../../store/shop-orders-slice";
 import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 import {useDispatch, useSelector} from "react-redux";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 export default function CurrentOrderList() {
 
@@ -33,7 +34,7 @@ export default function CurrentOrderList() {
                             changeInputAmountHandler(item, index, e.target.value, "tradePack")
                         }}/>
                         <span
-                            className={"center-align"}>£{item.prices.purchase ? item.prices.purchase.toFixed(2) : 0}</span>
+                            className={"center-align"}>{item.prices.purchase ? toCurrency(item.prices.purchase) : 0}</span>
                     </div>
                 )
 
