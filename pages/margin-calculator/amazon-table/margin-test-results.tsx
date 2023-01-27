@@ -42,8 +42,8 @@ function generateTestValues(item: MarginItem, testValue: number | null, fees: Fe
     let amazonFlat = item.prices.purchase
         + item.marginData.postage
         + item.marginData.packaging
-        + parseFloat(fees["FLAT"]["AMAZ"])
-        + parseFloat(fees["SUBSCRIPTION"]["AMAZ"])
+        + parseFloat(fees.flat.amazon)
+        + parseFloat(fees.subscription.amazon)
 
     let targetMargin = ((item.prices.purchase / 100) * testValue)
     let adjustedPrice = (amazonFlat + targetMargin) / 0.67833
