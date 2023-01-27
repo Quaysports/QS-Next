@@ -9,6 +9,7 @@ import LinnworksUploadButton from "./popup-linnworks-upload-button";
 export default function StatusAndUploadPopup({item, index}: { item: MarginItem, index: string }) {
 
     const uploadedIndexes = useSelector(selectUploadedIndexes)
+    if(!item) return null
     function checkPriceMismatch() {
         if(uploadedIndexes.includes(index)) return styles["upload-button-uploaded"]
         let mismatch = false
