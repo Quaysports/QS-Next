@@ -14,10 +14,10 @@ export default function FeesMenu({menuState}: { menuState: MenuState }) {
 
     return <div className={styles["fees-table"]}>
         <TitleRow/>
-        <ItemRow channel={"AMAZ"} fees={fees} title={"Amazon"} menuState={menuState}/>
-        <ItemRow channel={"EBAY"} fees={fees} title={"Ebay"} menuState={menuState}/>
-        <ItemRow channel={"QS"} fees={fees} title={"Quaysports"} menuState={menuState}/>
-        <ItemRow channel={"SHOP"} fees={fees} title={"Shop"} menuState={menuState}/>
+        <ItemRow fees={fees} menuState={menuState} channel={"amazon"} />
+        <ItemRow fees={fees} menuState={menuState} channel={"ebay"} />
+        <ItemRow fees={fees} menuState={menuState} channel={"magento"} />
+        <ItemRow fees={fees} menuState={menuState} channel={"shop"} />
         <div className={styles["fees-row"]}>
             <div>VAT</div>
             <div><input type={"number"} step={"0.01"} min={0} defaultValue={fees?.VAT} onChange={(e) => {
@@ -43,17 +43,16 @@ function TitleRow() {
 interface ItemRowProps {
     fees: Fees
     menuState: MenuState
-    title: string
-    channel: "AMAZ" | "EBAY" | "QS" | "SHOP"
+    channel: "amazon" | "ebay" | "magento" | "shop"
     checkbox?:boolean
 }
 
-function ItemRow({fees, menuState, title, channel}: ItemRowProps) {
+function ItemRow({fees, menuState, channel}: ItemRowProps) {
 
     const dispatch = useDispatch()
     const updateHandler = (e:ChangeEvent<HTMLInputElement>,
-                           id:"LISTING" | "FLAT" | "SUBSCRIPTION" | "VATAPP" ,
-                           channel:"AMAZ" | "EBAY" | "QS" | "SHOP",
+                           id:"listing" | "flat" | "subscription" | "vatApplicable" ,
+                           channel:"amazon" | "ebay" | "magento" | "shop",
                            checkbox = false)=>{
         let newFees = structuredClone(fees)
         checkbox
@@ -64,32 +63,32 @@ function ItemRow({fees, menuState, title, channel}: ItemRowProps) {
     }
 
     return <div className={styles["fees-row"]}>
-        <div>{title}</div>
+        <div style={{textTransform:"capitalize"}}>{channel}</div>
         <div>
             <input type={"number"}
                    step={"0.01"}
                    min={0}
-                   defaultValue={fees?.LISTING[channel]}
-                   onChange={(e) => { updateHandler(e, "LISTING", channel)}}/>
+                   defaultValue={fees?.listing[channel]}
+                   onChange={(e) => { updateHandler(e, "listing", channel)}}/>
         </div>
         <div>
             <input type={"number"}
                     step={"0.01"}
                     min={0}
-                    defaultValue={fees?.FLAT[channel]}
-                    onChange={(e) => { updateHandler(e, "FLAT", channel)}}/>
+                    defaultValue={fees?.flat[channel]}
+                    onChange={(e) => { updateHandler(e, "flat", channel)}}/>
         </div>
         <div>
             <input type={"number"}
                    step={"0.01"}
                    min={0}
-                   defaultValue={fees?.SUBSCRIPTION[channel]}
-                   onChange={(e) => { updateHandler(e, "SUBSCRIPTION", channel)}}/>
+                   defaultValue={fees?.subscription[channel]}
+                   onChange={(e) => { updateHandler(e, "subscription", channel)}}/>
         </div>
         <div>
             <input type={"checkbox"}
-                   defaultChecked={fees?.VATAPP[channel]}
-                   onChange={(e) => { updateHandler(e, "VATAPP", channel, true)}}/>
+                   defaultChecked={fees?.vatApplicable[channel]}
+                   onChange={(e) => { updateHandler(e, "vatApplicable", channel, true)}}/>
         </div>
     </div>
 }
