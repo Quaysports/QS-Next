@@ -710,7 +710,7 @@ declare namespace schema {
 
     interface BaseChannelPriceData {
         status: number,
-        price: string
+        price: number
     }
 
     interface LinnChannelPriceData extends BaseChannelPriceData {

@@ -17,7 +17,7 @@ export default function ItemRow({item, index, displayTest}: { item: MarginItem, 
     useEffect(() => {
         if (!inputRef.current) return
         inputRef.current.value = String(toCurrencyInput(item.prices.amazon))
-        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "amazon",)])
+        setInputClass(styles[inputStatusColour(item, "amazon",)])
     }, [item])
 
     const activeIndex = useSelector(selectActiveIndex)

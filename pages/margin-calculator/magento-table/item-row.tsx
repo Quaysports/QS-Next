@@ -24,7 +24,7 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
     useEffect(() => {
         if (!inputRef.current) return
         inputRef.current.value = String(toCurrencyInput(item.prices.magento))
-        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "magento",)])
+        setInputClass(styles[inputStatusColour(item, "magento",)])
 
         if (!discountRef.current) return
         discountRef.current.value = String(item.discounts.magento)
