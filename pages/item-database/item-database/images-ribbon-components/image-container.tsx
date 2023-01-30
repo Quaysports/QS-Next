@@ -28,7 +28,7 @@ export default function ImageContainer({imageTag}: Props) {
         event.stopPropagation()
         event.preventDefault()
         let image = event.dataTransfer.files[0]
-        if (image.size > 1000000) {
+        if (image.size > 700000) {
             dispatchNotification({type: "alert", content: "Resize image", title: "Image Too Big"})
         } else {
             event.currentTarget.style.boxShadow = ""
