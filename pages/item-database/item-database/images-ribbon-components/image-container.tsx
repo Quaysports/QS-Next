@@ -28,11 +28,12 @@ export default function ImageContainer({imageTag}: Props) {
         event.stopPropagation()
         event.preventDefault()
         let image = event.dataTransfer.files[0]
+        event.currentTarget.style.boxShadow = ""
+        event.currentTarget.style.transform = "scale(1)"
         if (image.size > 700000) {
+            event.currentTarget.style.background = ""
             dispatchNotification({type: "alert", content: "Resize image", title: "Image Too Big"})
         } else {
-            event.currentTarget.style.boxShadow = ""
-            event.currentTarget.style.transform = "scale(1)"
             event.currentTarget.style.background = "white"
             let imageExtension = image.name.split(".")[1]
             if (image.type === "image/jpeg" || image.type === "image/png") {
