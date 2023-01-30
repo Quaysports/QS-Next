@@ -15,7 +15,7 @@ export default function StatusAndUploadPopup({item, index}: { item: MarginItem, 
         let mismatch = false
         let channels = ["ebay", "amazon", "magento"] as const
         for (let channel of channels) {
-            if (String(item.prices[channel]) !== item.channelPrices[channel].price) mismatch = true
+            if (item.prices[channel] !== item.channelPrices[channel].price) mismatch = true
         }
         return mismatch ? styles["upload-button-mismatch"] : styles["upload-button"]
     }

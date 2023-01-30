@@ -18,7 +18,7 @@ export default function ItemRow({item, displayTest, index}: { item: MarginItem, 
     useEffect(() => {
         if(!inputRef.current) return
         inputRef.current.value = String(toCurrencyInput(item.prices.ebay))
-        setInputClass(styles[inputStatusColour(inputRef.current?.value, item, "ebay",)])
+        setInputClass(styles[inputStatusColour(item, "ebay",)])
     }, [item])
 
     const activeIndex = useSelector(selectActiveIndex)

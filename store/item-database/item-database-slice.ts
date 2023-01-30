@@ -366,15 +366,15 @@ function itemTemplate(): schema.Item {
         brand: "",
         brandLabel: {brand: "", image: "", location: "", path: "", title1: "", title2: ""},
         channelData: [],
-        channelPrices: {amazon: {id: "", price: "", status: 0, subSource: "", updateRequired: false, updated: ""}, ebay: {
+        channelPrices: {amazon: {id: "", price: 0, status: 0, subSource: "", updateRequired: false, updated: ""}, ebay: {
                 id: "",
-                price: "",
+                price: 0,
                 status: 0,
                 subSource: "",
                 updateRequired: false,
                 updated: ""
-            }, magento: {id: "", price: "", status: 0, subSource: "", updateRequired: false, updated: ""}, shop: {
-                price: "",
+            }, magento: {id: "", price: 0, status: 0, subSource: "", updateRequired: false, updated: ""}, shop: {
+                price: 0,
                 status: 0
             }},
         checkboxStatus: {
