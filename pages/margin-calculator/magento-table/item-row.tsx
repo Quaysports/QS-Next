@@ -33,7 +33,12 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
 
     const activeIndex = useSelector(selectActiveIndex)
     const [classes, setClasses] = useState(cssClasses())
-    useEffect(()=>{setClasses(cssClasses())},[activeIndex, domestic])
+    useEffect(()=>{
+        setClasses(cssClasses())
+        if (!inputRef.current) return
+        inputRef.current.value = String(toCurrencyInput(item.prices.magento))
+        setInputClass(styles[inputStatusColour(item, "magento",)])
+    },[activeIndex, domestic])
 
     function cssClasses(){
         let classes = styles.row

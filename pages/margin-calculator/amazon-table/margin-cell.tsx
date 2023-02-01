@@ -11,8 +11,8 @@ export default function MarginCell({item}:{item:MarginItem}){
     const [marginText, setMarginText] = useState<string>("")
 
     useEffect(()=>{
-        setTextClass(styles[textColourStyler(item.marginData.amazon.primeProfit)])
-        setMarginText(generateMarginText(item.prices.purchase, item.marginData.amazon.primeProfit))
+        setTextClass(styles[textColourStyler(item.marginData.amazon.profit)])
+        setMarginText(generateMarginText(item.prices.purchase, item.marginData.amazon.profit))
     },[item])
 
     if(!item) return null

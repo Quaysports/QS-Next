@@ -15,8 +15,19 @@ export default function MarginMenu() {
 
     const router = useRouter()
 
+    const updateAllItemData = async() =>{
+        dispatchNotification({type: "loading", title: "Updating all Items"})
+
+        const opt = {method: 'POST', headers: {"Content-Type": "application/json"}}
+        await fetch('/api/items/update-all', opt)
+
+        menuState.updateRequired = false
+
+        dispatchNotification()
+        router.reload()
+    }
+
     const updateAllMarginData = async() =>{
-        console.log("update all!")
         dispatchNotification({type: "loading", title: "Running Margin Calculations"})
 
         const opt = {method: 'POST', headers: {"Content-Type": "application/json"}}
@@ -43,8 +54,6 @@ export default function MarginMenu() {
             if(menuState.updateRequired) updateAllMarginData()
         }
     }
-
-
 
     return <div className={styles.menu}>
         <div>
@@ -78,6 +87,7 @@ export default function MarginMenu() {
         </div>
         <div>
             <span>Bulk updates</span>
+            <SidebarButton onClick={async () => updateAllItemData() }>Update All Items</SidebarButton>
             <SidebarButton onClick={async () => updateAllMarginData() }>Update All Margins</SidebarButton>
             <SidebarButton onClick={async () => uploadLinnworksPrices() }>Update All Channel Prices</SidebarButton>
             <span/>
