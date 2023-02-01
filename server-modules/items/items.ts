@@ -225,7 +225,7 @@ export const getStockValues = async (domestic: boolean) => {
                 'total': {
                     '$sum': {
                         '$multiply': [
-                            '$prices.purchasePrice', '$stock.total'
+                            '$prices.purchase', '$stock.total'
                         ]
                     }
                 }
