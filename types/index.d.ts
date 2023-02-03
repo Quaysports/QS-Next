@@ -714,6 +714,8 @@ declare namespace schema {
     }
 
     interface LinnChannelPriceData extends BaseChannelPriceData {
+        channelReference: string;
+        channelSKU: string;
         subSource: string,
         updated: string,
         id: string,
@@ -929,9 +931,10 @@ export namespace till {
         percentageDiscountAmount: number,
         processedBy: string,
         returns: OrderReturn[],
-        rmas: OrderRma[],
         till: string,
         total: number,
+        profit: number,
+        profitWithLoss: number,
         transaction: OrderTransaction
     }
 
@@ -955,6 +958,7 @@ export namespace till {
         }
         quantity: number,
         returnQuantity: number,
+        totalReturned?: number,
         SKU: string,
         stock: {
             default: number,
@@ -963,8 +967,10 @@ export namespace till {
             minimum: number
             value: number
         },
+        shelfLocation?:schema.ShelfLocation,
         title: string,
-        total: number
+        total: number,
+        profitCalculated:boolean
     }
 
     export interface OrderTransaction {
@@ -987,14 +993,6 @@ export namespace till {
         total: number,
         items: OrderItem[]
         transaction: Pick<OrderTransaction, "amount" | "date" | "mask" | "type">
-        user: string
-    }
-
-    export interface OrderRma{
-        date: string,
-        id: string,
-        reason: string,
-        items: OrderItem[]
         user: string
     }
 
