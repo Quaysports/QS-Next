@@ -45,7 +45,6 @@ export async function convertShopToTillTransactions(){
             percentageDiscountAmount: order.perDiscountAmount ? convertToIntCurrency(order.perDiscountAmount) : 0,
             processedBy: order.processedBy || "",
             returns: [],
-            rmas: [],
             till: order.till || "",
             total: order.total ? convertToIntCurrency(order.total) : 0,
             transaction: {
@@ -59,7 +58,9 @@ export async function convertShopToTillTransactions(){
                 giftCard: order.transaction?.giftCard ? convertToIntCurrency(String(order.transaction.giftCard)) : 0,
                 mask: order.transaction?.mask || "",
                 type: order.transaction?.type || ""
-            }
+            },
+            profit: 0,
+            profitWithLoss: 0
         }
 
         for (let item of order.order) {
@@ -69,12 +70,6 @@ export async function convertShopToTillTransactions(){
         if (order.returns) {
             for (let orderReturn of order.returns) {
                 orderConversion.returns.push(convertOrderReturn(orderReturn))
-            }
-        }
-
-        if (order.rmas) {
-            for (let rma of order.rmas) {
-                orderConversion.rmas.push(convertOrderRma(rma))
             }
         }
 
@@ -110,8 +105,10 @@ export async function convertShopToTillTransactions(){
                 value: 0,
                 warehouse: 0
             },
+            profitCalculated: false,
+            totalReturned: 0,
             title: item.TITLE || "",
-            total: item.TOTAL ? convertToIntCurrency(String(item.TOTAL)) : 0,
+            total: item.TOTAL ? convertToIntCurrency(String(item.TOTAL)) : 0
         }
     }
 
@@ -135,23 +132,6 @@ export async function convertShopToTillTransactions(){
         if (!item.items) return convertedOrder
         for (let returnItem of item.items) {
             convertedOrder.items.push(convertOrderItem(returnItem))
-        }
-
-        return convertedOrder
-    }
-
-    function convertOrderRma(item: sbt.TillOrderRmas): till.OrderRma {
-        let convertedOrder: till.OrderRma = {
-            id: item.id || "",
-            user: item.user || "",
-            date: item.date || "",
-            items: [],
-            reason: item.reason || ""
-        }
-
-        if (!item.items) return convertedOrder
-        for (let rmaItem of item.items) {
-            convertedOrder.items.push(convertOrderItem(rmaItem))
         }
 
         return convertedOrder
@@ -289,6 +269,22 @@ export async function convertFees(){
             }
         }
         await setData("New-Fees", {lastUpdate:newFees.lastUpdate}, newFees)
+    }
+    return
+}
+
+interface GiftCard {id:string, active:boolean, amount:number}
+
+export async function convertGiftCards(){
+    let giftCards = await find<GiftCard>("Shop-Giftcard", {})
+    if (!giftCards) return
+    for(let card of giftCards){
+        let newCard:GiftCard = {
+            active: card.active || false,
+            amount: card.amount ? Math.round(card.amount * 100) : 0 ,
+            id: card.id || ""
+        }
+        await setData("New-Giftcards", {id:newCard.id}, newCard)
     }
     return
 }

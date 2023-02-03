@@ -1,3 +1,5 @@
+import styles from "./geoff.module.css"
+
 export default function Geoff() {
     //const [calendars, setCalendars] = useState<sbt.holidayCalendar[]>([])
 
@@ -35,13 +37,13 @@ export default function Geoff() {
         }
     }*/
 
-    function mapItem(k:any, v:any, merge:any) {
+    function mapItem(k: any, v: any, merge: any) {
         if (!v) return
         if (typeof v !== "object") {
             merge[k] = typeof v
         } else {
             if (Array.isArray(v)) {
-                let arrayType:any = {}
+                let arrayType: any = {}
                 if (typeof v[0] !== "object") {
                     if (v[0] !== undefined) merge[k] = [typeof v[0]]
                 } else {
@@ -59,7 +61,7 @@ export default function Geoff() {
         }
     }
 
-    function processItemTypes(item:any, merge:any) {
+    function processItemTypes(item: any, merge: any) {
         for (let [k, v] of Object.entries(item)) {
             mapItem(k, v, merge);
         }
@@ -67,23 +69,15 @@ export default function Geoff() {
     }
 
     return (
-        <div>
+        <div className={styles["button-container"]}>
             <h1>Hi Geoff!</h1>
-            <button onClick={()=>{
-                fetch('/api/dev/convert-shop-to-till-transactions')}
-            }>Convert Till Transactions</button>
-            <button onClick={()=>{
-                fetch('/api/dev/convert-fees')}
-            }>Convert Fees</button>
-            <button onClick={()=>{
-                fetch('/api/dev/convert-postage')}
-            }>Convert Postage</button>
-            <button onClick={()=>{
-                fetch('/api/dev/convert-packaging')}
-            }>Convert Packaging</button>
-            <button onClick={()=>{
-                fetch('/api/dev/convert-prices')}
-            }>Convert Prices</button>
+            <button disabled onClick={() => fetch('/api/dev/convert-shop-to-till-transactions')}>Convert Till Transactions</button>
+            <button disabled onClick={() => fetch('/api/dev/convert-fees')}>Convert Fees</button>
+            <button disabled onClick={() => fetch('/api/dev/convert-postage')}>Convert Postage</button>
+            <button disabled onClick={() => fetch('/api/dev/convert-packaging')}>Convert Packaging</button>
+            <button disabled onClick={() => fetch('/api/dev/convert-prices')}>Convert Prices</button>
+            <button disabled onClick={() => fetch('/api/dev/convert-giftcard')}>Convert Giftcard</button>
+            <button onClick={() => fetch('/api/dev/report-worker-test').then(res=>res.json().then(json=>console.log(json)))}>Report Worker</button>
         </div>
     )
 }
