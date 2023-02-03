@@ -366,16 +366,18 @@ function itemTemplate(): schema.Item {
         brand: "",
         brandLabel: {brand: "", image: "", location: "", path: "", title1: "", title2: ""},
         channelData: [],
-        channelPrices: {amazon: {id: "", price: 0, status: 0, subSource: "", updateRequired: false, updated: ""}, ebay: {
-                id: "",
-                price: 0,
-                status: 0,
-                subSource: "",
-                updateRequired: false,
-                updated: ""
-            }, magento: {id: "", price: 0, status: 0, subSource: "", updateRequired: false, updated: ""}, shop: {
-                price: 0,
-                status: 0
+        channelPrices: {
+            amazon: {channelReference: "", channelSKU: "", id: "", price: 0,
+                status: 0, subSource: "", updateRequired: false, updated: ""
+            },
+            ebay: {channelReference: "", channelSKU: "", id: "", price: 0,
+                status: 0, subSource: "", updateRequired: false, updated: ""
+            },
+            magento: {channelReference: "", channelSKU: "", id: "", price: 0,
+                status: 0, subSource: "", updateRequired: false, updated: ""
+            },
+            shop: {
+                price: 0, status: 0
             }},
         checkboxStatus: {
             done: {

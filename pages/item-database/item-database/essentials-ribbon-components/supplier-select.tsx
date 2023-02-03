@@ -1,7 +1,7 @@
 import {
     selectCurrentSupplier,
     selectItem, selectSuppliers,
-    setItem
+    setItemSupplier
 } from "../../../../store/item-database/item-database-slice";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -23,7 +23,7 @@ export default function SuppliersSelect() {
     }
 
     function supplierHandler(supplier: string) {
-        dispatch(setItem(supplier))
+        dispatch(setItemSupplier(supplier))
     }
 
     return (
