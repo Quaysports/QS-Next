@@ -71,12 +71,12 @@ export default function Geoff() {
     return (
         <div className={styles["button-container"]}>
             <h1>Hi Geoff!</h1>
-            <button disabled onClick={() => fetch('/api/dev/convert-shop-to-till-transactions')}>Convert Till Transactions</button>
+            <button onClick={() => fetch('/api/dev/convert-shop-to-till-transactions')}>Convert Till Transactions</button>
             <button disabled onClick={() => fetch('/api/dev/convert-fees')}>Convert Fees</button>
             <button disabled onClick={() => fetch('/api/dev/convert-postage')}>Convert Postage</button>
             <button disabled onClick={() => fetch('/api/dev/convert-packaging')}>Convert Packaging</button>
             <button disabled onClick={() => fetch('/api/dev/convert-prices')}>Convert Prices</button>
-            <button disabled onClick={() => fetch('/api/dev/convert-giftcard')}>Convert Giftcard</button>
+            <button onClick={() => fetch('/api/dev/convert-giftcard')}>Convert Giftcard</button>
             <button onClick={() => fetch('/api/dev/report-worker-test').then(res=>res.json().then(json=>console.log(json)))}>Report Worker</button>
         </div>
     )
