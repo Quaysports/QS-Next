@@ -476,6 +476,10 @@ function itemTemplate(): schema.Item {
         tags: [],
         title: "",
         webTitle: "",
-        weight: 0
+        weight: 0,
+        gender: "unisex",
+        age: "adult",
+        size: "",
+        color: ""
     }
 }
