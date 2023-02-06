@@ -3,7 +3,6 @@ import {sbt, schema, till} from "../../types";
 import {Postage} from "../postage/postage";
 import {Packaging} from "../packaging/packaging";
 import {Fees} from "../fees/fees";
-import {QuickLinks} from "../shop/shop";
 
 export async function getCalendars(){
     return await find("Holiday-Calendar", {})
@@ -288,23 +287,4 @@ export async function convertGiftCards(){
         await setData("New-Giftcards", {id:newCard.id}, newCard)
     }
     return
-}
-
-export async function convertQuickLinks(){
-    let quickLinks = await find<QuickLinks>("Shop-Till-QuickLinks", {})
-    if(!quickLinks) return
-    for(let quicklink of quickLinks){
-        let newQuicklink:{id:string, links:string[]} = {id:quicklink.id, links:[]}
-        for(let link of quicklink.links){
-            if(link.SKU && link.COLOUR) {
-                console.log(link)
-                newQuicklink.links.push(link.SKU)
-                let data = {SKU:link.SKU, till:{color:link.COLOUR}}
-                await setData("New-Items",{SKU:data.SKU},data)
-            } else {
-                newQuicklink.links.push("")
-            }
-        }
-        await setData("Till-QuickLinks", {id:newQuicklink.id}, newQuicklink)
-    }
 }
