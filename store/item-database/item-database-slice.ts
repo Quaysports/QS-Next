@@ -360,6 +360,7 @@ function databaseSave(item: schema.Item) {
 
 function itemTemplate(): schema.Item {
     return {
+        till: {color: ""},
         EAN: "",
         SKU: "",
         _id: "",
@@ -450,7 +451,11 @@ function itemTemplate(): schema.Item {
             specialPrice: "",
             tariffCode: "",
             tillFilter: "",
-            tradePack: ""
+            tradePack: "",
+            gender: "unisex",
+            age: "adult",
+            size: "",
+            color: ""
         },
         marginData: {
             amazon: {fees: 0, primePostage: 0, primeProfit: 0, profit: 0, profitLastYear: 0, salesVAT: 0},
@@ -476,10 +481,6 @@ function itemTemplate(): schema.Item {
         tags: [],
         title: "",
         webTitle: "",
-        weight: 0,
-        gender: "unisex",
-        age: "adult",
-        size: "",
-        color: ""
+        weight: 0
     }
 }
