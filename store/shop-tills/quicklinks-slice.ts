@@ -1,6 +1,6 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-import {QuickLinkItem, QuickLinks} from "../../server-modules/shop/shop";
+import {QuickLinks} from "../../server-modules/shop/shop";
 
 export interface quickLinksWrapper {
     quickLinks: quickLinksState
@@ -47,9 +47,18 @@ export const quickLinksSlice = createSlice({
             },
 
             updateQuickLinkItemColour: (state, action: PayloadAction<{ linksIndex: number, itemIndex: number, colour: string }>) => {
-                state.quickLinksArray[action.payload.linksIndex].links[action.payload.itemIndex].COLOUR = action.payload.colour
-                const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.linksIndex])}
-                fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
+                let {links, data} = state.quickLinksArray[action.payload.linksIndex]
+                let sku = links[action.payload.itemIndex]
+                let itemIndex = data.findIndex(item => item.SKU === sku)
+                console.log("item index: ",itemIndex)
+                console.log(current(state.quickLinksArray[action.payload.linksIndex].data[itemIndex]))
+                if(itemIndex === -1) return
+
+                state.quickLinksArray[action.payload.linksIndex].data[itemIndex].till.color = action.payload.colour
+                console.log(current(state.quickLinksArray[action.payload.linksIndex].data[itemIndex]))
+                let itemUpdate = {SKU:sku,till:{...data[itemIndex].till}}
+                const opt = {method: 'POST', headers:{"Content-Type":"application/json"}, body: JSON.stringify(itemUpdate)}
+                fetch('/api/items/update-item', opt).then(res => console.log(res))
             },
             swapQuickLinkItems: (state, action: PayloadAction<{ linksIndex: number, itemIndex: number, targetIndex: number }>) => {
                 const from = action.payload.itemIndex;
@@ -59,14 +68,14 @@ export const quickLinksSlice = createSlice({
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
             deleteQuickLinkItem: (state, action: PayloadAction<{ linksIndex: number, itemIndex: number }>) => {
-                state.quickLinksArray[action.payload.linksIndex].links[action.payload.itemIndex] = {SKU: ""}
+                state.quickLinksArray[action.payload.linksIndex].links[action.payload.itemIndex] = ""
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.linksIndex])}
                 fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
             },
-            addItemToLinks: (state, action: PayloadAction<{ linksIndex: number, itemIndex: number, data: QuickLinkItem }>) => {
-                state.quickLinksArray[action.payload.linksIndex].links[action.payload.itemIndex] = action.payload.data
+            addItemToLinks: (state, action: PayloadAction<{ linksIndex: number, itemIndex: number, sku: string }>) => {
+                state.quickLinksArray[action.payload.linksIndex].links[action.payload.itemIndex] = action.payload.sku
                 const opt = {method: 'POST', body: JSON.stringify(state.quickLinksArray[action.payload.linksIndex])}
-                fetch('/api/shop-tills/update-quick-links', opt).then(res => console.log(res))
+                fetch('/api/shop-tills/update-quick-links', opt).then(() => global.window.location.reload())
             }
         },
     })

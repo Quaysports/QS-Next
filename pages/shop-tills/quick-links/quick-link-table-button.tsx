@@ -6,13 +6,14 @@ import {
     swapQuickLinkItems,
     updateQuickLinkItemColour
 } from "../../../store/shop-tills/quicklinks-slice";
-import {QuickLinkItem} from "../../../server-modules/shop/shop";
 import {ChangeEvent, DragEvent, useEffect, useState} from "react";
 import {useRouter} from "next/router";
+import {schema} from "../../../types";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 interface Props {
     itemIndex: number;
-    item: QuickLinkItem
+    item: Pick<schema.Item, | "SKU" | "title" | "prices" | "till">
 }
 
 export default function QuickLinkButton({itemIndex, item}: Props) {
@@ -21,8 +22,8 @@ export default function QuickLinkButton({itemIndex, item}: Props) {
     const linksIndex = Number(router.query.linksIndex)
     let dispatch = useDispatch()
 
-    const [inputColour, setInputColour] = useState<string | undefined>(item?.COLOUR ? item?.COLOUR : "")
-    useEffect(()=>{setInputColour(item?.COLOUR ? item?.COLOUR : "")},[item])
+    const [inputColour, setInputColour] = useState<string | undefined>(item.till.color ? item.till.color : "")
+    useEffect(()=>{setInputColour(item.till.color ? item.till.color : "")},[item])
 
     const deleteItem = () => dispatch(deleteQuickLinkItem({linksIndex: linksIndex, itemIndex: itemIndex}))
 
@@ -60,10 +61,10 @@ export default function QuickLinkButton({itemIndex, item}: Props) {
                 onDrop={dropHandler}
             >
                 <div>{item?.SKU}</div>
-                <div>{"£" + parseFloat(item?.SHOPPRICEINCVAT!).toFixed(2)}</div>
-                <div className={styles["title-text"]}>{item?.TITLE}</div>
+                <div>{toCurrency(item.prices.shop)}</div>
+                <div className={styles["title-text"]}>{item.title}</div>
                 <div className={styles["dual-button-container"]}>
-                    <input key={`${item?.SKU}-${item?.COLOUR}`} type={"color"} defaultValue={item?.COLOUR}
+                    <input key={`${item.SKU}-${item.till.color}`} type={"color"} defaultValue={item.till.color}
                            onChange={e => setInputColour(e.target.value)} onBlur={colourHandler}/>
                     <button onClick={() => dispatchNotification({
                         type: "confirm",
