@@ -28,6 +28,7 @@ export const getLinnQuery = async <T>(query: string) => {
 }
 
 export const updateLinnItem = async (path: string, updateData: string) => {
+    console.log(path)
     return await postReq(
         path,
         updateData,
@@ -169,6 +170,7 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
                 }) :
                 newExtendedProperties.push({
                     fkStockItemId: item.linnId,
+                    SKU: item.SKU,
                     PropertyType: "Attribute",
                     PropertyValue: fixedEncodeURIComponent(value),
                     ProperyName: property
@@ -319,6 +321,7 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
     results.Title = titleRes.code
 
     for (let image in item.images) {
+        if(item.images[image as keyof schema.Images].filename === "") continue
         let imageDetails = {
             "ItemNumber": item.SKU,
             "StockItemId": item.linnId,
