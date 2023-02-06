@@ -291,8 +291,8 @@ export async function convertGiftCards(){
 
 type marginData = Pick<schema.Item, "SKU" | "linnId" | "marginData">
 
-export async function calculateTillProfits(){
-    let tillData = await findOne<till.Order>("Till-Transactions", {id:"QSSHOP0020013"})
+export async function calculateTillProfits(id:string){
+    let tillData = await findOne<till.Order>("Till-Transactions", {id:id})
     console.log(tillData)
     if(!tillData) return
     const calculateProfit = async (order: till.Order) => {
@@ -324,6 +324,8 @@ export async function calculateTillProfits(){
 
     console.log(tillData)
 
+    if(tillData._id) delete tillData._id
+    await setData("Till-Transactions", {id:tillData.id}, tillData)
     /*if(!tillData) return
     console.log("transactions: ",tillData.length)
 
