@@ -3,7 +3,6 @@ import {sbt, schema, till} from "../../types";
 import {Postage} from "../postage/postage";
 import {Packaging} from "../packaging/packaging";
 import {Fees} from "../fees/fees";
-import {QuickLinks} from "../shop/shop";
 
 export async function getCalendars(){
     return await find("Holiday-Calendar", {})
@@ -290,21 +289,49 @@ export async function convertGiftCards(){
     return
 }
 
-export async function convertQuickLinks(){
-    let quickLinks = await find<QuickLinks>("Shop-Till-QuickLinks", {})
-    if(!quickLinks) return
-    for(let quicklink of quickLinks){
-        let newQuicklink:{id:string, links:string[]} = {id:quicklink.id, links:[]}
-        for(let link of quicklink.links){
-            if(link.SKU && link.COLOUR) {
-                console.log(link)
-                newQuicklink.links.push(link.SKU)
-                let data = {SKU:link.SKU, till:{color:link.COLOUR}}
-                await setData("New-Items",{SKU:data.SKU},data)
-            } else {
-                newQuicklink.links.push("")
-            }
-        }
-        await setData("Till-QuickLinks", {id:newQuicklink.id}, newQuicklink)
+type marginData = Pick<schema.Item, "SKU" | "linnId" | "marginData">
+
+export async function calculateTillProfits(){
+    let tillData = await find<till.Order>("Till-Transactions")
+    if(!tillData) return
+    console.log("transactions: ",tillData.length)
+
+    let dbItems = await find<marginData>(
+        "New-Items",
+        {},
+        {SKU: 1, linnId:1, marginData: 1}
+    )
+    if(!dbItems) return
+    console.log("items: ",dbItems.length)
+
+    let linnIdMap = new Map<string, marginData>(dbItems.map(item => [item.linnId, item]))
+    let skuMap = new Map<string, marginData>(dbItems.map(item => [item.SKU, item]))
+
+    let counter = 0
+    for(let order of tillData){
+        await calculateProfit(order, linnIdMap, skuMap)
+        counter++
+        console.log(counter)
     }
+    let result = await bulkUpdateAny("Till-Transactions", tillData, "id")
+    console.log(result)
+}
+
+const calculateProfit = async (order: till.Order, linnIdMap:Map<string, marginData>, skuMap:Map<string, marginData>) => {
+
+    for(let item of order.items){
+        let dbItem = linnIdMap.get(item.linnId)
+        if(!dbItem) dbItem = skuMap.get(item.SKU)
+
+        if(!dbItem) {
+            item.profitCalculated = false
+            continue
+        }
+
+        const profit = dbItem.marginData.shop.profit
+        order.profit += Math.round(profit)
+        order.profitWithLoss += Math.round(profit - order.percentageDiscountAmount - order.flatDiscount)
+        item.profitCalculated = true
+    }
+
 }

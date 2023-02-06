@@ -3,6 +3,7 @@
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     background: #d9d6d2;
+    height: 100%;
 }
 
 .table-button, .table-add-button{

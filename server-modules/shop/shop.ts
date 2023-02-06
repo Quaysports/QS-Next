@@ -1,6 +1,5 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
 import {ObjectId} from 'mongodb'
-import {binarySearch} from "../core/core";
 import {sbt, schema} from "../../types";
 //import * as linn from "../linn-api/linn-api"
 //import * as eod from '../workers/shop-worker-modules/endOfDayReport'
@@ -25,15 +24,8 @@ export interface StockError {
 export type QuickLinks = {
     _id?: string
     id: string
-    links: QuickLinkItem[]
-    updates?: QuickLinkItem[]
-}
-
-export type QuickLinkItem = {
-    SKU: string | null
-    TITLE?: string
-    SHOPPRICEINCVAT?: string
-    COLOUR?:string
+    links: string[]
+    data: Pick<schema.Item, "SKU" | "title" | "prices" | "till">[]
 }
 
 export const get = async (query: object) => {
@@ -47,13 +39,13 @@ export const reports = async () => {
 export const updateQuickLinks = async (data:QuickLinks) => {
     let query = data._id ? {_id: new ObjectId(data._id)} : {id: data.id}
     if (data._id) delete data._id
-    return await mongoI.setData("Shop-Till-QuickLinks", query, data)
+    return await mongoI.setData("Till-QuickLinks", query, data)
 }
 
 export const deleteQuickLinks = async (data:QuickLinks) => {
     let query = data._id ? {_id: new ObjectId(data._id)} : {id: data.id}
     if (data._id) delete data._id
-    return await mongoI.deleteOne("Shop-Till-QuickLinks", query)
+    return await mongoI.deleteOne("Till-QuickLinks", query)
 }
 
 /*
@@ -96,52 +88,42 @@ export const orders = async (id: string) => {
 }
 
 export const getQuickLinks = async () => {
-    const query = [
-        {
-            '$match': {}
-        }, {
-            '$lookup': {
-                'from': 'Items',
-                'let': {
-                    'sku': '$links.SKU'
-                },
-                'pipeline': [
-                    {
-                        '$match': {
-                            '$expr': {
-                                '$in': [
-                                    '$SKU', '$$sku'
-                                ]
-                            }
-                        }
-                    }, {
-                        '$project': {
-                            'SKU': 1,
-                            'SHOPPRICEINCVAT': 1,
-                            'TITLE': 1
-                        }
-                    },
-                    {
-                        '$sort': {
-                            'SKU': 1
+    const query = [{
+        '$match': {}
+    }, {
+        '$lookup': {
+            'from': 'New-Items',
+            'let': {
+                'sku': '$links'
+            },
+            'pipeline': [
+                {
+                    '$match': {
+                        '$expr': {
+                            '$in': [
+                                '$SKU', '$$sku'
+                            ]
                         }
                     }
-                ],
-                'as': 'updates'
-            }
+                }, {
+                    '$project': {
+                        'SKU': 1,
+                        'prices': 1,
+                        'title': 1,
+                        'till': 1
+                    }
+                },
+                {
+                    '$sort': {
+                        'SKU': 1
+                    }
+                }
+            ],
+            'as': 'data'
         }
-    ]
+    }]
 
-    let result = await mongoI.findAggregate<QuickLinks>("Shop-Till-QuickLinks", query)
-    for (let quickLinks of result!) {
-        for (let index in quickLinks.links) {
-            if(!quickLinks.links[index].SKU) continue
-            let search = binarySearch<QuickLinkItem>(quickLinks.updates!, "SKU", quickLinks.links[index].SKU)
-            if (search) quickLinks.links[index] = {...quickLinks.links[index],...search}
-        }
-        delete quickLinks.updates
-    }
-    return result
+    return await mongoI.findAggregate<QuickLinks>("Till-QuickLinks", query)
 }
 
 export const getSupplierPriceChanges = async (data: { supplier: string, data: string }) => {
