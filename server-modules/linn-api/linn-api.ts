@@ -225,6 +225,18 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
                 case "shippingFormat":
                     testForProperty('Shipping Format', item.mappedExtendedProperties.shippingFormat);
                     break;
+                case "age":
+                    testForProperty('Age', item.mappedExtendedProperties.age);
+                    break;
+                case "gender":
+                    testForProperty('Gender', item.mappedExtendedProperties.gender);
+                    break;
+                case "size":
+                    testForProperty('Size', item.mappedExtendedProperties.size);
+                    break;
+                case "color":
+                    testForProperty('Color', item.mappedExtendedProperties.color);
+                    break;
             }
         }
         if(item.tags.length > 0) testForProperty('Tags', item.tags.reduce((string, tag) => {
