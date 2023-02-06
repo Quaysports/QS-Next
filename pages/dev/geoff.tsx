@@ -77,6 +77,7 @@ export default function Geoff() {
             <button disabled onClick={() => fetch('/api/dev/convert-packaging')}>Convert Packaging</button>
             <button disabled onClick={() => fetch('/api/dev/convert-prices')}>Convert Prices</button>
             <button disabled onClick={() => fetch('/api/dev/convert-giftcard')}>Convert Giftcard</button>
+            <button onClick={() => fetch('/api/dev/calculate-till-profits')}>Till Profits</button>
             <button onClick={() => fetch('/api/dev/report-worker-test').then(res=>res.json().then(json=>console.log(json)))}>Report Worker</button>
         </div>
     )
