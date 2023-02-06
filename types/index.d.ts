@@ -662,6 +662,10 @@ declare namespace schema {
         shippingFormat: string
         //used to be TILLFILTER
         tillFilter: string
+        size: string
+        color: string
+        age: string
+        gender: string
     }
 
     interface LegacyShipping {
@@ -901,6 +905,7 @@ declare namespace schema {
         linkedSKUS: string[]
         //move items from IDBFILTER into tags
         tags: string[]
+        till: {color:string}
         brandLabel: BrandLabel
     }
 }
