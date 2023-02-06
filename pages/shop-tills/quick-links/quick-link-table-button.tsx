@@ -22,11 +22,12 @@ export default function QuickLinkButton({itemIndex, item}: Props) {
     const linksIndex = Number(router.query.linksIndex)
     let dispatch = useDispatch()
 
-    const [inputColour, setInputColour] = useState<string | undefined>(item.till.color ? item.till.color : "")
-    useEffect(()=>{setInputColour(item.till.color ? item.till.color : "")},[item])
+    const [inputColour, setInputColour] = useState<string | undefined>(item?.till.color ? item.till.color : "")
+    useEffect(()=>{setInputColour(item?.till.color ? item.till.color : "")},[item])
 
     const deleteItem = () => dispatch(deleteQuickLinkItem({linksIndex: linksIndex, itemIndex: itemIndex}))
 
+    if(!item) return null
     const colourHandler = (event: ChangeEvent<HTMLInputElement>) => {
         dispatch(updateQuickLinkItemColour({
             linksIndex: linksIndex,
