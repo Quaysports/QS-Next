@@ -13,6 +13,7 @@ export interface UpdateHandler {
 
 export interface MarginTestTemplate extends Pick<MarginItem, "postage" | "packaging" | "prices" | "marginData" | "tags" | "discounts">{
     discount:number
+    test:boolean
 }
 
 export default function MarginItemTest({initialItem = undefined}:{initialItem?:MarginItem | undefined }) {
@@ -67,6 +68,7 @@ function itemTemplate():MarginTestTemplate{
             postage: 0,
             totalProfitLastYear: 0
         },
+        test:true,
         discount: 0,
         discounts: {magento: 0, shop: 0}
     }
