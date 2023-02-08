@@ -16,9 +16,11 @@ import HolidayTab from "./holiday";
 import {setAvailableCalendarsYears, setHolidayCalendar, setHolidayUsers} from "../../store/dashboard/holiday-slice";
 import {updateSettings} from "../../store/session-slice";
 import {getSession} from "next-auth/react";
-import RotasTab from "./rotas";
 import {getPublishedRotas, getRotaNames, getRotaTemplates} from "../../server-modules/rotas/rotas";
 import {setPublishedRotas, setTemplatesNames, setUserData} from "../../store/dashboard/rotas-slice";
+import ReportsTab from "./reports";
+import RotasTab from "./rotas";
+
 
 /**
  * Dashboard landing page
@@ -33,6 +35,7 @@ export default function Dashboard() {
             {router.query.tab === "user" ? <UserTab/> : null}
             {router.query.tab === "rotas" ? <RotasTab/> : null}
             {router.query.tab === "holidays" ? <HolidayTab/> : null}
+            {router.query.tab === "reports" ? <ReportsTab/> : null}
         </OneColumn>
     );
 }
@@ -89,6 +92,25 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
         const users = await getUsersHoliday()
         console.dir(users)
         if(users) store.dispatch(setHolidayUsers(users))
+    }
+
+    if(context.query.tab === 'reports'){
+        const opts ={
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+            },
+            body: null
+        }
+        if(context.query.location === 'shop' || context.query.location === undefined){
+
+        }
+        if(context.query.location === 'online'){
+            if(!context.query.year) await fetch("http://localhost:3001/Orders/OnlineSalesReport", opts)
+            let order = await fetch("http://localhost:3001/Orders/OnlineSalesSpan", opts)
+
+        }
     }
     return {props:{}}
 })

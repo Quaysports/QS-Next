@@ -46,7 +46,7 @@ export default function StockReports() {
 export const getServerSideProps = appWrapper.getServerSideProps(store => async(context)=>{
 
     if(context.query.tab === "shop") {
-        let data = await getBrands({IDBFILTER: "domestic"})
+        let data = await getBrands({tags: {$in : ["domestic"]}})
         if(data) store.dispatch(setBrands(data))
     }
 
