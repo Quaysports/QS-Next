@@ -1,30 +1,28 @@
 @page {
     size: A4 portrait;
-    margin: 1.5cm 0;
-    padding: 0;
-}
-.local-body {
-    display: grid;
-    grid-template-rows: 20px 1fr;
-    color:black;
-    width: 210mm;
-    height: 297mm;
-    scale:0.95;
-    -webkit-print-color-adjust:exact !important;
-    print-color-adjust:exact !important;
+    margin: 10mm;
 }
 
-.table{
 
-    border-collapse: collapse;
-}
+    .local-body {
+        color:black;
+        width: 210mm;
+        height: 297mm;
+        padding: 3mm;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+        orphans: 2;
+    }
 
-.table th, .table td{
-    border:1px solid black;
-    padding-left:5px;
-    break-inside: avoid;
-}
+    .table{
+        border-collapse: collapse;
+    }
 
-.table tr {
-    break-inside: avoid;
-}
+    .table th, .table td{
+        border:1px solid black;
+        padding-left:5px;
+    }
+
+    .table tr {
+        break-inside: avoid;
+    }
