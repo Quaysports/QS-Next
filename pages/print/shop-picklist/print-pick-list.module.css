@@ -1,0 +1,28 @@
+@page {
+    size: A4 portrait;
+    margin: 10mm;
+}
+
+
+    .local-body {
+        color:black;
+        width: 210mm;
+        height: 297mm;
+        padding: 3mm;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+        orphans: 2;
+    }
+
+    .table{
+        border-collapse: collapse;
+    }
+
+    .table th, .table td{
+        border:1px solid black;
+        padding-left:5px;
+    }
+
+    .table tr {
+        break-inside: avoid;
+    }

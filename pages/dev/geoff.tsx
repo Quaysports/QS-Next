@@ -1,4 +1,5 @@
 import styles from "./geoff.module.css"
+import {useState} from "react";
 
 export default function Geoff() {
     //const [calendars, setCalendars] = useState<sbt.holidayCalendar[]>([])
@@ -68,6 +69,8 @@ export default function Geoff() {
         return merge
     }
 
+    const [orderId, setOrderId] = useState<string>("")
+
     return (
         <div className={styles["button-container"]}>
             <h1>Hi Geoff!</h1>
@@ -77,7 +80,16 @@ export default function Geoff() {
             <button disabled onClick={() => fetch('/api/dev/convert-packaging')}>Convert Packaging</button>
             <button disabled onClick={() => fetch('/api/dev/convert-prices')}>Convert Prices</button>
             <button disabled onClick={() => fetch('/api/dev/convert-giftcard')}>Convert Giftcard</button>
-            <button onClick={() => fetch('/api/dev/calculate-till-profits')}>Till Profits</button>
+            <input type="text" value={orderId} onChange={(e) => {setOrderId(e.target.value)}}/>
+            <button onClick={() => {
+                let opts = {
+                    method: "POST",
+                    headers: {"Content-Type": "text/plain"},
+                    body: orderId
+                }
+                fetch('/api/dev/calculate-till-profits',opts)
+            }
+            }>Till Profits</button>
             <button onClick={() => fetch('/api/dev/report-worker-test').then(res=>res.json().then(json=>console.log(json)))}>Report Worker</button>
         </div>
     )

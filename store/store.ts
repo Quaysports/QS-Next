@@ -11,6 +11,7 @@ import {sessionSlice} from "./session-slice";
 import {shipmentsSlice} from "./shipments-slice";
 import {holidaysSlice} from "./dashboard/holiday-slice";
 import {rotaSlice} from "./dashboard/rotas-slice";
+import {pickListSlice} from "./shop-tills/pick-list-slice";
 
 
 const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     [shipmentsSlice.name]: shipmentsSlice.reducer,
     [holidaysSlice.name]: holidaysSlice.reducer,
     [rotaSlice.name]: rotaSlice.reducer,
+    [pickListSlice.name]: pickListSlice.reducer,
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>){

@@ -5,6 +5,7 @@ import styles from "../margin-calculator.module.css";
 import MarginCell from "./margin-cell";
 import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 import {useSelector} from "react-redux";
+import RegexInput from "../../../components/regex-input";
 
 export default function ItemRow({item, index}: { item: MarginItem, index: string }) {
 
@@ -26,18 +27,25 @@ export default function ItemRow({item, index}: { item: MarginItem, index: string
         return `${styles.row} ${styles["shop-grid"]} ${activeIndex === index ? ` ${styles["active"]}` : ""}`
     }
 
+    async function discountHandler(value: string){
+        console.log(value)
+        await updateItem(
+            item,
+            "discounts",
+            {...item.discounts, shop: Math.round(Number(value))}
+        )
+    }
+
     if (!item) return null
 
     return <div key={item.SKU}
                 className={classes}>
         <div>
-            <input ref={discountRef}
-                   type={"number"}
-                   defaultValue={item.discounts.shop}
-                   onBlur={async (e) => {
-                       const update = {...item.discounts, shop: Number(e.target.value)}
-                       await updateItem(item, "discounts", update)
-                   }}/>
+            <RegexInput
+                errorMessage={"Whole numbers only"}
+                handler={discountHandler}
+                type={"number"}
+                value={item.discounts.shop}/>
         </div>
         <span>{toCurrency(Number(item.prices.shop) - Number(item.prices.retail))}</span>
         <span>{toCurrency(Number(item.prices.shop))}</span>

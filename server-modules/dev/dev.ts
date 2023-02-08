@@ -1,4 +1,4 @@
-import {bulkUpdateAny, bulkUpdateItems, find, setData} from "../mongo-interface/mongo-interface";
+import {bulkUpdateAny, bulkUpdateItems, find, findOne, setData} from "../mongo-interface/mongo-interface";
 import {sbt, schema, till} from "../../types";
 import {Postage} from "../postage/postage";
 import {Packaging} from "../packaging/packaging";
@@ -291,9 +291,42 @@ export async function convertGiftCards(){
 
 type marginData = Pick<schema.Item, "SKU" | "linnId" | "marginData">
 
-export async function calculateTillProfits(){
-    let tillData = await find<till.Order>("Till-Transactions")
+export async function calculateTillProfits(id:string){
+    let tillData = await findOne<till.Order>("Till-Transactions", {id:id})
+    console.log(tillData)
     if(!tillData) return
+    const calculateProfit = async (order: till.Order) => {
+
+        let skus = order.items.map(item => item.SKU)
+
+        let dbItems = await find<Pick<schema.Item, "SKU" | "marginData">>(
+            "New-Items",
+            {SKU: {$in: skus}},
+            {SKU: 1, marginData: 1}
+        )
+        if(!dbItems) return
+
+        for(let item of order.items){
+            let dbItem = dbItems.find(findItem => findItem.SKU === item.SKU)
+            if(!dbItem) {
+                item.profitCalculated = false
+                continue
+            }
+            const profit = dbItem.marginData.shop.profit
+            order.profit += Math.round(profit)
+            order.profitWithLoss += Math.round(profit - order.percentageDiscountAmount - order.flatDiscount)
+            item.profitCalculated = true
+        }
+
+    }
+
+    await calculateProfit(tillData)
+
+    console.log(tillData)
+
+    if(tillData._id) delete tillData._id
+    await setData("Till-Transactions", {id:tillData.id}, tillData)
+    /*if(!tillData) return
     console.log("transactions: ",tillData.length)
 
     let dbItems = await find<marginData>(
@@ -314,10 +347,10 @@ export async function calculateTillProfits(){
         console.log(counter)
     }
     let result = await bulkUpdateAny("Till-Transactions", tillData, "id")
-    console.log(result)
+    console.log(result)*/
 }
 
-const calculateProfit = async (order: till.Order, linnIdMap:Map<string, marginData>, skuMap:Map<string, marginData>) => {
+/*const calculateProfit = async (order: till.Order, linnIdMap:Map<string, marginData>, skuMap:Map<string, marginData>) => {
 
     for(let item of order.items){
         let dbItem = linnIdMap.get(item.linnId)
@@ -334,4 +367,4 @@ const calculateProfit = async (order: till.Order, linnIdMap:Map<string, marginDa
         item.profitCalculated = true
     }
 
-}
+}*/

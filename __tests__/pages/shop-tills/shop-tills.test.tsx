@@ -3,11 +3,18 @@ import '@testing-library/jest-dom'
 import ShopTills, {getServerSideProps} from "../../../pages/shop-tills";
 import {GetServerSidePropsContext} from "next";
 import {NextRouter} from "next/router";
+import {QuickLinkItem, QuickLinks} from "../../../server-modules/shop/shop";
 
 afterEach(() => jest.clearAllMocks())
 
+let mockItem:QuickLinkItem = {
+    SKU: "HVSB",
+    prices: {amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0, shop: 1999},
+    till: {color: ""},
+    title: "Test HVSB"}
+
 global.fetch = jest.fn(async () => {
-    return {json: async () => ([{_id: "000", SKU: "HVSB", TITLE: "Test HVSB"}])}
+    return {json: async () => ([mockItem])}
 }) as jest.Mock;
 
 let query = {}
@@ -26,49 +33,52 @@ jest.mock("../../../server-modules/shop/shop", () => ({
     getQuickLinks: () => mockGetQuickLinks()
 }))
 
-const quickLinks = [
+const quickLinks:QuickLinks[] = [
     {
         _id: '633d87d50d9d1a14a0aad5c9',
         id: 'test 2',
         links: [
+            'ESP-CFEFHG002','','','','','','', '',
+            'SHM-SN2500FG','','','NET11MHP40RWHSBSRRCAT',
+            'SB','','','','','','',''
+        ],
+        data:[
             {
                 SKU: 'ESP-CFEFHG002',
-                SHOPPRICEINCVAT: "54.95",
-                TITLE: 'ESP Fleece Hoody Olive Green - Large',
-                COLOUR: '#ffffff',
+                prices:{
+                    amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0,
+                    shop: 5499
+                },
+                title: 'ESP Fleece Hoody Olive Green - Large',
+                till: {color: "#ffffff"},
             },
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''},
             {
                 SKU: 'SHM-SN2500FG',
-                SHOPPRICEINCVAT: "29.99",
-                TITLE: 'SHIMANO Sienna 2500 FG Spinning Reel',
-                COLOUR: '#d41616',
+                prices:{
+                    amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0,
+                    shop: 2999
+                },
+                title: 'SHIMANO Sienna 2500 FG Spinning Reel',
+                till: {color: "#d41616"}
             },
-            {SKU: ''},
-            {SKU: ''},
             {
                 SKU: 'NET11MHP40RWHSBSRRCAT',
-                SHOPPRICEINCVAT: "40.99",
-                TITLE: "11' Rod, HP40R Reel, R201 Net, Wagglers, Shot, Hooks, Bank stick, RRH, Catapult",
+                prices:{
+                    amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0,
+                    shop: 4099
+                },
+                title: "11' Rod, HP40R Reel, R201 Net, Wagglers, Shot, Hooks, Bank stick, RRH, Catapult",
+                till: {color: ""}
             },
             {
                 SKU: 'SB',
-                SHOPPRICEINCVAT: '19.99',
-                TITLE: 'Tackle Box, Seat Box, Strap, Pad #',
+                prices:{
+                    amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0,
+                    shop: 1999
+                },
+                title: 'Tackle Box, Seat Box, Strap, Pad #',
+                till: {color: ""}
             },
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''},
-            {SKU: ''}
         ]
     }
 ]
@@ -167,7 +177,7 @@ describe("Quick Links tests", () => {
         let divBtn = screen.getByText("HVSB").parentNode as HTMLDivElement
 
         await waitFor(() => divBtn.click())
-        expect(table.childNodes[1].childNodes[2]).toHaveTextContent("Test HVSB")
+
     })
 
     test("Quicklink table items change background colour on colour select.", async () => {

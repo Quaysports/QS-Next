@@ -1,6 +1,8 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
 import {ObjectId} from 'mongodb'
-import {sbt, schema} from "../../types";
+import {sbt, schema, till} from "../../types";
+import {find} from "../mongo-interface/mongo-interface";
+import {number, string} from "prop-types";
 //import * as linn from "../linn-api/linn-api"
 //import * as eod from '../workers/shop-worker-modules/endOfDayReport'
 
@@ -25,8 +27,12 @@ export type QuickLinks = {
     _id?: string
     id: string
     links: string[]
-    data: Pick<schema.Item, "SKU" | "title" | "prices" | "till">[]
+    data: QuickLinkItem[]
 }
+
+export type QuickLinkItem = Pick<schema.Item, "SKU" | "title" | "prices" | "till">
+
+export interface PickListItems {SKU:string, title:string, quantity:number}
 
 export const get = async (query: object) => {
     return await mongoI.find<sbt.TillOrder>("Shop", query)
@@ -289,4 +295,35 @@ export const deadStockReport = async ():Promise<DeadStockReport[]> => {
     }
 
     return Array.from(tempMap.values())
+}
+
+export async function getPickList(date:number){
+
+    let selectedDate = new Date(date)
+    let startDate = selectedDate.getTime()
+    selectedDate.setDate(selectedDate.getDate() + 1)
+    let endDate = selectedDate.getTime()
+
+    let orders = await find<till.Order>("Till-Transactions", {
+        "transaction.date":{$gt: startDate.toString(), $lt: endDate.toString()}
+    })
+
+    if(!orders) return []
+
+    let returnItems:PickListItems[] = []
+
+    for (const order of orders) {
+        for(let item of order.items){
+            let pos = returnItems.findIndex((i) => i.SKU === item.SKU)
+            if(pos !== -1){
+                returnItems[pos].quantity += item.quantity
+            } else {
+                returnItems.push({SKU: item.SKU, title: item.title, quantity: item.quantity})
+            }
+        }
+    }
+
+    return returnItems.sort((a, b) => {
+        return a.SKU === b.SKU ? 0 : a.SKU > b.SKU ? 1 : -1
+    })
 }
