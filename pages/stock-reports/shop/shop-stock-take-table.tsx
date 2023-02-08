@@ -2,7 +2,7 @@ import {
     BrandItem,
     selectBrandItems, setStockLevel,
     setStockTakeInfo, updateStockTakes
-} from "../../../store/stock-reports-slice";
+} from "../../../store/reports/stock-reports-slice";
 import {useDispatch, useSelector} from "react-redux";
 import ShopStockTakeRow from "./shop-stock-take-row";
 import SearchBar, {SearchItem} from "../../../components/search-bar";

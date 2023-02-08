@@ -190,7 +190,7 @@ export const getIncorrectStock = async () => {
     const query = [
         {
             '$lookup': {
-                'from': 'Items',
+                'from': 'New-Items',
                 'localField': 'SKU',
                 'foreignField': 'SKU',
                 'as': 'Item'
@@ -206,7 +206,7 @@ export const getIncorrectStock = async () => {
                 'PRIORITY': 1,
                 'QTY': 1,
                 'TITLE': 1,
-                'BRAND': '$Item.IDBEP.BRAND'
+                'BRAND': '$Item.brand'
             }
         }
     ]

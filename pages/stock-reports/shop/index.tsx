@@ -3,7 +3,7 @@ import ColumnLayout from "../../../components/layouts/column-layout";
 import ShopStockTakeSidebar from "./shop-stock-take-sidebar";
 import ShopStockTakeTable from "./shop-stock-take-table";
 import {useSelector} from "react-redux";
-import {selectBrandItems} from "../../../store/stock-reports-slice";
+import {selectBrandItems} from "../../../store/reports/stock-reports-slice";
 
 export default function ShopStockTake(){
     const brandItems = useSelector(selectBrandItems)

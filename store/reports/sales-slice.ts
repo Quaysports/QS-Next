@@ -9,26 +9,26 @@ export interface YearTotals {
         totalProfit:number
 }
 
-export interface reportsWrapper {
-    reports: reportsState
+export interface salesWrapper {
+    sales: salesState
 }
 
-export interface reportsState {
+export interface salesState {
     yearByYearTotals: YearByYearTotals
 }
 
-const initialState:reportsState = {
+const initialState:salesState = {
     yearByYearTotals:{}
 }
 
-export const reportsSlice = createSlice({
-        name: "reports",
+export const salesSlice = createSlice({
+        name: "sales",
         initialState,
         extraReducers: {
             [HYDRATE]: (state, action) => {
                 return{
                     ...state,
-                    ...action.payload.reports
+                    ...action.payload.sales
                 }
             },
         },
@@ -38,8 +38,8 @@ export const reportsSlice = createSlice({
     })
 ;
 
-export const {} = reportsSlice.actions
+export const {} = salesSlice.actions
 
-export const selectUsers = (state:reportsWrapper) => state.reports.yearByYearTotals
+export const selectReport = (state:salesWrapper) => state.sales.yearByYearTotals
 
-export default reportsSlice.reducer;
+export default salesSlice.reducer;
