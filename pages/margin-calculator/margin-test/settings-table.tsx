@@ -2,6 +2,7 @@ import styles from "./test-styles.module.css";
 import {useSelector} from "react-redux";
 import {selectPackaging, selectPostage} from "../../../store/margin-calculator-slice";
 import {UpdateHandler} from "./index";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 export default function SettingsTable({item, handler}: UpdateHandler) {
     const packaging = useSelector(selectPackaging)
@@ -31,9 +32,9 @@ export default function SettingsTable({item, handler}: UpdateHandler) {
                        }}/>
             </div>
             <PackagingSelect handler={handler} item={item}/>
-            <div>£{packaging?.[item.packaging.group] ? packaging[item.packaging.group].price : "0.00"}</div>
+            <div>{packaging?.[item.packaging.group] ? toCurrency(packaging[item.packaging.group].price) : "£0.00"}</div>
             <PostSelect handler={handler} item={item}/>
-            <div>£{postage?.[item.postage.id]?.cost ? postage[item.postage.id].cost : "0.00"}</div>
+            <div>{postage?.[item.postage.id]?.cost ? toCurrency(postage[item.postage.id].cost) : "£0.00"}</div>
             <PostModSelect handler={handler} item={item}/>
         </div>
     </>
