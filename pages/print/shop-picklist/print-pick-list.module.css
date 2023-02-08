@@ -5,6 +5,8 @@
 }
 .local-body {
     display: grid;
+    grid-template-rows: 20px 1fr;
+    color:black;
     width: 210mm;
     height: 297mm;
     scale:0.95;
@@ -13,11 +15,16 @@
 }
 
 .table{
-    color:black;
+
     border-collapse: collapse;
 }
 
 .table th, .table td{
     border:1px solid black;
     padding-left:5px;
+    break-inside: avoid;
+}
+
+.table tr {
+    break-inside: avoid;
 }

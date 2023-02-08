@@ -1,13 +1,13 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-import {PickLinkItems} from "../../server-modules/shop/shop";
+import {PickListItems} from "../../server-modules/shop/shop";
 
 export interface pickListWrapper {
     pickList: pickListState
 }
 
 export interface pickListState {
-    items: PickLinkItems[]
+    items: PickListItems[]
 }
 
 const initialState: pickListState = {
@@ -26,7 +26,7 @@ export const pickListSlice = createSlice({
             },
         },
         reducers: {
-            updatePickList: (state, action: PayloadAction<PickLinkItems[]>) => {
+            updatePickList: (state, action: PayloadAction<PickListItems[]>) => {
                 state.items = action.payload
             }
         },

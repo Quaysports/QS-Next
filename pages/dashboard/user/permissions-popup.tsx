@@ -24,30 +24,6 @@ export default function PermissionsPopup({index}: PermissionsPopupProps) {
 
     return (<div key={index} className={style["permission-wrapper"]}>
         <div className={style["permission-table"]}>
-            <div className={style["permission-table-title"]}>Dashboard Tabs</div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.users?.auth}
-                        onChange={(e) => updatePermissions(index, "users", e)}/><label>Users</label></div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.orderSearch?.auth}
-                        onChange={(e) => updatePermissions(index, "orderSearch", e)}/><label>Order Search</label></div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.priceUpdates?.auth}
-                        onChange={(e) => updatePermissions(index, "priceUpdates", e)}/><label>Price Updates</label>
-            </div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.shop?.auth}
-                        onChange={(e) => updatePermissions(index, "shop", e)}/><label>Shop Report</label></div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.online?.auth}
-                        onChange={(e) => updatePermissions(index, "online", e)}/><label>Online Report</label></div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.rotas?.auth}
-                        onChange={(e) => updatePermissions(index, "rotas", e)}/><label>Rotas</label></div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.holidays?.auth}
-                        onChange={(e) => updatePermissions(index, "holidays", e)}/><label>Holidays</label></div>
-        </div>
-        <div className={style["permission-table"]}>
-            <div className={style["permission-table-title"]}>Edit permissions</div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.holidaysEdit?.auth}
-                        onChange={(e) => updatePermissions(index, "holidaysEdit", e)}/><label>Holiday Tab</label>
-            </div>
-        </div>
-        <div className={style["permission-table"]}>
             <div className={style["permission-table-title"]}>Apps</div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.shopOrders?.auth}
                         onChange={(e) => updatePermissions(index, "shopOrders", e)}/><label>Shop Orders</label></div>
@@ -75,5 +51,35 @@ export default function PermissionsPopup({index}: PermissionsPopupProps) {
             <div><input type="checkbox" defaultChecked={user?.permissions?.webpages?.auth}
                         onChange={(e) => updatePermissions(index, "webpages", e)}/><label>Webpages</label></div>
         </div>
+        <div className={style["permission-table"]}>
+            <div className={style["permission-table-title"]}>Dashboard Tabs</div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.users?.auth}
+                        onChange={(e) => updatePermissions(index, "users", e)}/><label>Users</label></div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.orderSearch?.auth}
+                        onChange={(e) => updatePermissions(index, "orderSearch", e)}/><label>Order Search</label></div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.priceUpdates?.auth}
+                        onChange={(e) => updatePermissions(index, "priceUpdates", e)}/><label>Price Updates</label>
+            </div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.shop?.auth}
+                        onChange={(e) => updatePermissions(index, "shop", e)}/><label>Shop Report</label></div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.online?.auth}
+                        onChange={(e) => updatePermissions(index, "online", e)}/><label>Online Report</label></div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.rotas?.auth}
+                        onChange={(e) => updatePermissions(index, "rotas", e)}/><label>Rotas</label></div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.holidays?.auth}
+                        onChange={(e) => updatePermissions(index, "holidays", e)}/><label>Holidays</label></div>
+        </div>
+        <div className={style["permission-table"]}>
+            <div className={style["permission-table-title"]}>Shop Tills Tabs</div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.shopTillsQuickLinks?.auth}
+                        onChange={(e) => updatePermissions(index, "shopTillsQuickLinks", e)}/><label>Quick Links</label></div>
+        </div>
+        <div className={style["permission-table"]}>
+            <div className={style["permission-table-title"]}>Edit permissions</div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.holidaysEdit?.auth}
+                        onChange={(e) => updatePermissions(index, "holidaysEdit", e)}/><label>Holiday Tab</label>
+            </div>
+        </div>
+
     </div>)
 }

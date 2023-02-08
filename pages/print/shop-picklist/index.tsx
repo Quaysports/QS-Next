@@ -1,5 +1,6 @@
-import {PickLinkItems} from "../../../server-modules/shop/shop"
+import {PickListItems} from "../../../server-modules/shop/shop"
 import styles from "./print-pick-list.module.css"
+import {useEffect} from "react";
 
 export default function PrintShopPickList() {
 
@@ -7,9 +8,14 @@ export default function PrintShopPickList() {
     let data = global.window.localStorage.getItem("pick-list")
     if(!data) return null
 
-    const items = JSON.parse(data) as PickLinkItems[]
-    console.log(items)
+    const {date, items} = JSON.parse(data)
+
+    useEffect(() => {
+        if (items) window.print()
+    }, [items])
+
     return <div className={styles["local-body"]}>
+        <div>{new Date(date).toLocaleDateString("en-GB")}</div>
         <table className={styles.table}>
             <thead>
                 <tr>
@@ -19,7 +25,7 @@ export default function PrintShopPickList() {
                 </tr>
             </thead>
             <tbody>
-                {items.map((item, index) => {
+                {(items as PickListItems[]).map((item, index) => {
                     return <tr key={index}>
                         <td>{item.quantity}</td>
                         <td>{item.SKU}</td>

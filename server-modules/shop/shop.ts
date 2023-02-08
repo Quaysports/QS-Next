@@ -32,7 +32,7 @@ export type QuickLinks = {
 
 export type QuickLinkItem = Pick<schema.Item, "SKU" | "title" | "prices" | "till">
 
-export interface PickLinkItems {SKU:string, title:string, quantity:number}
+export interface PickListItems {SKU:string, title:string, quantity:number}
 
 export const get = async (query: object) => {
     return await mongoI.find<sbt.TillOrder>("Shop", query)
@@ -310,7 +310,7 @@ export async function getPickList(date:number){
 
     if(!orders) return []
 
-    let returnItems:PickLinkItems[] = []
+    let returnItems:PickListItems[] = []
 
     for (const order of orders) {
         for(let item of order.items){
