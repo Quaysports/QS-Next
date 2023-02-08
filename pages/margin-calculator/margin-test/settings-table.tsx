@@ -2,7 +2,7 @@ import styles from "./test-styles.module.css";
 import {useSelector} from "react-redux";
 import {selectPackaging, selectPostage} from "../../../store/margin-calculator-slice";
 import {UpdateHandler} from "./index";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {currencyToLong, toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 export default function SettingsTable({item, handler}: UpdateHandler) {
     const packaging = useSelector(selectPackaging)
@@ -27,7 +27,7 @@ export default function SettingsTable({item, handler}: UpdateHandler) {
                        min={0}
                        defaultValue={item.prices.purchase}
                        onBlur={(e) => {
-                           const update = {...item.prices, purchase: parseFloat(e.target.value)}
+                           const update = {...item.prices, purchase: currencyToLong(e.target.value)}
                            handler("prices", update)
                        }}/>
             </div>

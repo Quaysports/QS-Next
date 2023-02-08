@@ -1,5 +1,6 @@
 import styles from "./test-styles.module.css";
 import {UpdateHandler} from "./index";
+import {currencyToLong} from "../../../components/margin-calculator-utils/utils";
 
 export default function PricesTable({item, handler}: UpdateHandler) {
 
@@ -29,7 +30,7 @@ export default function PricesTable({item, handler}: UpdateHandler) {
                        min={0}
                        defaultValue={item.prices.ebay}
                        onBlur={(e) => {
-                           const update = {...item.prices, ebay: parseFloat(e.target.value)}
+                           const update = {...item.prices, ebay: currencyToLong(e.target.value)}
                            handler("prices", update)
                        }}/>
             </div>
@@ -40,7 +41,7 @@ export default function PricesTable({item, handler}: UpdateHandler) {
                        min={0}
                        defaultValue={item.prices.amazon}
                        onBlur={(e) => {
-                           const update = {...item.prices, amazon: parseFloat(e.target.value)}
+                           const update = {...item.prices, amazon: currencyToLong(e.target.value)}
                            handler("prices", update)
                        }}/>
             </div>
@@ -51,7 +52,7 @@ export default function PricesTable({item, handler}: UpdateHandler) {
                        min={0}
                        defaultValue={item.prices.magento}
                        onBlur={(e) => {
-                           const update = {...item.prices, magento: parseFloat(e.target.value)}
+                           const update = {...item.prices, magento: currencyToLong(e.target.value)}
                            handler("prices", update)
                        }}/>
             </div>
@@ -62,7 +63,7 @@ export default function PricesTable({item, handler}: UpdateHandler) {
                        min={0}
                        defaultValue={item.prices.shop}
                        onBlur={(e) => {
-                           const update = {...item.prices, shop: parseFloat(e.target.value)}
+                           const update = {...item.prices, shop: currencyToLong(e.target.value)}
                            handler("prices", update)
                        }}/>
             </div>
