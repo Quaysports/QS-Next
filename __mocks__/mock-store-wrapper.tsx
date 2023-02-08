@@ -6,7 +6,7 @@ import type { PreloadedState } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 
 import type { AppStore, RootState } from '../store/store'
-import stockReportReducer from '../store/stock-reports-slice'
+import stockReportReducer from '../store/reports/stock-reports-slice'
 import shopOrdersReducer from "../store/shop-orders-slice";
 import userReducer from "../store/dashboard/users-slice";
 import quickLinksReducer from "../store/shop-tills/quicklinks-slice";

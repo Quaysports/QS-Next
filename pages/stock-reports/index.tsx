@@ -6,7 +6,7 @@ import {
     setBrandItems,
     setBrands,
     setIncorrectStockInitialState
-} from "../../store/stock-reports-slice";
+} from "../../store/reports/stock-reports-slice";
 import Menu from "../../components/menu/menu";
 import {useRouter} from "next/router";
 import StockReportTabs from "./tabs";
@@ -52,7 +52,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async(c
 
     if(context.query.brand) {
         let data =  await getItems(
-            {"IDBEP.BRAND": context.query.brand, IDBFILTER: "domestic", ISCOMPOSITE: false},
+            {"brand": context.query.brand, tags: {$in : ["domestic"]}, isComposite: false},
             {SKU: 1, title: 1, EAN: 1, stock: 1, stockTake: 1})
         if(data) store.dispatch(setBrandItems(data as BrandItem[]))
     }

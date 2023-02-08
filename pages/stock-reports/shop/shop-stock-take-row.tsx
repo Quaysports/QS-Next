@@ -1,6 +1,6 @@
 import styles from './shop-stock-take.module.css'
 import {useDispatch} from "react-redux";
-import {BrandItem, setStockTakeInfo, unFlagCommit} from "../../../store/stock-reports-slice";
+import {BrandItem, setStockTakeInfo, unFlagCommit} from "../../../store/reports/stock-reports-slice";
 import RegexInput from "../../../components/regex-input";
 import StockTake = schema.StockTake;
 import {schema} from "../../../types";
