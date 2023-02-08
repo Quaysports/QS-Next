@@ -10,13 +10,13 @@ import MarginCell from "./margin-cell";
 import {useRouter} from "next/router"
 import {currencyToLong, toCurrency, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
 import {useSelector} from "react-redux";
+import RegexInput from "../../../components/regex-input";
 
 export default function ItemRow({item, index}: { item: MarginItem, index:string }) {
 
     const router = useRouter()
     const domestic = router.query.domestic === "true"
     const inputRef = useRef<HTMLInputElement>(null)
-    const discountRef = useRef<HTMLInputElement>(null)
     const updateItem = useUpdateItemAndCalculateMargins()
 
     const [inputClass, setInputClass] = useState("")
@@ -25,10 +25,6 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
         if (!inputRef.current) return
         inputRef.current.value = String(toCurrencyInput(item.prices.magento))
         setInputClass(styles[inputStatusColour(item, "magento",)])
-
-        if (!discountRef.current) return
-        discountRef.current.value = String(item.discounts.magento)
-
     }, [item])
 
     const activeIndex = useSelector(selectActiveIndex)
@@ -47,19 +43,25 @@ export default function ItemRow({item, index}: { item: MarginItem, index:string 
         return classes
     }
 
+    async function discountHandler(value: string){
+        await updateItem(
+            item,
+            "discounts",
+            {...item.discounts, magento: Math.round(Number(value))}
+        )
+    }
+
     if (!item) return null
 
     return <div key={item.SKU}
                 className={classes}>
         {domestic ?
             <div>
-                <input ref={discountRef}
-                       type={"number"}
-                       defaultValue={item.discounts.magento}
-                       onBlur={async (e) => {
-                           const update = {...item.discounts, magento: Number(e.target.value)}
-                           await updateItem(item, "discounts", update)
-                       }}/>
+                <RegexInput
+                    errorMessage={"Whole numbers only"}
+                    handler={discountHandler}
+                    type={"number"}
+                    value={item.discounts.magento}/>
             </div> : null
         }
         {domestic ? <span>{toCurrency(Number(item.prices.magento) - Number(item.prices.retail))}</span> : null}
