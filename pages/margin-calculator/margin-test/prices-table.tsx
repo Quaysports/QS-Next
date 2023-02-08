@@ -61,9 +61,9 @@ export default function PricesTable({item, handler}: UpdateHandler) {
                 <input type={"number"}
                        step={0.01}
                        min={0}
-                       defaultValue={item.prices.shop}
+                       defaultValue={item.prices.retail}
                        onBlur={(e) => {
-                           const update = {...item.prices, shop: currencyToLong(e.target.value)}
+                           const update = {...item.prices, retail: currencyToLong(e.target.value)}
                            handler("prices", update)
                        }}/>
             </div>
