@@ -50,7 +50,7 @@ let fullPermissions = {
     "stockTakeList": {"auth": true},
     "webpages": {"auth": true},
     "shopTills": {"auth": true},
-    "stockReports": {"auth": true}
+    "reports": {"auth": true}
 }
 
 let permissions = {users: {auth: true, label: "Users"}}

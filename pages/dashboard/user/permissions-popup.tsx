@@ -29,8 +29,8 @@ export default function PermissionsPopup({index}: PermissionsPopupProps) {
                         onChange={(e) => updatePermissions(index, "shopOrders", e)}/><label>Shop Orders</label></div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.shopTills?.auth}
                         onChange={(e) => updatePermissions(index, "shopTills", e)}/><label>Shop Tills</label></div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.stockReports?.auth}
-                        onChange={(e) => updatePermissions(index, "stockReports", e)}/><label>Stock Report</label></div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.reports?.auth}
+                        onChange={(e) => updatePermissions(index, "reports", e)}/><label>Reports</label></div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.itemDatabase?.auth}
                         onChange={(e) => updatePermissions(index, "itemDatabase", e)}/><label>Item Database</label>
             </div>
@@ -73,6 +73,11 @@ export default function PermissionsPopup({index}: PermissionsPopupProps) {
             <div className={style["permission-table-title"]}>Shop Tills Tabs</div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.shopTillsQuickLinks?.auth}
                         onChange={(e) => updatePermissions(index, "shopTillsQuickLinks", e)}/><label>Quick Links</label></div>
+        </div>
+        <div className={style["permission-table"]}>
+            <div className={style["permission-table-title"]}>Reports Tabs</div>
+            <div><input type="checkbox" defaultChecked={user?.permissions?.salesReport?.auth}
+                        onChange={(e) => updatePermissions(index, "salesReport", e)}/><label>Sales</label></div>
         </div>
         <div className={style["permission-table"]}>
             <div className={style["permission-table-title"]}>Edit permissions</div>

@@ -6,13 +6,21 @@ import type { PreloadedState } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 
 import type { AppStore, RootState } from '../store/store'
-import stockReportReducer from '../store/reports/stock-reports-slice'
-import shopOrdersReducer from "../store/shop-orders-slice";
-import userReducer from "../store/dashboard/users-slice";
-import quickLinksReducer from "../store/shop-tills/quicklinks-slice";
-import itemDatabaseReducer from "../store/item-database/item-database-slice";
+import stockReportReducer, {stockReportsSlice} from '../store/reports/stock-reports-slice'
+import shopOrdersReducer, {shopOrdersSlice} from "../store/shop-orders-slice";
+import userReducer, {usersSlice} from "../store/dashboard/users-slice";
+import quickLinksReducer, {quickLinksSlice} from "../store/shop-tills/quicklinks-slice";
+import itemDatabaseReducer, {itemDatabaseSlice} from "../store/item-database/item-database-slice";
 import NotificationWrapper from "../components/notification/notification-wrapper";
 import {createWrapper} from "next-redux-wrapper";
+import {forecastSlice} from "../store/stock-forecast-slice";
+import {marginCalculatorSlice} from "../store/margin-calculator-slice";
+import {sessionSlice} from "../store/session-slice";
+import {shipmentsSlice} from "../store/shipments-slice";
+import {holidaysSlice} from "../store/dashboard/holiday-slice";
+import {rotaSlice} from "../store/dashboard/rotas-slice";
+import {pickListSlice} from "../store/shop-tills/pick-list-slice";
+import {salesSlice} from "../store/reports/sales-slice";
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
     preloadedState?: PreloadedState<RootState>
@@ -30,9 +38,11 @@ const rootReducer = combineReducers({
 const mockStore = configureStore({ reducer: rootReducer })
 export const appWrapper = createWrapper(()=>mockStore);
 
+
 function renderWithProviders(
     ui: React.ReactElement,
     {
+        // @ts-ignore
         store = mockStore,
         ...renderOptions
     }: ExtendedRenderOptions = {}

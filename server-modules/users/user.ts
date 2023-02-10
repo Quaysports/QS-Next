@@ -41,7 +41,8 @@ export interface Permissions {
     shipments?: { auth: boolean };
     stockForecast?: { auth: boolean };
     itemDatabase?: { auth: boolean };
-    stockReports?: { auth: boolean };
+    reports?: { auth: boolean };
+    salesReport?: { auth: boolean };
     shopOrders?: { auth: boolean };
     shopTills?: { auth: boolean };
     shopTillsQuickLinks?: { auth: boolean };

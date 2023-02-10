@@ -1,5 +1,5 @@
 import React from "react";
-import IncorrectStock from "./incorrect-stock/index"
+import IncorrectStock from "./incorrect-stock"
 import {getIncorrectStock} from "../../server-modules/shop/shop"
 import {
     BrandItem,
