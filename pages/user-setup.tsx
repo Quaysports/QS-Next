@@ -3,7 +3,7 @@ import {getSession} from "next-auth/react";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUser, setUserData} from "../store/session-slice";
 
-export default function UserSetup() {
+export default function UserSetup({children}:{children:JSX.Element[]}) {
 
     const dispatch = useDispatch()
     const user = useSelector(selectUser)
@@ -11,7 +11,7 @@ export default function UserSetup() {
     useEffect(() => {
         if (user.username !== "") return
         getSession().then(session=>{if(session)dispatch(setUserData(session.user))})
-    })
+    },[user])
 
     useEffect(()=>{
         if(!user?.theme) return
@@ -20,5 +20,5 @@ export default function UserSetup() {
         }
     },[user])
 
-    return null
+    return <>{children}</>
 }

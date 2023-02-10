@@ -6,11 +6,11 @@ import type { PreloadedState } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 
 import type { AppStore, RootState } from '../store/store'
-import stockReportReducer, {stockReportsSlice} from '../store/reports/stock-reports-slice'
-import shopOrdersReducer, {shopOrdersSlice} from "../store/shop-orders-slice";
-import userReducer, {usersSlice} from "../store/dashboard/users-slice";
-import quickLinksReducer, {quickLinksSlice} from "../store/shop-tills/quicklinks-slice";
-import itemDatabaseReducer, {itemDatabaseSlice} from "../store/item-database/item-database-slice";
+import {stockReportsSlice} from '../store/reports/stock-reports-slice'
+import {shopOrdersSlice} from "../store/shop-orders-slice";
+import {usersSlice} from "../store/dashboard/users-slice";
+import {quickLinksSlice} from "../store/shop-tills/quicklinks-slice";
+import {itemDatabaseSlice} from "../store/item-database/item-database-slice";
 import NotificationWrapper from "../components/notification/notification-wrapper";
 import {createWrapper} from "next-redux-wrapper";
 import {forecastSlice} from "../store/stock-forecast-slice";
@@ -28,26 +28,32 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 }
 
 const rootReducer = combineReducers({
-    shopOrders: shopOrdersReducer,
-    stockReports: stockReportReducer,
-    users:userReducer,
-    quickLinks: quickLinksReducer,
-    itemDatabase: itemDatabaseReducer
+    [shopOrdersSlice.name]: shopOrdersSlice.reducer,
+    [stockReportsSlice.name]: stockReportsSlice.reducer,
+    [usersSlice.name]:usersSlice.reducer,
+    [quickLinksSlice.name]: quickLinksSlice.reducer,
+    [itemDatabaseSlice.name]: itemDatabaseSlice.reducer,
+    [forecastSlice.name]:forecastSlice.reducer,
+    [marginCalculatorSlice.name]: marginCalculatorSlice.reducer,
+    [sessionSlice.name]:sessionSlice.reducer,
+    [shipmentsSlice.name]: shipmentsSlice.reducer,
+    [holidaysSlice.name]: holidaysSlice.reducer,
+    [rotaSlice.name]: rotaSlice.reducer,
+    [pickListSlice.name]: pickListSlice.reducer,
+    [salesSlice.name]: salesSlice.reducer
 })
 
-const mockStore = configureStore({ reducer: rootReducer })
+export const mockStore = configureStore({ reducer: rootReducer })
 export const appWrapper = createWrapper(()=>mockStore);
 
 
 function renderWithProviders(
     ui: React.ReactElement,
     {
-        // @ts-ignore
         store = mockStore,
         ...renderOptions
     }: ExtendedRenderOptions = {}
 ) {
-
 
     function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
         const {store} = appWrapper.useWrappedStore(ui)
@@ -57,4 +63,4 @@ function renderWithProviders(
     return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions })}
 }
 export * from '@testing-library/react'
-export {renderWithProviders as render}
+export {renderWithProviders}
