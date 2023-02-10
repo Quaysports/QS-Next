@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {selectItem, setItemTitle} from "../../../../store/item-database/item-database-slice";
+import {dataBaseSave, selectItem, setItemTitle} from "../../../../store/item-database/item-database-slice";
 import styles from "../../item-database.module.css";
 
 export default function TitleInput() {
@@ -11,10 +11,15 @@ export default function TitleInput() {
         dispatch(setItemTitle(title))
     }
 
+    function saveItem() {
+        dispatch(dataBaseSave())
+    }
+
     return (
         <div>
-            <input className={styles["title-inputs"]} defaultValue={item.title}
-                   onBlur={(e) => titleHandler(e.target.value)}/>
+            <input className={styles["title-inputs"]} value={item.title}
+                   onBlur={(e) => saveItem()}
+            onChange={(e) => titleHandler(e.target.value)}/>
         </div>
     )
 }
