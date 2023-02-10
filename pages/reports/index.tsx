@@ -16,6 +16,7 @@ import OneColumn from "../../components/layouts/one-column";
 import ColumnLayout from "../../components/layouts/column-layout";
 import {appWrapper} from "../../store/store";
 import {getBrands, getItems} from "../../server-modules/items/items";
+import SidebarLayout from "../../components/layouts/sidebar-layout";
 
 export default function StockReports() {
 
@@ -23,6 +24,15 @@ export default function StockReports() {
 
     return (
         <>
+            {router.query.tab === "sales" ?
+                <SidebarOneColumn>
+                    <Menu>
+                        <StockReportTabs/>
+                    </Menu>
+                    <SidebarLayout><div>sales</div></SidebarLayout>
+                    <ColumnLayout scroll={true} height={50}><div>sales</div></ColumnLayout>
+                </SidebarOneColumn> : null
+            }
             {router.query.tab === "incorrect-stock" ?
                 <OneColumn>
                     <Menu>
