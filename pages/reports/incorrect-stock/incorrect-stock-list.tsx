@@ -15,60 +15,66 @@ import {StockError} from "../../../server-modules/shop/shop";
 export default function IncorrectStockList() {
 
     const incorrectStockState = useSelector(selectIncorrectStockState);
-    const dispatch = useDispatch()
-
     let incorrectStockArray:JSX.Element[] = []
 
     for(const brand in incorrectStockState){
-        let key = brand
-        let values = incorrectStockState[brand]
-        incorrectStockArray.push(
-            <div key={key} data-testid={"incorrect-list-wrapper"}>
-                <div className={styles["brand-titles"]}>
-                    <div data-testid={"incorrect-list-brand"}>{key !== "undefined" ? key : "Unbranded"}</div>
-                </div>
-                {values.map((item: StockError, index: number) => {
-                    return (
-                        <div className={styles["stock-lists"]} key={index}>
-                            <span/>
-                            <span data-testid={"incorrect-list-SKU"}>{item.SKU}</span>
-                            <span data-testid={"incorrect-list-title"}>{item.TITLE}</span>
-                            <input className={styles["stock-lists-input"]}
-                                   defaultValue={incorrectStockState[key][index].QTY | 0}
-                                   onChange={(e) => {
-                                       if (e.target.validity.patternMismatch) {
-                                           e.target.style.borderColor = "var(--secondary-color)"
-                                           e.target.reportValidity()
-                                           dispatch(setValidData(false))
-                                       } else {
-                                           let value = e.target.value
-                                           if (value === "") value = "0"
-                                           dispatch(setIncorrectStockQty({
-                                               payload: parseInt(value),
-                                               brand: key,
-                                               location: index
-                                           }))
-                                           e.target.style.borderColor = ""
-                                           dispatch(setValidData(true))
-                                       }
-                                   }
-                                   }
-                                   pattern="^[0-9]+$"
-                            />
-                            <input
-                                type={"checkbox"}
-                                checked={item.CHECKED}
-                                onChange={(e) => dispatch(setIncorrectStockChecked({
-                                    payload: e.target.checked,
-                                    brand: key,
-                                    location: index
-                                }))}
-                            />
-                        </div>
-                    )
-                })}
-            </div>
-        )
+
+        let rows = []
+        for(const [k,v] of Object.entries(incorrectStockState[brand])){
+            rows.push(<Row key={k} item={v} index={Number(k)} brand={brand}/>)
+        }
+
+        incorrectStockArray.push(<div key={brand} data-testid={"incorrect-list-wrapper"}>
+            <TitleRow key={brand} brand={brand}/>{rows}
+        </div>)
     }
     return <>{incorrectStockArray}</>
+}
+
+function TitleRow({brand}:{brand:string}){
+    return <div className={styles["brand-titles"]}>
+        <div data-testid={"incorrect-list-brand"}>{brand !== "undefined" ? brand : "Unbranded"}</div>
+    </div>
+}
+
+function Row({item,index,brand}:{item: StockError, index: number,brand:string}){
+    const dispatch = useDispatch()
+
+    return(
+        <div className={styles["stock-lists"]} key={index}>
+            <span/>
+            <span data-testid={"incorrect-list-SKU"}>{item.SKU}</span>
+            <span data-testid={"incorrect-list-title"}>{item.TITLE}</span>
+            <input className={styles["stock-lists-input"]}
+                   defaultValue={item.QTY | 0}
+                   onChange={(e) => {
+                       if (e.target.validity.patternMismatch) {
+                           e.target.style.borderColor = "var(--secondary-color)"
+                           e.target.reportValidity()
+                           dispatch(setValidData(false))
+                       } else {
+                           let value = e.target.value
+                           if (value === "") value = "0"
+                           dispatch(setIncorrectStockQty({
+                               payload: parseInt(value),
+                               brand: brand,
+                               location: index
+                           }))
+                           e.target.style.borderColor = ""
+                           dispatch(setValidData(true))
+                       }
+                   }
+                   }
+                   pattern="^[0-9]+$"
+            />
+            <input
+                type={"checkbox"}
+                checked={item.CHECKED}
+                onChange={(e) => dispatch(setIncorrectStockChecked({
+                    payload: e.target.checked,
+                    brand: brand,
+                    location: index
+                }))}
+            />
+        </div>)
 }
