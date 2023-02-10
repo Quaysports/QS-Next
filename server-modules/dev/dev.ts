@@ -326,45 +326,28 @@ export async function calculateTillProfits(id:string){
 
     if(tillData._id) delete tillData._id
     await setData("Till-Transactions", {id:tillData.id}, tillData)
-    /*if(!tillData) return
-    console.log("transactions: ",tillData.length)
-
-    let dbItems = await find<marginData>(
-        "New-Items",
-        {},
-        {SKU: 1, linnId:1, marginData: 1}
-    )
-    if(!dbItems) return
-    console.log("items: ",dbItems.length)
-
-    let linnIdMap = new Map<string, marginData>(dbItems.map(item => [item.linnId, item]))
-    let skuMap = new Map<string, marginData>(dbItems.map(item => [item.SKU, item]))
-
-    let counter = 0
-    for(let order of tillData){
-        await calculateProfit(order, linnIdMap, skuMap)
-        counter++
-        console.log(counter)
-    }
-    let result = await bulkUpdateAny("Till-Transactions", tillData, "id")
-    console.log(result)*/
 }
 
-/*const calculateProfit = async (order: till.Order, linnIdMap:Map<string, marginData>, skuMap:Map<string, marginData>) => {
+export async function correctStatuses(){
+    let items = await find<schema.Item>("New-Items", {})
+    if(!items) return
 
-    for(let item of order.items){
-        let dbItem = linnIdMap.get(item.linnId)
-        if(!dbItem) dbItem = skuMap.get(item.SKU)
-
-        if(!dbItem) {
-            item.profitCalculated = false
-            continue
-        }
-
-        const profit = dbItem.marginData.shop.profit
-        order.profit += Math.round(profit)
-        order.profitWithLoss += Math.round(profit - order.percentageDiscountAmount - order.flatDiscount)
-        item.profitCalculated = true
+    for(let item of items){
+        correctStatus(item, "amazon")
+        correctStatus(item, "ebay")
+        correctStatus(item, "magento")
     }
 
-}*/
+    await bulkUpdateItems(items)
+
+    function correctStatus(item:schema.Item,channel:"amazon" | "ebay" | "magento"){
+        if(item.checkboxStatus.done[channel]){
+            item.checkboxStatus.ready[channel] = false
+            item.checkboxStatus.notApplicable[channel] = false
+        }
+
+        if(item.checkboxStatus.ready){
+            item.checkboxStatus.notApplicable[channel] = false
+        }
+    }
+}

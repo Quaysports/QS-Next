@@ -1,4 +1,4 @@
-import {PickListItems} from "../../../server-modules/shop/shop"
+import {PickListItem} from "../../../server-modules/shop/shop"
 import styles from "./print-pick-list.module.css"
 import {useEffect} from "react";
 
@@ -20,14 +20,16 @@ export default function PrintShopPickList() {
             <thead>
                 <tr>
                     <th>Qty</th>
+                    <th>Stock</th>
                     <th>SKU</th>
                     <th>Title</th>
                 </tr>
             </thead>
             <tbody>
-                {(items as PickListItems[]).map((item, index) => {
+                {(items as PickListItem[]).map((item, index) => {
                     return <tr key={index}>
                         <td>{item.quantity}</td>
+                        <td>{item.stock.total < 100 ? item.stock.total : "99+"}</td>
                         <td>{item.SKU}</td>
                         <td>{item.title}</td>
                     </tr>

@@ -3,7 +3,7 @@ import styles from './incorrect-stock-list.module.css'
 import {
     selectIncorrectStockState, setIncorrectStockChecked,
     setIncorrectStockQty, setValidData
-} from "../../../store/stock-reports-slice";
+} from "../../../store/reports/stock-reports-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {StockError} from "../../../server-modules/shop/shop";
 

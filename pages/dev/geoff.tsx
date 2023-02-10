@@ -81,7 +81,7 @@ export default function Geoff() {
             <button disabled onClick={() => fetch('/api/dev/convert-prices')}>Convert Prices</button>
             <button disabled onClick={() => fetch('/api/dev/convert-giftcard')}>Convert Giftcard</button>
             <input type="text" value={orderId} onChange={(e) => {setOrderId(e.target.value)}}/>
-            <button onClick={() => {
+            <button disabled onClick={() => {
                 let opts = {
                     method: "POST",
                     headers: {"Content-Type": "text/plain"},
@@ -90,6 +90,7 @@ export default function Geoff() {
                 fetch('/api/dev/calculate-till-profits',opts)
             }
             }>Till Profits</button>
+            <button onClick={() => fetch('/api/dev/correct-statuses')}>Correct Statuses</button>
             <button onClick={() => fetch('/api/dev/report-worker-test').then(res=>res.json().then(json=>console.log(json)))}>Report Worker</button>
         </div>
     )

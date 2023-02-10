@@ -2,6 +2,7 @@ import {generateMarginText, textColourStyler} from "../../../components/margin-c
 import {useEffect, useState} from "react";
 import styles from "./test-styles.module.css";
 import {MarginTestTemplate} from "./index";
+import {toCurrency} from "../../../components/margin-calculator-utils/utils";
 
 export default function ResultsTable({item}:{item:MarginTestTemplate}){
 
@@ -51,7 +52,7 @@ function ItemRow({item, channel}:ItemRowProps){
 
     return <div className={styles["results-row"]}>
         <span>{channel}</span>
-        <div>£{calculateDiscount().toFixed(2)}</div>
+        <div>{toCurrency(calculateDiscount())}</div>
         <div className={discountTextClass}>{profit ? generateMarginText(item.prices.purchase, profit - calculateDiscount()):0}</div>
         <div className={marginTextClass}>{generateMarginText(item.prices.purchase, profit)}</div>
     </div>
