@@ -38,12 +38,16 @@ function List(){
 
     let elements = []
     for(let item of items){
-        elements.push(<div className={styles.row}>
+        let row = <div className={styles.row}>
             <div className={styles.quantity}>{item.quantity}</div>
+            <div className={styles.quantity}>{item.stock.total < 100 ? item.stock.total : "99+"}</div>
             <div>{item.SKU}</div>
             <div>{item.title}</div>
-        </div>)
+        </div>
+        elements.push(row)
     }
 
-    return <div>{elements}</div>
+    return <div>
+        {elements}
+    </div>
 }

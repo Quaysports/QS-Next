@@ -1,5 +1,5 @@
 import {GetServerSidePropsContext} from "next";
-import StockReports, {getServerSideProps} from "../../../pages/stock-reports";
+import StockReports, {getServerSideProps} from "../../../pages/reports";
 import {render, screen, waitFor} from "../../../__mocks__/mock-store-wrapper";
 import '@testing-library/jest-dom'
 import {StockError} from "../../../server-modules/shop/shop";
@@ -128,9 +128,9 @@ describe("Stock Report tabs tests", () => {
         const links = screen.getAllByRole("link") as HTMLLinkElement[]
 
         expect(links[0].textContent).toStrictEqual("Incorrect Stock")
-        expect(links[0].href).toMatch("/stock-reports?tab=incorrect-stock")
+        expect(links[0].href).toMatch("/reports?tab=incorrect-stock")
         expect(links[1].textContent).toStrictEqual("Shop")
-        expect(links[1].href).toMatch("/stock-reports?tab=shop")
+        expect(links[1].href).toMatch("/reports?tab=shop")
     })
 })
 
