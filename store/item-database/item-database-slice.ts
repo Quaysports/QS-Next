@@ -114,10 +114,11 @@ export const itemDatabaseSlice = createSlice({
             },
             setItemTitle: (state, action: PayloadAction<string>) => {
                 state.item.title = action.payload
-                databaseSave(state.item)
             },
             setItemWebsiteTitle: (state, action: PayloadAction<string>) => {
                 state.item.webTitle = action.payload
+            },
+            dataBaseSave: (state) => {
                 databaseSave(state.item)
             },
             setItemStatusBoxes: (state, action: PayloadAction<{ checked: boolean, title: keyof schema.DoneStatus}>) => {
@@ -306,7 +307,8 @@ export const {
     setUpdateTags,
     setItemTags,
     setItemShipping,
-    setItemImportDetails
+    setItemImportDetails,
+    dataBaseSave
 } = itemDatabaseSlice.actions
 
 export const selectItem = (state: itemDatabaseWrapper) => state.itemDatabase.item;
