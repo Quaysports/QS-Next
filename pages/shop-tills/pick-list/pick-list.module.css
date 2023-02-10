@@ -17,7 +17,7 @@
 .row {
     display:grid;
     grid-gap: 10px;
-    grid-template-columns: 30px 250px 1fr;
+    grid-template-columns: 40px 40px 250px 1fr;
     margin:5px;
     padding: 2px 5px;
     background: var(--primary-table-cell-background);
