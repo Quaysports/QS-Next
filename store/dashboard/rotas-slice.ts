@@ -157,11 +157,3 @@ export const selectTemplatesNames = (state:rotaWrapper) => state.rota.templatesN
 export const selectTemplate = (state:rotaWrapper) => state.rota.template
 export const selectWeekData = (state:rotaWrapper) => state.rota.weekData
 export const selectHolidays = (state:rotaWrapper) => state.rota.holidays
-
-export const getRotasForRowPrint = (state:rotaWrapper, rota:PublishedRota | undefined) => {
-    if(!rota) return undefined
-    let pos = state.rota.publishedRotas.findIndex(stateRota => stateRota.weekData.monday === rota.weekData.monday)
-    if(pos === -1) return undefined
-    if(pos+1 >=state.rota.publishedRotas.length) return [state.rota.publishedRotas[pos]]
-    return state.rota.publishedRotas.slice(pos,2)
-}

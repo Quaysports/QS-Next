@@ -2,8 +2,6 @@ import {PublishedRota} from "../../../../server-modules/rotas/rotas";
 import styles from "../rotas.module.css";
 import {
     editPublishedRota,
-    getRotasForRowPrint,
-    rotaWrapper,
     selectPublishedRotas
 } from "../../../../store/dashboard/rotas-slice";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
@@ -30,7 +28,15 @@ export default function PublishedRotaList() {
 
 function Rota({rota}: { rota: PublishedRota }) {
     const dispatch = useDispatch()
-    const printRowData = useSelector((state:rotaWrapper)=>getRotasForRowPrint(state, rota))
+    const publishedRotas = useSelector(selectPublishedRotas)
+
+    function getPrintRowData(rota: PublishedRota, publishedRotas: PublishedRota[]) {
+        if(!rota) return undefined
+        let pos = publishedRotas.findIndex(stateRota => stateRota.weekData.monday === rota.weekData.monday)
+        if(pos === -1) return undefined
+        return publishedRotas.slice(pos,pos+2)
+    }
+
     async function deleteRota() {
         console.log("delete")
         let opts = {
@@ -59,12 +65,12 @@ function Rota({rota}: { rota: PublishedRota }) {
                     <button onClick={() => {
                         if(!window) return
                         window.open("/print?app=rotas&print=rows", "_blank")
-                        window.localStorage.setItem("rota", JSON.stringify(printRowData))
+                        window.localStorage.setItem("rota", JSON.stringify(getPrintRowData(rota, publishedRotas)))
                     }}>Print Rows</button>
                     <button onClick={() => {
                         if(!window) return
                         window.open("/print?app=rotas&print=grid", "_blank")
-                        window.localStorage.setItem("rota", JSON.stringify(printRowData))
+                        window.localStorage.setItem("rota", JSON.stringify(getPrintRowData(rota, publishedRotas)))
                     }}>Print Grid</button>
                 </div>
                 <div>Week starting {new Date(rota.weekData.monday).toLocaleDateString('en-GB')}</div>

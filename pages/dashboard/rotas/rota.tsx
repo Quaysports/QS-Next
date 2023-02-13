@@ -29,7 +29,7 @@ function RotaDay({dayOfWeek, userHours, weekData, holiday, edit}: { dayOfWeek: n
     }
 
     return (
-        <div className={styles["day"]}>
+        <div role={"rota-day"} className={styles["day"]}>
             <DayTitle dayOfWeek={dayOfWeek} weekData={weekData}/>
             {userRows}
         </div>
