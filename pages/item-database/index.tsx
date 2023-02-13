@@ -19,7 +19,7 @@ export type rodLocationObject = {
 /**
  * Item Database Landing Page
  */
-export default function itemDatabaseLandingPage() {
+export default function ItemDatabase() {
 
     const router = useRouter()
     return (
