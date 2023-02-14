@@ -11,8 +11,10 @@ jest.mock('../../../../components/layouts/sidebar-button', () => (props: any) =>
 jest.mock('../../../../components/jarilo-template', () => ({
     jariloHtml: () => jest.fn()
 }))
-jest.mock('../../../../pages/item-database/item-database/sidebar-components/linnworks-upload-button', () => {
-    return MockLinnworksButton
+const mockLinnworksButton = jest.fn()
+jest.mock('../../../../pages/item-database/item-database/sidebar-components/linnworks-upload-button', () => () => {
+    mockLinnworksButton()
+    return MockLinnworksButton()
 })
 jest.mock('next/router', () => ({
     useRouter: () => {
@@ -47,6 +49,7 @@ const expectedProps = [
 test('test', () => {
     renderWithProviders(<SideBar/>)
     expect(mockProps.mock.calls).toEqual(expectedProps)
+    expect(mockLinnworksButton).toHaveBeenCalled()
 })
 
 const buttonIndexAndText:[number, string][] = [[0, 'barcode'], [1, 'tag'], [2, 'shelf-tag']]
