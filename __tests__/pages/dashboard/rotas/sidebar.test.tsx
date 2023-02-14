@@ -152,8 +152,7 @@ describe("Rotas Sidebar", () => {
         await waitFor(() => {
             fireEvent.click(screen.getByText("test"))
             mockStore.dispatch(setTemplate(mockRota))
-        expect(mockApi).toBeCalledTimes(1)
-        screen.debug()
+            expect(mockApi).toBeCalledTimes(1)
         })
     })
 })

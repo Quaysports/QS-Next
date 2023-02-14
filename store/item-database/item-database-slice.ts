@@ -1,7 +1,9 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {HYDRATE} from "next-redux-wrapper";
+import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {rodLocationObject} from "../../pages/item-database";
 import {schema} from "../../types";
+import {RootState} from "../store";
+import {HYDRATE} from "next-redux-wrapper";
+export const hydrate = createAction<RootState>(HYDRATE);
 
 /**
  * @property {itemDatabaseState} itemDatabase
@@ -87,13 +89,13 @@ const newItem: newItem = {
 export const itemDatabaseSlice = createSlice({
         name: "itemDatabase",
         initialState,
-        extraReducers: {
-            [HYDRATE]: (state, action) => {
+        extraReducers: (builder) => {
+            builder.addCase(hydrate, (state, action) => {
                 return {
                     ...state,
                     ...action.payload.itemDatabase
-                }
-            },
+                };
+            })
         },
         reducers: {
             setItem: (state, action) => {
@@ -121,7 +123,7 @@ export const itemDatabaseSlice = createSlice({
             dataBaseSave: (state) => {
                 databaseSave(state.item)
             },
-            setItemStatusBoxes: (state, action: PayloadAction<{ checked: boolean, title: keyof schema.DoneStatus}>) => {
+            setItemStatusBoxes: (state, action: PayloadAction<{ checked: boolean, title: keyof schema.DoneStatus }>) => {
                 const {title, checked} = action.payload
                 state.item.checkboxStatus.done[title] = checked
                 databaseSave(state.item)
@@ -207,7 +209,7 @@ export const itemDatabaseSlice = createSlice({
                 }
                 databaseSave(state.item)
             },
-            setItemImportDetails: (state, action: PayloadAction<{[key:string]:schema.MappedExtendedProperties | string}>) => {
+            setItemImportDetails: (state, action: PayloadAction<{ [key: string]: schema.MappedExtendedProperties | string }>) => {
                 for (const key in action.payload) {
                     switch (key) {
                         case "mappedExtendedProperties":
@@ -384,7 +386,8 @@ function itemTemplate(): schema.Item {
             },
             shop: {
                 price: 0, status: 0
-            }},
+            }
+        },
         checkboxStatus: {
             done: {
                 EAN: false,
@@ -412,18 +415,18 @@ function itemTemplate(): schema.Item {
         discounts: {magento: 0, shop: 0},
         extendedProperties: [],
         images: {
-            image1: {filename: "", id: "", url:"", link: ""},
-            image2: {filename: "", id: "", url:"", link: ""},
-            image3: {filename: "", id: "", url:"", link: ""},
-            image4: {filename: "", id: "", url:"", link: ""},
-            image5: {filename: "", id: "", url:"", link: ""},
-            image6: {filename: "", id: "", url:"", link: ""},
-            image7: {filename: "", id: "", url:"", link: ""},
-            image8: {filename: "", id: "", url:"", link: ""},
-            image9: {filename: "", id: "", url:"", link: ""},
-            image10: {filename: "", id: "", url:"", link: ""},
-            image11: {filename: "", id: "", url:"", link: ""},
-            main: {filename: "", id: "", url:"", link: ""}
+            image1: {filename: "", id: "", url: "", link: ""},
+            image2: {filename: "", id: "", url: "", link: ""},
+            image3: {filename: "", id: "", url: "", link: ""},
+            image4: {filename: "", id: "", url: "", link: ""},
+            image5: {filename: "", id: "", url: "", link: ""},
+            image6: {filename: "", id: "", url: "", link: ""},
+            image7: {filename: "", id: "", url: "", link: ""},
+            image8: {filename: "", id: "", url: "", link: ""},
+            image9: {filename: "", id: "", url: "", link: ""},
+            image10: {filename: "", id: "", url: "", link: ""},
+            image11: {filename: "", id: "", url: "", link: ""},
+            main: {filename: "", id: "", url: "", link: ""}
         },
         isComposite: false,
         isListingVariation: false,

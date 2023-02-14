@@ -7,33 +7,32 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch --verbose false"
+    "test": "jest"
   },
   "dependencies": {
-    "@next-auth/mongodb-adapter": "^1.1.0",
-    "@reduxjs/toolkit": "^1.8.5",
-    "@tinymce/tinymce-react": "^4.2.0",
-    "@types/jest": "^29.1.1",
-    "axios": "^0.27.2",
-    "mongodb": "^4.11.0",
-    "next-auth": "^4.16.4",
+    "@reduxjs/toolkit": "^1.9.2",
+    "@tinymce/tinymce-react": "^4.3.0",
+    "@types/jest": "^29.4.0",
+    "mongodb": "^5.0.1",
+    "next-auth": "^4.19.2",
     "next-redux-wrapper": "^8.1.0",
     "react-barcode": "^1.4.6",
     "react-redux": "^8.0.2",
-    "sharp": "^0.31.2"
+    "sharp": "^0.31.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/node": "^18.11.9",
-    "eslint": "8.22.0",
-    "eslint-config-next": "^13.0.2",
-    "jest": "^29.1.2",
-    "jest-environment-jsdom": "^29.1.2",
-    "next": "^13.0.2",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/node": "^18.13.0",
+    "core-js": "^3.28.0",
+    "eslint": "8.34.0",
+    "eslint-config-next": "^13.1.6",
+    "jest": "^29.4.2",
+    "jest-environment-jsdom": "^29.4.2",
+    "next": "^13.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typedoc": "^0.23.15"
+    "typedoc": "^0.23.25"
   }
 }

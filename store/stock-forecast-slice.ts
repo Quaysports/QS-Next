@@ -1,7 +1,10 @@
-import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
+import {createAction, createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {processData, StockForecastChecks, StockForecastItem} from "../server-modules/stock-forecast/process-data";
 import {structuredClone} from "next/dist/compiled/@edge-runtime/primitives/structured-clone";
+import {RootState} from "./store";
+
+export const hydrate = createAction<RootState>(HYDRATE);
 
 export interface forecastWrapper {
     forecast: forecastState
@@ -28,13 +31,13 @@ const initialState: forecastState = {
 export const forecastSlice = createSlice({
         name: "forecast",
         initialState,
-        extraReducers: {
-            [HYDRATE]: (state, action) => {
+        extraReducers: (builder) => {
+            builder.addCase(hydrate, (state, action) => {
                 return {
                     ...state,
                     ...action.payload.forecast
-                }
-            },
+                };
+            })
         },
         reducers: {
             setInitialItems: (state, action: PayloadAction<StockForecastItem[]>) => {
@@ -51,7 +54,6 @@ export const forecastSlice = createSlice({
                 state.suppliers = action.payload
             },
             incrementThreshold: (state) => {
-                console.log("increment!")
                 state.maxThreshold += state.threshold
                 state.searchItems.length > 0
                     ? state.renderedItems = processItemsToRender(state.maxThreshold, current(state.searchItems))

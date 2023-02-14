@@ -1,7 +1,10 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {StockError} from "../../server-modules/shop/shop";
 import {linn, schema} from "../../types";
+import {RootState} from "../store";
+
+export const hydrate = createAction<RootState>(HYDRATE);
 
 /**
  * @property {string} _id
@@ -50,13 +53,13 @@ const initialState: StockReportState = {
 export const stockReportsSlice = createSlice({
         name: "stockReports",
         initialState,
-        extraReducers: {
-            [HYDRATE]: (state, action) => {
+        extraReducers: (builder) => {
+            builder.addCase(hydrate, (state, action) => {
                 return {
                     ...state,
-                    ...action.payload.stockReports,
+                    ...action.payload.stockReports
                 };
-            },
+            })
         },
         reducers: {
             setIncorrectStockInitialState: (state, action: PayloadAction<StockError[]>) => {

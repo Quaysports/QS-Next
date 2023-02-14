@@ -1,5 +1,5 @@
 import {combineReducers, configureStore, PreloadedState} from "@reduxjs/toolkit";
-import { createWrapper } from "next-redux-wrapper";
+import {createWrapper} from "next-redux-wrapper";
 import {stockReportsSlice} from "./reports/stock-reports-slice";
 import {shopOrdersSlice} from "./shop-orders-slice";
 import {usersSlice} from "./dashboard/users-slice";
@@ -41,7 +41,5 @@ export function setupStore(preloadedState?: PreloadedState<RootState>){
 
 export type RootState = ReturnType<typeof rootReducer>
 export type AppStore = ReturnType<typeof setupStore>
-
-export type AppDispatch = AppStore['dispatch']
 
 export const appWrapper = createWrapper(()=>setupStore());

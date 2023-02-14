@@ -1,10 +1,13 @@
-import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
+import {createAction, createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
+
+export const hydrate = createAction<RootState>(HYDRATE);
 import {Fees} from "../server-modules/fees/fees";
 import {Postage} from "../server-modules/postage/postage";
 import {Packaging} from "../server-modules/packaging/packaging";
 import ChannelMarginData = schema.ChannelMarginData;
 import {schema} from "../types";
+import {RootState} from "./store";
 
 export type MarginItem = Pick<schema.Item,
     "SKU" |
@@ -87,13 +90,13 @@ const initialState: marginCalculatorState = {
 export const marginCalculatorSlice = createSlice({
         name: "marginCalculator",
         initialState,
-        extraReducers: {
-            [HYDRATE]: (state, action) => {
+        extraReducers: (builder) => {
+            builder.addCase(hydrate, (state, action) => {
                 return {
                     ...state,
                     ...action.payload.marginCalculator
-                }
-            },
+                };
+            })
         },
         reducers: {
             setMarginData: (state, action: PayloadAction<MarginItem[]>) => {
@@ -159,7 +162,7 @@ export const marginCalculatorSlice = createSlice({
                 state.activeIndex = null
                 state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
             },
-            sortMarginData: (state, action: PayloadAction<{ channel:"amazon" | "ebay" | "magento" | "shop", key: keyof ChannelMarginData, ascending?: boolean }>) => {
+            sortMarginData: (state, action: PayloadAction<{ channel: "amazon" | "ebay" | "magento" | "shop", key: keyof ChannelMarginData, ascending?: boolean }>) => {
                 const {channel, key} = action.payload
                 state.currentSort = `${channel}-${key}`
                 const asc = action.payload.ascending === undefined ? true : action.payload.ascending
@@ -220,7 +223,7 @@ export const marginCalculatorSlice = createSlice({
                 action.payload !== state.activeIndex ? state.activeIndex = action.payload : state.activeIndex = null
             },
             updateUploadedIndexes: (state, action: PayloadAction<string>) => {
-                if(!state.uploadedIndexes.includes(action.payload)) state.uploadedIndexes.push(action.payload)
+                if (!state.uploadedIndexes.includes(action.payload)) state.uploadedIndexes.push(action.payload)
             },
             setMarginTest: (state, action: PayloadAction<{ type: string, value: number }>) => {
                 switch (action.payload.type) {

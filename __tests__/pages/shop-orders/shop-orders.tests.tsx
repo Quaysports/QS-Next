@@ -1,10 +1,11 @@
-import {mockCompletedOrders, mockDeadStockReport, mockOrdersState} from "./shop-orders-data";
+import {mockCompletedOrders, mockDeadStockReport, mockOrdersState} from "../../../__mocks__/shop-orders-data";
 import ShopOrdersLandingPage, {getServerSideProps} from "../../../pages/shop-orders";
-import {render, screen, waitFor} from "../../../__mocks__/mock-store-wrapper";
+import {renderWithProviders, screen, waitFor} from "../../../__mocks__/mock-store-wrapper";
 import userEvent from '@testing-library/user-event'
 import {GetServerSidePropsContext} from "next";
 import '@testing-library/jest-dom'
 import {beforeEach, describe} from "@jest/globals";
+import 'core-js/stable/structured-clone';
 
 global.fetch = jest.fn(async () => {
     return {json: async () => ({res:"ok"})}
@@ -40,7 +41,7 @@ describe("Tabs onClick tests", () => {
         const context = {query: {tab: ""}} as unknown as GetServerSidePropsContext
         await waitFor(() => {
             getServerSideProps(context)
-            render(<ShopOrdersLandingPage/>)
+            renderWithProviders(<ShopOrdersLandingPage/>)
         })
         await waitFor(() => screen.getByText("Orders").click())
         expect(mockRoute).toHaveBeenCalledWith("/shop-orders?tab=orders")
@@ -66,7 +67,7 @@ describe("Dead stock tab tests", () => {
 
     test("Dead stock sidebar renders correctly and onClicks call router with correct information", async () => {
         await waitFor(async () => {
-            render(<ShopOrdersLandingPage/>)
+            renderWithProviders(<ShopOrdersLandingPage/>)
             await waitFor(() => screen.getByText("FOX(2)").click())
             expect(mockRoute).toHaveBeenCalledWith({query: {index: '1', brand: "All Items"}})
         })
@@ -74,7 +75,7 @@ describe("Dead stock tab tests", () => {
 
     test("Dead stock functionality works and UI renders correctly", async () => {
         query = {tab: "dead-stock", index: 1}
-        render(<ShopOrdersLandingPage/>)
+        renderWithProviders(<ShopOrdersLandingPage/>)
         await waitFor(async () => {
             expect(screen.getByText("FOX-SKU-2")).toBeInTheDocument()
             expect(screen.queryByText("DRENNAN-SKU-2")).not.toBeInTheDocument()
@@ -92,7 +93,7 @@ describe("Completed orders tab tests", () => {
 
     test("Completed orders sidebar renders correctly and onClicks call router with correct information", async () => {
         query = {tab: "completed-orders"}
-        render(<ShopOrdersLandingPage/>)
+        renderWithProviders(<ShopOrdersLandingPage/>)
         await waitFor(() => screen.getByText("Completed Orders").click())
         screen.getByText("Leeda(1)").click()
         expect(mockRoute).toHaveBeenCalledWith({query: {index: '1', brand: "All Items", tab: "completed-orders"}})
@@ -100,7 +101,7 @@ describe("Completed orders tab tests", () => {
 
     test("Select box available with correct dropdowns and fires onChange function correctly", async () => {
         query = {tab: "completed-orders", index: "1"}
-        await waitFor(() => render(<ShopOrdersLandingPage/>))
+        await waitFor(() => renderWithProviders(<ShopOrdersLandingPage/>))
         expect(screen.queryByText("SKU-7")).toBeFalsy()
         expect(screen.queryByText("SKU-1")).toBeFalsy()
         await waitFor(() => userEvent.selectOptions(
@@ -121,14 +122,14 @@ describe("Orders tab tests", () => {
     })
     test("Orders side bar loads up when orders tab is assigned",async () => {
         query = {tab: "orders"}
-        await waitFor(() => render(<ShopOrdersLandingPage/>))
+        await waitFor(() => renderWithProviders(<ShopOrdersLandingPage/>))
         expect(screen.getByText("2 - Wychwood(22-43-45)")).toBeInTheDocument()
         screen.getByText("2 - Wychwood(22-43-45)").click()
         expect(mockRoute).toHaveBeenCalledWith({query:{tab:"orders", index: "1", brand:"All Items"}})
     })
     test("Renders the selected order and edit order button works as expected", () => {
         query = {tab:"orders", index: "1"}
-        render(<ShopOrdersLandingPage/>)
+        renderWithProviders(<ShopOrdersLandingPage/>)
         expect(screen.getByText("WYCHWOOD-SKU-2")).toBeInTheDocument()
         expect(screen.getByText("WYCHWOOD-SKU-1")).toBeInTheDocument()
         expect(screen.queryByText("SWIFT-SKU-1")).toBeFalsy()
@@ -136,20 +137,21 @@ describe("Orders tab tests", () => {
         expect(mockRoute).toHaveBeenCalledWith({pathname:"/shop-orders", query:{tab:"new-order", editOrder:"1", brand: "All Items"}})
     })
     test("Buttons to move items from order to arrived work", async () => {
+        const user = userEvent.setup()
         query = {tab:"orders", index: "1"}
-        render(<ShopOrdersLandingPage/>)
+        renderWithProviders(<ShopOrdersLandingPage/>)
         let buttons = await screen.findAllByRole("button", {name: "⇅"})
         let inputs = await screen.findAllByRole("textbox")
         expect(screen.queryByText("Please increase the amount that has arrived")).toBeFalsy()
         await waitFor(() => buttons[0].click())
         expect(screen.getByText("Please increase the amount that has arrived")).toBeInTheDocument()
         await waitFor(() => screen.getByRole("button", {name:"Ok"}).click())
-        userEvent.type(inputs[0], "{Backspace}3")
+        await waitFor(()=> user.type(inputs[0], "{Backspace}3"))
         expect(screen.queryByText("More have arrived than were ordered, please increase the order amount or check the amount that have arrived")).toBeFalsy()
         await waitFor(() => buttons[0].click())
         expect(screen.getByText("More have arrived than were ordered, please increase the order amount or check the amount that have arrived")).toBeInTheDocument()
         await waitFor(() => screen.getByRole("button", {name:"Ok"}).click())
-        userEvent.type(inputs[0], "{Backspace}1")
+        await waitFor(()=>user.type(inputs[0], "{Backspace}1"))
         expect(screen.queryByText("Did only part of the order arrive?")).toBeFalsy()
         await waitFor(() => buttons[0].click())
         expect(screen.getByText("Did only part of the order arrive?")).toBeInTheDocument()

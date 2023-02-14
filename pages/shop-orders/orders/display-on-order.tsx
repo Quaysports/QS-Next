@@ -109,8 +109,8 @@ export default function DisplayOnOrder() {
                                onChange={(e) => {
                                    arrivedHandler(e.target.value, i)
                                }}/>
-                        <span className={"center-align"}>{loadedOrder!.order[i].quantity ??= 0}</span>
-                        <span className={"center-align"}>{loadedOrder!.order[i].tradePack ??= 0}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].quantity}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].tradePack}</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
                         <span>{loadedOrder!.order[i].title} </span>
 
@@ -125,8 +125,8 @@ export default function DisplayOnOrder() {
                                onChange={(e) => {
                                    arrivedHandler(e.target.value, i)
                                }}/>
-                        <span className={"center-align"}>{loadedOrder!.order[i].quantity ??= 0}</span>
-                        <span className={"center-align"}>{loadedOrder!.order[i].tradePack ??= 0}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].quantity}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].tradePack}</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
                         <span>{loadedOrder!.order[i].title} </span>
 

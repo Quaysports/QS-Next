@@ -13,11 +13,11 @@ jest.mock('next/router', () => ({
 jest.mock('../../../../components/jarilo-template', () => ({
     jariloHtml: () => jest.fn()
 }))
-/*
+
 jest.mock('../../../../components/database-search-bar/database-search', () => {
-    return {DatabaseSearchBar: MockDatabaseSearchBarComponent}
-    }
-)
+    return MockDatabaseSearchBarComponent
+})
+
 function MockDatabaseSearchBarComponent({handler}:any){
     return (
         <button data-testId={"test-handler"} onClick={() => handler({
@@ -35,4 +35,3 @@ describe('item database index page tests', () => {
         expect(mockPush).toBeCalledWith({pathname:undefined, query:{sku:'test'}})
     })
 })
-*/

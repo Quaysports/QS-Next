@@ -1,8 +1,10 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {HYDRATE} from "next-redux-wrapper";
+import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {User} from "../../server-modules/users/user";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
 import {sbt} from "../../types";
+import {HYDRATE} from "next-redux-wrapper";
+import {RootState} from "../store";
+export const hydrate = createAction<RootState>(HYDRATE);
 
 export interface holidaysWrapper {
     holidays: holidaysState
@@ -57,13 +59,13 @@ const initialState: holidaysState = {
 export const holidaysSlice = createSlice({
     name: "holidays",
     initialState,
-    extraReducers: {
-        [HYDRATE]: (state, action) => {
+    extraReducers:(builder)=> {
+        builder.addCase(hydrate, (state, action) => {
             return {
                 ...state,
                 ...action.payload.holidays
-            }
-        },
+            };
+        })
     },
     reducers: {
         setHolidayCalendar: (state, action: PayloadAction<sbt.holidayCalendar>) => {

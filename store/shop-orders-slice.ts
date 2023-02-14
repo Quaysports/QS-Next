@@ -1,9 +1,12 @@
-import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
+import {createAction, createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {DeadStockReport} from "../server-modules/shop/shop";
 import {orderObject, shopOrder} from "../server-modules/shop/shop-order-tool";
 import {binarySearch} from "../server-modules/core/core";
 import {linn} from "../types";
+import {RootState} from "./store";
+
+export const hydrate = createAction<RootState>(HYDRATE);
 
 /**
  * @property {string} _id
@@ -111,13 +114,13 @@ const initialState: ShopOrdersState = {
 export const shopOrdersSlice = createSlice({
         name: "shopOrders",
         initialState,
-        extraReducers: {
-            [HYDRATE]: (state, action) => {
+        extraReducers: (builder) => {
+            builder.addCase(hydrate, (state, action) => {
                 return {
                     ...state,
-                    ...action.payload.shopOrders,
+                    ...action.payload.shopOrders
                 };
-            },
+            })
         },
         reducers: {
             setDeadStock: (state, action: PayloadAction<DeadStockReport[]>) => {
@@ -158,8 +161,8 @@ export const shopOrdersSlice = createSlice({
                 state.openOrders![Number(action.payload.order)].order[action.payload.index].arrived = action.payload.value
             },
             setBookedInState: (state, action: PayloadAction<{ bookedIn: string, index: number, orderId: number }>) => {
-                let { bookedIn, index, orderId } = action.payload
-                let { order, arrived } = structuredClone(current(state.openOrders![action.payload.orderId]))
+                let {bookedIn, index, orderId} = action.payload
+                let {order, arrived} = structuredClone(current(state.openOrders![action.payload.orderId]))
                 if (bookedIn === "false") {
                     order[index].bookedIn = bookedIn
                     arrived.push(order[index])
@@ -170,10 +173,10 @@ export const shopOrdersSlice = createSlice({
                     let item = structuredClone(order[index])
                     order[index].quantity = (order[index].quantity - amount)
                     arrived.push(item)
-                    arrived[(arrived.length - 1)] = {...arrived[(arrived.length - 1)], quantity:amount, arrived:amount}
+                    arrived[(arrived.length - 1)] = {...arrived[(arrived.length - 1)], quantity: amount, arrived: amount}
                     order[index].arrived = 0
                 }
-                state.openOrders![orderId] = {...state.openOrders![orderId], order:order, arrived:arrived}
+                state.openOrders![orderId] = {...state.openOrders![orderId], order: order, arrived: arrived}
             },
             setRemoveFromBookedInState: (state, action: PayloadAction<{ index: number, SKU: string, order: string }>) => {
                 let openOrder = state.openOrders![Number(action.payload.order)]
@@ -279,7 +282,7 @@ export const shopOrdersSlice = createSlice({
                     supplier: null
                 }
             },
-            setCompleteOrder: (state, action: PayloadAction<{index: string, user:string}>) => {
+            setCompleteOrder: (state, action: PayloadAction<{ index: string, user: string }>) => {
                 const {index, user} = action.payload
                 const openOrder = state.openOrders![Number(index)]
                 openOrder.complete = true
@@ -297,7 +300,7 @@ export const shopOrdersSlice = createSlice({
             },
             setSubmittedOrder: (state, action: PayloadAction<{ res: linn.ItemStock[], order: string }>) => {
                 const openOrder = state.openOrders![Number(action.payload.order)]
-                for(const item of openOrder.arrived){
+                for (const item of openOrder.arrived) {
                     if (item.newProduct) item.submitted = true
                 }
                 for (const item of action.payload.res) {
@@ -396,7 +399,7 @@ export const selectOrderContents = (state: ShopOrdersWrapper) => state.shopOrder
 
 export default shopOrdersSlice.reducer;
 
-function saveNewOrder(newOrderArray:OpenOrdersObject, totalPrice: number){
+function saveNewOrder(newOrderArray: OpenOrdersObject, totalPrice: number) {
 
     const date = new Date();
 

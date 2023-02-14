@@ -1,9 +1,10 @@
 import {GetServerSidePropsContext} from "next";
 import StockReports, {getServerSideProps} from "../../../pages/reports";
-import {render, screen, waitFor} from "../../../__mocks__/mock-store-wrapper";
+import {renderWithProviders, screen, waitFor} from "../../../__mocks__/mock-store-wrapper";
 import '@testing-library/jest-dom'
 import {StockError} from "../../../server-modules/shop/shop";
 import userEvent from "@testing-library/user-event";
+import {schema} from "../../../types";
 
 let query = {}
 const mockRouter = jest.fn()
@@ -45,12 +46,18 @@ jest.mock("../../../server-modules/shop/shop", () => ({
 jest.mock("../../../server-modules/items/items", () => ({
     getItems: () => {
         mockItems()
-        return [{
+        let items:Pick<schema.Item, "_id" | "SKU" | "EAN" | "stock" | "title" | "stockTake">[] = [{
             _id: '61bc9d799b9e0cb72301fec4',
             SKU: 'AKA-AFLC13',
             EAN: '8032895083969',
-            STOCKTOTAL: 9,
-            TITLE: 'AKASHI Fluorocarbon 13.2lb Line 100m',
+            stock: {
+                default: 0,
+                minimum: 0,
+                value: 0,
+                warehouse: 0,
+                total:9
+            },
+            title: 'AKASHI Fluorocarbon 13.2lb Line 100m',
             stockTake: {
                 checked: true,
                 date: 'Fri Sep 30 2022 15:52:08 GMT+0100 (British Summer Time)',
@@ -61,14 +68,22 @@ jest.mock("../../../server-modules/items/items", () => ({
                 _id: '61bc9d7e9b9e0cb723020bff',
                 SKU: 'AKA-AFLC8',
                 EAN: '8032895083952',
-                STOCKTOTAL: 2,
-                TITLE: 'AKASHI Fluorocarbon 8.8lb Line 100m',
+                stock: {
+                    default: 0,
+                    minimum: 0,
+                    value: 0,
+                    warehouse: 0,
+                    total:2
+                },
+                title: 'AKASHI Fluorocarbon 8.8lb Line 100m',
                 stockTake: {
                     checked: false,
                     date: null,
                     quantity: 0
                 }
             }]
+
+        return items
     },
     getBrands: () => {
         mockBrands()
@@ -95,21 +110,21 @@ afterEach(()=>{
 
 describe("Stock Report serverSideProps tests", () => {
     test("Incorrect stock function is called on server side props", async () => {
-        render(<StockReports/>)
+        renderWithProviders(<StockReports/>)
         const context = {query: {tab: "incorrect-stock"}} as unknown as GetServerSidePropsContext
         await getServerSideProps(context)
         expect(mockIncorrectStock).toBeCalledTimes(1)
     })
 
     test("Get brands is called on server side props", async () => {
-        render(<StockReports/>)
+        renderWithProviders(<StockReports/>)
         const context = {query: {tab: "shop"}} as unknown as GetServerSidePropsContext
         await getServerSideProps(context)
         expect(mockBrands).toBeCalledTimes(1)
     })
 
     test("Get items is called on server side props", async () => {
-        render(<StockReports/>)
+        renderWithProviders(<StockReports/>)
         const context = {query: {brand: "Shimano"}} as unknown as GetServerSidePropsContext
         await getServerSideProps(context)
         expect(mockItems).toBeCalledTimes(1)
@@ -120,7 +135,7 @@ describe("Stock Report tabs tests", () => {
 
     beforeEach(() => {
         query = {tab: "incorrect-stock"}
-        render(<StockReports/>)
+        renderWithProviders(<StockReports/>)
     })
 
     test("All tabs are rendered with links", () => {
@@ -139,7 +154,7 @@ describe("Incorrect Stock tab tests", () => {
     beforeEach(async () => {
         query = {tab: "incorrect-stock"}
         await waitFor(async () => {
-            render(<StockReports/>)
+            renderWithProviders(<StockReports/>)
         })
     })
 
@@ -162,30 +177,30 @@ describe("Incorrect Stock tab tests", () => {
     })
 
     test("Save button checks data is invalid before notification pop up", async () => {
-
+        const user = userEvent.setup()
         await waitFor(async () => {
             const context = {query: {tab: "incorrect-stock"}} as unknown as GetServerSidePropsContext
             await getServerSideProps(context)
         })
 
-        userEvent.type(screen.getAllByRole("textbox")[0], 'a')
+        await user.type(screen.getAllByRole("textbox")[0], 'a')
 
         await waitFor(async () => {
             screen.getByRole('button', {name: "Save"}).click()
         })
         expect(await screen.findByText("Please enter only numbers in stock levels")).toBeInTheDocument()
-        screen.debug()
     })
 
     test("Save button checks data is valid before API call and notification pop up", async () => {
+        const user = userEvent.setup()
 
         await waitFor(async () => {
             const context = {query: {tab: "incorrect-stock"}} as unknown as GetServerSidePropsContext
             await getServerSideProps(context)
         })
 
-        userEvent.type(screen.getAllByRole("textbox")[0], '{Backspace}5')
-        userEvent.click(screen.getAllByRole("checkbox")[0])
+        await user.type(screen.getAllByRole("textbox")[0], '{Backspace}5')
+        await user.click(screen.getAllByRole("checkbox")[0])
 
         await waitFor(() => screen.getByRole('button', {name: "Save"}).click())
         expect(await screen.findByText("1 items updated")).toBeInTheDocument()
@@ -206,7 +221,7 @@ describe("Stock Take tab tests", () => {
 
         query = {tab: "shop"}
         await waitFor(async () => {
-            render(<StockReports/>)
+            renderWithProviders(<StockReports/>)
             const context = {query: query} as unknown as GetServerSidePropsContext
             await getServerSideProps(context)
         })
@@ -221,7 +236,7 @@ describe("Stock Take tab tests", () => {
 
         query = {tab: "shop"}
         await waitFor(async () => {
-            render(<StockReports/>)
+            renderWithProviders(<StockReports/>)
             const context = {query: query} as unknown as GetServerSidePropsContext
             await getServerSideProps(context)
         })
@@ -235,7 +250,7 @@ describe("Stock Take tab tests", () => {
 
         query = {tab: "shop", brand: "AKASHI"}
         await waitFor(async () => {
-            render(<StockReports/>)
+            renderWithProviders(<StockReports/>)
             const context = {query: query} as unknown as GetServerSidePropsContext
             await getServerSideProps(context)
         })
@@ -253,7 +268,7 @@ describe("Stock Take tab tests", () => {
 
         query = {tab: "shop", brand: "AKASHI"}
         await waitFor(async () => {
-            render(<StockReports/>)
+            renderWithProviders(<StockReports/>)
             const context = {query: query} as unknown as GetServerSidePropsContext
             await getServerSideProps(context)
         })
@@ -266,7 +281,7 @@ describe("Stock Take tab tests", () => {
 
         query = {tab: "shop", brand: "AKASHI"}
         await waitFor(async () => {
-            render(<StockReports/>)
+            renderWithProviders(<StockReports/>)
             const context = {query: query} as unknown as GetServerSidePropsContext
             await getServerSideProps(context)
         })
@@ -290,7 +305,7 @@ describe("Stock Take tab tests", () => {
     test("Commit button correctly disables inputs after click", async () => {
 
         query = {tab: "shop", brand: "AKASHI"}
-        render(<StockReports/>)
+        renderWithProviders(<StockReports/>)
         const context = {query: query} as unknown as GetServerSidePropsContext
         await waitFor(async () => getServerSideProps(context))
 

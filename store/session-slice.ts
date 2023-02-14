@@ -1,7 +1,10 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {HYDRATE} from "next-redux-wrapper";
+import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {DashboardSettings, MarginSettings, Settings, User, UserTheme} from "../server-modules/users/user";
 import {dispatchToast} from "../components/toast/dispatch-toast";
+import {HYDRATE} from "next-redux-wrapper";
+import {RootState} from "./store";
+export const hydrate = createAction<RootState>(HYDRATE);
+
 
 export interface sessionWrapper {
     session: sessionState
@@ -53,13 +56,13 @@ const initialState: sessionState = {
 export const sessionSlice = createSlice({
         name: "session",
         initialState,
-        extraReducers: {
-            [HYDRATE]: (state, action) => {
+        extraReducers:(builder)=> {
+            builder.addCase(hydrate, (state, action) => {
                 return {
                     ...state,
-                    ...action.payload.session,
+                    ...action.payload.session
                 };
-            },
+            })
         },
         reducers: {
             setUserData: (state, action: PayloadAction<User>) => {
