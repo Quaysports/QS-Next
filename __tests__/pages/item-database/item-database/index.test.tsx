@@ -16,8 +16,8 @@ jest.mock('../../../../components/jarilo-template', () => ({
 
 jest.mock('../../../../components/database-search-bar/database-search', () => {
     return MockDatabaseSearchBarComponent
-})
-
+    }
+)
 function MockDatabaseSearchBarComponent({handler}:any){
     return (
         <button data-testId={"test-handler"} onClick={() => handler({
