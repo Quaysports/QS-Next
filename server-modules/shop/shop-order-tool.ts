@@ -93,7 +93,8 @@ export const getSuppliersAndLowStock = async () => {
                         'domestic'
                     ]
                 },
-                'isListingVariation': false
+                'isListingVariation': false,
+                'isComposite': false
             }
         }, {
             '$group': {
