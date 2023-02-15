@@ -54,12 +54,15 @@ export const stockReportsSlice = createSlice({
         name: "stockReports",
         initialState,
         extraReducers: (builder) => {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.stockReports
-                };
-            })
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.stockReports
+                    };
+                })
+                .addDefaultCase(() => {
+                })
         },
         reducers: {
             setIncorrectStockInitialState: (state, action: PayloadAction<StockError[]>) => {

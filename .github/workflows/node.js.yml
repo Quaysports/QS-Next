@@ -35,14 +35,16 @@ jobs:
     - run: npx next build
     - run: npm test
 
-    #- name: Install SSH Key
-      #uses: shimataro/ssh-key-action@v2.5.0
-      #with:
-       #key: ${{ secrets.SSH_PRIVATE_KEY }}
-        #name: id_ed25519
-        #known_hosts: ${{secrets.SSH_KNOWN_HOSTS}}
-        #config: ${{ secrets.SSH_CONFIG }}
-    #- name: Rsync .dist files
-      #run: rsync -r ./ sbt:QS-Next/
-    #- name: Restart Data-Server
-      #run: ssh sbt sudo systemctl restart next-server.service
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2.5.0
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        name: id_ed25519
+        known_hosts: ${{secrets.SSH_KNOWN_HOSTS}}
+        config: ${{ secrets.SSH_CONFIG }}
+    - name: Rsync .dist files
+      run: rsync -r ./ sbt:QS-Next/
+    - name: Build Project
+      run: ssh sbt cd QS-Next/ && npm ci && npx next build
+    - name: Restart Data-Server
+      run: ssh sbt sudo systemctl restart next-server.service

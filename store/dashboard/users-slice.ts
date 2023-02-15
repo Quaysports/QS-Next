@@ -3,6 +3,7 @@ import {User} from "../../server-modules/users/user";
 import {dispatchToast} from "../../components/toast/dispatch-toast";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "../store";
+
 export const hydrate = createAction<RootState>(HYDRATE);
 
 export interface userWrapper {
@@ -21,12 +22,15 @@ export const usersSlice = createSlice({
         name: "users",
         initialState,
         extraReducers: (builder) => {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.users
-                };
-            })
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.users
+                    };
+                })
+                .addDefaultCase(() => {
+                })
         },
         reducers: {
             setAllUserData: (state, action) => {

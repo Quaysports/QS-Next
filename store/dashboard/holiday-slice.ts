@@ -4,6 +4,7 @@ import {dispatchNotification} from "../../components/notification/dispatch-notif
 import {sbt} from "../../types";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "../store";
+
 export const hydrate = createAction<RootState>(HYDRATE);
 
 export interface holidaysWrapper {
@@ -59,13 +60,15 @@ const initialState: holidaysState = {
 export const holidaysSlice = createSlice({
     name: "holidays",
     initialState,
-    extraReducers:(builder)=> {
-        builder.addCase(hydrate, (state, action) => {
-            return {
-                ...state,
-                ...action.payload.holidays
-            };
-        })
+    extraReducers: (builder) => {
+        builder
+            .addCase(hydrate, (state, action) => {
+                return {
+                    ...state,
+                    ...action.payload.holidays
+                };
+            })
+            .addDefaultCase(() => {})
     },
     reducers: {
         setHolidayCalendar: (state, action: PayloadAction<sbt.holidayCalendar>) => {
@@ -175,11 +178,11 @@ export const holidaysSlice = createSlice({
 });
 
 function calculateBookedDays(calendar: sbt.holidayCalendar) {
-    const totals:{
+    const totals: {
         bookedDays: { [key: string]: number },
         paidSickDays: { [key: string]: number },
         unpaidSickDays: { [key: string]: number }
-    } = {bookedDays:{}, paidSickDays:{}, unpaidSickDays:{}}
+    } = {bookedDays: {}, paidSickDays: {}, unpaidSickDays: {}}
 
     for (const month of calendar.template) {
         for (const day of month.days) {
@@ -204,7 +207,11 @@ export const {
 export const selectCalendar = (state: holidaysWrapper) => state.holidays.calendar
 export const selectYears = (state: holidaysWrapper) => state.holidays.years
 export const selectUsers = (state: holidaysWrapper) => state.holidays.users
-export const selectBookedTotals = (state: holidaysWrapper) => ({bookedDays:state.holidays.bookedDays, paidSickDays:state.holidays.paidSickDays, unpaidSickDays:state.holidays.unpaidSickDays})
+export const selectBookedTotals = (state: holidaysWrapper) => ({
+    bookedDays: state.holidays.bookedDays,
+    paidSickDays: state.holidays.paidSickDays,
+    unpaidSickDays: state.holidays.unpaidSickDays
+})
 export const selectUserColors = (state: holidaysWrapper) => state.holidays.colors
 export const selectNewBooking = (state: holidaysWrapper) => state.holidays.newBooking
 

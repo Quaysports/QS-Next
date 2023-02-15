@@ -91,12 +91,15 @@ export const marginCalculatorSlice = createSlice({
         name: "marginCalculator",
         initialState,
         extraReducers: (builder) => {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.marginCalculator
-                };
-            })
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.marginCalculator
+                    };
+                })
+                .addDefaultCase(() => {
+                })
         },
         reducers: {
             setMarginData: (state, action: PayloadAction<MarginItem[]>) => {

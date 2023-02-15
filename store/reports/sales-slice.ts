@@ -34,12 +34,15 @@ export const salesSlice = createSlice({
         name: "sales",
         initialState,
         extraReducers: (builder) => {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.sales
-                };
-            })
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.sales
+                    };
+                })
+                .addDefaultCase(() => {
+                })
         },
         reducers: {
             setFirstYearAndLastYear: (state, action: PayloadAction<{ firstYear: string, lastYear: string }>) => {

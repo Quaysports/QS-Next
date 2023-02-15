@@ -115,12 +115,15 @@ export const shopOrdersSlice = createSlice({
         name: "shopOrders",
         initialState,
         extraReducers: (builder) => {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.shopOrders
-                };
-            })
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.shopOrders
+                    };
+                })
+                .addDefaultCase(() => {
+                })
         },
         reducers: {
             setDeadStock: (state, action: PayloadAction<DeadStockReport[]>) => {
