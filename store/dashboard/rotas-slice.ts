@@ -5,6 +5,7 @@ import {dispatchToast} from "../../components/toast/dispatch-toast";
 import {sbt} from "../../types";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "../store";
+
 export const hydrate = createAction<RootState>(HYDRATE);
 
 export type RotaUserPick = Pick<User, '_id' | 'username' | 'colour'>
@@ -37,12 +38,14 @@ export const rotaSlice = createSlice({
         name: "rota",
         initialState,
         extraReducers: (builder) => {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.rota
-                };
-            })
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.rota
+                    };
+                })
+                .addDefaultCase(() => {})
         },
         reducers: {
             setUserData: (state, action: PayloadAction<{ location: string, users: RotaUserPick[] }>) => {

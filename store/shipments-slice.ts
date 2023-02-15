@@ -21,12 +21,15 @@ export const shipmentsSlice = createSlice({
         name: "shipments",
         initialState,
         extraReducers: (builder) => {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.shipments
-                };
-            })
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.shipments
+                    };
+                })
+                .addDefaultCase(() => {
+                })
         },
         reducers: {
             setShipments: (state, action: PayloadAction<Shipment[]>) => {

@@ -32,12 +32,15 @@ export const forecastSlice = createSlice({
         name: "forecast",
         initialState,
         extraReducers: (builder) => {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.forecast
-                };
-            })
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.forecast
+                    };
+                })
+                .addDefaultCase(() => {
+                })
         },
         reducers: {
             setInitialItems: (state, action: PayloadAction<StockForecastItem[]>) => {

@@ -15,7 +15,7 @@ import {pickListSlice} from "./shop-tills/pick-list-slice";
 import {salesSlice} from "./reports/sales-slice";
 
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
     [shopOrdersSlice.name]: shopOrdersSlice.reducer,
     [stockReportsSlice.name]: stockReportsSlice.reducer,
     [usersSlice.name]:usersSlice.reducer,

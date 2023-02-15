@@ -3,6 +3,7 @@ import {rodLocationObject} from "../../pages/item-database";
 import {schema} from "../../types";
 import {RootState} from "../store";
 import {HYDRATE} from "next-redux-wrapper";
+
 export const hydrate = createAction<RootState>(HYDRATE);
 
 /**
@@ -90,12 +91,15 @@ export const itemDatabaseSlice = createSlice({
         name: "itemDatabase",
         initialState,
         extraReducers: (builder) => {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.itemDatabase
-                };
-            })
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.itemDatabase
+                    };
+                })
+                .addDefaultCase(() => {
+                })
         },
         reducers: {
             setItem: (state, action) => {

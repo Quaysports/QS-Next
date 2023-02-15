@@ -3,6 +3,7 @@ import {DashboardSettings, MarginSettings, Settings, User, UserTheme} from "../s
 import {dispatchToast} from "../components/toast/dispatch-toast";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "./store";
+
 export const hydrate = createAction<RootState>(HYDRATE);
 
 
@@ -56,13 +57,16 @@ const initialState: sessionState = {
 export const sessionSlice = createSlice({
         name: "session",
         initialState,
-        extraReducers:(builder)=> {
-            builder.addCase(hydrate, (state, action) => {
-                return {
-                    ...state,
-                    ...action.payload.session
-                };
-            })
+        extraReducers: (builder) => {
+            builder
+                .addCase(hydrate, (state, action) => {
+                    return {
+                        ...state,
+                        ...action.payload.session
+                    };
+                })
+                .addDefaultCase(() => {
+                })
         },
         reducers: {
             setUserData: (state, action: PayloadAction<User>) => {
@@ -76,7 +80,7 @@ export const sessionSlice = createSlice({
                     body: JSON.stringify(state.user)
                 }
                 fetch('/api/user/update-user', opt).then(
-                    () => dispatchToast({content:"User updated"})
+                    () => dispatchToast({content: "User updated"})
                 )
             },
             updateSettings: (state, action: PayloadAction<Settings>) => {
@@ -88,14 +92,17 @@ export const sessionSlice = createSlice({
             updateMarginSetting: (state, action: PayloadAction<MarginSettings>) => {
                 if (!state.user) return
                 state.user.settings.marginCalculator = action.payload
-                let update = {username: state.user.username, settings: {...state.user.settings, marginCalculator: action.payload}}
+                let update = {
+                    username: state.user.username,
+                    settings: {...state.user.settings, marginCalculator: action.payload}
+                }
                 const opt = {
                     method: 'POST',
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(update)
                 }
                 fetch('/api/user/update-user', opt).then(
-                    () => dispatchToast({content:"User margin settings updated"})
+                    () => dispatchToast({content: "User margin settings updated"})
                 )
             },
             updateDashboardSetting: (state, action: PayloadAction<DashboardSettings>) => {
@@ -108,7 +115,7 @@ export const sessionSlice = createSlice({
                     body: JSON.stringify(update)
                 }
                 fetch('/api/user/update-user', opt).then(
-                    () => dispatchToast({content:"User dashboard settings updated"})
+                    () => dispatchToast({content: "User dashboard settings updated"})
                 )
             }
         },
