@@ -15,16 +15,21 @@ jest.mock('../../../../components/jarilo-template', () => ({
 }))
 
 jest.mock('../../../../components/database-search-bar/database-search', () => {
-    return MockDatabaseSearchBarComponent
+        return MockDatabaseSearchBarComponent
     }
 )
-function MockDatabaseSearchBarComponent({handler}:any){
+const MockSidebar = jest.fn()
+jest.mock("../../../../pages/item-database/item-database/sidebar", () => () => {
+    MockSidebar()
+    return <div/>
+})
+function MockDatabaseSearchBarComponent({handler}: any) {
     return (
-        <button data-testId={"test-handler"} onClick={() => handler({
-        SKU: "test",
-        _id: "",
-        title: "test-title"
-    })}/>
+        <button data-testid={"test-handler"} onClick={() => handler({
+            SKU: "test",
+            _id: "",
+            title: "test-title"
+        })}/>
     )
 }
 
@@ -32,6 +37,11 @@ describe('item database index page tests', () => {
     test('search options pushes to router', () => {
         renderWithProviders(<ItemDatabaseLandingPage/>)
         fireEvent.click(screen.getByTestId('test-handler'))
-        expect(mockPush).toBeCalledWith({pathname:undefined, query:{sku:'test'}})
+        expect(mockPush).toBeCalledWith({pathname: undefined, query: {sku: 'test'}})
     })
+    /*test('test', () => {
+        renderWithProviders(<ItemDatabaseLandingPage/>)
+        //mock item.SKU to make pass
+        expect(MockSidebar).toHaveBeenCalled()
+    })*/
 })
