@@ -9,7 +9,7 @@ import NewTagPopUp from "./sidebar-components/new-tag-popup";
 import ImportDetailsPopUp from "./sidebar-components/import-details-popup";
 import {schema} from "../../../types";
 import JariloTemplatePopup from "./sidebar-components/jarilo-template-popup";
-import uploadToLinnworksHandler from "./sidebar-components/linnworks-upload-function";
+import uploadToLinnworksHandler from "../../../components/item-database-utils/linnworks-upload-function";
 
 export default function SideBar() {
 
