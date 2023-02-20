@@ -36,6 +36,11 @@ export default function SideBar() {
                 }}>
                     Shelf Tag
                 </SidebarButton>
+                <SidebarButton onClick={() => {
+                    print("rod-tag", item)
+                }}>
+                    Rod Tag
+                </SidebarButton>
                 <LinnworksUploadButton/>
                 <SidebarButton onClick={() => dispatchNotification({
                     type: "popup",
