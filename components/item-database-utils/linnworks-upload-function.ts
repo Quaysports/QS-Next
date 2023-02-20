@@ -1,5 +1,5 @@
-import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
-import {schema} from "../../../../types";
+import {dispatchNotification} from "../notification/dispatch-notification";
+import {schema} from "../../types";
 
 export default function uploadToLinnworksHandler(item: schema.Item) {
     const opts = {

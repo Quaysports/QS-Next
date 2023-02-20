@@ -18,7 +18,7 @@ jest.mock('../../../../components/jarilo-template', () => {
     }
 })
 
-jest.mock('../../../../pages/item-database/item-database/sidebar-components/linnworks-upload-function', () => () => {
+jest.mock('../../../../components/item-database-utils/linnworks-upload-function', () => () => {
     mockLinnworksButton()
 })
 jest.mock('../../../../components/notification/dispatch-notification', () => ({
