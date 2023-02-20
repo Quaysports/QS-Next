@@ -24,7 +24,7 @@ jest.mock("next/router", () => ({
         }
     })
 }));
-describe("Quick Links Sidebar teste", () => {
+describe("Quick Links Sidebar test", () => {
 
     beforeEach(async () => {
         jest.clearAllMocks()
@@ -37,11 +37,11 @@ describe("Quick Links Sidebar teste", () => {
     })
 
     test("Page initially loads with sidebar.", async () => {
-        expect((await screen.findAllByTestId("sidebar-button")).length).toEqual(2)
+        expect((await screen.findAllByRole("button")).length).toEqual(2)
     })
 
     test("Dynamic sidebar link button changes route and edit button triggers popup.", async () => {
-        const divButtons = await screen.findAllByTestId("sidebar-button")
+        const divButtons = await screen.findAllByRole("button")
 
         await waitFor(() => (divButtons[0].childNodes[1] as HTMLDivElement).click())
         expect(routeValue).toHaveBeenCalledWith({pathname: undefined, query: {tab: 'quick-links', linksIndex: 0}})
@@ -51,7 +51,7 @@ describe("Quick Links Sidebar teste", () => {
     })
 
     test("Edit link popup menu correctly loads with existing id ready for editing.", async () => {
-        const divButtons = await screen.findAllByTestId("sidebar-button")
+        const divButtons = await screen.findAllByRole("button")
 
         await waitFor(() => (divButtons[0].childNodes[0] as HTMLDivElement).click())
 
@@ -60,7 +60,7 @@ describe("Quick Links Sidebar teste", () => {
 
     test("Edit update button correctly dispatches to redux store.", async () => {
 
-        const divButtons = await screen.findAllByTestId("sidebar-button")
+        const divButtons = await screen.findAllByRole("button")
 
         await waitFor(() => (divButtons[0].childNodes[0] as HTMLDivElement).click())
         const input = await screen.findByRole("textbox") as HTMLInputElement
@@ -73,7 +73,7 @@ describe("Quick Links Sidebar teste", () => {
 
     test("Edit delete button correctly dispatches to redux store.", async () => {
 
-        const divButtons = await screen.findAllByTestId("sidebar-button")
+        const divButtons = await screen.findAllByRole("button")
 
         await waitFor(() => (divButtons[0].childNodes[0] as HTMLDivElement).click())
         await waitFor(() => screen.getByRole("button", {name: "Delete"}).click())

@@ -20,6 +20,6 @@ interface Props {
 export default function SidebarButton({children, active = false, onClick = ()=>{}, className = ""}:Props){
 
     return(
-        <div data-testid={"sidebar-button"} className={`${styles["sidebar-button"]} ${active ? styles.active : ""} ${className}`} onClick={onClick}>{children}</div>
+        <div role={"button"} className={`${styles["sidebar-button"]} ${active ? styles.active : ""} ${className}`} onClick={onClick}>{children}</div>
     )
 }

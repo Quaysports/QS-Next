@@ -1,10 +1,10 @@
 import SideBar from "../../../../pages/item-database/item-database/sidebar";
 import {renderWithProviders, fireEvent, screen} from "../../../../__mocks__/mock-store-wrapper";
-import {waitFor} from "@testing-library/dom";
 import NewTagPopUp from "../../../../pages/item-database/item-database/sidebar-components/new-tag-popup";
 import JariloTemplatePopup from "../../../../pages/item-database/item-database/sidebar-components/jarilo-template-popup";
+import ImportDetailsPopUp from "../../../../pages/item-database/item-database/sidebar-components/import-details-popup";
+import BrandLabelPopUp from "../../../../pages/item-database/item-database/sidebar-components/brand-label-popup";
 
-const mockSidebarButtonProps = jest.fn()
 const mockLinnworksButton = jest.fn()
 const mockDispatchProps = jest.fn()
 const window = jest.fn()
@@ -18,123 +18,64 @@ jest.mock('../../../../components/jarilo-template', () => {
     }
 })
 
-
-test('test', () => {
-
-    const expectedProps = [
-        [{children: "Barcode", onClick: expect.any(Function)}],
-        [{children: "Tag", onClick: expect.any(Function)}],
-        [{children: "Shelf Tag", onClick: expect.any(Function)}],
-        [{children: "Rod Tag", onClick: expect.any(Function)}],
-        [{children: "Jarilo Template", onClick: expect.any(Function)}],
-        [{children: "Import Details", onClick: expect.any(Function)}],
-        [{children: "Branded Labels", onClick: expect.any(Function)}],
-        [{children: "Create New Tag", onClick: expect.any(Function)}]
-    ]
-
-    renderWithProviders(<SideBar/>)
-    expect(mockSidebarButtonProps.mock.calls).toEqual(expectedProps)
-    expect(mockLinnworksButton).toHaveBeenCalled()
+jest.mock('../../../../pages/item-database/item-database/sidebar-components/linnworks-upload-function', () => () => {
+    mockLinnworksButton()
 })
+jest.mock('../../../../components/notification/dispatch-notification', () => ({
+    dispatchNotification: (props: any) => mockDispatchProps(props)
+}))
+jest.mock('next/router', () => ({
+    useRouter: () => ({push: jest.fn()})
+}))
 
-const buttonIndexAndText = [
-    [0, 'Barcode'],
-    [1, 'Tag'],
-    [2, 'Shelf Tag'],
-    [3, 'Rod Tag']
+const printButtons = [
+    ['Barcode', 'barcode'],
+    ['Tag', 'tag'],
+    ['Shelf Tag', 'shelf-tag'],
+    ['Rod Tag', 'rod-tag']
 ] as const
 
-
-test.each(buttonIndexAndText)('print function is called with correct info when buttons are clicked', async (index, text) => {
-    renderWithProviders(<SideBar/>)
-    const buttons = await screen.findAllByTestId('mock-button')
-    fireEvent.click(buttons[index])
-    expect(window).toHaveBeenCalledWith('/print?app=item-database&print=' + text, '_blank', 'width=515,height=580')
-})
-
-const buttonIndexAndArgs = [
-    [4, {
+const sidebarButtons = [
+    ['Jarilo Template', {
         type: 'popup',
         title: 'Jarilo Template',
         content: <JariloTemplatePopup/>
     }],
-    [5, {
+    ['Import Details', {
         type: 'popup',
         title: 'Import Details from SKU',
-        content: <MockImportDetails/>
+        content: <ImportDetailsPopUp/>
     }],
-    [6, {
+    ['Branded Labels', {
         type: 'popup',
         title: 'Brand Label',
-        content: <MockBrandLabel print={expect.any(Function)}/>
+        content: <BrandLabelPopUp print={expect.any(Function)}/>
     }],
-    [7, {
+    ['Create New Tag', {
         type: 'popup',
         title: 'New Tag',
         content: <NewTagPopUp/>
     }]
 ] as const
-test.each(buttonIndexAndArgs)('dispatch notification is called correctly when buttons are clicked', async (index, content) => {
-    renderWithProviders(<SideBar/>)
-    const buttons = await screen.findAllByTestId('mock-button')
-    await waitFor(() => fireEvent.click(buttons[index]))
-    expect(mockDispatchProps).toHaveBeenCalledWith(content)
-})
 
+describe('SideBar', () => {
+    test.each(printButtons)('print function is called with correct info when buttons are clicked', async (index, text) => {
+        renderWithProviders(<SideBar/>)
+        fireEvent.click(await screen.findByRole('button', {name: index}))
+        expect(window).toHaveBeenCalledWith('/print?app=item-database&print=' + text, '_blank', 'width=515,height=580')
+        console.log(global.window.localStorage.getItem('item'))
+    })
 
-/*jest.mock('../../../../components/layouts/sidebar-layout', () => {
-    return MockSidebarLayout
-})*/
-jest.mock('../../../../components/layouts/sidebar-button', () => (props: any) => {
-    mockSidebarButtonProps(props)
-    return MockSidebarButton(props)
+    test.each(sidebarButtons)('dispatch notification is called correctly when buttons are clicked', async (index, content) => {
+        jest.clearAllMocks()
+        renderWithProviders(<SideBar/>)
+        fireEvent.click(await screen.findByRole('button', {name: index}))
+        expect(mockDispatchProps).toHaveBeenCalledWith(content)
+    })
+
+    test('linnworks button is called', async () => {
+        renderWithProviders(<SideBar/>)
+        fireEvent.click(await screen.findByRole('button', {name: 'Upload to Linnworks'}))
+        expect(mockLinnworksButton).toHaveBeenCalled()
+    })
 })
-/*jest.mock('../../../../pages/item-database/item-database/sidebar-components/jarilo-template-popup', () => {
-    return MockJariloTemplate
-})*/
-jest.mock('../../../../pages/item-database/item-database/sidebar-components/import-details-popup', () => {
-    return MockImportDetails
-})
-/*jest.mock('../../../../pages/item-database/item-database/sidebar-components/new-tag-popup', () => {
-    return MockNewTags
-})*/
-jest.mock('../../../../pages/item-database/item-database/sidebar-components/brand-label-popup', () => {
-    return MockBrandLabel
-})
-jest.mock('../../../../pages/item-database/item-database/sidebar-components/linnworks-upload-button', () => () => {
-    mockLinnworksButton()
-})
-jest.mock('../../../../components/notification/dispatch-notification', () => ({
-    dispatchNotification: (props:any) => {
-        mockDispatchProps(props)
-        return MockDispatchNotification()
-    }
-}))
-jest.mock('next/router', () => ({
-    useRouter: () => {
-        return {
-            push: jest.fn()
-        }
-    }
-}))
-function MockSidebarLayout({children}: any) {
-    return <div>{children}</div>
-}
-function MockSidebarButton({onClick}: any) {
-    return <div data-testid={'mock-button'} onClick={() => onClick()}/>
-}
-function MockJariloTemplate() {
-    return <div/>
-}
-function MockImportDetails() {
-    return <div/>
-}
-function MockBrandLabel({print}:any) {
-    return <div/>
-}
-/*function MockNewTags() {
-    return <div/>
-}*/
-function MockDispatchNotification() {
-    return <div/>
-}
