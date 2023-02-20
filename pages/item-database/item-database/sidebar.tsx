@@ -5,11 +5,11 @@ import {selectItem} from "../../../store/item-database/item-database-slice";
 import {useSelector} from "react-redux";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import BrandLabelPopUp from "./sidebar-components/brand-label-popup";
-import LinnworksUploadButton from "./sidebar-components/linnworks-upload-button";
 import NewTagPopUp from "./sidebar-components/new-tag-popup";
 import ImportDetailsPopUp from "./sidebar-components/import-details-popup";
 import {schema} from "../../../types";
 import JariloTemplatePopup from "./sidebar-components/jarilo-template-popup";
+import uploadToLinnworksHandler from "./sidebar-components/linnworks-upload-function";
 
 export default function SideBar() {
 
@@ -41,7 +41,9 @@ export default function SideBar() {
                 }}>
                     Rod Tag
                 </SidebarButton>
-                <LinnworksUploadButton/>
+                <SidebarButton className={styles["upload-button"]}  onClick={() => uploadToLinnworksHandler(item)}>
+                    Upload to Linnworks
+                </SidebarButton>
                 <SidebarButton onClick={() => dispatchNotification({
                     type: "popup",
                     title: "Jarilo Template",
