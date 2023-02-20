@@ -7,7 +7,6 @@
     color: black;
 }
 @media print {
-
     .sku {
         width: 100%;
         font-size: 10px;

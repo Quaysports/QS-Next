@@ -6,6 +6,7 @@ import BrandedLabel from "./item-database/branded-label";
 import PrintRotaRows from "./rotas/print-rows";
 import PrintRotaGrid from "./rotas/print-grid";
 import PrintShopPickList from "./shop-picklist";
+import RodTag from "./item-database/rod-tag";
 
 export default function PrintWindow(){
 
@@ -18,6 +19,7 @@ export default function PrintWindow(){
                     case "barcode": return <CreateBarcode/>
                     case "branded-label": return <BrandedLabel/>
                     case "shelf-tag": return <ShelfTag/>
+                    case "rod-tag": return <RodTag/>
                     case "tag": return <Tag/>
                 }
                 break;

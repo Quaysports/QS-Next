@@ -1,0 +1,51 @@
+.container {
+    background-color: white;
+    color: black;
+    display: grid;
+    align-content: center;
+    font-size: 0.8em;
+    margin: 0;
+    height: 1in;
+    width: 0.9in;
+    padding: 2px 0;
+}
+
+.image {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+}
+
+.image img {
+    width: 100%;
+}
+
+.details {
+    display: grid;
+    grid-template-rows: auto;
+    overflow: hidden;
+    height: 100%
+}
+
+.brand, .title1, .title2, .price, .loc {
+    padding: 2px 5px;
+    line-height: 14px;
+    font-size: 85%;
+}
+
+.brand, .title1, .title2 {
+    text-align: justify;
+}
+
+.brand {
+    font-size: 100%;
+}
+
+.price, .loc {
+    text-align: center;
+}
+
+.price {
+    font-size: 150%;
+}
