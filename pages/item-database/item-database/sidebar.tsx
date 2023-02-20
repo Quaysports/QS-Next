@@ -8,12 +8,9 @@ import BrandLabelPopUp from "./sidebar-components/brand-label-popup";
 import LinnworksUploadButton from "./sidebar-components/linnworks-upload-button";
 import NewTagPopUp from "./sidebar-components/new-tag-popup";
 import ImportDetailsPopUp from "./sidebar-components/import-details-popup";
-import {jariloHtml} from "../../../components/jarilo-template";
 import {schema} from "../../../types";
+import JariloTemplatePopup from "./sidebar-components/jarilo-template-popup";
 
-/**
- * Side Bar Component
- */
 export default function SideBar() {
 
     const item = useSelector(selectItem)
@@ -21,12 +18,6 @@ export default function SideBar() {
     function print(id: string, item: schema.Item) {
         window.localStorage.setItem("item", JSON.stringify(item))
         window.open("/print?app=item-database&print=" + id, "_blank", "width=515,height=580")
-    }
-
-    async function copyJariloTemplate(item:schema.Item){
-        let template = jariloHtml(item.description, `${item.SKU}/${item.images.main.filename}`, item.webTitle)
-        await navigator.clipboard.writeText("")
-        await navigator.clipboard.writeText(template)
     }
 
     return (
@@ -54,11 +45,7 @@ export default function SideBar() {
                 <SidebarButton onClick={() => dispatchNotification({
                     type: "popup",
                     title: "Jarilo Template",
-                    content: <div><div><iframe width={"1200"} height={"600"} sandbox={'allow-same-origin'}
-                                     srcDoc={jariloHtml(item.description, `${item.SKU}/${item.images.main.filename}`, item.webTitle)}/>
-                    </div>
-                        <button onClick={() => copyJariloTemplate(item)}>Copy Jarilo HTML</button>
-                    </div>
+                    content: <JariloTemplatePopup/>
                 })}>
                     Jarilo Template
                 </SidebarButton>
