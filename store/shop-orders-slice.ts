@@ -239,6 +239,7 @@ export const shopOrdersSlice = createSlice({
                     let newOrderItem = state.supplierItems.splice(fullStockIndex, 1)
                     newOrderItem[0].quantity = item.quantity
                     newOrderItem[0].stock.tradePack = item.stock.tradePack!
+                    state.newOrderArray.supplier = newOrderItem[0].supplier
                     state.newOrderArray.order.push(newOrderItem[0])
                 }
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
@@ -427,20 +428,17 @@ function databaseSave(item: Partial<schema.Item> & Pick<schema.Item, "SKU">) {
 }
 
 function saveNewOrder(newOrderArray: OpenOrdersObject, totalPrice: number) {
-
     const date = new Date();
-
 
     let newOrder = {
         id: newOrderArray.id ? newOrderArray.id : `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
-        supplier: newOrderArray.order[0].supplier,
+        supplier: newOrderArray.order[0].supplier ?? newOrderArray.supplier,
         date: newOrderArray.date ? newOrderArray.date : date.getTime(),
         complete: false,
         arrived: newOrderArray.arrived,
         price: totalPrice,
         order: newOrderArray.order,
     }
-    console.log(current(newOrder.order))
 
     const opts = {
         method: 'POST',
