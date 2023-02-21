@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {selectItem, setItemBrand} from "../../../../store/item-database/item-database-slice";
+import {dataBaseSave, selectItem, setItemBrand} from "../../../../store/item-database/item-database-slice";
 
 export default function BrandInput() {
 
@@ -9,12 +9,16 @@ export default function BrandInput() {
     function brandHandler(brand: string) {
         dispatch(setItemBrand(brand))
     }
+    function saveItem() {
+        dispatch(dataBaseSave())
+    }
 
     return (
         <div>
-            <input defaultValue={item.brand || ""} onBlur={(e) => {
-                brandHandler(e.target.value)
-            }}/>
+            <input value={item.brand} onBlur={() => {
+                saveItem()}}
+                   onChange={(e) => brandHandler(e.target.value)}
+            />
         </div>
     )
 }

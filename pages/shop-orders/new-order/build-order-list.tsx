@@ -20,7 +20,7 @@ export default function CurrentOrderList() {
                     <div key={item.SKU}
                          className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["order-list-grid"]}`}>
                         <button onClick={() => {
-                            dispatch(setChangeOrderArray({item: item, type: "remove", index: index}))
+                            dispatch(setChangeOrderArray({renderedIndex: index, type: "remove", fullStockIndex: index}))
                         }}>⇅
                         </button>
                         <span className={"center-align"}>{item.stock.total} </span>

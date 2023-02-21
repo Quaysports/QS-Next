@@ -228,23 +228,26 @@ export const shopOrdersSlice = createSlice({
                 state.newOrderArray.date ??= date.getTime()
                 saveNewOrder(state.newOrderArray, state.totalPrice)
             },
-            setChangeOrderArray: (state, action: PayloadAction<{ renderedIndex: number, type: string, fullStockindex?: number }>) => {
-                const {renderedIndex, type, fullStockindex} = action.payload
+            setChangeOrderArray: (state, action: PayloadAction<{ renderedIndex: number, type: string, fullStockIndex: number }>) => {
+                const {renderedIndex, type, fullStockIndex} = action.payload
                 const item = state.renderedArray[renderedIndex]
                 if (type === "remove") {
-                    state.newOrderArray.order.splice(fullStockindex!, 1)
-                    state.supplierItems.push(item)
+                    let splicedItem = state.newOrderArray.order.splice(fullStockIndex, 1)
+                    state.supplierItems.push(splicedItem[0])
                 }
                 if (type === "add") {
-                    let newOrderItem = state.supplierItems.splice(fullStockindex!, 1)
+                    let newOrderItem = state.supplierItems.splice(fullStockIndex, 1)
                     newOrderItem[0].quantity = item.quantity
                     newOrderItem[0].stock.tradePack = item.stock.tradePack!
                     state.newOrderArray.order.push(newOrderItem[0])
                 }
-                if (type === "new") {
-                    state.newOrderArray.order.push(item)
-                }
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
+                let date = new Date()
+                state.newOrderArray.date ??= date.getTime()
+                saveNewOrder(state.newOrderArray, state.totalPrice)
+            },
+            setNewItem: (state, action: PayloadAction<orderObject>) => {
+                state.newOrderArray.order.push(action.payload)
                 let date = new Date()
                 state.newOrderArray.date ??= date.getTime()
                 saveNewOrder(state.newOrderArray, state.totalPrice)
@@ -262,10 +265,10 @@ export const shopOrdersSlice = createSlice({
             setQuantity: (state, action: PayloadAction<{ index: number, value: string }>) => {
                 state.renderedArray[action.payload.index].quantity = Number(action.payload.value)
             },
-            setTradePack: (state, action:PayloadAction<{ index:number, value:number }>) => {
+            setTradePack: (state, action: PayloadAction<{ index: number, value: number }>) => {
                 const {index, value} = action.payload
                 state.renderedArray[index].stock.tradePack = value
-                databaseSave({SKU:state.renderedArray[index].SKU, stock:state.renderedArray[index].stock})
+                databaseSave({SKU: state.renderedArray[index].SKU, stock: state.renderedArray[index].stock})
             },
             setCompletedOrders: (state, action: PayloadAction<{ [key: string]: shopOrder[] }[]>) => {
                 state.completedOrders = action.payload
@@ -387,7 +390,8 @@ export const {
     setSubmittedOrder,
     setNewOrderArray,
     setOnOrderSKUs,
-    setTradePack
+    setTradePack,
+    setNewItem
 } = shopOrdersSlice.actions
 
 

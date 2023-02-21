@@ -107,7 +107,6 @@ export const itemDatabaseSlice = createSlice({
             },
             setItemBrand: (state, action: PayloadAction<string>) => {
                 state.item.brand = action.payload
-                databaseSave(state.item)
             },
             setItemSupplier: (state, action: PayloadAction<string>) => {
                 state.item.supplier = action.payload

@@ -111,7 +111,7 @@ export default function DisplayOnOrder() {
                                    arrivedHandler(e.target.value, i)
                                }}/>
                         <span className={"center-align"}>{loadedOrder!.order[i].quantity}</span>
-                        <span className={"center-align"}>{loadedOrder!.order[i].stock.tradePack}</span>
+                        <span className={"center-align"}>N/A</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
                         <span>{loadedOrder!.order[i].title} </span>
 

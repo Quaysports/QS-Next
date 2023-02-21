@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
     selectTotalPrice,
-    setChangeOrderArray
+    setChangeOrderArray, setNewItem
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
@@ -43,7 +43,7 @@ export default function OrderList() {
                 <div>
                     <button
                         onClick={() => {
-                            dispatch(setChangeOrderArray({item: newProduct, type: "new"}));
+                            dispatch(setNewItem(newProduct));
                             dispatchNotification();
                         }}>Submit
                     </button>

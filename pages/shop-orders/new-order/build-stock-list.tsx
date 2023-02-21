@@ -65,10 +65,10 @@ export default function BuildStockList() {
             let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
 
             if (radioButtons.allItems) {
-                dispatch(setChangeOrderArray({renderedIndex: renderedArrayIndex, type: "add", fullStockindex: fullStockIndex}))
+                dispatch(setChangeOrderArray({renderedIndex: renderedArrayIndex, type: "add", fullStockIndex: fullStockIndex}))
             }
             if (radioButtons.lowStock) {
-                dispatch(setChangeOrderArray({renderedIndex: renderedArrayIndex, type: "add", fullStockindex: fullStockIndex}))
+                dispatch(setChangeOrderArray({renderedIndex: renderedArrayIndex, type: "add", fullStockIndex: fullStockIndex}))
             }
         }
     }
