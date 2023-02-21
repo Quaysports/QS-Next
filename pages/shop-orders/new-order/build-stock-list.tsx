@@ -2,7 +2,7 @@ import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 import styles from "../shop-orders.module.css";
 import {
     selectRadioButtons, selectRenderedArray, selectSupplierItems,
-    selectThreshold, setChangeOrderArray, setInputChange,
+    selectThreshold, setChangeOrderArray, setQuantity,
     setThreshold
 } from "../../../store/shop-orders-slice";
 import {Fragment} from "react";
@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Image from "next/image";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
+import TradePackPopup from "./trade-pack-popup";
 
 export default function BuildStockList() {
 
@@ -25,7 +26,7 @@ export default function BuildStockList() {
         tempArray.push(
             <div key={item.SKU}
                  className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["new-order-list-grid"]}`}
-                 style={item.onOrder ? {backgroundColor: "var(--traffic-light-orange)"} : undefined}>
+                 style={item.onOrder ? {backgroundColor: "var(--traffic-light-orange)", color:"black"} : undefined}>
                 <button onClick={() => {
                     addToOrderHandler(item)
                 }}>⇅
@@ -35,11 +36,10 @@ export default function BuildStockList() {
                 <span>{item.SKU} </span>
                 <span>{item.title} </span>
                 <input defaultValue={renderedArray[index].quantity} onChange={(e) => {
-                    inputChangeHandler(e.target.value, "qty", index)
+                    inputChangeHandler(e.target.value, index)
                 }}/>
-                <input defaultValue={renderedArray[index].tradePack} onChange={(e) => {
-                    inputChangeHandler(e.target.value, "tradePack", index)
-                }}/>
+                <div className={"center-align"} onClick={() => { dispatchNotification({type:'popup', title:'Trade pack amount', content:<TradePackPopup index={index}/>})}}
+                >{renderedArray[index].stock.tradePack ?? "None"}</div>
                 <span className={"center-align"}>{toCurrencyInput(item.prices.purchase)}</span>
                 <span className={styles["dead-stock-image-parent"]}>{item.deadStock ? imageCheck(item) : null}
                     </span>
@@ -53,19 +53,23 @@ export default function BuildStockList() {
         return <Fragment key={item.SKU + 10}>{tempArray}</Fragment>
     }
 
-    function inputChangeHandler(value: string, key: string, index: number) {
-        dispatch(setInputChange({key: key, index: index, value: value}))
+    function inputChangeHandler(value: string, index: number) {
+        dispatch(setQuantity({index: index, value: value}))
     }
 
     function addToOrderHandler(item: orderObject) {
-        let renderedArrayIndex = renderedArray.findIndex(product => product.SKU === item.SKU)
-        let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
+        if(!item.stock.tradePack) {
+            dispatchNotification({type:'alert', title:'No trade pack size', content:"Please increase trade pack size"})
+        } else {
+            let renderedArrayIndex = renderedArray.findIndex(product => product.SKU === item.SKU)
+            let fullStockIndex = supplierItems.findIndex(product => product.SKU === item.SKU)
 
-        if (radioButtons.allItems) {
-            dispatch(setChangeOrderArray({item: renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
-        }
-        if (radioButtons.lowStock) {
-            dispatch(setChangeOrderArray({item: renderedArray[renderedArrayIndex], type: "add", index: fullStockIndex}))
+            if (radioButtons.allItems) {
+                dispatch(setChangeOrderArray({renderedIndex: renderedArrayIndex, type: "add", fullStockindex: fullStockIndex}))
+            }
+            if (radioButtons.lowStock) {
+                dispatch(setChangeOrderArray({renderedIndex: renderedArrayIndex, type: "add", fullStockindex: fullStockIndex}))
+            }
         }
     }
 

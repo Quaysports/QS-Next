@@ -74,7 +74,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
                 supplierItems[i].newProduct = false
                 supplierItems[i].lowStock = false
                 supplierItems[i].arrived = 0
-                supplierItems[i].tradePack = 1
                 supplierItems[i].quantity = 1
                 supplierItems[i].submitted = false
                 supplierItems[i].onOrder = false

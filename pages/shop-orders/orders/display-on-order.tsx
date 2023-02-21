@@ -18,7 +18,7 @@ export default function DisplayOnOrder() {
 
     const router = useRouter()
     const orders = useSelector(selectOpenOrders)
-    const loadedOrder = orders? orders[Number(router.query.index)] : null
+    const loadedOrder = orders ? orders[Number(router.query.index)] : null
     const dispatch = useDispatch()
     const [saveOrder, setSaveOrder] = useState<boolean>(false)
 
@@ -99,6 +99,7 @@ export default function DisplayOnOrder() {
         let newProductArray = [<div key={"new-title"}><span/><span/><span/><span>New Products</span><span/><span/>
         </div>]
         for (let i = 0; i < loadedOrder!.order.length; i++) {
+            console.log()
             if (loadedOrder!.order[i].newProduct) {
                 newProductArray.push(
                     <div key={loadedOrder!.order[i].SKU}
@@ -110,7 +111,7 @@ export default function DisplayOnOrder() {
                                    arrivedHandler(e.target.value, i)
                                }}/>
                         <span className={"center-align"}>{loadedOrder!.order[i].quantity}</span>
-                        <span className={"center-align"}>{loadedOrder!.order[i].tradePack}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].stock.tradePack}</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
                         <span>{loadedOrder!.order[i].title} </span>
 
@@ -126,7 +127,7 @@ export default function DisplayOnOrder() {
                                    arrivedHandler(e.target.value, i)
                                }}/>
                         <span className={"center-align"}>{loadedOrder!.order[i].quantity}</span>
-                        <span className={"center-align"}>{loadedOrder!.order[i].tradePack}</span>
+                        <span className={"center-align"}>{loadedOrder!.order[i].stock.tradePack}</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
                         <span>{loadedOrder!.order[i].title} </span>
 

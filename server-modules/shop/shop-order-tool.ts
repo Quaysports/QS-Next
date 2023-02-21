@@ -14,7 +14,7 @@ export interface shopOrder {
 }
 export interface orderObject {
     brand:string
-    stock: {minimum:number, total: number}
+    stock: schema.Stock
     SKU: string
     title: string
     supplier: string
@@ -126,14 +126,13 @@ export const getSuppliersAndLowStock = async () => {
     const result = await mongoI.findAggregate<SupplierLowStock>("New-Items", query)
     return result ? result : []
 }
-export interface SupplierItem {
-    SKU: string,
-    title: string,
-    brand: string,
-    stock:{minimum : number, total: number},
-    prices: {purchasePrice:number}
-}
+export type SupplierItem = Pick<schema.Item, "SKU" | "title" | "brand" | "stock" | "prices">
 export const getSupplierItems = async (supplier:string) => {
     let result = await mongoI.find<SupplierItem>("New-Items", {supplier: supplier, tags: {"$in":["domestic"]}}, {SKU: 1, title: 1, brand: 1, stock:1, prices:1},{SKU:1})
+    for(const item of result!){
+        if(item.stock.tradePack === undefined){
+            console.log(item.SKU)
+        }
+    }
     return result ? result : []
 }

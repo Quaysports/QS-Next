@@ -3,7 +3,7 @@ import {HYDRATE} from "next-redux-wrapper";
 import {DeadStockReport} from "../server-modules/shop/shop";
 import {orderObject, shopOrder} from "../server-modules/shop/shop-order-tool";
 import {binarySearch} from "../server-modules/core/core";
-import {linn} from "../types";
+import {linn, schema} from "../types";
 import {RootState} from "./store";
 
 export const hydrate = createAction<RootState>(HYDRATE);
@@ -221,27 +221,28 @@ export const shopOrdersSlice = createSlice({
                 }
                 state.supplierItems = action.payload
             },
-            setChangeOrderQty: (state, action: PayloadAction<{ item: orderObject, type: string, index: number, value: string }>) => {
-                if (action.payload.type === "qty") state.newOrderArray.order[action.payload.index].quantity = parseFloat(action.payload.value)
-                if (action.payload.type === "tradePack") state.newOrderArray.order[action.payload.index].tradePack = parseFloat(action.payload.value)
+            setChangeOrderQty: (state, action: PayloadAction<{ item: orderObject, index: number, value: string }>) => {
+                state.newOrderArray.order[action.payload.index].quantity = parseFloat(action.payload.value)
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
                 let date = new Date()
                 state.newOrderArray.date ??= date.getTime()
                 saveNewOrder(state.newOrderArray, state.totalPrice)
             },
-            setChangeOrderArray: (state, action: PayloadAction<{ item?: orderObject, type: string, index?: number }>) => {
-                if (action.payload.type === "remove") {
-                    state.newOrderArray.order.splice(action.payload.index!, 1)
-                    state.supplierItems.push(action.payload.item!)
+            setChangeOrderArray: (state, action: PayloadAction<{ renderedIndex: number, type: string, fullStockindex?: number }>) => {
+                const {renderedIndex, type, fullStockindex} = action.payload
+                const item = state.renderedArray[renderedIndex]
+                if (type === "remove") {
+                    state.newOrderArray.order.splice(fullStockindex!, 1)
+                    state.supplierItems.push(item)
                 }
-                if (action.payload.type === "add") {
-                    let item = state.supplierItems.splice(action.payload.index!, 1)
-                    item[0].quantity = action.payload.item!.quantity
-                    item[0].tradePack = action.payload.item!.tradePack
-                    state.newOrderArray.order.push(item[0])
+                if (type === "add") {
+                    let newOrderItem = state.supplierItems.splice(fullStockindex!, 1)
+                    newOrderItem[0].quantity = item.quantity
+                    newOrderItem[0].stock.tradePack = item.stock.tradePack!
+                    state.newOrderArray.order.push(newOrderItem[0])
                 }
-                if (action.payload.type === "new") {
-                    state.newOrderArray.order.push(action.payload.item!)
+                if (type === "new") {
+                    state.newOrderArray.order.push(item)
                 }
                 state.totalPrice = totalPriceCalc(state.newOrderArray)
                 let date = new Date()
@@ -258,9 +259,13 @@ export const shopOrdersSlice = createSlice({
             setRenderedArray: (state, action: PayloadAction<orderObject[]>) => {
                 state.renderedArray = action.payload
             },
-            setInputChange: (state, action: PayloadAction<{ key: string, index: number, value: string }>) => {
-                if (action.payload.key === "qty") state.renderedArray[action.payload.index].quantity = Number(action.payload.value)
-                if (action.payload.key === "tradePack") state.renderedArray[action.payload.index].tradePack = Number(action.payload.value)
+            setQuantity: (state, action: PayloadAction<{ index: number, value: string }>) => {
+                state.renderedArray[action.payload.index].quantity = Number(action.payload.value)
+            },
+            setTradePack: (state, action:PayloadAction<{ index:number, value:number }>) => {
+                const {index, value} = action.payload
+                state.renderedArray[index].stock.tradePack = value
+                databaseSave({SKU:state.renderedArray[index].SKU, stock:state.renderedArray[index].stock})
             },
             setCompletedOrders: (state, action: PayloadAction<{ [key: string]: shopOrder[] }[]>) => {
                 state.completedOrders = action.payload
@@ -350,12 +355,12 @@ function totalPriceCalc(order: OpenOrdersObject) {
     let totalPrice = 0
     if (order.arrived) {
         for (let i = 0; i < order.arrived.length; i++) {
-            let price = order.arrived[i].prices.purchase * (order.arrived[i].quantity * order.arrived[i].tradePack)
+            let price = order.arrived[i].prices.purchase * (order.arrived[i].quantity * order.arrived[i].stock.tradePack!)
             totalPrice += price
         }
     }
     for (let i = 0; i < order.order.length; i++) {
-        let price = order.order[i].prices.purchase * (order.order[i].quantity * order.order[i].tradePack)
+        let price = order.order[i].prices.purchase * (order.order[i].quantity * order.order[i].stock.tradePack!)
         totalPrice += price
     }
     return parseFloat(totalPrice.toFixed(2))
@@ -372,7 +377,7 @@ export const {
     setRadioButtons,
     setThreshold,
     setRenderedArray,
-    setInputChange,
+    setQuantity,
     setChangeOrderQty,
     setCompletedOrders,
     setOrderContents,
@@ -381,7 +386,8 @@ export const {
     setRemoveFromBookedInState,
     setSubmittedOrder,
     setNewOrderArray,
-    setOnOrderSKUs
+    setOnOrderSKUs,
+    setTradePack
 } = shopOrdersSlice.actions
 
 
@@ -402,9 +408,24 @@ export const selectOrderContents = (state: ShopOrdersWrapper) => state.shopOrder
 
 export default shopOrdersSlice.reducer;
 
+function databaseSave(item: Partial<schema.Item> & Pick<schema.Item, "SKU">) {
+
+    const opts = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item)
+    }
+    fetch('/api/items/update-item', opts).then(res => {
+        console.log(res)
+    })
+}
+
 function saveNewOrder(newOrderArray: OpenOrdersObject, totalPrice: number) {
 
     const date = new Date();
+
 
     let newOrder = {
         id: newOrderArray.id ? newOrderArray.id : `${date.getDate().toString()}-${(date.getMonth() + 1).toString()}-${date.getFullYear().toString()}`,
@@ -415,6 +436,7 @@ function saveNewOrder(newOrderArray: OpenOrdersObject, totalPrice: number) {
         price: totalPrice,
         order: newOrderArray.order,
     }
+    console.log(current(newOrder.order))
 
     const opts = {
         method: 'POST',

@@ -174,3 +174,10 @@
 .search-bar-wrapper{
     margin: 15px 0;
 }
+
+/*-------------------------------------Trade Pack Popup----------------------------------------*/
+
+.confirm-span{
+    float:right;
+    width:100px
+}

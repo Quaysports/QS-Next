@@ -10,8 +10,8 @@ export default function CurrentOrderList() {
     const dispatch = useDispatch()
     const newOrderArray = useSelector(selectNewOrderArray)
 
-    function changeInputAmountHandler(item: orderObject, index: number, value: string, type: string) {
-        dispatch(setChangeOrderQty({item: item, index: index, value: value, type: type}))
+    function changeInputAmountHandler(item: orderObject, index: number, value: string) {
+        dispatch(setChangeOrderQty({item: item, index: index, value: value}))
     }
 
     return (<Fragment>
@@ -28,11 +28,9 @@ export default function CurrentOrderList() {
                         <span>{item.SKU} </span>
                         <span>{item.title} </span>
                         <input defaultValue={item.quantity ? item.quantity : 1} onChange={(e) => {
-                            changeInputAmountHandler(item, index, e.target.value, "qty")
+                            changeInputAmountHandler(item, index, e.target.value)
                         }}/>
-                        <input defaultValue={item.tradePack ? item.tradePack : 1} onChange={(e) => {
-                            changeInputAmountHandler(item, index, e.target.value, "tradePack")
-                        }}/>
+                        <div className={'center-align'}>{item.stock.tradePack!}</div>
                         <span
                             className={"center-align"}>{item.prices.purchase ? toCurrency(item.prices.purchase) : 0}</span>
                     </div>

@@ -22,7 +22,7 @@ export default function OrderList() {
         let newProduct: orderObject = {
             soldFlag: 0,
             brand:"",
-            stock: {minimum:0, total:0},
+            stock: {default: 0, value: 0, warehouse: 0, minimum:0, total:0, tradePack:null},
             prices:{purchase: 0},
             supplier: "",
             _id: "",
