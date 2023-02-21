@@ -38,6 +38,12 @@ export default function ItemDatabase() {
                         <div></div>
                     </SidebarOneColumn>
                 </> : null}
+            {router.query.tab === "new-items" ?
+                <>
+                    <SidebarOneColumn>
+                        <Menu><ItemDatabaseTabs/></Menu>
+                    </SidebarOneColumn>
+                </> : null}
         </>
     )
 }
