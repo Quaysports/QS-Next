@@ -10,7 +10,7 @@ export default function PostSelect({item}:{item:MarginItem}){
     if(!item) return null
 
     function postOptions() {
-        let opts = []
+        let opts = [<option key={"blank"} value={""}></option>]
         for (let option of Object.values(postage!)) {
             opts.push(<option key={option.id} value={option.id}>{option.tag}</option>)
         }
