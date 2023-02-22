@@ -268,6 +268,8 @@ export const shopOrdersSlice = createSlice({
             },
             setTradePack: (state, action: PayloadAction<{ index: number, value: number }>) => {
                 const {index, value} = action.payload
+                let supplierItemIndex = state.supplierItems.findIndex(product => product.SKU === state.renderedArray[index].SKU)
+                state.supplierItems[supplierItemIndex].stock.tradePack = value
                 state.renderedArray[index].stock.tradePack = value
                 databaseSave({SKU: state.renderedArray[index].SKU, stock: state.renderedArray[index].stock})
             },
