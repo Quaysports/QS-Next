@@ -13,3 +13,21 @@
 .menu > div > button {
     float:right;
 }
+
+
+.csv-popup-table {
+    display:grid;
+    grid-template-rows: auto auto auto;
+    grid-gap: 10px;
+    justify-content: center;
+}
+
+.csv-popup-row{
+    display:grid;
+    grid-template-columns: 40px 1fr;
+    grid-gap: 10px;
+}
+.csv-popup-row > label {
+    text-align: right;
+    line-height:22px;
+}

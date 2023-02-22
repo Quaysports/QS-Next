@@ -1,3 +1,4 @@
+import styles from "./sales-report.module.css"
 import {FormEvent, useState} from "react";
 import {toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
 
@@ -40,11 +41,14 @@ export default function TillTransactionCSVPopup() {
 
                     map.get(id)!.total += amount
 
-                    if(type === "CASH") map.get(id)!.cash += amount
-                    if(type === "CARD") map.get(id)!.card += amount
-                    if(type === "SPLIT"){
-                        map.get(id)!.cash += cash
-                        map.get(id)!.card += amount
+                    switch(type){
+                        case "CASH": map.get(id)!.cash += amount; break;
+                        case "SPLIT": {
+                            map.get(id)!.cash += cash;
+                            map.get(id)!.card += amount;
+                            break;
+                        }
+                        default: map.get(id)!.card += amount; break;
                     }
                 }
 
@@ -70,8 +74,8 @@ export default function TillTransactionCSVPopup() {
             : new Date(Number(year), Number(month), 0).getTime()
     }
 
-    return <form onSubmit={handler}>
-        <div>
+    return <form className={styles["csv-popup-table"]} onSubmit={handler}>
+        <div className={styles["csv-popup-row"]}>
             <label>From:</label>
             <input type={"month"}
                    name={"from"}
@@ -80,7 +84,7 @@ export default function TillTransactionCSVPopup() {
                    pattern="[0-9]{4}-[0-9]{2}"
                    onChange={e => setFrom(e.target.value)}/>
         </div>
-        <div>
+        <div className={styles["csv-popup-row"]}>
             <label>To:</label>
             <input type={"month"}
                    name={"to"}
