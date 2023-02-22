@@ -33,7 +33,7 @@ export default function TillTransactionCSVPopup() {
 
                 for (let v of json) {
                     const {date, amount, type} = v.transaction
-                    if (!date) continue;
+                    if (!date || type === "FULLDISCOUNT") continue;
 
                     const id = new Date(Number(date)).toLocaleDateString("en-GB")
                     if(!map.has(id)) map.set(id, {total: 0, card: 0, cash: 0})
