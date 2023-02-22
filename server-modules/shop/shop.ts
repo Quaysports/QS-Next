@@ -1,7 +1,7 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
 import {ObjectId} from 'mongodb'
 import {sbt, schema} from "../../types";
-import {findAggregate} from "../mongo-interface/mongo-interface";
+import {find, findAggregate} from "../mongo-interface/mongo-interface";
 import {number, string} from "prop-types";
 //import * as linn from "../linn-api/linn-api"
 //import * as eod from '../workers/shop-worker-modules/endOfDayReport'
@@ -359,4 +359,13 @@ export async function getPickList(date:number){
     if(!orders) return []
 
     return orders
+}
+
+export async function getTillTransactionCSVData(dates:{start:number,end:number}){
+
+    let query = dates.start > dates.end
+        ? {"transaction.date": {"$gt": dates.start.toString()}}
+        : {$and:[{"transaction.date": {"$gt": dates.start.toString()}},{"transaction.date": {"$lt": dates.end.toString()}}]}
+    console.dir(query, {depth: 5})
+    return await find<sbt.TillOrder>("Till-Transactions", query)
 }

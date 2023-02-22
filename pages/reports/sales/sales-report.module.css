@@ -1,0 +1,15 @@
+.table-container{
+    display:grid;
+    grid-template-rows: auto 1fr;
+}
+
+.menu {
+    display:grid;
+    height:fit-content;
+    grid-template-columns: auto auto 1fr;
+    grid-gap: 10px;
+}
+
+.menu > div > button {
+    float:right;
+}
