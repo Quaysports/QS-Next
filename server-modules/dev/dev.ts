@@ -306,6 +306,8 @@ export async function calculateTillProfits(id:string){
         )
         if(!dbItems) return
 
+        order.profit = 0
+
         for(let item of order.items){
             let dbItem = dbItems.find(findItem => findItem.SKU === item.SKU)
             if(!dbItem) {
