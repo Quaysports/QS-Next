@@ -364,8 +364,8 @@ export async function getPickList(date:number){
 export async function getTillTransactionCSVData(dates:{start:number,end:number}){
 
     let query = dates.start > dates.end
-        ? {"transaction.date": {"$gt": dates.start.toString()}}
-        : {$and:[{"transaction.date": {"$gt": dates.start.toString()}},{"transaction.date": {"$lt": dates.end.toString()}}]}
+        ? {$and:[{paid: {$eq: "true"}},{"transaction.date": {"$gt": dates.start.toString()}}]}
+        : {$and:[{paid: {$eq: "true"}},{"transaction.date": {"$gt": dates.start.toString()}},{"transaction.date": {"$lt": dates.end.toString()}}]}
     console.dir(query, {depth: 5})
     return await find<sbt.TillOrder>("Till-Transactions", query)
 }
