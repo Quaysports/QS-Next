@@ -314,12 +314,10 @@ export async function calculateTillProfits(id:string){
                 item.profitCalculated = false
                 continue
             }
-            const profit = dbItem.marginData.shop.profit
-            order.profit += Math.round(profit)
-            order.profitWithLoss += Math.round(profit - order.percentageDiscountAmount - order.flatDiscount)
+            order.profit += Math.round(dbItem.marginData.shop.profit)
             item.profitCalculated = true
         }
-
+        order.profitWithLoss += Math.round(order.profit - (order.percentageDiscountAmount + order.flatDiscount))
     }
 
     await calculateProfit(tillData)
