@@ -92,6 +92,7 @@ export default function Geoff() {
             }>Till Profits</button>
             <button onClick={() => fetch('/api/dev/correct-statuses')}>Correct Statuses</button>
             <button onClick={() => fetch('/api/dev/report-worker-test').then(res=>res.json().then(json=>console.log(json)))}>Report Worker</button>
+            <button onClick={() => fetch('/api/dev/correct-profit-loss')}>Fix Profit Loss</button>
         </div>
     )
 }

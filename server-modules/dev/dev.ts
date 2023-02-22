@@ -351,3 +351,17 @@ export async function correctStatuses(){
         }
     }
 }
+
+export async function correctProfitLoss(){
+    let orders = await find<till.Order>("Till-Transactions", {})
+    if(!orders) return
+    for(let order of orders){
+        calculateProfitLoss(order)
+    }
+
+    await bulkUpdateAny("Till-Transactions", orders, "id")
+
+    function calculateProfitLoss(item: till.Order){
+        item.profitWithLoss = Math.round(item.profit - (item.percentageDiscountAmount + item.flatDiscount))
+    }
+}
