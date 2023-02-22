@@ -32,16 +32,20 @@ export default function TillTransactionCSVPopup() {
                 const vatCalc = (total: number) => (((total / 100) / 120) * 20).toFixed(2)
 
                 for (let v of json) {
-                    const {date, amount, type} = v.transaction
-                    if (!date || type === "FULLDISCOUNT") continue;
+                    const {date, amount, cash, type} = v.transaction
+                    if (!date) continue;
 
                     const id = new Date(Number(date)).toLocaleDateString("en-GB")
                     if(!map.has(id)) map.set(id, {total: 0, card: 0, cash: 0})
 
                     map.get(id)!.total += amount
-                    type === "CASH"
-                        ? map.get(id)!.cash += amount
-                        : map.get(id)!.card += amount
+
+                    if(type === "CASH") map.get(id)!.cash += amount
+                    if(type === "CARD") map.get(id)!.card += amount
+                    if(type === "SPLIT"){
+                        map.get(id)!.cash += cash
+                        map.get(id)!.card += amount
+                    }
                 }
 
                 let csvData = "Date, Total, Total VAT, Card, Card VAT, Cash, Cash VAT"
