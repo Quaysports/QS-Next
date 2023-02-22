@@ -55,7 +55,9 @@ jest.mock("../../../server-modules/items/items", () => ({
                 minimum: 0,
                 value: 0,
                 warehouse: 0,
-                total:9
+                total:9,
+                tradePack: null
+
             },
             title: 'AKASHI Fluorocarbon 13.2lb Line 100m',
             stockTake: {
@@ -73,7 +75,8 @@ jest.mock("../../../server-modules/items/items", () => ({
                     minimum: 0,
                     value: 0,
                     warehouse: 0,
-                    total:2
+                    total:2,
+                    tradePack: null
                 },
                 title: 'AKASHI Fluorocarbon 8.8lb Line 100m',
                 stockTake: {

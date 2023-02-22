@@ -306,18 +306,18 @@ export async function calculateTillProfits(id:string){
         )
         if(!dbItems) return
 
+        order.profit = 0
+
         for(let item of order.items){
             let dbItem = dbItems.find(findItem => findItem.SKU === item.SKU)
             if(!dbItem) {
                 item.profitCalculated = false
                 continue
             }
-            const profit = dbItem.marginData.shop.profit
-            order.profit += Math.round(profit)
-            order.profitWithLoss += Math.round(profit - order.percentageDiscountAmount - order.flatDiscount)
+            order.profit += Math.round(dbItem.marginData.shop.profit)
             item.profitCalculated = true
         }
-
+        order.profitWithLoss += Math.round(order.profit - (order.percentageDiscountAmount + order.flatDiscount))
     }
 
     await calculateProfit(tillData)
@@ -349,5 +349,19 @@ export async function correctStatuses(){
         if(item.checkboxStatus.ready){
             item.checkboxStatus.notApplicable[channel] = false
         }
+    }
+}
+
+export async function correctProfitLoss(){
+    let orders = await find<till.Order>("Till-Transactions", {})
+    if(!orders) return
+    for(let order of orders){
+        calculateProfitLoss(order)
+    }
+
+    await bulkUpdateAny("Till-Transactions", orders, "id")
+
+    function calculateProfitLoss(item: till.Order){
+        item.profitWithLoss = Math.round(item.profit - (item.percentageDiscountAmount + item.flatDiscount))
     }
 }
