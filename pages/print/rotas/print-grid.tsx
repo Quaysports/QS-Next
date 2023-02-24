@@ -25,7 +25,16 @@ export default function PrintRotaGrid() {
     }
 
     return (
-        <div className={styles["local-body"]}>{printRotas}</div>
+        <div className={styles["local-body"]}>
+            <style>
+                {`@page {
+                    size: A4 portrait;
+                    margin: 0;
+                    padding: 0;
+                }`}
+            </style>
+            {printRotas}
+        </div>
     )
 }
 

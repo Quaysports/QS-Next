@@ -66,12 +66,6 @@ grid-template-columns: 1fr 30px;
 .notes {
 padding: 0 5px;
 }
-
-@page {
-    size: A4 landscape;
-    margin: 0;
-    padding: 0;
-}
 .local-body {
     display: grid;
     grid-template-columns: 1fr 1fr;

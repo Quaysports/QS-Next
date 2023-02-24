@@ -19,7 +19,16 @@ export default function PrintRotaRows(){
     }
 
     return (
-        <div className={styles["local-body"]}>{printRotas}</div>
+        <div className={styles["local-body"]}>
+            <style>
+                {`@page {
+                    size: A4 landscape;
+                    margin: 0;
+                    padding: 0;
+                }`}
+            </style>
+            {printRotas}
+        </div>
     )
 }
 
