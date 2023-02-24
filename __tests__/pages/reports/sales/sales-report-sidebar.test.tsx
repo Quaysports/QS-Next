@@ -1,5 +1,5 @@
 import {fireEvent, render, screen, waitFor} from "../../../../__mocks__/mock-store-wrapper";
-import SalesSidebar from "../../../../pages/reports/sales/sidebar";
+import SalesSidebar from "../../../../pages/reports/sales/sidebar/sidebar";
 
 let mockPush = jest.fn();
 jest.mock("next/router", () => ({

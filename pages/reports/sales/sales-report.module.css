@@ -31,3 +31,59 @@
     text-align: right;
     line-height:22px;
 }
+
+
+.year-summary-container{
+    display:grid;
+    grid-gap: 10px;
+    margin: 10px 0 0 0;
+}
+
+.year-summary {
+    background: var(--primary-table-cell-background);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+
+.year-summary-title, .year-summary-vs{
+    background: var(--primary-background);
+    font-weight:bold;
+    padding: 2px 5px;
+    text-align: center;
+    line-height:25px;
+    border-radius: var(--primary-border-radius) var(--primary-border-radius) 0 0;
+}
+
+.year-summary-vs{
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+}
+
+.year-summary-content{
+    display:grid;
+    grid-template-rows: 1fr 1fr;
+    grid-gap:10px;
+    padding: 5px;
+}
+.year-summary-row > div:first-child{
+    font-weight:bold;
+}
+
+.year-summary-row > div:last-child{
+    padding-left: 5px;
+}
+
+.year-summary-row{
+    padding-bottom: 5px;
+    border-bottom:1px solid var(--primary-table-background);
+}
+.year-summary-row:last-child{
+    border-bottom:none;
+}
+
+.year-summary-row-trend {
+    display:grid;
+    grid-template-columns: auto 1fr ;
+    grid-gap: 5px;
+    align-items: center;
+}
