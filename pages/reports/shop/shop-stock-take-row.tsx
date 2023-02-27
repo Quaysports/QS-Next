@@ -16,7 +16,8 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
     let loadedStockTake:StockTake = item?.stockTake ? {...item.stockTake} : {checked:false, date:null, quantity:0}
 
     const updateSlice = (index:string, stockTake:StockTake) =>{
-        dispatch(setStockTakeInfo({index: Number(index), data: stockTake}))
+        if(!item) return null
+        dispatch(setStockTakeInfo({sku:item?.SKU, data: stockTake}))
     }
 
     const validationHandler = (value:string) =>{

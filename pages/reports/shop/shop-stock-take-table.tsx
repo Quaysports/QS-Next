@@ -54,7 +54,7 @@ export default function ShopStockTakeTable() {
             let stockTakeUpdate = {...activeItems[index].stockTake}
             stockTakeUpdate.date = (new Date).toString()
 
-            dispatch(setStockTakeInfo({index: Number(index), data: stockTakeUpdate}))
+            dispatch(setStockTakeInfo({sku: activeItems[index].SKU, data: stockTakeUpdate}))
         }
 
         let opts = {
