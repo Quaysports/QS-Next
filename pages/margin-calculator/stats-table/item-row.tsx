@@ -1,6 +1,6 @@
 import {MarginItem, selectActiveIndex} from "../../../store/margin-calculator-slice";
 import styles from "../margin-calculator.module.css";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 

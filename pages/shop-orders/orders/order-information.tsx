@@ -6,7 +6,7 @@ import {OpenOrdersObject, selectOpenOrders} from "../../../store/shop-orders-sli
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import CSVButton from "../../../components/csv-button";
 import {useRouter} from "next/router";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 
 /**
  * Order Information Component

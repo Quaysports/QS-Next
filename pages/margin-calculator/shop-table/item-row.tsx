@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margins";
 import styles from "../margin-calculator.module.css";
 import MarginCell from "./margin-cell";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 import {useSelector} from "react-redux";
 import RegexInput from "../../../components/regex-input";
 

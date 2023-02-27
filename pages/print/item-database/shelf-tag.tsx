@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import styles from "./css/shelf-tag.module.css";
 import {schema} from "../../../types";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 
 export default function ShelfTag() {
 

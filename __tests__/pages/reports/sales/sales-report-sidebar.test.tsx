@@ -1,5 +1,5 @@
-import {fireEvent, render, screen, waitFor} from "../../../../__mocks__/mock-store-wrapper";
-import SalesSidebar from "../../../../pages/reports/sales/sidebar/sidebar";
+import {fireEvent, renderWithProviders, screen, waitFor} from "../../../../__mocks__/mock-store-wrapper";
+import SalesSidebar from "../../../../pages/reports/sales/sidebar";
 
 let mockPush = jest.fn();
 jest.mock("next/router", () => ({
@@ -17,12 +17,12 @@ jest.mock("next/router", () => ({
 }))
 describe("Location Select", () => {
     it("should render", () => {
-        render(<SalesSidebar />);
+        renderWithProviders(<SalesSidebar />);
         expect( screen.getByRole<HTMLOptionElement>("option", {name: "Shop"}).selected).toBeTruthy();
     });
 
     it("it should change route on change", async () => {
-        render(<SalesSidebar/>);
+        renderWithProviders(<SalesSidebar/>);
         const select = screen.getByRole<HTMLSelectElement>("combobox");
         await waitFor(() => fireEvent.change(select, {target: {value: "online"}}))
         expect(mockPush).toBeCalledWith({pathname: "/reports", query: {tab: "sales", location: "online"}});

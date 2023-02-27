@@ -1,6 +1,6 @@
 import styles from "./test-styles.module.css";
 import {UpdateHandler} from "./index";
-import {currencyToLong} from "../../../components/margin-calculator-utils/utils";
+import {currencyToLong} from "../../../components/utils/utils";
 
 export default function PricesTable({item, handler}: UpdateHandler) {
 

@@ -8,7 +8,7 @@ import styles from "../margin-calculator.module.css";
 import {inputStatusColour} from "../../../components/margin-calculator-utils/margin-styler";
 import MarginCell from "./margin-cell";
 import {useRouter} from "next/router"
-import {currencyToLong, toCurrency, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
+import {currencyToLong, toCurrency, toCurrencyInput} from "../../../components/utils/utils";
 import {useSelector} from "react-redux";
 import RegexInput from "../../../components/regex-input";
 

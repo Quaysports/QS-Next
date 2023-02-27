@@ -1,6 +1,7 @@
 .table-container{
     display:grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 40px 1fr;
+    height:100%;
 }
 
 .menu {
@@ -13,7 +14,6 @@
 .menu > div > button {
     float:right;
 }
-
 
 .csv-popup-table {
     display:grid;
@@ -32,26 +32,43 @@
     line-height:22px;
 }
 
+.sidebar{
+    display:grid;
+    /*height:calc(100vh - 70px);*/
+    grid-template-rows: auto auto 1fr;
+    grid-gap: 10px;
+}
+
+.sidebar-select-container{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+}
+
+.sidebar-menu-buttons {
+    display:grid;
+    grid-gap: 10px;
+}
 
 .year-summary-container{
     display:grid;
     grid-gap: 10px;
-    margin: 10px 0 0 0;
 }
 
-.year-summary {
+.year-summary, .sidebar-menu-buttons {
+    border:2px solid var(--primary-background);
     background: var(--primary-table-cell-background);
     border-radius: var(--primary-border-radius);
     box-shadow: var(--primary-box-shadow);
 }
 
-.year-summary-title, .year-summary-vs{
+.year-summary-title, .year-summary-vs, .month-title, .day-title{
     background: var(--primary-background);
     font-weight:bold;
     padding: 2px 5px;
     text-align: center;
     line-height:25px;
-    border-radius: var(--primary-border-radius) var(--primary-border-radius) 0 0;
+    border-radius: 2px 2px 0 0;
 }
 
 .year-summary-vs{
@@ -81,9 +98,116 @@
     border-bottom:none;
 }
 
-.year-summary-row-trend {
+.month-table{
     display:grid;
-    grid-template-columns: auto 1fr ;
-    grid-gap: 5px;
+    width:calc(100vw - 320px);
+    height:calc(100vh - 90px);
+    grid-template-rows: repeat(3, calc(100% / 3));
+    grid-template-columns: repeat(4, 25%);
+    grid-gap: 10px;
+}
+
+.month-card, .month-card-selected{
+    display:grid;
+    grid-gap:5px;
+    grid-template-rows: fit-content(10px) repeat(4, auto) 1fr;
+    background: var(--primary-table-cell-background);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
     align-items: center;
+    border:2px solid var(--primary-background);
+    user-select: none;
+    cursor: pointer;
+}
+
+.month-card:hover, .day:hover{
+    border: 2px solid var(--primary-color);
+}
+
+@keyframes click-animation {
+    0%   {translate: 0 0;}
+    50%  {translate: 2px 2px;}
+    100%   {translate: 0 0;}
+}
+
+.month-card-selected {
+    border: 2px solid var(--primary-color);
+    animation: click-animation 0.1s ease-in-out;
+}
+
+.month-row-totals-cell {
+    display:grid;
+    font-size: 0.85em;
+    grid-template-columns: 80px 1fr 1fr;
+    justify-content: left;
+    grid-gap: 10px;
+    align-items: center;
+    padding:2px 5px;
+}
+
+
+/*---------------------- day by day styles ----------------------*/
+
+.month{
+    display:grid;
+    height:100%;
+    grid-template-rows: auto;
+    grid-gap: 10px;
+}
+.week{
+    display:grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 10px;
+}
+.inactive-day{
+    opacity: 0.2;
+}
+.day{
+    display:grid;
+    cursor: pointer;
+    min-width:160px;
+    grid-template-rows: auto 1fr;
+    border:2px solid var(--primary-background);
+    background: var(--primary-table-cell-background);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+.day-container{
+    display:grid;
+    font-size: 0.8em;
+    padding:5px;
+}
+.day-row{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    align-items: center;
+}
+.day-row > div:first-child{
+    font-weight:bold;
+    text-align:right;
+}
+.discount-row{
+    display:grid;
+    grid-template-columns: 150px 100px 100px 100px 100px 100px 100px;
+    grid-gap: 10px;
+    align-items: center;
+}
+.day-popup-container{
+    display:grid;
+    grid-template: 'takings totals' 'discounts discounts';
+}
+.day-takings{
+    display:grid;
+    grid-gap:5px;
+    grid-area: takings;
+}
+.day-totals{
+    display:grid;
+    grid-gap:5px;
+    grid-area:totals
+}
+.day-discounts{
+    padding:10px;
+    grid-area:discounts
 }

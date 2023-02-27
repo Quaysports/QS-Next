@@ -6,7 +6,7 @@ import {inputStatusColour} from "../../../components/margin-calculator-utils/mar
 import MarginTestResults from "./margin-test-results";
 import MarginCell, {PrimeMarginCell} from "./margin-cell";
 import {useSelector} from "react-redux";
-import {currencyToLong, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
+import {currencyToLong, toCurrencyInput} from "../../../components/utils/utils";
 
 export default function ItemRow({item, index, displayTest}: { item: MarginItem, index: string, displayTest: boolean }) {
 

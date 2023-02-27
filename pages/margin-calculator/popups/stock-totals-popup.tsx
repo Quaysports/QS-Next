@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {selectTotalStockValue} from "../../../store/margin-calculator-slice";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import CSVButton from "../../../components/csv-button";

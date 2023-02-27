@@ -11,7 +11,7 @@ import WebsiteTitleInput from "./website-title-input";
 import TagsCheckboxList from "./tags-checkbox-list";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
 import ShippingSelect from "./shipping-select";
-import {toCurrency} from "../../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../../components/utils/utils";
 
 /**
  * Essentials Ribbon Component

@@ -1,6 +1,6 @@
 import styles from "./sales-report.module.css"
 import {FormEvent, useState} from "react";
-import {toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
+import {toCurrencyInput} from "../../../components/utils/utils";
 
 export default function TillTransactionCSVPopup() {
 

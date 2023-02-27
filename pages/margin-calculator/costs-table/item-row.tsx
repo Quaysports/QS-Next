@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import styles from "../margin-calculator.module.css";
 import PostSelect from "./post-select";
 import PostModSelect from "./postmod-select";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 import {selectMarginSettings} from "../../../store/session-slice";
 
 export default function ItemRow({item, index}: { item: MarginItem, index:string}) {

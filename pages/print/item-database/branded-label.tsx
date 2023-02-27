@@ -1,7 +1,7 @@
 import styles from './css/branded-label.module.css'
 import {useEffect, useState} from "react";
 import {schema} from "../../../types";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 
 export default function BrandedLabel() {
 

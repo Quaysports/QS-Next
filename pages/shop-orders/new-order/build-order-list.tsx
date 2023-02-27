@@ -3,7 +3,7 @@ import styles from "../shop-orders.module.css";
 import {selectNewOrderArray, setChangeOrderArray, setChangeOrderQty} from "../../../store/shop-orders-slice";
 import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 import {useDispatch, useSelector} from "react-redux";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 
 export default function CurrentOrderList() {
 

@@ -1,28 +1,30 @@
-import SidebarSelect from "../../../../components/layouts/sidebar-select";
+import styles from "../sales-report.module.css";
+import LocationSelect from "./location-select";
+import YearSummaries from "./year-summaries";
 import {useRouter} from "next/router";
-import YearSummaries from "./YearSummaries";
+import YearSelect from "./year-select";
+import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
+import TillTransactionCSVPopup from "../till-transaction-csv-popup";
+import SidebarButton from "../../../../components/layouts/sidebar-button";
 
 export default function SalesSidebar(){
-    return <>
-        <LocationSelect/>
-    </>
-}
-
-function LocationSelect(){
     let router = useRouter()
+    let location = router.query.location || "shop"
     let year = router.query.year || new Date().getFullYear()
-    let month = router.query.month
-    let location = router.query.location ? router.query.location : "shop"
 
-    function handler(location:string){
-        router.push({pathname: router.pathname ,query:{...router.query, location:location}})
-    }
-
-    return <div>
-        <SidebarSelect value={location as string} onChange={(e)=>handler(e.target.value)}>
-            <option value={"shop"}>Shop</option>
-            <option value={"online"}>Online</option>
-        </SidebarSelect>
-        {year && !month ? <YearSummaries/> : null}
+    return <div className={styles.sidebar}>
+        <div className={styles["sidebar-select-container"]}>
+            <LocationSelect/>
+            <YearSelect />
+        </div>
+        {year ? <YearSummaries/> : null}
+        {location === "shop" ?
+            <SidebarButton onClick={() => dispatchNotification({
+                type: "popup",
+                title: "Till Transaction CSV",
+                content: <TillTransactionCSVPopup/>
+            })}>Till Transaction CSV</SidebarButton>
+            : null
+        }
     </div>
 }

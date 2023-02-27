@@ -2,7 +2,7 @@ import {generateMarginText, textColourStyler} from "../../../components/margin-c
 import {useEffect, useState} from "react";
 import styles from "./test-styles.module.css";
 import {MarginTestTemplate} from "./index";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 
 export default function ResultsTable({item}:{item:MarginTestTemplate}){
 

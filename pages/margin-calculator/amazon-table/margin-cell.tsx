@@ -3,7 +3,7 @@ import {generateMarginText, textColourStyler} from "../../../components/margin-c
 import {useEffect, useState} from "react";
 import styles from "../margin-calculator.module.css";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 
 export default function MarginCell({item}:{item:MarginItem}){
 

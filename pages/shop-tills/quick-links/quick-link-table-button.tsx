@@ -9,7 +9,7 @@ import {
 import {ChangeEvent, DragEvent, useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {schema} from "../../../types";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 
 interface Props {
     itemIndex: number;

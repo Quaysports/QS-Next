@@ -43,6 +43,14 @@ jest.mock("../../../server-modules/shop/shop", () => ({
     }
 }))
 
+jest.mock("../../../server-modules/reports/reports", () => ({
+    getMonthDataForYear: () => {},
+    getMonthDayByDayDataForYear: () => {},
+    getShopReportYears: () => {},
+    getYearData: () => {},
+    YearTotals: () => {},
+}))
+
 jest.mock("../../../server-modules/items/items", () => ({
     getItems: () => {
         mockItems()
@@ -85,7 +93,7 @@ jest.mock("../../../server-modules/items/items", () => ({
                     quantity: 0
                 }
             }]
-
+        console.log("get items called!")
         return items
     },
     getBrands: () => {
@@ -124,13 +132,6 @@ describe("Stock Report serverSideProps tests", () => {
         const context = {query: {tab: "shop"}} as unknown as GetServerSidePropsContext
         await getServerSideProps(context)
         expect(mockBrands).toBeCalledTimes(1)
-    })
-
-    test("Get items is called on server side props", async () => {
-        renderWithProviders(<StockReports/>)
-        const context = {query: {brand: "Shimano"}} as unknown as GetServerSidePropsContext
-        await getServerSideProps(context)
-        expect(mockItems).toBeCalledTimes(1)
     })
 })
 

@@ -2,13 +2,13 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
     selectTotalPrice,
-    setChangeOrderArray, setNewItem
+    setNewItem
 } from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css"
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {orderObject} from "../../../server-modules/shop/shop-order-tool";
 import CurrentOrderList from "./build-order-list";
-import {toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {toCurrency} from "../../../components/utils/utils";
 
 /**
  * Order List Component

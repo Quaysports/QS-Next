@@ -10,7 +10,7 @@ import * as React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Image from "next/image";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
-import {toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
+import {toCurrencyInput} from "../../../components/utils/utils";
 import TradePackPopup from "./trade-pack-popup";
 
 export default function BuildStockList() {

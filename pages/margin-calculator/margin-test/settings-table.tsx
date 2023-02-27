@@ -2,7 +2,7 @@ import styles from "./test-styles.module.css";
 import {useSelector} from "react-redux";
 import {selectPackaging, selectPostage} from "../../../store/margin-calculator-slice";
 import {UpdateHandler} from "./index";
-import {currencyToLong, toCurrency} from "../../../components/margin-calculator-utils/utils";
+import {currencyToLong, toCurrency} from "../../../components/utils/utils";
 
 export default function SettingsTable({item, handler}: UpdateHandler) {
     const packaging = useSelector(selectPackaging)

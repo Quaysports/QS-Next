@@ -19,14 +19,20 @@ import {getBrands, getItems} from "../../server-modules/items/items";
 import SidebarLayout from "../../components/layouts/sidebar-layout";
 import SalesSidebar from "./sales/sidebar";
 import SalesReportTable from "./sales/table";
-import {getMonthDataForYear, getShopReportYears, getYearData, YearTotals} from "../../server-modules/reports/reports";
 import {
+    getMonthDataForYear,
+    getMonthDayByDayDataForYear,
+    getShopReportYears,
+    getYearData,
+    YearTotals
+} from "../../server-modules/reports/reports";
+import {
+    setDayTotals,
     setFirstYearAndLastYear,
     setLastYearComparison, setLastYearMonthComparison, setMonthTotals,
     setYearTotals
 } from "../../store/reports/sales-slice";
 import {GetServerSidePropsContext} from "next";
-
 
 export default function StockReports() {
 
@@ -39,8 +45,12 @@ export default function StockReports() {
                     <Menu>
                         <StockReportTabs/>
                     </Menu>
-                    <SidebarLayout><SalesSidebar/></SidebarLayout>
-                    <ColumnLayout scroll={true} height={50}><SalesReportTable/></ColumnLayout>
+                    <SidebarLayout>
+                        <SalesSidebar/>
+                    </SidebarLayout>
+                    <ColumnLayout scroll={true} height={50}>
+                        <SalesReportTable/>
+                    </ColumnLayout>
                 </SidebarOneColumn> : null
             }
             {router.query.tab === "incorrect-stock" ?
@@ -77,7 +87,7 @@ async function getShopData(store:AppStore, context: GetServerSidePropsContext){
     if (data) store.dispatch(setBrands(data))
 
     if(!context.query.brand) return
-    let brandData = await getItems(
+        let brandData = await getItems(
         {"brand": context.query.brand, tags: {$in: ["domestic"]}, isComposite: false},
         {SKU: 1, title: 1, EAN: 1, stock: 1, stockTake: 1},
         {SKU: 1})
@@ -90,39 +100,43 @@ async function getIncorrectStockData(store:AppStore){
 }
 
 async function getSalesData(store:AppStore, context: GetServerSidePropsContext){
-    const location = context.query.location as string ?? "shop"
+    const location = context?.query?.location ? context.query.location as string : "shop";
     if (location === "shop") {
-        const years = await getShopReportYears() as { firstYear: string, lastYear: string } | null
-        if (!years) return
+            const years = await getShopReportYears() as { firstYear: string, lastYear: string } | null
+            if (!years) return
 
-        store.dispatch(setFirstYearAndLastYear(years))
-        let i = new Date(Number(years.firstYear)).getFullYear()
-        let last = new Date(Number(years.lastYear)).getFullYear()
-        let yearTotals = []
-        for (i; i <= last; i++) {
-            let yearTotal: YearTotals = await getYearData(i) ?? {
-                grandTotal: 0,
-                profit: 0,
-                profitWithLoss: 0
+            store.dispatch(setFirstYearAndLastYear(years))
+            let i = new Date(Number(years.firstYear)).getFullYear()
+            let last = new Date(Number(years.lastYear)).getFullYear()
+            let yearTotals = []
+            for (i; i <= last; i++) {
+                let yearTotal: YearTotals = await getYearData(i) ?? {
+                    grandTotal: 0,
+                    profit: 0,
+                    profitWithLoss: 0
+                }
+                yearTotal.year = i
+                yearTotals.push(yearTotal)
             }
-            yearTotal.year = i
-            yearTotals.push(yearTotal)
-        }
-        store.dispatch(setYearTotals(yearTotals))
+            store.dispatch(setYearTotals(yearTotals))
 
-        let year = context.query.year as string ?? new Date().getFullYear().toString()
-        if(!year) return
+            let year = context.query.year as string ?? new Date().getFullYear().toString()
+            if (!year) return
 
-        let comparison = await getLastYearComparison(years.firstYear,year)
-        if(comparison) store.dispatch(setLastYearComparison(comparison))
+            let comparison = await getLastYearComparison(years.firstYear, year)
+            if (comparison) store.dispatch(setLastYearComparison(comparison))
 
-        let monthData = await getMonthDataForYear(Number(year))
-        if(monthData) store.dispatch(setMonthTotals(monthData))
+            let monthData = await getMonthDataForYear(Number(year))
+            if (monthData) store.dispatch(setMonthTotals(monthData))
 
-        let monthComparisonData = await getMonthDataForYearComparison(years.firstYear, Number(year))
-        console.log(monthComparisonData)
-        if(monthComparisonData) store.dispatch(setLastYearMonthComparison(monthComparisonData))
+            let monthComparisonData = await getMonthDataForYearComparison(years.firstYear, Number(year))
+            if (monthComparisonData) store.dispatch(setLastYearMonthComparison(monthComparisonData))
+
+            if(!context.query.month) return
+            let dayByDayData = await getMonthDayByDayDataForYear(Number(year), Number(context.query.month as string))
+            if (dayByDayData) store.dispatch(setDayTotals(dayByDayData))
     }
+    return
 }
 
 async function getLastYearComparison(firstYear:string, year: string){

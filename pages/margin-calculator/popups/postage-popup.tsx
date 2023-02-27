@@ -4,7 +4,7 @@ import styles from "./popup-styles.module.css"
 import {Postage} from "../../../server-modules/postage/postage";
 import {MenuState} from "./margin-menu-popup";
 import {ChangeEvent} from "react";
-import {currencyToLong, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
+import {currencyToLong, toCurrencyInput} from "../../../components/utils/utils";
 
 export default function PostageMenu({menuState}: { menuState: MenuState }){
     const postage = useSelector(selectPostage)

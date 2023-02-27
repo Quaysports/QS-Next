@@ -4,7 +4,7 @@ import styles from "./popup-styles.module.css"
 import {Packaging} from "../../../server-modules/packaging/packaging";
 import {MenuState} from "./margin-menu-popup";
 import {ChangeEvent} from "react";
-import {currencyToLong, toCurrencyInput} from "../../../components/margin-calculator-utils/utils";
+import {currencyToLong, toCurrencyInput} from "../../../components/utils/utils";
 
 export default function PackagingMenu({menuState}: { menuState: MenuState }){
     const packaging = useSelector(selectPackaging)
