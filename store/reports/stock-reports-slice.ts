@@ -129,12 +129,14 @@ export const stockReportsSlice = createSlice({
                 fetch("/api/items/bulk-update-items", opts)
             },
 
-            setStockTakeInfo: (state, action: PayloadAction<{ index: number, data: schema.StockTake }>) => {
-                state.brandItems[action.payload.index].stockTake = action.payload.data
+            setStockTakeInfo: (state, action: PayloadAction<{ sku: string, data: schema.StockTake }>) => {
+                let pos = state.brandItems.findIndex((item) => item.SKU === action.payload.sku)
+                if(pos === -1) return;
+                state.brandItems[pos].stockTake = action.payload.data
                 let opts = {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(state.brandItems[action.payload.index])
+                    body: JSON.stringify(state.brandItems[pos])
                 }
                 fetch("/api/items/update-item", opts)
             },
