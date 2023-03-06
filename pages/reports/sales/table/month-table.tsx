@@ -17,17 +17,9 @@ export default function MonthTable() {
 
     let weekElements = []
     for (let week = 0; week < weeks; week++) {
-        weekElements.push(<Week dayOffset={firstDayOffset} weekNumber={week}/>)
+        weekElements.push(<Week key={week+month} dayOffset={firstDayOffset} weekNumber={week}/>)
     }
-    return <>
-        <Menu/>
-        <div className={styles.month}>
-            {weekElements}
-        </div>
-    </>
-}
 
-function Menu() {
-    const router = useRouter()
-    return <div>Weeks Table <button onClick={() => router.back()}>Back</button></div>
+    return <div className={styles.month}>{weekElements}</div>
+
 }

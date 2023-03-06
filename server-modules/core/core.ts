@@ -1,4 +1,3 @@
-
 export const guid = () => {
     function _p8(s:boolean) {
         let p = (Math.random().toString(16) + '000000000').substring(2, 10);
@@ -7,11 +6,8 @@ export const guid = () => {
     return _p8(false) + _p8(true) + _p8(true) + _p8(false)
 }
 
-export const findKey = <T>(array: T[], key: keyof T, id:any): T | null =>{
-    console.log("find key")
-    let pos = array.map(v => {return v[key]}).indexOf(id)
-    console.log(pos)
-    return pos !== -1 ? array[pos] : null
+export function sortData<T>(key:keyof T, arr:T[]) {
+    arr.sort((a, b) => a[key] === b[key] ? 0 : a[key] < b[key] ? -1 : 1)
 }
 
 export const binarySearch = function <T>(arr:T[], key:keyof T, x:T[keyof T], start = 0, end = arr.length):T | null {

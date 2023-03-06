@@ -1,6 +1,4 @@
 .table-container{
-    display:grid;
-    grid-template-rows: 40px 1fr;
     height:100%;
 }
 
@@ -78,9 +76,10 @@
 
 .year-summary-content{
     display:grid;
-    grid-template-rows: 1fr 1fr;
-    grid-gap:10px;
+    grid-template-rows: 1fr;
+    grid-gap:5px;
     padding: 5px;
+    font-size: 0.8em;
 }
 .year-summary-row > div:first-child{
     font-weight:bold;
@@ -91,6 +90,9 @@
 }
 
 .year-summary-row{
+    display: grid;
+    grid-gap:5px;
+    text-transform: capitalize;
     padding-bottom: 5px;
     border-bottom:1px solid var(--primary-table-background);
 }
@@ -98,26 +100,79 @@
     border-bottom:none;
 }
 
+.online-summary{
+    display:grid;
+    grid-template-rows: auto 1fr;
+    text-transform: capitalize;
+    grid-gap: 5px;
+}
+
+.online-summary-row{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    align-items: center;
+    padding-bottom: 5px;
+    font-size: 0.9em;
+    justify-items: center;
+    border-bottom:1px solid var(--primary-table-background);
+}
+
+.online-summary-row:first-child{
+    text-align: center;
+
+}
+
+.online-summary > div:first-child {
+    font-weight:bold;
+}
+
+.online-summary > div:last-child {
+    padding-left: 5px;
+}
+
+.online-summary:last-child > .online-summary-row:last-child{
+    border-bottom:none;
+}
+
 .month-table{
     display:grid;
-    width:calc(100vw - 320px);
     height:calc(100vh - 90px);
+    min-width: 1240px;
     grid-template-rows: repeat(3, calc(100% / 3));
-    grid-template-columns: repeat(4, 25%);
+    grid-template-columns: repeat(4, minmax(300px, 25%));
     grid-gap: 10px;
 }
 
-.month-card, .month-card-selected{
+.month-card, .month-card-selected, .online-month-card{
     display:grid;
-    grid-gap:5px;
-    grid-template-rows: fit-content(10px) repeat(4, auto) 1fr;
-    background: var(--primary-table-cell-background);
+    min-width:fit-content;
+    grid-template-rows: fit-content(10px) repeat(5, auto) 1fr;
     border-radius: var(--primary-border-radius);
     box-shadow: var(--primary-box-shadow);
     align-items: center;
     border:2px solid var(--primary-background);
     user-select: none;
     cursor: pointer;
+    background: var(--primary-table-cell-background);
+}
+
+.online-month-card{
+    background: var(--primary-background);
+    grid-gap:5px;
+    grid-template-rows: fit-content(10px) repeat(3, auto) 1fr;
+}
+
+.online-month-channel{
+    margin:0 4px;
+}
+
+.online-month-channel > div:first-child{
+    border-radius: var(--primary-border-radius) var(--primary-border-radius) 0 0;
+}
+
+.online-month-channel > div:last-child{
+    border-radius: 0 0 var(--primary-border-radius) var(--primary-border-radius);
 }
 
 .month-card:hover, .day:hover{
@@ -137,12 +192,22 @@
 
 .month-row-totals-cell {
     display:grid;
+    text-transform: capitalize;
     font-size: 0.85em;
     grid-template-columns: 80px 1fr 1fr;
     justify-content: left;
     grid-gap: 10px;
     align-items: center;
+    padding:5px;
+    background: var(--primary-table-cell-background);
+}
+
+.online-month-channel > .month-row-totals-cell{
     padding:2px 5px;
+}
+
+.month-row-totals-cell:nth-child(odd){
+    background: var(--primary-table-cell-background-alt);
 }
 
 
