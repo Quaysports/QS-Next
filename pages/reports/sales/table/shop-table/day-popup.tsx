@@ -60,6 +60,7 @@ function DiscountsTable({discounts}: { discounts: ShopDayTotal["discounts"] }) {
     let discountRows = [<div className={styles["discount-row"]}>
         <div>Order id</div>
         <div>By</div>
+        <div>Reason</div>
         <div>Flat</div>
         <div>Percentage</div>
         <div>Total</div>
@@ -73,6 +74,7 @@ function DiscountsTable({discounts}: { discounts: ShopDayTotal["discounts"] }) {
                 <div key={discount.id} className={styles["discount-row"]}>
                     <div>{discount.id}</div>
                     <div>{discount.name}</div>
+                    <div>{discount.discountReason}</div>
                     <div>{toCurrency(discount.flatDiscount)}</div>
                     <div>{toCurrency(discount.percentageDiscountAmount)} [{discount.percentageDiscount}%]</div>
                     <div>{toCurrency(discountTotal)}</div>

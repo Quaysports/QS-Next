@@ -254,9 +254,14 @@
 }
 .discount-row{
     display:grid;
-    grid-template-columns: 150px 100px 100px 100px 100px 100px 100px;
+    grid-template-columns: 150px 70px 150px 100px 100px 100px 100px 100px;
     grid-gap: 10px;
     align-items: center;
+}
+.discount-row > div{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .day-popup-container{
     display:grid;

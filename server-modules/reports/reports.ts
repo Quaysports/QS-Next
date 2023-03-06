@@ -287,6 +287,7 @@ interface ShopDayQueryResult {
     cash: number
     change: number
     till: string
+    discountReason: string
     processedBy: string
 }
 
@@ -308,7 +309,8 @@ export interface ShopDayTotal {
         grandTotal: number,
         flatDiscount: number,
         percentageDiscount: number,
-        percentageDiscountAmount: number
+        percentageDiscountAmount: number,
+        discountReason: string
     }[]
 }
 
@@ -358,6 +360,7 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                 'grandTotal': 1,
                 'profit': 1,
                 'profitWithLoss': 1,
+                'discountReason':1,
                 'type': '$transaction.type',
                 'amount': '$transaction.amount',
                 'cash': '$transaction.cash',
@@ -419,7 +422,8 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                     grandTotal: order.grandTotal,
                     flatDiscount: order.flatDiscount,
                     percentageDiscount: order.percentageDiscount,
-                    percentageDiscountAmount: order.percentageDiscountAmount
+                    percentageDiscountAmount: order.percentageDiscountAmount,
+                    discountReason: order.discountReason
                 }
                 day.discounts.push(discount)
             }
