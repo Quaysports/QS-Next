@@ -1,4 +1,4 @@
-import {FocusEvent, ChangeEvent} from "react";
+import {FocusEvent, ChangeEvent, useState, useEffect} from "react";
 
 /**
  * @module Regex-Index
@@ -31,7 +31,10 @@ interface Props {
  */
 const regexDictionary: RegexDictionary = {
     "pin": "^[0-9]{4}$",
-    "number": "^\\d+$"
+    "number": "^\\d+$",
+    "barcode": "^[0-9]{12,13}$",
+    "money": "^[0-9]{1,}\\.[0-9]{2}$",
+    "alphanumeric": "^[a-zA-Z0-9-]*$"
 }
 
 /**
@@ -41,7 +44,13 @@ const regexDictionary: RegexDictionary = {
 export default function RegexInput({type, value, errorMessage, handler}: Props) {
 
     let valid = false
+    if(type === "money" && typeof value === "number") value = value.toFixed(2)
 
+    const [regexValue, setRegexValue] = useState<string | number>(value)
+
+    useEffect(()=>{
+        setRegexValue(value)
+    },[value])
     const validateInput = (e:FocusEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>) => {
         if (e.target.validity.patternMismatch) {
             valid = false
@@ -59,8 +68,10 @@ export default function RegexInput({type, value, errorMessage, handler}: Props) 
         <>
             <input
                 pattern={regexDictionary[type]}
-                defaultValue={value}
-                onChange={validateInput}
+                value={regexValue}
+                onChange={(e)=>{
+                    setRegexValue(e.target.value)
+                }}
                 onBlur={(e) => {
                     validateInput(e)
                     if (valid) handler(e.target.value)
