@@ -31,6 +31,7 @@
 .brand, .title1, .title2, .price, .loc {
     padding: 2px 5px;
     line-height: 14px;
+    white-space: nowrap;
     font-size: 85%;
 }
 

@@ -1,15 +1,34 @@
 import styles from "../sales-report.module.css";
 import {useRouter} from "next/router";
-import YearTable from "./year-table";
 import MonthTable from "./month-table";
+import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
+import {useEffect} from "react";
+import ShopYearTable from "./shop-table";
+import OnlineYearTable from "./online-table";
 
 export default function SalesReportTable() {
     const router = useRouter()
+    const month = router.query.month
+    const location = router.query.location ?? "shop"
+
+    useEffect(() => {
+        router.events.on("routeChangeStart", () => {
+            dispatchNotification({type:"loading", content:"Loading report"})
+        })
+    })
+
+    useEffect(() => dispatchNotification())
+
     return (
         <div className={styles["table-container"]}>
-            {!router.query.month
-                ? <YearTable/>
-                : <MonthTable/>}
+            {location === "shop"
+                ? !month
+                    ? <ShopYearTable/>
+                    : <MonthTable/>
+                : !month
+                    ? <OnlineYearTable/>
+                    : <MonthTable/>
+            }
         </div>
     )
 }

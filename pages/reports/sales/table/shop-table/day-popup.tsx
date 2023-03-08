@@ -1,8 +1,8 @@
-import {DayTotal} from "../../../../server-modules/reports/reports";
-import styles from "../sales-report.module.css";
-import {toCurrency} from "../../../../components/utils/utils";
+import {ShopDayTotal} from "../../../../../server-modules/reports/reports";
+import styles from "../../sales-report.module.css";
+import {toCurrency} from "../../../../../components/utils/utils";
 
-export default function DayPopup({data}: { data: DayTotal }) {
+export default function DayPopup({data}: { data: ShopDayTotal }) {
 
     if(!data) return null
 
@@ -10,7 +10,7 @@ export default function DayPopup({data}: { data: DayTotal }) {
     if (data.till && data.till.length > 0) {
         for (let till of data.till) {
             tillTakings.push(
-                <div className={styles["day-row"]}>
+                <div key={till.id} className={styles["day-row"]}>
                     <div>{till.id}:</div>
                     <div>{toCurrency(till.amount)}</div>
                 </div>)
@@ -56,10 +56,11 @@ export default function DayPopup({data}: { data: DayTotal }) {
 
 }
 
-function DiscountsTable({discounts}: { discounts: DayTotal["discounts"] }) {
+function DiscountsTable({discounts}: { discounts: ShopDayTotal["discounts"] }) {
     let discountRows = [<div className={styles["discount-row"]}>
         <div>Order id</div>
         <div>By</div>
+        <div>Reason</div>
         <div>Flat</div>
         <div>Percentage</div>
         <div>Total</div>
@@ -70,9 +71,10 @@ function DiscountsTable({discounts}: { discounts: DayTotal["discounts"] }) {
         for (let discount of discounts) {
             let discountTotal = (discount.flatDiscount || 0) + (discount.percentageDiscountAmount || 0)
             discountRows.push(
-                <div className={styles["discount-row"]}>
+                <div key={discount.id} className={styles["discount-row"]}>
                     <div>{discount.id}</div>
                     <div>{discount.name}</div>
+                    <div>{discount.discountReason}</div>
                     <div>{toCurrency(discount.flatDiscount)}</div>
                     <div>{toCurrency(discount.percentageDiscountAmount)} [{discount.percentageDiscount}%]</div>
                     <div>{toCurrency(discountTotal)}</div>

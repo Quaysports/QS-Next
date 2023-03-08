@@ -1,13 +1,13 @@
 import {useSelector} from "react-redux";
-import {selectDayTotals} from "../../../../store/reports/sales-slice";
-import styles from "../sales-report.module.css";
-import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
-import {DayTotal} from "../../../../server-modules/reports/reports";
-import {toCurrency} from "../../../../components/utils/utils";
+import {selectShopDayTotals} from "../../../../../store/reports/sales-slice";
+import styles from "../../sales-report.module.css";
+import {dispatchNotification} from "../../../../../components/notification/dispatch-notification";
+import {ShopDayTotal} from "../../../../../server-modules/reports/reports";
+import {toCurrency} from "../../../../../components/utils/utils";
 import DayPopup from "./day-popup";
 
-export default function Day({month, date}: { month: number, date: Date }) {
-    const dayTotals = useSelector(selectDayTotals)
+export default function ShopDay({month, date}: { month: number, date: Date }) {
+    const dayTotals = useSelector(selectShopDayTotals)
     if (!dayTotals || !date) return null
 
     let data = dayTotals.find((day) => day.date === date.toISOString().split("T")[0])
@@ -24,8 +24,8 @@ export default function Day({month, date}: { month: number, date: Date }) {
     </div>
 }
 
-function DayContent({data}: { data: DayTotal | undefined }) {
-    console.log(data)
+function DayContent({data}: { data: ShopDayTotal | undefined }) {
+
     if (!data) return null
 
     return <div className={styles["day-container"]}>

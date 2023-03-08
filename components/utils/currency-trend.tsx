@@ -2,7 +2,7 @@ import styles from "./utils.module.css";
 import Image from "next/image";
 import {toCurrency} from "./utils";
 
-export default function ComparisonTrendStyle({amount, inverse = false}: { amount: number, inverse?: boolean }) {
+export default function ComparisonTrendStyle({amount, currency = true, inverse = false, size=20}: { amount: number, currency?:boolean, inverse?: boolean, size?:number }) {
 
     `/trend-down-${inverse ? "green" : "red"}.svg`
 
@@ -12,8 +12,8 @@ export default function ComparisonTrendStyle({amount, inverse = false}: { amount
         const color = `var(--traffic-light-${inverse ? "red" : "green"})`
 
         return <div className={styles.trend}>
-            <Image alt={""} src={upArrow} width={20} height={20}/>
-            <div style={{color: color}}>{toCurrency(amount)}</div>
+            <Image alt={""} src={upArrow} width={size} height={size}/>
+            <div style={{color: color}}>{currency ? toCurrency(amount): amount}</div>
         </div>
     }
 
@@ -21,7 +21,7 @@ export default function ComparisonTrendStyle({amount, inverse = false}: { amount
     const color = `var(--traffic-light-${inverse ? "green" : "red"})`
 
     return <div className={styles.trend}>
-        <Image alt={""} src={downArrow} width={20} height={20}/>
-        <div style={{color:color}}>{toCurrency(amount)}</div>
+        <Image alt={""} src={downArrow} width={size} height={size}/>
+        <div style={{color:color}}>{currency ? toCurrency(amount) : amount}</div>
     </div>
 }
