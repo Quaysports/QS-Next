@@ -10,6 +10,7 @@ import {
 } from "../../../store/shop-orders-slice";
 import {useRouter} from "next/router";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
+import TradePackPopup from "./trade-pack-popup";
 
 /**
  * Display On Order Component
@@ -94,6 +95,10 @@ export default function DisplayOnOrder() {
         }
     }
 
+    function tradePackHandler(orderIndex:number, itemIndex:number){
+        dispatchNotification({type:'popup', title:'Trade Pack Popup', content:<TradePackPopup itemIndex={itemIndex} orderIndex={orderIndex}/>})
+    }
+
     function onOrderTableCells() {
         let tempArray = []
         let newProductArray = [<div key={"new-title"}><span/><span/><span/><span>New Products</span><span/><span/>
@@ -126,7 +131,7 @@ export default function DisplayOnOrder() {
                                    arrivedHandler(e.target.value, i)
                                }}/>
                         <span className={"center-align"}>{loadedOrder!.order[i].quantity}</span>
-                        <span className={"center-align"}>{loadedOrder!.order[i].stock.tradePack}</span>
+                        <span onClick={() => tradePackHandler(Number(router.query.index), i)} className={"center-align"}>{loadedOrder!.order[i].stock.tradePack}</span>
                         <span>{loadedOrder!.order[i].SKU} </span>
                         <span>{loadedOrder!.order[i].title} </span>
 
