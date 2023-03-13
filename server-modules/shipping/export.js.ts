@@ -100,7 +100,7 @@ async function emailExport(shipment:Shipment){
     document.body.appendChild(textInput)
     textInput.select()
     textInput.setSelectionRange(0, 99999)
-    await navigator.clipboard.writeText(textInput.value)
+    document.execCommand('copy')
     document.body.removeChild(textInput)
 
 }
