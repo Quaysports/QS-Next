@@ -1,0 +1,163 @@
+.shipment-table {
+    display: grid;
+    grid-template-rows: 40px 1fr;
+    padding: 10px;
+    background: var(--primary-table-background);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+    margin: 0 10px 10px 10px;
+    overflow-x: auto;
+    height: calc(100% - 20px);
+    align-items: start;
+}
+
+.shipment-sub-table {
+    height: fit-content;
+    background: var(--primary-table-background);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+
+.sub-table-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, fit-content(100%));
+    grid-gap: 10px;
+}
+
+.top-bar {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(13, fit-content(100%));
+}
+
+.top-bar > div {
+    display: grid;
+    align-self: center;
+    height: 20px;
+    grid-gap: 5px;
+}
+
+.top-bar-intId {
+    grid-template-columns: 80px 50px;
+}
+
+.top-bar-tag {
+    grid-template-columns: 80px 200px;
+}
+
+.top-bar-shippingCompany {
+    grid-template-columns: 150px 200px;
+}
+
+.top-bar-shipRef {
+    grid-template-columns: 150px 100px;
+}
+
+.top-bar-exchangeRate {
+    grid-template-columns: 120px 50px;
+}
+
+.top-bar-due {
+    grid-template-columns: auto 100px;
+}
+
+.top-bar-checkbox {
+    grid-template-columns: auto auto;
+}
+
+.details-item-row,
+.finance-item-row,
+.shipping-item-row,
+.summary-item-row {
+    display: grid;
+    grid-gap: 10px;
+    background: var(--primary-table-cell-background);
+    padding: 5px;
+    transition: 0.15s ease-in-out;
+}
+
+.details-item-row:nth-child(odd),
+.finance-item-row:nth-child(odd),
+.shipping-item-row:nth-child(odd),
+.summary-item-row:nth-child(odd) {
+    background: var(--primary-table-cell-background-alt);
+}
+
+.details-item-row:first-child,
+.finance-item-row:first-child,
+.shipping-item-row:first-child,
+.summary-item-row:first-child {
+    border-radius: var(--primary-border-radius) var(--primary-border-radius) 0 0;
+    height: 50px;
+}
+
+.details-item-row:last-child,
+.finance-item-row:last-child,
+.shipping-item-row:last-child,
+.summary-item-row:last-child {
+    border-radius: 0 0 var(--primary-border-radius) var(--primary-border-radius);
+}
+
+.details-item-row > div,
+.finance-item-row > div,
+.shipping-item-row > div,
+.summary-item-row > div {
+    display: grid;
+    align-items: end;
+}
+
+.details-item-row > div > input,
+.finance-item-row > div > input,
+.shipping-item-row > div > input,
+.summary-item-row > div > input {
+    width: 100%;
+    margin: 0;
+}
+
+.details-item-row.highlighted,
+.finance-item-row.highlighted,
+.shipping-item-row.highlighted,
+.summary-item-row.highlighted {
+    background: var(--primary-color);
+}
+
+.details-item-row {
+    grid-template-columns: 20px 120px 180px repeat(2, 120px) 300px 120px 120px 70px;
+}
+
+.finance-item-row {
+    grid-template-columns: repeat(8, 80px);
+}
+
+.shipping-item-row {
+    grid-template-columns: repeat(7, 80px);
+}
+
+.summary-item-row {
+    grid-template-columns: 260px repeat(4, 80px);
+}
+
+.import-popup-wrapper {
+    max-width: calc(100vw - 200px);
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    border-radius: var(--primary-border-radius);
+}
+
+.import-popup-row:first-child {
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.import-popup-row {
+    display: grid;
+    grid-template-columns: 20px 60px 200px 200px fit-content(100%);
+    grid-gap: 10px;
+    background: var(--primary-table-cell-background-alt);
+    padding: 5px;
+}
+
+.import-popup-row:nth-child(odd) {
+    background: var(--primary-table-cell-background);
+}
