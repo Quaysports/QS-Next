@@ -95,6 +95,12 @@ async function emailExport(shipment:Shipment){
     </style>`
 
     let text = style + '<p>' + shipment.tag + '</p>' + table.outerHTML + '<p></p>';
-    await navigator.clipboard.writeText(text)
+    let textInput = document.createElement('textarea')
+    textInput.value = text
+    document.body.appendChild(textInput)
+    textInput.select()
+    textInput.setSelectionRange(0, 99999)
+    await navigator.clipboard.writeText(textInput.value)
+    document.body.removeChild(textInput)
 
 }
