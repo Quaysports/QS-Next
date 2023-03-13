@@ -352,6 +352,22 @@ export const shopOrdersSlice = createSlice({
                     }
                 }
                 state.orderSKUs = ordersSKUs
+            },
+            setOpenOrderTradePack: (state, action:PayloadAction<{orderIndex:number, itemIndex:number, value:number}>) => {
+                const {orderIndex, itemIndex, value} = action.payload
+                console.log('orderIndex', orderIndex)
+                console.log('itemIndex', itemIndex)
+                console.log('value', value)
+                state.openOrders![orderIndex].order[itemIndex].stock.tradePack = value
+                const opts = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': '9b9983e5-30ae-4581-bdc1-3050f8ae91cc'
+                    },
+                    body: JSON.stringify(state.openOrders![orderIndex])
+                }
+                fetch("/api/shop-orders/update-order", opts).then()
             }
         },
     })
@@ -394,7 +410,8 @@ export const {
     setNewOrderArray,
     setOnOrderSKUs,
     setTradePack,
-    setNewItem
+    setNewItem,
+    setOpenOrderTradePack
 } = shopOrdersSlice.actions
 
 
