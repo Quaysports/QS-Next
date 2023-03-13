@@ -34,7 +34,8 @@ const regexDictionary: RegexDictionary = {
     "number": "^\\d+$",
     "barcode": "^[0-9]{12,13}$",
     "money": "^[0-9]{1,}\\.[0-9]{2}$",
-    "alphanumeric": "^[a-zA-Z0-9-]*$"
+    "alphanumeric": "^[a-zA-Z0-9-]*$",
+    "decimal": "^\\d+\\.?\\d*$"
 }
 
 /**

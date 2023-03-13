@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from "react"
 import styles from './database-search-bar.module.css'
 import {schema} from "../../types";
+import {DatabaseQuerySearchOpts} from "../../server-modules/items/items";
 
 /**
  * @property {handler} handler - Function passed in to receive search result for further processing.
  */
 interface Props {
     handler: (result: DatabaseSearchItem) => void
+    searchOptions?: DatabaseQuerySearchOpts
 }
 
 /**
@@ -26,7 +28,7 @@ export interface DatabaseSearchItem extends SearchItem{
 /**
  * Search bar with radio buttons that performs direct database searches (rather than taking in an array).
  */
-export default function DatabaseSearchBar({handler}: Props) {
+export default function DatabaseSearchBar({handler, searchOptions = undefined}: Props) {
 
     const [searchType, setSearchType] = useState<string>("SKU")
     const [currentSearchValue, setCurrentSearchValue] = useState<string>("")
@@ -37,7 +39,8 @@ export default function DatabaseSearchBar({handler}: Props) {
         if (currentSearchValue.length > 1) {
             const opts = {
                 method: "POST",
-                body: JSON.stringify({type: searchType, id: currentSearchValue})
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({type: searchType, id: currentSearchValue, opts:searchOptions})
             }
             fetch("/api/items/search", opts).then(res => {
                 res.json().then(json => {

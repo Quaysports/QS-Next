@@ -177,11 +177,16 @@ select{
     white-space: nowrap;
     height:28px;
     align-items: center;
+    user-select: none;
 }
 
 .menu-bar span:hover{
     color: var(--primary-active-text);
     cursor: pointer;
+}
+
+.menu-bar span:active{
+    transform: translate(1px ,1px);
 }
 
 .menu-bar a{

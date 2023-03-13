@@ -1,6 +1,6 @@
 import Menu from "../../components/menu/menu";
 import StockForecastMenuTabs from "./tabs";
-import {get, Shipment} from "../../server-modules/shipping/shipping";
+import {getShipment, Shipment} from "../../server-modules/shipping/shipping";
 import {getItems, getAllSuppliers} from "../../server-modules/items/items";
 import {StockForecastItem} from "../../server-modules/stock-forecast/process-data";
 import {binarySearch} from "../../server-modules/core/core";
@@ -45,7 +45,7 @@ export default function StockForecastLandingPage() {
 export const getServerSideProps = appWrapper.getServerSideProps(
     store =>
         async (context) => {
-            const shipping = await get({delivered: false})
+            const shipping = await getShipment({delivered: false}) as Shipment[]
             const domestic = context.query.domestic
             const show = context.query.show
             const list = context.query.list
@@ -55,14 +55,14 @@ export const getServerSideProps = appWrapper.getServerSideProps(
             console.log(selectedSuppliers)
 
             const baseQuery = [
-                {ISCOMPOSITE: false},
-                {MONTHSTOCKHIST: {$exists: true}},
-                {IDBFILTER: domestic === 'true' ? {'$eq': "domestic"} : {'$ne': "domestic"}},
-                !show ? {"CHECK.SF.HIDE": {'$ne': true}} : {},
-                list ? {"CHECK.SF.LIST": {'$eq': true}} : {},
+                {isComposite: false},
+                {stockHistory:{$not:{$size:0}}},
+                {tags: domestic === 'true' ? {'$in': ["domestic"]} : {'$nin': ["domestic"]}},
+                !show ? {"checkboxStatus.stockForecast.hide": {'$ne': true}} : {},
+                list ? {"checkboxStatus.stockForecast.list": {'$eq': true}} : {},
             ]
 
-            const itemQuery = {$and: [...baseQuery, selectedSuppliers ? {SUPPLIERS:{'$in':selectedSuppliers}} : {}]}
+            const itemQuery = {$and: [...baseQuery, selectedSuppliers ? {suppliers:{'$in':selectedSuppliers}} : {}]}
             const supplierQuery = {$and: baseQuery}
 
             const projection = {
@@ -77,6 +77,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(
 
             const sort = {SKU: 1}
             const items = await getItems(itemQuery, projection, sort) as StockForecastItem[] | undefined
+            console.log(items)
             const suppliers = await getAllSuppliers(supplierQuery)
             suppliers ? store.dispatch(setSuppliers(suppliers)) : store.dispatch(setSuppliers([]))
 

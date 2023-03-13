@@ -7,10 +7,12 @@ import NotificationWrapper from "../components/notification/notification-wrapper
 import {Provider} from "react-redux";
 import ActivityTracker from "../components/activity-tracker";
 import ToastWrapper from "../components/toast/toast-wrapper";
+import {dispatchNotification} from "../components/notification/dispatch-notification";
+import {useEffect} from "react";
 
 export default function App({Component, pageProps:{session, ...pageProps}}: AppProps) {
     const {store, props} = appWrapper.useWrappedStore(pageProps);
-
+    useEffect(()=>dispatchNotification())
     return (
         <Provider store={store}>
             <SessionProvider session={session}>

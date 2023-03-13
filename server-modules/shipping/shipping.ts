@@ -1,14 +1,15 @@
-import * as mongoI from '../mongo-interface/mongo-interface';
-const objectId = require('mongodb').ObjectId;
+import {deleteOne, find, findDistinct, setData} from "../mongo-interface/mongo-interface";
 
 export interface Shipment {
     _id?: { $oid: string };
     id: number;
     bankCharges: number;
     confirmed: boolean;
+    booked: boolean;
     credit: number;
     data: ShipmentItem[];
     delivered: boolean;
+    delivery:boolean;
     due: string;
     duty: number;
     exchangeRate: number;
@@ -21,6 +22,8 @@ export interface Shipment {
     dutyPound: number;
     grandTotal: number;
     outstanding: number;
+    overdue: boolean;
+    ready: boolean;
     total: number;
     totalExVat: number;
     totalPound: number;
@@ -28,11 +31,13 @@ export interface Shipment {
     intId: string;
     atSea: boolean;
     shippingCompany: string;
+    shipRef:string;
 }
 
 export interface ShipmentItem {
         dutyValue: number
         code: string
+        orderid: string
         hscode: string
         poundTotal: number
         billDesc: string;
@@ -49,7 +54,7 @@ export interface ShipmentItem {
         width: string;
         numOfBoxes: number;
         m3total: number;
-        _id?: { $oid: string };
+        _id?: string ;
         sku: string;
         totalPerItem: number;
         desc: string;
@@ -61,65 +66,60 @@ export interface ShippingCompany {
     company: string
 }
 
-export const get = async (query?: {} | undefined) => {
+export const getShipment = async (query?: {} | undefined) => {
     console.log(query)
     if (query) {
-        return await mongoI.find<Shipment>("Shipping", query)
+        return await find<Shipment>("Shipping", query)
     } else {
-        return await mongoI.find<Shipment>("Shipping",
-            {delivered: false},
-            {
-                id: 1,
-                intId:1,
-                confirmed: 1,
-                data: 1,
-                due: 1,
-                m3total: 1,
-                tag: 1,
-                totalCartons: 1
-            }
+        return await find<Shipment>("Shipping",
+            {delivered: false}
         )
     }
 }
 
 export const getLast = async (id: {} | undefined) => {
-    return await mongoI.find<Shipment>("Shipping", {}, id, {_id: -1}, 1)
+    return await find<Shipment>("Shipping", {}, id, {_id: -1}, 1)
 }
 
-export const shippingCompanies = async () => {
-    return await mongoI.find<ShippingCompany>("Shipping-Companies", {}, {}, {company: 1})
+export const getShippingCompanies = async () => {
+    return await find<ShippingCompany>("Shipping-Companies", {}, {}, {company: 1})
 }
 
-export const itemKeys = async () => {
-    return await mongoI.find<ShipmentItem>("Shipping-Items", {}, {code: 1, desc: 1, sku: 1}, {sku: 1})
+export const getItemKeys = async () => {
+    return await find<Pick<ShipmentItem, "code" | "sku" | "desc">>("Shipping-Items", {}, {code: 1, desc: 1, sku: 1}, {sku: 1})
 }
 
-export const item = async (id: string) => {
-    let query = {_id: objectId(id)};
-    return await mongoI.find<ShipmentItem>("Shipping-Items", query)
+export const deleteShippingItem = async (data: ShipmentItem) => {
+    if(data._id) delete data._id
+    return await deleteOne("Shipping-Items", {code: data.code, sku: data.sku})
 }
 
-export const update = async (data:Shipment) => {
+export const getSKUKeys = async ()=> {
+    return await findDistinct("New-Items", "SKU", {isListingVariation:false,isComposite:false,tags: {$nin:["domestic"]}})
+}
+
+export const updateShipment = async (data:Shipment) => {
     if (data.data) {
         for (let v of data.data) {
-            if (v.code && v.sku) {
-                if (v._id) delete v._id
-                await mongoI.setData("Shipping-Items", {code: v.code, sku: v.sku}, v)
-            }
+            if (!v.code || !v.sku) continue;
+            if (v._id) delete v._id
+            await setData("Shipping-Items", {code: v.code, sku: v.sku}, v)
         }
     }
 
-    await mongoI.setData("Shipping-Companies",
-        {company: data.shippingCompany},
-        {company: data.shippingCompany}
+    await setData("Shipping-Companies",
+        {company: data.shippingCompany?.trim()},
+        {company: data.shippingCompany?.trim()}
     )
 
     if (data._id) delete data._id
-    await mongoI.setData("Shipping",  { id: data.id }, data)
+    await setData("Shipping",  { id: data.id }, data)
     return data
 
 }
 
-export const remove = async (coll:string, query:object) => {
-        return await mongoI.deleteOne(coll,query)
+export const deleteShipment = async (shipment:Shipment) => {
+    if (shipment._id) delete shipment._id
+    let query = {id: shipment.id}
+    return await deleteOne("Shipping",query)
 }
