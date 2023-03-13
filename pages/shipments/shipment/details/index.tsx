@@ -3,12 +3,11 @@ import {
     deleteShipmentData,
     selectActiveShipmentIndex,
     selectShipment,
-    selectSkuKeys, setActiveShipmentIndex,
-    updateShipmentData
+    selectSkuKeys, setActiveShipmentIndex, updateShipment
 } from "../../../../store/shipments-slice";
 import styles from '../../shipment.module.css'
 import {useEffect, useState} from "react";
-import {ShipmentItem} from "../../../../server-modules/shipping/shipping";
+import {Shipment, ShipmentItem} from "../../../../server-modules/shipping/shipping";
 import RegexInput from "../../../../components/regex-input";
 
 export default function Details() {
@@ -46,11 +45,14 @@ interface ItemRowProps {
 function ItemRow({shipmentItem, index}: ItemRowProps) {
 
     const skuKeys = useSelector(selectSkuKeys)
+    const shipment = useSelector(selectShipment)
     const [item, setItem] = useState<ShipmentItem>(shipmentItem)
     const dispatch = useDispatch()
     const activeIndex = useSelector(selectActiveShipmentIndex)
 
     useEffect(()=>setItem(shipmentItem),[shipmentItem])
+
+    if(!shipmentItem || !shipment) return null
 
     let skuList = []
     if(skuKeys){
@@ -62,6 +64,12 @@ function ItemRow({shipmentItem, index}: ItemRowProps) {
         return update
     }
 
+    function updateShipmentSlice(shipment:Shipment, newItem:ShipmentItem){
+        const newShipment = structuredClone(shipment)
+        newShipment.data[Number(index)] = newItem
+        dispatch(updateShipment(newShipment))
+    }
+
     return <div className={`${styles["details-item-row"]} ${index === activeIndex ? styles["highlighted"] : ""}`}
                 onClick={() => dispatch(setActiveShipmentIndex(index))}>
         <div>
@@ -69,33 +77,33 @@ function ItemRow({shipmentItem, index}: ItemRowProps) {
         </div>
         <div>
             <input value={item.code}
-                   onBlur={()=>dispatch(updateShipmentData({item:item, index:Number(index)}))}
+                   onBlur={()=>updateShipmentSlice(shipment, item)}
                    onChange={(e)=>setItem(update<ShipmentItem>(item,"code", e.target.value))}/>
         </div>
         <div>{item.sku}</div>
         <div>
             <input value={item.supplier}
-                   onBlur={()=>dispatch(updateShipmentData({item:item, index:Number(index)}))}
+                   onBlur={()=>updateShipmentSlice(shipment, item)}
                    onChange={(e)=>setItem(update<ShipmentItem>(item,"supplier", e.target.value))}/>
         </div>
         <div>
             <input value={item.orderid}
-                   onBlur={()=>dispatch(updateShipmentData({item:item, index:Number(index)}))}
+                   onBlur={()=>updateShipmentSlice(shipment, item)}
                    onChange={(e)=>setItem(update<ShipmentItem>(item,"orderid", e.target.value))}/>
         </div>
         <div>
             <input value={item.desc}
-                   onBlur={()=>dispatch(updateShipmentData({item:item, index:Number(index)}))}
+                   onBlur={()=>updateShipmentSlice(shipment, item)}
                    onChange={(e)=>setItem(update<ShipmentItem>(item,"desc", e.target.value))}/>
         </div>
         <div>
             <input value={item.hscode}
-                   onBlur={()=>dispatch(updateShipmentData({item:item, index:Number(index)}))}
+                   onBlur={()=>updateShipmentSlice(shipment, item)}
                    onChange={(e)=>setItem(update<ShipmentItem>(item,"hscode", e.target.value))}/>
         </div>
         <div>
             <input value={item.billDesc}
-                   onBlur={()=>dispatch(updateShipmentData({item:item, index:Number(index)}))}
+                   onBlur={()=>updateShipmentSlice(shipment, item)}
                    onChange={(e)=>setItem(update<ShipmentItem>(item,"billDesc", e.target.value))}/>
         </div>
         <div>
@@ -103,13 +111,8 @@ function ItemRow({shipmentItem, index}: ItemRowProps) {
                         value={item.qty}
                         errorMessage={"Numbers only"}
                         handler={(value)=>{
-                            dispatch(
-                                updateShipmentData(
-                                    {
-                                        item:update<ShipmentItem>(item,"qty", value),
-                                        index:Number(index)}
-                                )
-                            )
+                            setItem(update<ShipmentItem>(item,"qty", value))
+                            updateShipmentSlice(shipment, update<ShipmentItem>(item,"qty", value))
                         }}/>
         </div>
     </div>

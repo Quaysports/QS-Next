@@ -3,12 +3,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     selectActiveShipmentIndex,
     selectShipment,
-    setActiveShipmentIndex,
-    updateShipmentData
+    setActiveShipmentIndex, updateShipment
 } from "../../../../store/shipments-slice";
 import {useEffect, useState} from "react";
 import RegexInput from "../../../../components/regex-input";
-import {ShipmentItem} from "../../../../server-modules/shipping/shipping";
+import {Shipment, ShipmentItem} from "../../../../server-modules/shipping/shipping";
 
 export default function Finance() {
     const shipment = useSelector(selectShipment)
@@ -41,7 +40,9 @@ function ItemRow({shipmentItem, index}: { shipmentItem: ShipmentItem, index: str
     const [item, setItem] = useState<ShipmentItem>(shipmentItem)
     const dispatch = useDispatch()
     const activeIndex = useSelector(selectActiveShipmentIndex)
-    useEffect(() => setItem(shipmentItem), [shipmentItem])
+    const shipment = useSelector(selectShipment)
+
+    useEffect(() => {setItem(shipmentItem)}, [shipmentItem])
 
 
     function update<T>(obj: T, key: keyof T, value: T[keyof T]) {
@@ -50,28 +51,22 @@ function ItemRow({shipmentItem, index}: { shipmentItem: ShipmentItem, index: str
         return update
     }
 
-    if (!item) return null
+    function updateShipmentSlice(shipment:Shipment, newItem:ShipmentItem){
+        const newShipment = structuredClone(shipment)
+        newShipment.data[Number(index)] = newItem
+        dispatch(updateShipment(newShipment))
+    }
+
+    if (!item || !shipment) return null
 
     return <div className={`${styles["finance-item-row"]} ${index === activeIndex ? styles["highlighted"] : ""}`}
                 onClick={() => dispatch(setActiveShipmentIndex(index))}>
         <div><RegexInput type={"decimal"} value={item.dutyPer} handler={(value) => {
-            dispatch(
-                updateShipmentData(
-                    {
-                        item: update<ShipmentItem>(item, "dutyPer", value),
-                        index: Number(index)
-                    })
-            )
+            updateShipmentSlice(shipment, update<ShipmentItem>(item, "dutyPer", Number(value)))
         }} errorMessage={"Numbers only"}/></div>
         <div>${item.dutyValue.toFixed(2)}</div>
         <div><RegexInput type={"decimal"} value={item.fobDollar} handler={(value) => {
-            dispatch(
-                updateShipmentData(
-                    {
-                        item: update<ShipmentItem>(item, "fobDollar", value),
-                        index: Number(index)
-                    })
-            )
+            updateShipmentSlice(shipment, update<ShipmentItem>(item, "fobDollar", Number(value)))
         }} errorMessage={"Numbers only"}/></div>
         <div>${item.dollarTotal.toFixed(2)}</div>
         <div>£{item.fobPound.toFixed(2)}</div>
