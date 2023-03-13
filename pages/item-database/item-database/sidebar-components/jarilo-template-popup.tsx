@@ -8,7 +8,13 @@ export default function JariloTemplatePopup() {
     const item = useSelector(selectItem)
     async function copyJariloTemplate(item:schema.Item){
         let template = jariloHtml(item.description, `${item.SKU}/${item.images.main.filename}`, item.webTitle)
-        await navigator.clipboard.writeText(template)
+        let textInput = document.createElement('textarea')
+        textInput.value = template
+        document.body.appendChild(textInput)
+        textInput.select()
+        textInput.setSelectionRange(0, 99999)
+        document.execCommand('copy')
+        document.body.removeChild(textInput)
     }
 
     return (
