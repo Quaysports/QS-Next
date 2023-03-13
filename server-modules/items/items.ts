@@ -55,8 +55,12 @@ export const getAllBrands = async (filter: object = {}) => {
 export const getAllSuppliers = async (filter: object = {}) => {
     return await mongoI.findDistinct("New-Items", "suppliers", filter)
 }
-
-export const searchItems = async (query: { opts?: { isListingVariation?: boolean }; type: string; id: string; }) => {
+export interface DatabaseQuerySearchOpts {
+    isListingVariation?: boolean
+    isComposite?: boolean
+    tags?: {$in: { $in: string[] } } | {$nin: string[]}
+}
+export const searchItems = async (query: { opts?: DatabaseQuerySearchOpts; type: string; id: string; }) => {
 
     interface dbQueryTitle {
         $and: [{ $or: [{ $text: { $search: string } }, { title: { $regex: string, $options: string } }] }]
@@ -66,11 +70,7 @@ export const searchItems = async (query: { opts?: { isListingVariation?: boolean
         [key: string]: { $regex: string, $options: string }
     }
 
-    interface SearchOpts {
-        isListingVariation?: boolean
-    }
-
-    let dbQuery: SearchOpts & dbQuery | SearchOpts & dbQueryTitle
+    let dbQuery: DatabaseQuerySearchOpts & dbQuery | DatabaseQuerySearchOpts & dbQueryTitle
     let dbSort
     let dbProject
 
@@ -96,6 +96,9 @@ export const searchItems = async (query: { opts?: { isListingVariation?: boolean
     }
 
     if (opts.isListingVariation !== undefined) dbQuery.isListingVariation = opts.isListingVariation
+    if (opts.isComposite !== undefined) dbQuery.isComposite = opts.isComposite
+    if (opts.tags) dbQuery.tags = opts.tags
+
     return await mongoI.find<schema.Item>("New-Items", dbQuery, dbProject, dbSort)
 }
 

@@ -164,7 +164,7 @@ function lastFourMonthAvg(hist: schema.Item["stockHistory"]) {
     for (let i = 0; i <= 3; i++) {
         let year = hist.find((year) => Number(year[0]) === cd.getFullYear())
         if(year !== undefined){
-            const monthData = hist[cd.getFullYear()][cd.getMonth() + 1]
+            const monthData = hist[cd.getFullYear()]?.[cd.getMonth() + 1]
             if (monthData) {
                 sales += Number(monthData)
                 days += cd.getDate()

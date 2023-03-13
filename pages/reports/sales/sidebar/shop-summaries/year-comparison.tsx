@@ -22,8 +22,8 @@ export default function ShopYearComparison() {
 
     const totalComparison = (data.grandTotal - comparison.grandTotal)
     const grossProfitComparison = (data.profit - comparison.profit)
-    const lossComparison = (data.profit - data.profitWithLoss ?? 0) - (comparison.profit - comparison.profitWithLoss ?? 0)
-    const netProfitComparison = (data.profitWithLoss ?? 0 - comparison.profitWithLoss ?? 0)
+    const lossComparison = (data.profit - data.profitWithLoss) - (comparison.profit - comparison.profitWithLoss)
+    const netProfitComparison = (data.profitWithLoss - comparison.profitWithLoss )
 
     return <div className={styles["year-summary"]}>
         <div className={styles["year-summary-vs"]}>

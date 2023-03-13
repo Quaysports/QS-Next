@@ -1,9 +1,9 @@
-import {ShipmentItem} from "../../../server-modules/shipping/shipping";
+import {Shipment, ShipmentItem} from "../../../server-modules/shipping/shipping";
 import styles from "./shipment-card.module.css";
 
 
 
-export default function SupplierTable({shipmentItems}:{shipmentItems: ShipmentItem[]}){
+export default function SupplierTable({shipment, shipmentItems}:{shipment:Shipment, shipmentItems: ShipmentItem[]}){
 
     if(!shipmentItems || shipmentItems.length === 0) return null
 
@@ -11,9 +11,9 @@ export default function SupplierTable({shipmentItems}:{shipmentItems: ShipmentIt
 
     const title = `${supplier}`
 
-    let elements = [<TitleRow/>]
-    for(const item of shipmentItems){
-        elements.push(<ItemRow key={item.sku} item={item}/>)
+    let elements = [<TitleRow key={"title"}/>]
+    for(const [k,v] of Object.entries(shipmentItems)){
+        elements.push(<ItemRow key={v.sku+"-"+k} shipment={shipment} item={v}/>)
     }
 
     return (
@@ -35,8 +35,12 @@ function TitleRow(){
     </div>
 }
 
-function ItemRow({item}: { item: ShipmentItem }) {
-    return <div  className={styles["supplier-row"]}>
+function ItemRow({shipment, item}: { shipment:Shipment, item: ShipmentItem}){
+    return <div  className={styles["supplier-row"]}
+                 draggable={true}
+                 onDragStart={(e)=>{
+                    e.dataTransfer.setData('text/plain', JSON.stringify({fromShipment:shipment, item:item}))
+                 }}>
         <div>{item.sku}</div>
         <div>{item.code}</div>
         <div>{item.qty}</div>
