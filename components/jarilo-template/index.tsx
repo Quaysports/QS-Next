@@ -55,46 +55,46 @@ function JariloTemplate({IMAGE, DESC, TITLE}:{IMAGE:string, DESC:string, TITLE:s
                 <aside className="menu">
                     <p className="menu-label">Pages</p>
                     <ul className="menu-list">
-                        <li><a href="http://www.ebaystores.co.uk/Quay-Sports">Visit Store</a></li>
+                        <li><a href="https://www.ebaystores.co.uk/Quay-Sports">Visit Store</a></li>
                         <li><a
-                            href="http://feedback.ebay.co.uk/ws/eBayISAPI.dll?ViewFeedback2&userid=quaysports&ftab=AllFeedback&myworld=true&rt=nc&_trksid=p2545226.m2531.l4585">View
+                            href="https://feedback.ebay.co.uk/ws/eBayISAPI.dll?ViewFeedback2&userid=quaysports&ftab=AllFeedback&myworld=true&rt=nc&_trksid=p2545226.m2531.l4585">View
                             Feedback</a></li>
                         <li><a
-                            href="http://contact.ebay.co.uk/ws/eBayISAPI.dll?FindAnswers&requested=quaysports&_trksid=p2545226.m2531.l4583&rt=nc">Get
+                            href="https://contact.ebay.co.uk/ws/eBayISAPI.dll?FindAnswers&requested=quaysports&_trksid=p2545226.m2531.l4583&rt=nc">Get
                             In touch</a></li>
                         <br/>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/PIKE-PREDATOR-/_i.html?_fsub=18531202017&_sid=1053374777&_trksid=p4634.c0.m322">Pike
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/PIKE-PREDATOR-/_i.html?_fsub=18531202017&_sid=1053374777&_trksid=p4634.c0.m322">Pike
                                 &amp; Predator</a></li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/JUNIOR-FISHING-/_i.html?_fsub=18451502017&_sid=1053374777&_trksid=p4634.c0.m322">Juniour
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/JUNIOR-FISHING-/_i.html?_fsub=18451502017&_sid=1053374777&_trksid=p4634.c0.m322">Junior
                                 Fishing</a></li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/TACKLE-SETS-/_i.html?_fsub=18449332017&_sid=1053374777&_trksid=p4634.c0.m322">Tackle
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/TACKLE-SETS-/_i.html?_fsub=18449332017&_sid=1053374777&_trksid=p4634.c0.m322">Tackle
                                 Sets</a></li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/TACKLE-BOXES-/_i.html?_fsub=18531354017&_sid=1053374777&_trksid=p4634.c0.m322">Tackle
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/TACKLE-BOXES-/_i.html?_fsub=18531354017&_sid=1053374777&_trksid=p4634.c0.m322">Tackle
                                 Boxes</a></li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/NETS-/_i.html?_fsub=18449334017&_sid=1053374777&_trksid=p4634.c0.m322">Nets</a>
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/NETS-/_i.html?_fsub=18449334017&_sid=1053374777&_trksid=p4634.c0.m322">Nets</a>
                             </li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/LUGGAGE-/_i.html?_fsub=18449335017&_sid=1053374777&_trksid=p4634.c0.m322">Luggage</a>
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/LUGGAGE-/_i.html?_fsub=18449335017&_sid=1053374777&_trksid=p4634.c0.m322">Luggage</a>
                             </li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/CAMPING-OUTDOORS-/_i.html?_fsub=3913628017&_sid=1053374777&_trksid=p4634.c0.m322">Camping
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/CAMPING-OUTDOORS-/_i.html?_fsub=3913628017&_sid=1053374777&_trksid=p4634.c0.m322">Camping
                                 &amp; Outdoors</a></li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/OTHER-SPORTS-/_i.html?_fsub=18448233017&_sid=1053374777&_trksid=p4634.c0.m322">Other
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/OTHER-SPORTS-/_i.html?_fsub=18448233017&_sid=1053374777&_trksid=p4634.c0.m322">Other
                                 Sports</a></li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/SHOOTING-HUNTING-/_i.html?_fsub=18449562017&_sid=1053374777&_trksid=p4634.c0.m322">Shooting
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/SHOOTING-HUNTING-/_i.html?_fsub=18449562017&_sid=1053374777&_trksid=p4634.c0.m322">Shooting
                                 &amp; Hunting</a></li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/OTHER-ITEMS-/_i.html?_fsub=18523044017&_sid=1053374777&_trksid=p4634.c0.m322">Other
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/OTHER-ITEMS-/_i.html?_fsub=18523044017&_sid=1053374777&_trksid=p4634.c0.m322">Other
                                 Items</a></li>
                             <li><a
-                                href="http://www.ebaystores.co.uk/str/Quay-Sports/ROD-RESTS-BANK-STICKS-/_i.html?_fsub=23987530017&_sid=1053374777&_trksid=p4634.c0.m322">Rod
+                                href="https://www.ebaystores.co.uk/str/Quay-Sports/ROD-RESTS-BANK-STICKS-/_i.html?_fsub=23987530017&_sid=1053374777&_trksid=p4634.c0.m322">Rod
                                 Rests &amp; Bank Sticks</a></li>
                     </ul>
                 </aside>
@@ -111,7 +111,7 @@ function JariloTemplate({IMAGE, DESC, TITLE}:{IMAGE:string, DESC:string, TITLE:s
                         </label>
                     </div>
                     <div className="column mob-bttn-alt">
-                        <a href="http://www.ebaystores.co.uk/Quay-Sports">
+                        <a href="https://www.ebaystores.co.uk/Quay-Sports">
                             <div className="mobilebttn">
                                 <i className="fa fa-home fa-mobile-bttn"></i>
                             </div>
@@ -119,7 +119,7 @@ function JariloTemplate({IMAGE, DESC, TITLE}:{IMAGE:string, DESC:string, TITLE:s
                     </div>
                     <div className="column">
                         <a
-                            href="http://contact.ebay.co.uk/ws/eBayISAPI.dll?FindAnswers&requested=quaysports&_trksid=p2545226.m2531.l4583&rt=nc">
+                            href="https://contact.ebay.co.uk/ws/eBayISAPI.dll?FindAnswers&requested=quaysports&_trksid=p2545226.m2531.l4583&rt=nc">
                             <div className="mobilebttn">
                                 <i className="fa fa-envelope fa-mobile-bttn"></i>
                             </div>

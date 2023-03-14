@@ -15,7 +15,7 @@ export default function ProductContent({IMAGE,DESC, TITLE}: Props){
                                     <div className="slideable-grip">
                                         <div className="slideable-item">
                                             <input type="radio" name="slideable" id="slide1"/>
-                                            <img src={'http://141.195.190.47/images/' + IMAGE} alt="item-image"/>
+                                            <img src={'https://141.195.190.47/images/' + IMAGE} alt="item-image"/>
                                         </div>
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@ export default function ProductContent({IMAGE,DESC, TITLE}: Props){
                                         <li><i className="fa fa-star"></i></li>
                                         <li><i className="fa fa-star"></i></li>
                                         <li className="feedback-link"><a
-                                            href="http://feedback.ebay.co.uk/ws/eBayISAPI.dll?ViewFeedback2&userid=quaysports&ftab=AllFeedback&myworld=true&rt=nc&_trksid=p2545226.m2531.l4585">Check
+                                            href="https://feedback.ebay.co.uk/ws/eBayISAPI.dll?ViewFeedback2&userid=quaysports&ftab=AllFeedback&myworld=true&rt=nc&_trksid=p2545226.m2531.l4585">Check
                                             Out Our Feedback</a></li>
                                     </ul>
                                 </div>
