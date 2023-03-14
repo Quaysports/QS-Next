@@ -1,8 +1,8 @@
-import {postReq} from "./linn-post-req";
+import {postOpts, postReq} from "./linn-post-req";
 import {updateItem} from "../items/items";
 import {guid} from "../core/core";
 import {jariloHtml} from "../../components/jarilo-template";
-import {setData} from "../mongo-interface/mongo-interface";
+import {findOne, setData} from "../mongo-interface/mongo-interface";
 import {linn, schema} from "../../types";
 
 export const getLinnChannelPrices = async (id: string) => {
@@ -129,12 +129,13 @@ export const bulkGetImages = async (skus: string[]) => {
     ) as linn.BulkGetImagesResult
 }
 
+function fixedEncodeURIComponent(str: string | number) {
+    return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+        return '%' + c.charCodeAt(0).toString(16);
+    })
+}
+
 export const bulkUpdateLinnItem = async (item: schema.Item) => {
-    function fixedEncodeURIComponent(str: string | number) {
-        return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-            return '%' + c.charCodeAt(0).toString(16);
-        })
-    }
 
     function formatAndEncodeDescription(desc: string) {
         return encodeURIComponent(desc.replace(/"/g, "'"))
@@ -241,7 +242,7 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
                     break;
             }
         }
-        if(item.tags.length > 0) testForProperty('Tags', item.tags.reduce((string, tag) => {
+        if (item.tags.length > 0) testForProperty('Tags', item.tags.reduce((string, tag) => {
             return string === "" ? tag : `${string}, ${tag}`
         }, ""));
         testForProperty('Brand', item.brand);
@@ -321,7 +322,7 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
     results.Title = titleRes.code
 
     for (let image in item.images) {
-        if(item.images[image as keyof schema.Images].filename === "") continue
+        if (item.images[image as keyof schema.Images].filename === "") continue
         let imageDetails = {
             "ItemNumber": item.SKU,
             "StockItemId": item.linnId,
@@ -346,11 +347,153 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
                 ImageThumbnailUrl: string
             }
         }
-        if(imageRes.data.ImageId) item.images[imageKey].id = imageRes.data.ImageId
-        if(imageRes.data.ImageUrl) item.images[imageKey].url = imageRes.data.ImageUrl
+        if (imageRes.data.ImageId) item.images[imageKey].id = imageRes.data.ImageId
+        if (imageRes.data.ImageUrl) item.images[imageKey].url = imageRes.data.ImageUrl
         console.log(imageRes.data)
         results['Update Image'] = imageRes.code
     }
-    await setData("New-Items", {SKU:item.SKU}, item)
+    await setData("New-Items", {SKU: item.SKU}, item)
     return results
+}
+
+type NewItemLinnResult = {
+    code: number
+    data: {
+        Items: {
+            StockItemId: string
+            SKU: string
+        }[]
+    }
+}
+export const createNewItems = async (items: { [key: number]: schema.Item }) => {
+
+    const linnHeaders = await postOpts("")
+    const opts = {
+        method: 'POST',
+        headers: linnHeaders.headers
+    }
+    const suppliers = await fetch('https://'+linnHeaders.hostname+'/api/Inventory/GetSuppliers', opts)
+                            .then(async(res)=>await res.json()) as { SupplierName: string, pkSupplierID: string }[]
+
+    const itemsArray = Object.values(items)
+    const newItemsBulkUpload = []
+    const skuArray = []
+    let duplicateSKUS = []
+    for (const item of itemsArray) {
+        item.supplier = suppliers.find(supplier => supplier.SupplierName === item.supplier)?.pkSupplierID || ""
+        const brand = await findOne<{ prefix: string }>('Brand-Prefixes', {brand: item.brand}, {prefix: 1})
+        item.SKU = `${brand ? brand.prefix : ""}-${item.SKU.toUpperCase()}`
+        const skuCheck = await findOne<string>('New-Items', {SKU:item.SKU}, {SKU:1})
+        if(skuCheck) duplicateSKUS.push(item.SKU)
+        item.title = `${item.brand.toUpperCase()} ${item.title}`
+        newItemsBulkUpload.push(bulkUploadFormat(item))
+        skuArray.push(item.SKU)
+    }
+    if(duplicateSKUS.length > 0) return duplicateSKUS
+
+    const errors = []
+    let inventoryUploadResult = await updateLinnItem(
+        '/api/Inventory/AddInventoryItemBulk',
+        `request={"InventoryItems":${encodeURIComponent(JSON.stringify(newItemsBulkUpload))}}`
+    ) as NewItemLinnResult
+    if(inventoryUploadResult.code >= 400) errors.push("Bulk inventory upload failed")
+    console.log(inventoryUploadResult)
+
+    let stockItemIDsResult = await updateLinnItem(
+        "/api/Inventory/GetStockItemIdsBySKU",
+        `request={"SKUS":${JSON.stringify(skuArray)}}`
+    ) as NewItemLinnResult
+    if(stockItemIDsResult.code >= 400) errors.push("Stock item ID download failed")
+
+    const StockLevelArray = []
+    const SupplierArray = []
+    for (let i = 0; i < itemsArray.length; i++) {
+
+        itemsArray[i].linnId = stockItemIDsResult.data.Items.find(response => response.SKU === itemsArray[i].SKU)?.StockItemId ||  ""
+        let extendedPropertiesResult = await updateLinnItem(
+            "/api/Inventory/CreateInventoryItemExtendedProperties",
+            `inventoryItemExtendedProperties=${JSON.stringify(updateItemFormat(itemsArray[i]))}`
+        ) as NewItemLinnResult
+        if(extendedPropertiesResult.code >= 400) errors.push("Extended Properties Upload for " + itemsArray[i].SKU + " failed")
+
+        StockLevelArray.push(bulkStockLevelFormat(itemsArray[i]))
+        SupplierArray.push(bulkSupplierFormat(itemsArray[i]))
+    }
+
+    let updateStockLevelsResult = await updateLinnItem(
+        "/api/Stock/UpdateStockLevelsBulk",
+        `request={"Items":${JSON.stringify(StockLevelArray)}}`
+    ) as NewItemLinnResult
+    if(updateStockLevelsResult.code >= 400) errors.push("Bulk stock level upload failed")
+
+    let itemSupplierAssignationResult = await updateLinnItem(
+        '/api/Inventory/CreateStockSupplierStat',
+        `itemSuppliers=${JSON.stringify(SupplierArray)}`
+    ) as NewItemLinnResult
+    if(itemSupplierAssignationResult.code >= 400) errors.push("Bulk default supplier assignation failed")
+    return errors
+}
+const bulkSupplierFormat = (item: schema.Item) => ({
+    IsDefault: true,
+    SupplierID: item.supplier,
+    StockItemId: item.linnId
+})
+const bulkStockLevelFormat = (item: schema.Item) => ({
+    StockLevel: item.stock.total,
+    MinimumLevel: 2,
+    StockItemId: item.linnId,
+    StockLocationName: 'Default'
+})
+const bulkUploadFormat = (item: schema.Item) => ({
+    ItemNumber: item.SKU,
+    ItemTitle: item.title,
+    BarcodeNumber: item.EAN,
+    PurchasePrice: item.prices.purchase,
+    RetailPrice: item.prices.retail,
+    Weight: 0.1
+})
+
+function updateItemFormat(item: schema.Item) {
+    const tags = item.tags.reduce((string, tag) => string === "" ? tag : `${string}, ${tag}`, "")
+    return [
+        {
+            fkStockItemId: item.linnId,
+            SKU: item.SKU,
+            PropertyType: "Attribute",
+            PropertyValue: fixedEncodeURIComponent(item.mappedExtendedProperties.shippingFormat),
+            ProperyName: 'Shipping Format'
+        }, {
+            fkStockItemId: item.linnId,
+            SKU: item.SKU,
+            PropertyType: "Attribute",
+            PropertyValue: fixedEncodeURIComponent(tags),
+            ProperyName: 'Tags'
+        }, {
+            fkStockItemId: item.linnId,
+            SKU: item.SKU,
+            PropertyType: "Attribute",
+            PropertyValue: fixedEncodeURIComponent(item.brand),
+            ProperyName: 'Brand'
+        }
+    ]
+}
+
+export async function addNewSupplier(newSupplier:string) {
+    let match = false
+    const linnHeaders = await postOpts("")
+    const opts = {
+        method: 'POST',
+        headers: linnHeaders.headers
+    }
+    const currentSuppliers = await fetch('https://'+linnHeaders.hostname+'/api/Inventory/GetSuppliers', opts)
+        .then(async(res)=>await res.json()) as { SupplierName: string, pkSupplierID: string }[]
+
+    for(const supplier in currentSuppliers){
+        if(supplier.toUpperCase() === newSupplier.toUpperCase()) match = true
+    }
+    if(match) return {code:300, message:"Supplier already exists"}
+
+    const {code} = await updateLinnItem('/api/Inventory/AddSupplier', `supplier={"SupplierName": "${newSupplier}"}`) as {code:number}
+    if(code >= 400) return {code:400, message:"Linnworks error"}
+    return {code:200, message: "New supplier added"}
 }

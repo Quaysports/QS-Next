@@ -97,7 +97,7 @@ button:hover, .button:hover{
     transform: translate(-1px, -1px);
 }
 
-button:active{
+button:active, .button:active{
     transform: translate(0, 0);
     transition-duration: 0.025s;
 }

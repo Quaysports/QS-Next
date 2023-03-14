@@ -1,0 +1,11 @@
+.tags-container{
+    display:grid;
+    grid-template-columns: 200px 200px 200px 200px;
+    grid-row-gap: 5px;
+    text-transform: capitalize;
+}
+.tags-button{
+    width:100px;
+    margin: 5px;
+    float: right
+}

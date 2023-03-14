@@ -1,6 +1,6 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
-    selectItem,
+    selectItem, selectTags, setItemTags,
 } from "../../../../store/item-database/item-database-slice";
 import styles from "../../item-database.module.css"
 import ItemLocation from "./location-selects";
@@ -8,18 +8,19 @@ import SuppliersSelect from "./supplier-select";
 import BrandInput from "./brand-input";
 import TitleInput from "./title-input";
 import WebsiteTitleInput from "./website-title-input";
-import TagsCheckboxList from "./tags-checkbox-list";
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
 import ShippingSelect from "./shipping-select";
 import {toCurrency} from "../../../../components/utils/utils";
-
-/**
- * Essentials Ribbon Component
- */
+import TagsCheckboxList from "../../../../components/item-database-utils/tags-popup";
 
 export default function EssentialsRibbon(){
 
     const item = useSelector(selectItem)
+    const tags = useSelector(selectTags)
+    const dispatch = useDispatch()
+    function tagHandler(tags:string[]){
+        dispatch(setItemTags(tags))
+    }
 
     return(
         <div className={styles["item-details-essentials"]}>
@@ -61,7 +62,12 @@ export default function EssentialsRibbon(){
                 <div>{toCurrency(item.prices.shop)}</div>
                 <div/>
                 <div className={`${styles["tags-button"]} button`} onClick={() => {
-                    dispatchNotification({type:"popup", content:<TagsCheckboxList/>, title:"Tags"}
+                    dispatchNotification(
+                        {
+                            type:"popup",
+                            content:<TagsCheckboxList tags={tags} handler={(x) => tagHandler(x)} itemTags={item.tags}/>,
+                            title:"Tags"
+                        }
                     )}}>{item.tags ? item.tags.length : 0} Tags</div>
                 <div><ShippingSelect/></div>
             </div>

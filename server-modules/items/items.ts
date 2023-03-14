@@ -49,11 +49,12 @@ export const getDefaultSuppliers = async (filter: object = {}) => {
 }
 
 export const getAllBrands = async (filter: object = {}) => {
-    return await mongoI.findDistinct("New-Items", "brand", filter)
+    const res = await mongoI.findDistinct("Brand-Prefixes", "brand", filter)
+    return res ? res : []
 }
 
-export const getAllSuppliers = async (filter: object = {}) => {
-    return await mongoI.findDistinct("New-Items", "suppliers", filter)
+export const getAllSuppliers = async (filter: object = {}):Promise<string[]> => {
+    return await mongoI.findDistinct("New-Items", "suppliers", filter) || [] as string[]
 }
 export interface DatabaseQuerySearchOpts {
     isListingVariation?: boolean
@@ -190,7 +191,8 @@ export const getBrandLabelImages = async () => {
 }
 
 export const getBrands = async (filter = {}) => {
-    return await mongoI.findDistinct("New-Items", "brand", filter)
+    const res = await mongoI.findDistinct("New-Items", "brand", filter)
+    return res ? res : []
 }
 
 export const getTags = async () => {

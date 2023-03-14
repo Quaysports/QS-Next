@@ -10,7 +10,7 @@ import MagentoTable from "./magento-table";
 import ShopTable from "./shop-table";
 import MiscTable from "./misc-table";
 import {appWrapper} from "../../store/store";
-import {getAllBrands, getItems, getStockValues} from "../../server-modules/items/items";
+import {getBrands, getItems, getStockValues} from "../../server-modules/items/items";
 import * as Fees from "../../server-modules/fees/fees"
 import * as Packaging from "../../server-modules/packaging/packaging"
 import * as Postage from "../../server-modules/postage/postage"
@@ -131,7 +131,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
     const stockValues = await getStockValues(domestic)
     if(stockValues) store.dispatch(setTotalStockValue(stockValues[0].total))
 
-    const suppliers = await getAllBrands(query) as string[]
+    const suppliers = await getBrands(query) as string[]
     if(suppliers) store.dispatch(setSuppliers(suppliers))
 
     const fees = await Fees.get()

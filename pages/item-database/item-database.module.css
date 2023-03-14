@@ -40,12 +40,20 @@
 
 /*-------------------------------------------New Items--------------------------------------------*/
 
-.row-container, .title-row-container{
-    display: grid;
-    grid-template-columns: repeat(13, 100px);
+.new-item-row{
+    display:grid;
+    grid-template-columns: 150px 120px 1fr 70px 70px 110px 40px 75px 60px 20px 60px;
+    grid-column-gap: 5px;
+    padding: 3px 0;
+    background-color: var(--primary-table-background);
 }
-.number-input {
-    width: 80px;
+
+.new-item-row > button{
+    height: 20px;
+}
+.delete-button{
+    justify-self: center;
+    width:30px
 }
 
 
@@ -114,12 +122,6 @@
 .title-inputs{
     width:100%;
     text-align: left;
-}
-.tags-container{
-    display:grid;
-    grid-template-columns: 200px 200px 200px 200px;
-    grid-row-gap: 5px;
-    text-transform: capitalize;
 }
 .tags-button{
     height: 20px;

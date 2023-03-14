@@ -12,7 +12,7 @@ export default function ShowOrder() {
                 tempArray.push(
                     <div key={index}
                          className={`${styles["shop-orders-table"]} ${styles["shop-orders-table-cells"]} ${styles["completed-orders-list-grid"]}`}>
-                        <span className={"center-align"}>{item.quantity}</span>
+                        <span className={"center-align"}>{item.quantity * (item.tradePack ? item.tradePack : 1)}</span>
                         <span>{item.SKU}</span>
                         <span>{item.title}</span>
                     </div>

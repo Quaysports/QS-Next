@@ -3,8 +3,9 @@ import * as LinnAuth  from './linn-auth'
 export const agent = new https.Agent();
 agent.maxSockets = 10;
 
-const postOpts = async (path: string) => {
+export const postOpts = async (path: string) => {
     let serverDetails = await LinnAuth.getAuthDetails()
+
     return {
         hostname: serverDetails.server,
         method: 'POST',
@@ -17,7 +18,7 @@ const postOpts = async (path: string) => {
     }
 }
 
-interface DataWithStatus extends Object {
+export interface DataWithStatus extends Object {
     code:number
     data:object
 }
