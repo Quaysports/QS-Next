@@ -16,7 +16,7 @@ jest.mock('../../../../../pages/item-database/new-items/new-item-row/brand-selec
     return (props:any) => mockBrandSelect(props)
 })
 const mockSKUInput = jest.fn()
-jest.mock('../../../../../pages/item-database/new-items/new-item-row/SKU-input', () => {
+jest.mock('../../../../../pages/item-database/new-items/new-item-row/sku-input', () => {
     return (props:any) => mockSKUInput(props)
 })
 const mockTitleInput = jest.fn()
