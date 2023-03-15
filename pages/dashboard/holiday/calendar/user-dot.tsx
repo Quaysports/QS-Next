@@ -1,9 +1,9 @@
 import styles from "./calendar.module.css";
 import {useSelector} from "react-redux";
 import {selectUserColors} from "../../../../store/dashboard/holiday-slice";
-import {sbt} from "../../../../types";
+import {schema} from "../../../../types";
 
-export default function UserDot({user, booked}: { user: string, booked: sbt.HolidayOrSickBooking }) {
+export default function UserDot({user, booked}: { user: string, booked: schema.HolidayOrSickBooking }) {
     const userColors = useSelector(selectUserColors)
 
     if (!booked || !user) return null

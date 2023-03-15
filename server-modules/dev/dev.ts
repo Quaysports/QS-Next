@@ -1,5 +1,5 @@
 import {bulkUpdateAny, bulkUpdateItems, find, findOne, setData} from "../mongo-interface/mongo-interface";
-import {sbt, schema, till} from "../../types";
+import {schema, till} from "../../types";
 import {Postage} from "../postage/postage";
 import {Packaging} from "../packaging/packaging";
 import {Fees} from "../fees/fees";
@@ -10,7 +10,7 @@ export async function getCalendars(){
 
 export async function convertShopToTillTransactions(){
 
-    let tillOrders = await find<sbt.TillOrder>("Shop", {})
+    let tillOrders = await find<schema.TillOrder>("Shop", {})
     if(!tillOrders) return
 
     function convertToIntCurrency(value: string):number {
@@ -76,7 +76,7 @@ export async function convertShopToTillTransactions(){
         newOrders.push(orderConversion)
     }
 
-    function convertOrderItem(item: sbt.TillOrderItem): till.OrderItem {
+    function convertOrderItem(item: schema.TillOrderItem): till.OrderItem {
         return {
             EAN: item.EAN || "",
             SKU: item.SKU || "",
@@ -112,7 +112,7 @@ export async function convertShopToTillTransactions(){
         }
     }
 
-    function convertOrderReturn(item: sbt.TillOrderReturns): till.OrderReturn {
+    function convertOrderReturn(item: schema.TillOrderReturns): till.OrderReturn {
         console.log(item)
         let convertedOrder: till.OrderReturn = {
             id: "",
@@ -288,8 +288,6 @@ export async function convertGiftCards(){
     }
     return
 }
-
-type marginData = Pick<schema.Item, "SKU" | "linnId" | "marginData">
 
 export async function calculateTillProfits(id:string){
     let tillData = await findOne<till.Order>("Till-Transactions", {id:id})

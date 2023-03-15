@@ -1,6 +1,6 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import {ObjectId} from "mongodb";
-import {sbt} from "../../types";
+import {schema} from "../../types";
 
 export interface User {
     theme: UserTheme;
@@ -170,7 +170,7 @@ export const getListOfHolidayYears = async (location:string) => {
     return years ? years : [];
 }
 
-export const updateHolidayCalendar = async (data: sbt.holidayCalendar) => {
+export const updateHolidayCalendar = async (data: schema.HolidayCalendar) => {
     if (data._id !== undefined) delete data._id
     await mongoI.setData("Holiday-Calendar", {$and: [{year: {$eq: data.year}}, {location: {$eq: data.location}}]}, data)
 }

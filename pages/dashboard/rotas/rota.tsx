@@ -4,9 +4,9 @@ import {Rota, UserHours, WeekData} from "../../../server-modules/rotas/rotas";
 import {useDispatch} from "react-redux";
 import {updateTemplate} from "../../../store/dashboard/rotas-slice";
 import {getTinyDate} from "../../../components/rota-utils/time-utils";
-import {sbt} from "../../../types";
+import {schema} from "../../../types";
 
-export default function RotaWeek({rota, weekData, holiday, edit=true}: { rota: Rota, weekData:WeekData | null, holiday:sbt.holidayDay[] | null, edit?: boolean }) {
+export default function RotaWeek({rota, weekData, holiday, edit=true}: { rota: Rota, weekData:WeekData | null, holiday:schema.HolidayDay[] | null, edit?: boolean }) {
 
     if(!rota) return null
 
@@ -18,7 +18,7 @@ export default function RotaWeek({rota, weekData, holiday, edit=true}: { rota: R
     return <div className={styles["week"]}>{days}</div>
 }
 
-function RotaDay({dayOfWeek, userHours, weekData, holiday, edit}: { dayOfWeek: number, userHours: UserHours[], weekData:WeekData | null, holiday:sbt.holidayDay[] | null, edit:boolean }) {
+function RotaDay({dayOfWeek, userHours, weekData, holiday, edit}: { dayOfWeek: number, userHours: UserHours[], weekData:WeekData | null, holiday:schema.HolidayDay[] | null, edit:boolean }) {
 
     if(!userHours) return null
 
@@ -56,7 +56,7 @@ function DayTitle({dayOfWeek, weekData}: { dayOfWeek: number, weekData:WeekData 
     )
 }
 
-function UserRow({userIndex, userHours, dayOfWeek, holiday, edit}: { userIndex: number, userHours: UserHours, dayOfWeek: number, holiday:sbt.holidayDay[] | null, edit:boolean }) {
+function UserRow({userIndex, userHours, dayOfWeek, holiday, edit}: { userIndex: number, userHours: UserHours, dayOfWeek: number, holiday:schema.HolidayDay[] | null, edit:boolean }) {
 
     if(!userHours) return null
 

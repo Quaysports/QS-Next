@@ -1,7 +1,7 @@
 import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {User} from "../../server-modules/users/user";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
-import {sbt} from "../../types";
+import {schema} from "../../types";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "../store";
 
@@ -12,7 +12,7 @@ export interface holidaysWrapper {
 }
 
 export interface holidaysState {
-    calendar: sbt.holidayCalendar | null
+    calendar: schema.HolidayCalendar | null
     years: string[]
     users: LocationUsers
     bookedDays: { [key: string]: number }
@@ -31,7 +31,7 @@ export interface NewBooking {
     user: string
     date: string
     days: number
-    booking: sbt.HolidayOrSickBooking
+    booking: schema.HolidayOrSickBooking
 }
 
 const initialState: holidaysState = {
@@ -71,7 +71,7 @@ export const holidaysSlice = createSlice({
             .addDefaultCase(() => {})
     },
     reducers: {
-        setHolidayCalendar: (state, action: PayloadAction<sbt.holidayCalendar>) => {
+        setHolidayCalendar: (state, action: PayloadAction<schema.HolidayCalendar>) => {
             state.calendar = action.payload
             const {bookedDays, paidSickDays, unpaidSickDays} = calculateBookedDays(action.payload)
 
@@ -79,7 +79,7 @@ export const holidaysSlice = createSlice({
             state.paidSickDays = paidSickDays
             state.unpaidSickDays = unpaidSickDays
         },
-        updateHolidayCalendar: (state, action: PayloadAction<sbt.holidayCalendar>) => {
+        updateHolidayCalendar: (state, action: PayloadAction<schema.HolidayCalendar>) => {
 
             state.calendar = action.payload
             const {bookedDays, paidSickDays, unpaidSickDays} = calculateBookedDays(action.payload)
@@ -177,7 +177,7 @@ export const holidaysSlice = createSlice({
     },
 });
 
-function calculateBookedDays(calendar: sbt.holidayCalendar) {
+function calculateBookedDays(calendar: schema.HolidayCalendar) {
     const totals: {
         bookedDays: { [key: string]: number },
         paidSickDays: { [key: string]: number },

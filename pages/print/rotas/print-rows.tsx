@@ -1,7 +1,7 @@
 import {Rota, UserHours, WeekData} from "../../../server-modules/rotas/rotas";
 import styles from "./print-rota-rows.module.css";
 import {getTinyDate} from "../../../components/rota-utils/time-utils";
-import {sbt} from "../../../types";
+import {schema} from "../../../types";
 
 export default function PrintRotaRows(){
 
@@ -32,7 +32,7 @@ export default function PrintRotaRows(){
     )
 }
 
-function RotaWeek({rota, weekData, holiday}: { rota: Rota, weekData:WeekData, holiday:sbt.holidayDay[] | null }) {
+function RotaWeek({rota, weekData, holiday}: { rota: Rota, weekData:WeekData, holiday:schema.HolidayDay[] | null }) {
 
     let days = []
     for (let i in rota.rota) {
@@ -48,7 +48,7 @@ function RotaWeek({rota, weekData, holiday}: { rota: Rota, weekData:WeekData, ho
     </div>
 }
 
-function RotaDay({dayOfWeek, userHours, weekData, holiday}: { dayOfWeek: number, userHours: UserHours[], weekData:WeekData, holiday:sbt.holidayDay[] | null }) {
+function RotaDay({dayOfWeek, userHours, weekData, holiday}: { dayOfWeek: number, userHours: UserHours[], weekData:WeekData, holiday:schema.HolidayDay[] | null }) {
 
     let userRows = []
 
@@ -83,7 +83,7 @@ function DayTitle({dayOfWeek, weekData}: { dayOfWeek: number, weekData:WeekData 
     )
 }
 
-function UserRow({userHours, dayOfWeek, holiday}: {userHours: UserHours, dayOfWeek: number, holiday:sbt.holidayDay[] | null }) {
+function UserRow({userHours, dayOfWeek, holiday}: {userHours: UserHours, dayOfWeek: number, holiday:schema.HolidayDay[] | null }) {
 
     let hourCells: JSX.Element[] = []
     Object.entries(userHours.hours).forEach(([k, v]) => {

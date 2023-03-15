@@ -1,6 +1,6 @@
 import * as mongoI from '../mongo-interface/mongo-interface'
 import {ObjectId} from 'mongodb'
-import {sbt, schema} from "../../types";
+import {schema} from "../../types";
 import {find, findAggregate} from "../mongo-interface/mongo-interface";
 import {number, string} from "prop-types";
 //import * as linn from "../linn-api/linn-api"
@@ -35,7 +35,7 @@ export type QuickLinkItem = Pick<schema.Item, "SKU" | "title" | "prices" | "till
 export interface PickListItem extends Pick<schema.Item, "SKU" | "title" | "stock" | "tags"> { quantity:number }
 
 export const get = async (query: object) => {
-    return await mongoI.find<sbt.TillOrder>("Shop", query)
+    return await mongoI.find<schema.TillOrder>("Shop", query)
 }
 
 export const reports = async () => {
@@ -367,5 +367,5 @@ export async function getTillTransactionCSVData(dates:{start:number,end:number})
         ? {$and:[{paid: true},{"transaction.date": {"$gt": dates.start.toString()}}]}
         : {$and:[{paid: true},{"transaction.date": {"$gt": dates.start.toString()}},{"transaction.date": {"$lt": dates.end.toString()}}]}
     console.dir(query, {depth: 5})
-    return await find<sbt.TillOrder>("Till-Transactions", query)
+    return await find<schema.TillOrder>("Till-Transactions", query)
 }

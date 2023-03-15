@@ -2,7 +2,7 @@ import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {User} from "../../server-modules/users/user";
 import {PublishedRota, Rota, UserHours, WeekData} from "../../server-modules/rotas/rotas";
 import {dispatchToast} from "../../components/toast/dispatch-toast";
-import {sbt} from "../../types";
+import {schema} from "../../types";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "../store";
 
@@ -21,7 +21,7 @@ export interface rotaState {
     templatesNames: string[]
     template: Rota | null
     weekData: WeekData | null
-    holidays: sbt.holidayDay[] | null
+    holidays: schema.HolidayDay[] | null
 }
 
 const initialState: rotaState = {
@@ -64,7 +64,7 @@ export const rotaSlice = createSlice({
             setWeekData: (state, action: PayloadAction<WeekData>) => {
                 state.weekData = action.payload
             },
-            setHolidayData: (state, action: PayloadAction<sbt.holidayDay[] | null>) => {
+            setHolidayData: (state, action: PayloadAction<schema.HolidayDay[] | null>) => {
                 state.holidays = action.payload
             },
             createTemplate(state) {

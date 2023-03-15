@@ -1,7 +1,7 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 import {setData} from "../mongo-interface/mongo-interface";
 import {ObjectId} from "mongodb";
-import {sbt} from "../../types";
+import {schema} from "../../types";
 
 export interface Rota{
     _id?:string
@@ -18,7 +18,7 @@ export interface WeekData {
 
 export interface PublishedRota extends Rota {
     weekData: WeekData
-    holidays: sbt.holidayDay[] | null
+    holidays: schema.HolidayDay[] | null
 }
 
 export interface UserHours {
