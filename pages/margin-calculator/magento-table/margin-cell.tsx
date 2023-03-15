@@ -39,7 +39,7 @@ function buildMarginTooltip(item: MarginItem) {
             <div>Selling Price: {toCurrency(item.prices.magento)}</div>
             <div>------- Minus -------</div>
             <div>Purchase Price: {toCurrency(item.prices.purchase)}</div>
-            {item.prices.magento < 25
+            {item.prices.magento > 25
                 ? <><div>Postage: {toCurrency(postage)}</div>
                 <div>Packaging: {toCurrency(packaging)}</div></>
                 : null
