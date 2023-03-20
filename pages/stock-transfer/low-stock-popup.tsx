@@ -1,9 +1,7 @@
-import {LowStockItem, newOpenTransfer, selectOpenTransfer, setOpenTransfer} from "../../store/stock-transfer-slice";
+import {LowStockItem, newOpenTransfer} from "../../store/stock-transfer-slice";
 import styles from './stock-transfer.module.css'
-import {useDispatch, useSelector} from "react-redux";
-import {current} from "@reduxjs/toolkit";
+import {useDispatch} from "react-redux";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
-import {TransferObject} from "../../server-modules/stock-transfer/stock-transfer";
 
 type Props = {
     items: LowStockItem[]

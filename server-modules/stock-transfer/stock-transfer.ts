@@ -1,9 +1,8 @@
-import {deleteOne, find, setData, unsetData} from "../mongo-interface/mongo-interface";
+import {deleteOne, find, setData} from "../mongo-interface/mongo-interface";
 import {LowStockItem} from "../../store/stock-transfer-slice";
 import * as mongoI from "../mongo-interface/mongo-interface";
 import {updateLinnItem} from "../linn-api/linn-api";
-import {DataWithStatus} from "../linn-api/linn-post-req";
-import {object} from "prop-types";
+
 
 export type TransferObject = {
     items: LowStockItem[],
@@ -104,7 +103,7 @@ export async function completeTransfer(transfer:TransferObject){
         const itemToAdd = `fkTransferId=${result.data.PkTransferId}&pkStockItemId=${item.linnId}`
         const itemToAddResult = await updateLinnItem('/api/WarehouseTransfer/AddItemToTransfer', itemToAdd) as AddedItemResult
         const quantityChange = `pkTransferId=${result.data.PkTransferId}&pkTransferItemId=${itemToAddResult.data.PkTransferItemId}&Quantity=${item.stockIn}`
-        const quantityChangeRes = await updateLinnItem('/api/WarehouseTransfer/ChangeTransferItemRequestQuantity', quantityChange)
+        await updateLinnItem('/api/WarehouseTransfer/ChangeTransferItemRequestQuantity', quantityChange)
     }
 
     const completeRes = await updateLinnItem('/api/WarehouseTransfer/ChangeTransferStatus', `pkTransferId=${result.data.PkTransferId}&newStatus=7`) as NewTransferResult
