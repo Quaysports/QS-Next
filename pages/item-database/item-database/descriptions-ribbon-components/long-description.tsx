@@ -21,7 +21,7 @@ export default function LongDescription() {
                     statusbar: false,
                     branding: false,
                     invalid_elements: 'span,div,body,header',
-                    valid_elements: 'p',
+                    valid_elements: 'p, ul, ol, li',
                     width: "auto",
                     height: "400px",
                     skin: "quaysports",
