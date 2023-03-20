@@ -1,0 +1,47 @@
+.low-stock-popup {
+    display: grid;
+    grid-template-columns: 200px repeat(3, 100px);
+}
+.title-row {
+    font-weight: bold;
+}
+.open-transfer-container {
+    background-color: var(--primary-table-background);
+    box-shadow: var(--primary-box-shadow);
+    border-radius: var(--primary-border-radius);
+    display: grid;
+    grid-row-gap: 7px;
+    margin: 10px;
+    padding: 10px;
+}
+.open-transfer-title {
+    font-weight: bold;
+    text-align: center;
+    background-color: var(--primary-table-title);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+.open-transfer-row, .open-transfer-title {
+    display: grid;
+    grid-template-columns: 40px 200px 1fr 100px 100px 100px 75px;
+    padding: 2px 10px;
+}
+.open-transfer-row {
+    background-color: var(--primary-table-cell-background);
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+}
+.open-transfer-row > div {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height:22px
+}
+.open-transfer-row > span {
+    text-align: center;
+    line-height:22px
+}
+.delete-button{
+    width:21px;
+    height: 21px;
+}
