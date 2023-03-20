@@ -2,6 +2,7 @@ import {deleteOne, find, setData} from "../mongo-interface/mongo-interface";
 import {LowStockItem} from "../../store/stock-transfer-slice";
 import * as mongoI from "../mongo-interface/mongo-interface";
 import {updateLinnItem} from "../linn-api/linn-api";
+import {schema} from "../../types";
 
 
 export type TransferObject = {
@@ -12,8 +13,15 @@ export type TransferObject = {
     date: string
 }
 
+interface WarehouseItem {
+    SKU: string,
+    title: string,
+    linnId: string,
+    stock: schema.Stock
+}
+
 export async function getInternationalLowStockItems() {
-    const warehouseItems = await mongoI.find("New-Items", {
+    const warehouseItems = await mongoI.find<WarehouseItem>("New-Items", {
         'stock.warehouse': {$gt: 0},
         isComposite: false,
         "stock.minimum": {$gt: 0}
@@ -66,7 +74,7 @@ export async function deleteOpenTransfer(){
 
 export async function getNewItem(sku:string){
     console.log(sku)
-    let res = await find("New-Items", {SKU:sku}, {SKU: 1, title: 1, linnId: 1, stock: 1})
+    let res = await find<WarehouseItem>("New-Items", {SKU:sku}, {SKU: 1, title: 1, linnId: 1, stock: 1})
     console.log(res)
     if(res){
         let newItemObject: LowStockItem = {

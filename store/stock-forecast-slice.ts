@@ -1,8 +1,7 @@
-import {createAction, createSlice, current, PayloadAction} from "@reduxjs/toolkit";
+import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
-import {processData, StockForecastChecks, StockForecastItem} from "../server-modules/stock-forecast/process-data";
-import {structuredClone} from "next/dist/compiled/@edge-runtime/primitives/structured-clone";
 import {RootState} from "./store";
+import {StockForecastItem} from "../pages/stock-forecast";
 
 export const hydrate = createAction<RootState>(HYDRATE);
 
@@ -11,18 +10,16 @@ export interface forecastWrapper {
 }
 
 export interface forecastState {
-    initialItems: StockForecastItem[]
+    items: StockForecastItem[]
     searchItems: StockForecastItem[]
-    renderedItems: StockForecastItem[]
     suppliers: string[]
     threshold: number
     maxThreshold: number
 }
 
 const initialState: forecastState = {
-    initialItems: [],
+    items: [],
     searchItems: [],
-    renderedItems: [],
     suppliers: [],
     threshold: 50,
     maxThreshold: 50
@@ -39,45 +36,38 @@ export const forecastSlice = createSlice({
                         ...action.payload.forecast
                     };
                 })
-                .addDefaultCase(() => {
-                })
         },
         reducers: {
-            setInitialItems: (state, action: PayloadAction<StockForecastItem[]>) => {
-                state.initialItems = action.payload
+            setItems: (state, action: PayloadAction<StockForecastItem[]>) => {
+                state.items = action.payload
+                state.searchItems = action.payload
                 state.maxThreshold = state.threshold
-                state.renderedItems = processItemsToRender(state.maxThreshold, action.payload)
             },
             setSearchItems: (state, action: PayloadAction<StockForecastItem[]>) => {
                 state.searchItems = action.payload
                 state.maxThreshold = state.threshold
-                state.renderedItems = processItemsToRender(state.maxThreshold, action.payload)
             },
             setSuppliers: (state, action: PayloadAction<string[]>) => {
                 state.suppliers = action.payload
             },
             incrementThreshold: (state) => {
                 state.maxThreshold += state.threshold
-                state.searchItems.length > 0
-                    ? state.renderedItems = processItemsToRender(state.maxThreshold, current(state.searchItems))
-                    : state.renderedItems = processItemsToRender(state.maxThreshold, current(state.initialItems))
             },
-            itemCheckboxChange: (state, action: PayloadAction<{ type: keyof StockForecastChecks, index: number, check: boolean }>) => {
-                let newCheckedState = {
-                    ...state.initialItems[action.payload.index].checkboxStatus.stockForecast,
-                    ...{[action.payload.type]: action.payload.check}
-                }
-                state.initialItems[action.payload.index].checkboxStatus.stockForecast = newCheckedState
-                state.renderedItems[action.payload.index].checkboxStatus.stockForecast = newCheckedState
+            resetThreshold: (state) => {
+                state.maxThreshold = state.threshold
+            },
+            itemCheckboxChange: (state, action: PayloadAction<StockForecastItem>) => {
+
+                let initialItemPos = state.items.findIndex(item => item.SKU === action.payload.SKU)
+                if(initialItemPos !== -1) state.items[initialItemPos] = action.payload
+
+                let renderedItemPos = state.items.findIndex(item => item.SKU === action.payload.SKU)
+                if(renderedItemPos !== -1) state.items[renderedItemPos] = action.payload
+
                 let opts = {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({
-                        SKU: state.initialItems[action.payload.index].SKU,
-                        CHECK: {
-                            SF: newCheckedState
-                        }
-                    })
+                    body: JSON.stringify({SKU:action.payload.SKU, checkboxStatus:action.payload.checkboxStatus})
                 }
                 fetch("/api/items/update-item", opts)
             },
@@ -85,26 +75,17 @@ export const forecastSlice = createSlice({
     })
 ;
 
-function processItemsToRender(threshold: number, items: StockForecastItem[]) {
-    const processedData: StockForecastItem[] = []
-    for (let i = 0; i <= threshold; i++) {
-        if (!items[Number(i)]) continue;
-        let clone = structuredClone<StockForecastItem>(items[Number(i)])
-        processedData.push(processData(clone, i))
-    }
-    return processedData
-}
-
 export const {
     incrementThreshold,
-    setInitialItems,
+    setItems,
     setSearchItems,
     setSuppliers,
     itemCheckboxChange
 } = forecastSlice.actions
 
-export const selectInitialItems = (state: forecastWrapper) => state.forecast.initialItems
+export const selectItems = (state: forecastWrapper) => state.forecast.items
+export const selectSearchItems = (state: forecastWrapper) => state.forecast.searchItems
+export const selectMaxThreshold = (state: forecastWrapper) => state.forecast.maxThreshold
 export const selectSuppliers = (state: forecastWrapper) => state.forecast.suppliers
-export const selectRenderedItems = (state: forecastWrapper) => state.forecast.renderedItems
 
 export default forecastSlice.reducer;

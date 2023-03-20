@@ -131,11 +131,11 @@ export const bulkUpdateAny = async (collection: string, arr: mongoDB.Document[],
   return { status: `BulkUpdated ${updatedItems} items` };
 }
 
-export const find = async <T extends mongoDB.Document>(collection: string, filter = {}, projection = {}, sort = {}, limit = 20000) => {
+export const find = async <T>(collection: string, filter = {}, projection = {}, sort = {}, limit = 20000) => {
   const client = await connect()
   try {
     const db = client.db(process.env.DB_NAME);
-    const data = await db.collection(collection).find<T>(filter, {serializeFunctions:true}).project(projection).limit(limit).sort(sort).toArray() as T[]
+    const data = await db.collection(collection).find(filter, {serializeFunctions:true}).project(projection).limit(limit).sort(sort).toArray() as T[]
     return convertBSONIDsToString<T[]>(data)
   } catch (e) {
     console.error(e)

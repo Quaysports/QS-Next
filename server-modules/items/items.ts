@@ -35,8 +35,8 @@ export const updateItem = async (item:schema.Item) => {
     return res ? res : {acknowledged: false}
 }
 
-export const getItems = async (query:object = {}, projection:object = {}, sort:object = {}) => {
-    return await mongoI.find<schema.Item>("New-Items", query, projection, sort)
+export const getItems = async <T = schema.Item>(query:object = {}, projection:object = {}, sort:object = {}) => {
+    return await mongoI.find<T>("New-Items", query, projection, sort)
 }
 
 export const getLinkedItems = async (sku: string) => {

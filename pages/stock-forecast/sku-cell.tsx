@@ -1,7 +1,7 @@
 import styles from './stock-forecast.module.css'
-import {StockForecastItem} from "../../server-modules/stock-forecast/process-data";
 import {dispatchNotification} from "../../components/notification/dispatch-notification";
 import {useRef} from "react";
+import {StockForecastItem} from "./index";
 
 interface Props {
     item: StockForecastItem

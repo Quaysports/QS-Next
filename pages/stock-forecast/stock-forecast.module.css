@@ -1,14 +1,12 @@
 .table{
-    margin-top:10px;
-    display:grid;
-    grid-template-rows: auto 1fr;
-    height: calc(100% - 10px);
+    height: 100%;
     font-size: 0.9em;
 }
 
 .title-row{
     position:sticky;
     top:0;
+    z-index: 5;
     text-align: center;
     background: var(--primary-table-background);
 }
@@ -17,6 +15,7 @@
     display: grid;
     grid-template-columns: 490px 1fr;
     line-height: 26px;
+    min-width: calc(100vw - 10px);
 }
 
 .details{
@@ -40,13 +39,40 @@
     text-overflow: ellipsis;
 }
 .row > div {
-    border-bottom:1px solid var(--primary-inactive-text)
+    border-bottom:2px solid transparent;
+}
+.row:hover{
+    background: var(--primary-table-background);
 }
 
 .month-cell{
+    position:relative;
     text-align: center;
-    border-left: 1px solid white;
+    border-left: 1px solid var(--primary-background);
     min-width:50px;
+}
+
+.on-order{
+    position:absolute;
+    top:0;
+    z-index: 1;
+    background: transparent;
+    height:100%;
+    width:100%;
+}
+
+.four-month, .one-month{
+    position:absolute;
+    z-index: 2;
+    background: transparent;
+    height:10%;
+    width:100%;
+}
+.four-month{
+    bottom:0;
+}
+.one-month{
+    bottom:10%;
 }
 
 .title-row > div > .month-cell {
@@ -56,9 +82,8 @@
 .popup {
     display:grid;
     grid-template-columns: 300px;
-
-
 }
+
 .popup > div {
     line-height: 1.5em;
 }
