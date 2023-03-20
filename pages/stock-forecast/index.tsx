@@ -36,7 +36,7 @@ export default function StockForecastLandingPage() {
     )
 }
 
-export interface StockForecastItem extends Pick<schema.Item,
+export type StockForecastItem = Pick<schema.Item,
     "SKU"
     | "supplier"
     | "title"
@@ -46,9 +46,7 @@ export interface StockForecastItem extends Pick<schema.Item,
     | "tags"
     | "checkboxStatus"
     | "onOrder"
-> {
-    details?: any | undefined
-}
+>
 
 export const getServerSideProps = appWrapper.getServerSideProps(
     store =>
@@ -91,7 +89,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(
             suppliers ? store.dispatch(setSuppliers(suppliers)) : store.dispatch(setSuppliers([]))
 
             if(items){
-                for(let item of items) item.details = []
                 store.dispatch(setItems(items))
             }
 
