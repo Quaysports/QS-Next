@@ -16,6 +16,7 @@ import {salesSlice} from "./reports/sales-slice";
 import {newItemsSlice} from "./item-database/new-items-slice";
 import {resetStore} from "./reset-store";
 import {AnyAction} from "redux";
+import {stockTransferStore} from "./stock-transfer-slice";
 
 export const rootReducer = (state:CombinedState<any>, action:AnyAction) => {
     if(action.type === 'RESET_STORE/reset') {
@@ -39,7 +40,8 @@ export const appReducer = combineReducers({
     [pickListSlice.name]: pickListSlice.reducer,
     [salesSlice.name]: salesSlice.reducer,
     [newItemsSlice.name]: newItemsSlice.reducer,
-    [resetStore.name]:resetStore.reducer
+    [resetStore.name]:resetStore.reducer,
+    [stockTransferStore.name]: stockTransferStore.reducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>){

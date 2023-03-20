@@ -1,4 +1,4 @@
-import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAction, createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "../store";
 import {schema} from "../../types";
@@ -108,7 +108,7 @@ export const newItemsSlice = createSlice({
             state.items.push(action.payload)
         },
         resetSlice: (state) => {
-            state = initialState()
+            state.items = []
         }
     },
 });

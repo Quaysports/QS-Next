@@ -69,7 +69,10 @@ export default function NewItemsSideBar() {
         dispatchNotification()
         if(res.status === 400) dispatchNotification({type:'alert', title:"Upload Error", content: "Please provide an SKU, Title, Barcode, Brand and Purchase Price for all items"})
         if(res.status === 300) dispatchNotification({type:'popup', title:"Upload Error", content: <ErrorPopup errors={await res.json()}/>})
-        if(res.status === 200) dispatchToast({content: "New items added successfully"})
+        if(res.status === 200) {
+            dispatchToast({content: "New items added successfully"})
+            dispatch(resetSlice())
+        }
     }
 
     return (

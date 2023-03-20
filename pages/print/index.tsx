@@ -7,6 +7,7 @@ import PrintRotaRows from "./rotas/print-rows";
 import PrintRotaGrid from "./rotas/print-grid";
 import PrintShopPickList from "./shop-picklist";
 import RodTag from "./item-database/rod-tag";
+import PrintStockTransfer from "./stock-transfer";
 
 export default function PrintWindow(){
 
@@ -33,6 +34,9 @@ export default function PrintWindow(){
             }
             case("shop-picklist"): {
                 return <PrintShopPickList/>
+            }
+            case("stock-transfer"): {
+                return <PrintStockTransfer/>
             }
         }
 
