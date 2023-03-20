@@ -1,146 +1,3 @@
-declare namespace sbt {
-    type ObjectId = import("mongodb").ObjectId;
-
-    //holiday calendar
-
-}
-
-declare namespace linn {
-
-    interface InventoryItemImage {
-        "ItemNumber": string,
-        "StockItemId": string,
-        "IsMain": boolean,
-        "ImageUrl": string
-    }
-
-    interface Query<T> {
-        IsError: boolean;
-        ErrorMessage: string;
-        TotalResults: number;
-        Columns: { Type: string; Index: number; Name: string }[];
-        Results: T[];
-    }
-
-    interface BulkGetImagesResult {
-        "Images": [
-            BulkGetImagesImage
-        ]
-    }
-
-    export interface BulkGetImagesImage {
-        "SKU": string,
-        "IsMain": boolean,
-        "pkRowId": string,
-        "ChecksumValue": string,
-        "RawChecksum": string,
-        "SortOrder": number,
-        "StockItemId": string,
-        "FullSource": string,
-        "FullSourceThumbnail": string
-    }
-
-    interface Transfer {
-        PkTransferId: string;
-        FromLocationId: string;
-        ToLocationId: string;
-        FromLocation: string;
-        ToLocation: string;
-        Status: number;
-        nStatus: number;
-        ReferenceNumber: string;
-        OrderDate: string;
-        NumberOfItems: number;
-        NumberOfNotes: number;
-        fkOriginalTransferId: string;
-        OriginalTransferReference: string;
-        IsDiscrepancyTransfer: boolean;
-        BLogicalDelete: boolean;
-        Bins: { BinReference: string; BinBarcode: string; BinItems: { ItemNoteCount: number; SentQuantity: number; InToLocationQuantity: number; BinRackNumber: string; ItemNotes: { FkBinId: string; NoteUser: string; PkTransferItemId: string; Note: string; NoteDateTime: string; PkTransferItemNoteId: string; NoteRead: boolean }[]; ReceivedQuantity: number; PkTransferItemId: string; InFromLocationQuantity: number; Barcode: string; ItemTitle: string; PkBinId: string; SKU: string; DueFromLocationQuantity: number; RequestedQuantity: number; FkStockItemId: string }[]; BinName: string; BinNotes: { NoteUser: string; Note: string; PkTransferBinNoteId: string; NoteDateTime: string; PkBinId: string; NoteRead: boolean }[]; PkBinId: string }[];
-        Notes: { NoteUser: string; Note: string; PkTransferNoteId: string; NoteDateTime: string; NoteRead: boolean }[];
-        AuditTrail: { AuditNote: string; AuditDate: string; AuditType: number; nAuditType: number; PkTransferAuditId: string }[];
-        TransferProperties: { TransferPropertyName: string; TransferPropertyValue: string; PkTransferPropertyId: string }[];
-        UpdateStatus: { Status: boolean; Items: boolean; Properties: boolean; Information: boolean; Notes: boolean };
-    }
-
-    export interface AddToTransfer {
-        PkTransferItemId: string;
-        FkStockItemId: string;
-        SKU: string;
-        Barcode: string;
-        ItemTitle: string;
-        RequestedQuantity: number;
-        SentQuantity: number;
-        ReceivedQuantity: number;
-        InFromLocationQuantity: number;
-        DueFromLocationQuantity: number;
-        InToLocationQuantity: number;
-        ItemNoteCount: number;
-        BinRackNumber: string;
-        PkBinId: string;
-        ItemNotes: {
-            FkBinId: string;
-            NoteUser: string;
-            PkTransferItemId: string;
-            Note: string;
-            NoteDateTime: string;
-            PkTransferItemNoteId: string;
-            NoteRead: boolean
-        }[];
-    }
-
-    interface ItemStock {
-        Location: {
-            LocationTag: string;
-            StockLocationId: string;
-            BinRack: string;
-            IsWarehouseManaged: boolean;
-            StockLocationIntId: number;
-            LocationName: string;
-            IsFulfillmentCenter: boolean
-        };
-        StockLevel: number;
-        StockValue: number;
-        MinimumLevel: number;
-        InOrderBook: number;
-        Due: number;
-        JIT: boolean;
-        InOrders: number;
-        Available: number;
-        UnitCost: number;
-        SKU: string;
-        AutoAdjust: boolean;
-        LastUpdateDate: string;
-        LastUpdateOperation: string;
-        rowid: string;
-        PendingUpdate: boolean;
-        StockItemPurchasePrice: number;
-        StockItemId: string;
-        StockItemIntId: number;
-    }
-
-    interface PostalService {
-        id: string;
-        hasMappedShippingService: boolean;
-        Channels: { PostalServiceName: string; SubSource: string; pkPostalServiceId: string; Source: string }[];
-        ShippingServices: { accountid: string; vendorFriendlyName: string; PostalServiceName: string; vendor: string; pkPostalServiceId: string }[];
-        PostalServiceName: string;
-        PostalServiceTag: string;
-        ServiceCountry: string;
-        PostalServiceCode: string;
-        Vendor: string;
-        PrintModule: string;
-        PrintModuleTitle: string;
-        pkPostalServiceId: string;
-        TrackingNumberRequired: boolean;
-        WeightRequired: boolean;
-        IgnorePackagingGroup: boolean;
-        fkShippingAPIConfigId: number;
-        IntegratedServiceId: string;
-    }
-
-}
-
 declare namespace schema {
     export interface Image {
         id: string;
@@ -696,6 +553,142 @@ export namespace till {
         items: OrderItem[]
         transaction: Pick<OrderTransaction, "amount" | "date" | "mask" | "type">
         user: string
+    }
+
+}
+
+declare namespace linn {
+
+    interface InventoryItemImage {
+        "ItemNumber": string,
+        "StockItemId": string,
+        "IsMain": boolean,
+        "ImageUrl": string
+    }
+
+    interface Query<T> {
+        IsError: boolean;
+        ErrorMessage: string;
+        TotalResults: number;
+        Columns: { Type: string; Index: number; Name: string }[];
+        Results: T[];
+    }
+
+    interface BulkGetImagesResult {
+        "Images": [
+            BulkGetImagesImage
+        ]
+    }
+
+    export interface BulkGetImagesImage {
+        "SKU": string,
+        "IsMain": boolean,
+        "pkRowId": string,
+        "ChecksumValue": string,
+        "RawChecksum": string,
+        "SortOrder": number,
+        "StockItemId": string,
+        "FullSource": string,
+        "FullSourceThumbnail": string
+    }
+
+    interface Transfer {
+        PkTransferId: string;
+        FromLocationId: string;
+        ToLocationId: string;
+        FromLocation: string;
+        ToLocation: string;
+        Status: number;
+        nStatus: number;
+        ReferenceNumber: string;
+        OrderDate: string;
+        NumberOfItems: number;
+        NumberOfNotes: number;
+        fkOriginalTransferId: string;
+        OriginalTransferReference: string;
+        IsDiscrepancyTransfer: boolean;
+        BLogicalDelete: boolean;
+        Bins: { BinReference: string; BinBarcode: string; BinItems: { ItemNoteCount: number; SentQuantity: number; InToLocationQuantity: number; BinRackNumber: string; ItemNotes: { FkBinId: string; NoteUser: string; PkTransferItemId: string; Note: string; NoteDateTime: string; PkTransferItemNoteId: string; NoteRead: boolean }[]; ReceivedQuantity: number; PkTransferItemId: string; InFromLocationQuantity: number; Barcode: string; ItemTitle: string; PkBinId: string; SKU: string; DueFromLocationQuantity: number; RequestedQuantity: number; FkStockItemId: string }[]; BinName: string; BinNotes: { NoteUser: string; Note: string; PkTransferBinNoteId: string; NoteDateTime: string; PkBinId: string; NoteRead: boolean }[]; PkBinId: string }[];
+        Notes: { NoteUser: string; Note: string; PkTransferNoteId: string; NoteDateTime: string; NoteRead: boolean }[];
+        AuditTrail: { AuditNote: string; AuditDate: string; AuditType: number; nAuditType: number; PkTransferAuditId: string }[];
+        TransferProperties: { TransferPropertyName: string; TransferPropertyValue: string; PkTransferPropertyId: string }[];
+        UpdateStatus: { Status: boolean; Items: boolean; Properties: boolean; Information: boolean; Notes: boolean };
+    }
+
+    export interface AddToTransfer {
+        PkTransferItemId: string;
+        FkStockItemId: string;
+        SKU: string;
+        Barcode: string;
+        ItemTitle: string;
+        RequestedQuantity: number;
+        SentQuantity: number;
+        ReceivedQuantity: number;
+        InFromLocationQuantity: number;
+        DueFromLocationQuantity: number;
+        InToLocationQuantity: number;
+        ItemNoteCount: number;
+        BinRackNumber: string;
+        PkBinId: string;
+        ItemNotes: {
+            FkBinId: string;
+            NoteUser: string;
+            PkTransferItemId: string;
+            Note: string;
+            NoteDateTime: string;
+            PkTransferItemNoteId: string;
+            NoteRead: boolean
+        }[];
+    }
+
+    interface ItemStock {
+        Location: {
+            LocationTag: string;
+            StockLocationId: string;
+            BinRack: string;
+            IsWarehouseManaged: boolean;
+            StockLocationIntId: number;
+            LocationName: string;
+            IsFulfillmentCenter: boolean
+        };
+        StockLevel: number;
+        StockValue: number;
+        MinimumLevel: number;
+        InOrderBook: number;
+        Due: number;
+        JIT: boolean;
+        InOrders: number;
+        Available: number;
+        UnitCost: number;
+        SKU: string;
+        AutoAdjust: boolean;
+        LastUpdateDate: string;
+        LastUpdateOperation: string;
+        rowid: string;
+        PendingUpdate: boolean;
+        StockItemPurchasePrice: number;
+        StockItemId: string;
+        StockItemIntId: number;
+    }
+
+    interface PostalService {
+        id: string;
+        hasMappedShippingService: boolean;
+        Channels: { PostalServiceName: string; SubSource: string; pkPostalServiceId: string; Source: string }[];
+        ShippingServices: { accountid: string; vendorFriendlyName: string; PostalServiceName: string; vendor: string; pkPostalServiceId: string }[];
+        PostalServiceName: string;
+        PostalServiceTag: string;
+        ServiceCountry: string;
+        PostalServiceCode: string;
+        Vendor: string;
+        PrintModule: string;
+        PrintModuleTitle: string;
+        pkPostalServiceId: string;
+        TrackingNumberRequired: boolean;
+        WeightRequired: boolean;
+        IgnorePackagingGroup: boolean;
+        fkShippingAPIConfigId: number;
+        IntegratedServiceId: string;
     }
 
 }

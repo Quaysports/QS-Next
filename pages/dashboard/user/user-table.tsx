@@ -1,7 +1,7 @@
 import style from "./user.module.css";
 import PermissionsPopup from "./permissions-popup";
-import {deleteUser, setUserData} from "../../../store/dashboard/users-slice";
-import {useDispatch} from "react-redux";
+import {deleteUser, selectUsers, setUserData} from "../../../store/dashboard/users-slice";
+import {useDispatch, useSelector} from "react-redux";
 import {User} from "../../../server-modules/users/user";
 import CreateUser from "./create-user-popup";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
@@ -9,16 +9,11 @@ import RegexInput from "../../../components/regex-input";
 import {ReactElement} from "react";
 
 /**
- * @param {User[]} userInfo - Array of user info from database
- */
-export interface UserTableProps {
-    userInfo: User[]
-}
-
-/**
  * User Table component. Takes user data from database and turns into table.
  */
-export default function UserTable({userInfo}: UserTableProps) {
+export default function UserTable() {
+
+    const userInfo = useSelector(selectUsers)
     const cy = new Date().getFullYear()
     const ny = cy + 1
 

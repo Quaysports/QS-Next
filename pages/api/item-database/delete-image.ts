@@ -11,7 +11,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
         },
         body:JSON.stringify(req.body)
     }
-
     
     const json = await fetch('http://localhost:4000/Items/DeleteImage', opt)
     const result = await json.json()
