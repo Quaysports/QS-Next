@@ -5,10 +5,10 @@ import UserDot from "./user-dot";
 import {useSelector} from "react-redux";
 import {selectUser} from "../../../../store/session-slice";
 import {useRouter} from "next/router";
-import {sbt} from "../../../../types";
+import {schema} from "../../../../types";
 
 interface Props {
-    month: sbt.holidayMonth;
+    month: schema.HolidayMonth;
     maxDays: number;
 }
 
@@ -25,7 +25,7 @@ export default function MonthRow({ month, maxDays }: Props) {
     return <div style={{gridTemplateColumns:`repeat(${maxDays + 1}, 1fr)`}} className={styles.row}>{elements}</div>
 }
 
-function MonthCell({ index, month }: { index: number, month:sbt.holidayMonth }) {
+function MonthCell({ index, month }: { index: number, month:schema.HolidayMonth }) {
 
     const session = useSelector(selectUser)
     const router = useRouter()

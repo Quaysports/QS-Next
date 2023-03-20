@@ -3,19 +3,21 @@ import RegexInput from '../../../components/regex-input'
 import {useSelector} from 'react-redux'
 import {
   selectShipment,
-  setShipment,
   updateShipment,
   selectShippingCompanies
 } from '../../../store/shipments-slice'
 import { useDispatch } from 'react-redux'
 import styles from '../shipment.module.css'
+import {useEffect, useState} from "react";
 
 export default function TopBar() {
   const shipment = useSelector(selectShipment)
+  useEffect(()=>setLocalShipment(structuredClone(shipment)),[shipment])
+  const [localShipment, setLocalShipment] = useState<Shipment | null>(structuredClone(shipment))
   const shippingCompanies = useSelector(selectShippingCompanies)
   const dispatch = useDispatch()
 
-  if(!shipment) return null
+  if(!localShipment || !shipment) return null
 
   let shippingCompanyList = []
   for(const data of shippingCompanies){
@@ -31,84 +33,84 @@ export default function TopBar() {
   return <div className={styles["top-bar"]}>
     <div className={styles["top-bar-intId"]}>
       <label>Internal ID:</label>
-      <input value={shipment.intId}
-             onBlur={()=>dispatch(updateShipment(shipment))}
-             onChange={(e)=>dispatch(setShipment(update<Shipment>(shipment, "intId", e.target.value)))}/>
+      <input value={localShipment.intId}
+             onBlur={()=>dispatch(updateShipment(localShipment))}
+             onChange={(e)=>setLocalShipment(update<Shipment>(localShipment, "intId", e.target.value))}/>
     </div>
     <div className={styles["top-bar-tag"]}>
       <label>Card Title:</label>
-      <input value={shipment.tag}
-             onBlur={()=>dispatch(updateShipment(shipment))}
-             onChange={(e)=>dispatch(setShipment(update<Shipment>(shipment, "tag", e.target.value)))}/>
+      <input value={localShipment.tag}
+             onBlur={()=>dispatch(updateShipment(localShipment))}
+             onChange={(e)=>setLocalShipment(update<Shipment>(localShipment, "tag", e.target.value))}/>
     </div>
     <div className={styles["top-bar-shippingCompany"]}>
       <label>Shipping Company:</label>
-      <input value={shipment.shippingCompany}
+      <input value={localShipment.shippingCompany}
              list={"shippingCompanies"}
-             onBlur={()=>dispatch(updateShipment(shipment))}
-             onChange={(e)=>dispatch(setShipment(update<Shipment>(shipment, "shippingCompany", e.target.value)))}/>
+             onBlur={()=>dispatch(updateShipment(localShipment))}
+             onChange={(e)=>setLocalShipment(update<Shipment>(localShipment, "shippingCompany", e.target.value))}/>
       <datalist id="shippingCompanies">{shippingCompanyList}</datalist>
     </div>
     <div className={styles["top-bar-shipRef"]}>
       <label>Shipping Reference:</label>
-      <input value={shipment.shipRef}
-             onBlur={()=>dispatch(updateShipment(shipment))}
-             onChange={(e)=>dispatch(setShipment(update<Shipment>(shipment,"shipRef",e.target.value)))}/>
+      <input value={localShipment.shipRef}
+             onBlur={()=>dispatch(updateShipment(localShipment))}
+             onChange={(e)=>setLocalShipment(update<Shipment>(localShipment,"shipRef",e.target.value))}/>
     </div>
     <div className={styles["top-bar-exchangeRate"]}>
       <label>Exchange Rate:</label>
-      <RegexInput value={shipment.exchangeRate} 
+      <RegexInput value={localShipment.exchangeRate}
                   type={"decimal"} 
-                  handler={(value)=>dispatch(updateShipment(update(shipment, "exchangeRate", Number(value))))} errorMessage={"Numbers only."}/>
+                  handler={(value)=>dispatch(updateShipment(update(localShipment, "exchangeRate", Number(value))))} errorMessage={"Numbers only."}/>
     </div>
     <div className={styles["top-bar-due"]}>
       <label>Due:</label>
-      <input value={shipment.due.split("T")[0]}
+      <input value={localShipment.due.split("T")[0]}
              type={"date"}
-             onBlur={()=>dispatch(updateShipment(shipment))}
-             onChange={(e)=>dispatch(setShipment(update<Shipment>(shipment,"due",new Date(e.target.value).toISOString())))}/>
+             onBlur={()=>dispatch(updateShipment(localShipment))}
+             onChange={(e)=>setLocalShipment(update<Shipment>(localShipment,"due",new Date(e.target.value).toISOString()))}/>
     </div>
     <div className={styles["top-bar-checkbox"]}>
       <label>Booked:</label>
-      <input checked={shipment.booked}
+      <input checked={localShipment.booked}
              type={"checkbox"}
-             onChange={(e)=>dispatch(updateShipment(update<Shipment>(shipment,"booked",e.target.checked)))}/>
+             onChange={(e)=>setLocalShipment(update<Shipment>(localShipment,"booked",e.target.checked))}/>
     </div>
     <div className={styles["top-bar-checkbox"]}>
       <label>Confirmed:</label>
-      <input checked={shipment.confirmed}
+      <input checked={localShipment.confirmed}
              type={"checkbox"}
-             onChange={(e)=>dispatch(updateShipment(update<Shipment>(shipment,"confirmed",e.target.checked)))}/>
+             onChange={(e)=>dispatch(updateShipment(update<Shipment>(localShipment,"confirmed",e.target.checked)))}/>
     </div>
     <div className={styles["top-bar-checkbox"]}>
       <label>At Sea:</label>
-      <input checked={shipment.atSea}
+      <input checked={localShipment.atSea}
              type={"checkbox"}
-             onChange={(e)=>dispatch(updateShipment(update<Shipment>(shipment,"atSea",e.target.checked)))}/>
+             onChange={(e)=>dispatch(updateShipment(update<Shipment>(localShipment,"atSea",e.target.checked)))}/>
     </div>
     <div className={styles["top-bar-checkbox"]}>
       <label>Delivery Arranged:</label>
-      <input checked={shipment.delivery}
+      <input checked={localShipment.delivery}
              type={"checkbox"}
-             onChange={(e)=>dispatch(updateShipment(update<Shipment>(shipment,"delivery",e.target.checked)))}/>
+             onChange={(e)=>dispatch(updateShipment(update<Shipment>(localShipment,"delivery",e.target.checked)))}/>
     </div>
     <div className={styles["top-bar-checkbox"]}>
       <label>Overdue:</label>
-      <input checked={shipment.overdue}
+      <input checked={localShipment.overdue}
              type={"checkbox"}
-             onChange={(e)=>dispatch(updateShipment(update<Shipment>(shipment,"overdue",e.target.checked)))}/>
+             onChange={(e)=>dispatch(updateShipment(update<Shipment>(localShipment,"overdue",e.target.checked)))}/>
     </div>
     <div className={styles["top-bar-checkbox"]}>
       <label>Ready:</label>
-      <input checked={shipment.ready}
+      <input checked={localShipment.ready}
              type={"checkbox"}
-             onChange={(e)=>dispatch(updateShipment(update<Shipment>(shipment,"ready",e.target.checked)))}/>
+             onChange={(e)=>dispatch(updateShipment(update<Shipment>(localShipment,"ready",e.target.checked)))}/>
     </div>
     <div className={styles["top-bar-checkbox"]}>
       <label>Delivered:</label>
-      <input checked={shipment.delivered}
+      <input checked={localShipment.delivered}
              type={"checkbox"}
-             onChange={(e)=>dispatch(updateShipment(update<Shipment>(shipment,"delivered",e.target.checked)))}/>
+             onChange={(e)=>dispatch(updateShipment(update<Shipment>(localShipment,"delivered",e.target.checked)))}/>
     </div>
   </div>
 }

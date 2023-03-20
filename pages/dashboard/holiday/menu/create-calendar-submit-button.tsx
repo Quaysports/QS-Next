@@ -3,7 +3,7 @@ import {selectUsers, updateHolidayCalendar} from "../../../../store/dashboard/ho
 import {BankHoliday} from "./create-calendar-popup";
 import styles from "../holiday.module.css"
 import {dispatchNotification} from "../../../../components/notification/dispatch-notification";
-import {sbt} from "../../../../types";
+import {schema} from "../../../../types";
 
 interface Props {
     location:"shop" | "online";
@@ -20,7 +20,7 @@ export default function CreateCalendarSubmitButton({location, year, bankHolidays
     async function submit() {
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-        let holidayCalendar: sbt.holidayCalendar = {
+        let holidayCalendar: schema.HolidayCalendar = {
             booked: {},
             location: location || "",
             maxDays: 0,
@@ -28,9 +28,9 @@ export default function CreateCalendarSubmitButton({location, year, bankHolidays
             year: Number(year || currentYear)
         }
 
-        function generateHolidayMonth(index: number, calendar: sbt.holidayCalendar): sbt.holidayMonth {
+        function generateHolidayMonth(index: number, calendar: schema.HolidayCalendar): schema.HolidayMonth {
 
-            let month: sbt.holidayMonth = {
+            let month: schema.HolidayMonth = {
                 text: months[index],
                 days: [],
                 offset: (new Date(calendar.year, index, 1)).getDay()
@@ -41,7 +41,7 @@ export default function CreateCalendarSubmitButton({location, year, bankHolidays
             for (let i = 0; i < daysInMonth; i++) {
                 month.days.push({
                     date: (new Date(calendar.year, index, i + 1)).toDateString()
-                } as sbt.holidayDay)
+                } as schema.HolidayDay)
             }
 
             if ((month.days.length + month.offset) > calendar.maxDays) calendar.maxDays = month.days.length + month.offset
@@ -53,7 +53,7 @@ export default function CreateCalendarSubmitButton({location, year, bankHolidays
             holidayCalendar.template.push(generateHolidayMonth(Number(index), holidayCalendar))
         }
 
-        function bookBankHolidays(calendar: sbt.holidayCalendar) {
+        function bookBankHolidays(calendar: schema.HolidayCalendar) {
             for (let holiday of bankHolidays) {
                 let date = new Date(holiday.date)
                 calendar.template[date.getMonth()].days[date.getDate() - 1].bankHol = true
@@ -90,7 +90,7 @@ export default function CreateCalendarSubmitButton({location, year, bankHolidays
         }
     }
 
-    const updateSliceAndDatabase = (holidayCalendar:sbt.holidayCalendar) => dispatch(updateHolidayCalendar(holidayCalendar))
+    const updateSliceAndDatabase = (holidayCalendar:schema.HolidayCalendar) => dispatch(updateHolidayCalendar(holidayCalendar))
 
     return <button className={styles["create-calendar-submit-button"]} onClick={()=>submit()}>Create Calendar</button>
 

@@ -1,14 +1,14 @@
 import * as mongoI from '../mongo-interface/mongo-interface';
 
 import {LinnOrdersSQLResult} from "./orders";
-import {sbt} from "../../types";
+import {schema} from "../../types";
 
 export const processNewOrder = async (data:LinnOrdersSQLResult[]) => {
     let arr = []
     for (const item of data) {
         let i = arr.map(item=>{return item.id}).indexOf(item.id)
         if (i === -1) {
-            let obj:sbt.OnlineOrder = {
+            let obj:schema.OnlineOrder = {
                 totalWeight: 0,
                 address1: item.address1,
                 address2: item.address2,

@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import {renderWithProviders, screen} from "../../../../__mocks__/mock-store-wrapper";
 import RotaWeek from "../../../../pages/dashboard/rotas/rota";
-import {sbt} from "../../../../types";
+import {schema} from "../../../../types";
 import {within} from "@testing-library/dom";
 
 jest.mock("next/router", () => ({
@@ -103,7 +103,7 @@ let mockWeekData = {
     ],
     "week": 6
 }
-let mockHolidayData:sbt.holidayDay[] = [
+let mockHolidayData:schema.HolidayDay[] = [
     {
         date: "Mon Feb 06 2023",
         booked: {

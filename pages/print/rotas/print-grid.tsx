@@ -1,7 +1,7 @@
 import {Rota, UserHours, WeekData} from "../../../server-modules/rotas/rotas";
 import styles from "./print-rota-grid.module.css";
 import {getTinyDate} from "../../../components/rota-utils/time-utils";
-import {sbt} from "../../../types";
+import {schema} from "../../../types";
 
 export default function PrintRotaGrid() {
 
@@ -66,7 +66,7 @@ function WeekNotes({rota}: { rota: Rota }) {
     </div>
 }
 
-function RotaWeek({rota, weekData, holiday}: { rota: Rota, weekData: WeekData, holiday: sbt.holidayDay[] | null }) {
+function RotaWeek({rota, weekData, holiday}: { rota: Rota, weekData: WeekData, holiday: schema.HolidayDay[] | null }) {
 
     return (
         <div className={styles["week-grid"]}>
@@ -109,7 +109,7 @@ function UserNameColumn({rota}: { rota: Rota }) {
     )
 }
 
-function UserColumns({rota, weekData, holiday}: { rota: Rota, weekData: WeekData, holiday: sbt.holidayDay[] | null }) {
+function UserColumns({rota, weekData, holiday}: { rota: Rota, weekData: WeekData, holiday: schema.HolidayDay[] | null }) {
     let userColumns = []
     for (let day in weekData.days) {
         let data = rota.rota[day]
@@ -124,7 +124,7 @@ function UserColumns({rota, weekData, holiday}: { rota: Rota, weekData: WeekData
 }
 
 function DayCell({userHours, dayOfWeek, holiday}:
-                     { userHours: UserHours, dayOfWeek: number, holiday: sbt.holidayDay[] | null }) {
+                     { userHours: UserHours, dayOfWeek: number, holiday: schema.HolidayDay[] | null }) {
 
     let onHoliday = !!holiday?.[dayOfWeek]?.booked?.[userHours.username]
     let str = ""

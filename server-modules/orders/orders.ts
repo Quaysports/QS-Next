@@ -2,7 +2,7 @@ import * as mongoI from '../mongo-interface/mongo-interface';
 import * as Linn from '../linn-api/linn-api';
 
 import { processNewOrder } from "./processNewOrder";
-import {sbt} from "../../types";
+import {schema} from "../../types";
 
 let lastUpdate: Date
 
@@ -89,10 +89,10 @@ export const linnGet = async () => {
 }
 
 export const get = async (query:object) => {
-    return await mongoI.findOne<sbt.OnlineOrder>("Orders", query)
+    return await mongoI.findOne<schema.OnlineOrder>("Orders", query)
 }
 
-export const update = async (item:sbt.OnlineOrder) => {
+export const update = async (item:schema.OnlineOrder) => {
     if (item._id !== undefined) delete item._id
     await mongoI.setData("Orders", {id: item.id}, item)
     return {done: true}
@@ -145,7 +145,7 @@ export const onlineSalesByMonth = async (firstDay:string, lastDay:string) => {
     return await mongoI.find<OnlineSalesReport>("Online-Reports", {$and: [{date: {$gt: firstDay}}, {date: {$lt: lastDay}}]})
 }*/
 
-const processItem = async (order:sbt.OnlineOrder, weight: number) => {
+const processItem = async (order:schema.OnlineOrder, weight: number) => {
     if (!order) {
         return {status: false, lastUpdate: lastUpdate}
     }

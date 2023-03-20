@@ -5,9 +5,9 @@ import {useState} from "react";
 import UserList from "./user-list";
 import BookingTab from "./booking-tab";
 import {useRouter} from "next/router";
-import {sbt} from "../../../../../types";
+import {schema} from "../../../../../types";
 
-export default function HolidayBookingPopup({dateString}: { dateString: sbt.holidayDay["date"] }) {
+export default function HolidayBookingPopup({dateString}: { dateString: schema.HolidayDay["date"] }) {
 
 
     const router = useRouter()

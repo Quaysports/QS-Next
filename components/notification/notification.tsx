@@ -81,7 +81,10 @@ export default function Notification(this: any, {options = {type:undefined}, clo
                     <div className={style['alert-title']}>{options.title}</div>
                     <div className={style['alert-text']}>{options.content}</div>
                     <div className={style['alert-buttons']}>
-                        <button onClick={()=> close()}>Ok</button>
+                        <button onClick={()=> {
+                            close()
+                            if(options.closeFn) options.closeFn()
+                        }}>Ok</button>
                     </div>
                 </div>
             </div>

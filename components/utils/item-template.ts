@@ -119,6 +119,12 @@ export default function itemTemplate(): schema.Item {
         shortDescription: "",
         stock: {default: 0, minimum: 0, total: 0, value: 0, warehouse: 0, tradePack: null},
         stockHistory: [],
+        stockConsumption: {
+            fourMonthOutOfStock: 0,
+            historicConsumption: [],
+            historicOutOfStock: 0,
+            oneMonthOutOfStock: 0
+        },
         supplier: "",
         suppliers: [],
         tags: [],

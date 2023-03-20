@@ -18,7 +18,7 @@ export interface MarginTestTemplate extends Pick<MarginItem, "postage" | "packag
 
 export default function MarginItemTest({initialItem = undefined}:{initialItem?:MarginItem | undefined }) {
 
-    let [item, setItem] = useState<MarginTestTemplate>(initialItem ? {...itemTemplate(), ...initialItem} : itemTemplate())
+    let [item, setItem] = useState<MarginTestTemplate>(initialItem ? {...marginTestItem(), ...initialItem} : marginTestItem())
 
     if(!item) return null
 
@@ -53,7 +53,7 @@ export default function MarginItemTest({initialItem = undefined}:{initialItem?:M
     </div>
 }
 
-function itemTemplate():MarginTestTemplate{
+export function marginTestItem():MarginTestTemplate{
     return {
         tags: [],
         packaging: {editable: false, group: "", items: [], lock: false},
