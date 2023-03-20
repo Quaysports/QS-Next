@@ -20,14 +20,14 @@ export default function LongDescription() {
                     toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | charmap | bullist numlist outdent indent | bull',
                     statusbar: false,
                     branding: false,
-                    invalid_elements: 'span,div,body,header',
-                    valid_elements: 'p, ul, ol, li',
+                    invalid_elements: '@[id|class|style],span,div,header',
                     width: "auto",
                     height: "400px",
                     skin: "quaysports",
                     content_css: "quaysports",
                     content_style: "body {font-size:10pt}",
-                    allow_html_in_named_anchor:false,
+                    valid_classes: {"*": ''},
+                    valid_styles: {"*": 'font-weight'},
                     setup: (editor) => {
                         editor.ui.registry.addButton('bull', {
                             text: 'Add Bullet',
