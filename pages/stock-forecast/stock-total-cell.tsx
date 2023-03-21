@@ -70,7 +70,7 @@ interface Color {
     blue: number
 }
 function colorGradient(fadeFraction:number, rgbColor1:Color, rgbColor2:Color, rgbColor3:Color) {
-    console.log('>> fade: ', fadeFraction)
+
     let color1 = rgbColor1;
     let color2 = rgbColor2;
     let fade = fadeFraction;

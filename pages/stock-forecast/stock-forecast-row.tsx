@@ -63,6 +63,7 @@ export interface CellFlags {
     fourMonthOOSDate: Date | undefined,
     fourMonthOOSTriggered: boolean,
     historicOrder: boolean,
+    outOfStockGap: boolean,
 }
 
 function ItemRow({item}: { item: StockForecastItem }) {
@@ -87,6 +88,7 @@ function ItemRow({item}: { item: StockForecastItem }) {
     let historicOrder = false
     let oneMonthOOSTriggered = false
     let fourMonthOOSTriggered = false
+    let outOfStockGap = false
 
     for(let order of item.onOrder){
         const due = new Date(order.due)
@@ -99,6 +101,7 @@ function ItemRow({item}: { item: StockForecastItem }) {
     let year = new Date().getFullYear()
     for (let m = currentMonth; m < currentMonth + 24; m++) {
 
+        if(m % 12 === 0) year++
         let band = m < currentMonth + 6
             ? "#BB1E10"
             : m < currentMonth + 9
@@ -115,14 +118,17 @@ function ItemRow({item}: { item: StockForecastItem }) {
             oneMonthOOSTriggered: false,
             fourMonthOOSDate:undefined,
             fourMonthOOSTriggered: false,
-            historicOrder: historicOrder
+            historicOrder: historicOrder,
+            outOfStockGap: outOfStockGap
         }
-
-        if(m % 12 === 0) year++
 
         for(let order of item.onOrder){
             let date = new Date(order.due)
             if(date.getMonth() === m && date.getFullYear() === year){
+                if(stock <= 0) {
+                    outOfStockGap = true
+                    cellFlags.outOfStockGap = true
+                }
                 stock += order.quantity
                 cellFlags.orders.push(date)
             }
