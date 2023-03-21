@@ -7,7 +7,8 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
     if(!item) return null
 
     let currentDate = new Date()
-    let background = stockLevel > 0 ? {background:cellFlags.band} : {background: "transparent"}
+    let bandColour = cellFlags.band + (cellFlags.outOfStockGap ? "40" :"")
+    let background = stockLevel > 0 ? {background: bandColour } : {background: "transparent"}
     let firstMonthBackground
     let restockBackground
     let oneMonthBackground
@@ -20,7 +21,7 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
 
     if(stockLevel > 0) {
         if (cellFlags.historicOOSDate) {
-            background = generateTransitionStyle(cellFlags.band, cellFlags.historicOOSDate)
+            background = generateTransitionStyle(bandColour, cellFlags.historicOOSDate)
         }
     }
 
@@ -44,6 +45,10 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
             const day = order.getDate()
             const percentage = day/endOfMonth
             restockBackground = {background:`linear-gradient(to right, transparent ${percentage*100}%, #005ce6 ${(percentage*100)}%, #005ce6 ${(percentage*100)+6}%, transparent ${percentage*100+6}%)`}
+
+            if(cellFlags.outOfStockGap){
+                background = {background:`linear-gradient(to right, transparent ${percentage*100}%, #005ce6 ${(percentage*100)}%, #005ce6 ${(percentage*100)+6}%, ${bandColour} ${percentage*100+6}%)`}
+            }
         }
     }
 
@@ -51,7 +56,7 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
         const endOfMonth = new Date(cellFlags.date.getFullYear(), cellFlags.date.getMonth()+1, 0).getDate()
         const day = currentDate.getDate()
         const percentage = day/endOfMonth
-        return {background:`linear-gradient(to right, var(--primary-background) ${percentage*100}%, ${zeroStock ? "transparent"  : cellFlags.band} ${percentage*100}%)`}
+        return {background:`linear-gradient(to right, var(--primary-background) ${percentage*100}%, ${zeroStock ? "transparent"  : bandColour} ${percentage*100}%)`}
     }
 
     function generateTransitionStyle(color:string, date:Date, reverse:boolean = false){
@@ -64,7 +69,7 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
     }
 
     return(
-        <div className={styles["month-cell"]} style={background}>
+        <div className={styles["month-cell"]} style={background} onClick={()=>console.log(cellFlags)}>
             {firstMonthBackground ? <div style={firstMonthBackground} className={styles["first-month"]}></div> : null}
             {restockBackground ? <div style={restockBackground} className={styles["on-order"]}></div> : null}
             {fourMonthBackground ? <div style={fourMonthBackground} className={styles["four-month"]}></div> : null}
