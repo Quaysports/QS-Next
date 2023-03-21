@@ -69,7 +69,7 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
             {restockBackground ? <div style={restockBackground} className={styles["on-order"]}></div> : null}
             {fourMonthBackground ? <div style={fourMonthBackground} className={styles["four-month"]}></div> : null}
             {oneMonthBackground ? <div style={oneMonthBackground} className={styles["one-month"]}></div> : null}
-            <div className={styles["month-text"]}>{stockLevel}</div>
+            {stockLevel > 0 ? <div className={styles["month-text"]}>{stockLevel}</div> : null}
         </div>
     )
 }
