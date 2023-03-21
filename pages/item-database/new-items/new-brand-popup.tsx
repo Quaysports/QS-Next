@@ -4,6 +4,7 @@ import {dispatchToast} from "../../../components/toast/dispatch-toast";
 import {useDispatch} from "react-redux";
 import {addNewBrandToList} from "../../../store/item-database/new-items-slice"
 import ErrorPopup from "./error-popup";
+import styles from '../item-database.module.css'
 
 export default function NewBrandPopup() {
 
@@ -12,7 +13,7 @@ export default function NewBrandPopup() {
     const dispatch = useDispatch()
 
     async function saveHandler(brand: string, prefix: string) {
-        if(RegExp("^[a-zA-Z]{3}$").test(prefix)) {
+        if (RegExp("^[a-zA-Z]{3}$").test(prefix)) {
             const opts = {
                 method: 'POST',
                 headers: {
@@ -24,7 +25,10 @@ export default function NewBrandPopup() {
             const res = await fetch('/api/item-database/save-new-brand', opts)
             dispatchNotification()
 
-            if (res.status === 400) dispatchNotification({type: 'alert', content:<ErrorPopup errors={await res.json()}/>})
+            if (res.status === 400) dispatchNotification({
+                type: 'alert',
+                content: <ErrorPopup errors={await res.json()}/>
+            })
             if (res.status === 200) {
                 dispatchToast({content: await res.json()})
                 dispatch(addNewBrandToList(brand))
@@ -36,9 +40,17 @@ export default function NewBrandPopup() {
 
     return (
         <div>
-            <input role={'brand-input'} value={brandName} onChange={(e) => setBrandName(e.target.value)}/>
-            <input role={'brand-prefix-input'} value={brandPrefix} onChange={(e) => setBrandPrefix(e.target.value)}/>
-            <button role={'save-button'} onClick={() => saveHandler(brandName, brandPrefix)}>Save</button>
+            <div className={styles['brand-popup-divs']}>
+                <label htmlFor={'brand-name'}>Name: </label>
+                <input id={'brand-name'} role={'brand-input'} value={brandName}
+                       onChange={(e) => setBrandName(e.target.value)}/>
+            </div>
+            <div className={styles['brand-popup-divs']}>
+                <span>Prefix: </span>
+                <input role={'brand-prefix-input'} value={brandPrefix}
+                       onChange={(e) => setBrandPrefix(e.target.value)}/>
+            </div>
+            <button className={styles['new-brand-save']} role={'save-button'} onClick={() => saveHandler(brandName, brandPrefix)}>Save</button>
         </div>
     )
 }
