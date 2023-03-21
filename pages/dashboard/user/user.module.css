@@ -15,6 +15,7 @@
     margin: 3px;
     text-align: center;
     font-size: 0.9em;
+    line-height: 32px;
 }
 
 .user-table-row input {
