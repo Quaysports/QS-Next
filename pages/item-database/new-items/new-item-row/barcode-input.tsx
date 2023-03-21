@@ -14,6 +14,6 @@ export default function BarcodeInput({index}:Props){
     }
     if(!item) return null
     return (
-        <RegexInput type={'barcode'} value={item.EAN} errorMessage={'Please enter between 12-13 characters and numbers only'} handler={(result) => barcodeHandler(result)}/>
+        <RegexInput type={'barcode'} value={item.EAN} errorMessage={'Please enter between 12-14 numbers only'} handler={(result) => barcodeHandler(result)}/>
     )
 }
