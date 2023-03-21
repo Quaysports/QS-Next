@@ -16,6 +16,16 @@
     grid-template-columns: 490px 1fr;
     line-height: 26px;
     min-width: calc(100vw - 10px);
+    background: var(--primary-table-cell-background);
+    border-bottom:1px solid var(--primary-background);
+}
+.row:nth-child(odd){
+    background: var(--primary-table-cell-background-alt);
+}
+
+.row:hover{
+    background: var(--primary-color);
+    border-bottom:1px solid var(--primary-inactive-text);
 }
 
 .details{
@@ -38,12 +48,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-.row > div {
-    border-bottom:2px solid transparent;
-}
-.row:hover{
-    background: var(--primary-table-background);
-}
 
 .month-cell{
     position:relative;
@@ -52,27 +56,33 @@
     min-width:50px;
 }
 
-.on-order{
+.on-order, .first-month{
     position:absolute;
     top:0;
-    z-index: 1;
     background: transparent;
     height:100%;
     width:100%;
 }
 
+.on-order{
+    z-index: 2;
+}
+.first-month{
+    z-index: 1;
+}
+
 .four-month, .one-month{
     position:absolute;
-    z-index: 2;
+    z-index: 3;
     background: transparent;
-    height:10%;
+    height:4px;
     width:100%;
 }
 .four-month{
-    bottom:0;
+    bottom:2px;
 }
 .one-month{
-    bottom:10%;
+    bottom:8px;
 }
 
 .title-row > div > .month-cell {

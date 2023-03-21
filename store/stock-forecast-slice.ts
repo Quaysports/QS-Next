@@ -2,6 +2,7 @@ import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "./store";
 import {StockForecastItem} from "../pages/stock-forecast";
+import {dispatchToast} from "../components/toast/dispatch-toast";
 
 export const hydrate = createAction<RootState>(HYDRATE);
 
@@ -59,17 +60,15 @@ export const forecastSlice = createSlice({
             itemCheckboxChange: (state, action: PayloadAction<StockForecastItem>) => {
 
                 let initialItemPos = state.items.findIndex(item => item.SKU === action.payload.SKU)
+                let sku = action.payload.SKU
                 if(initialItemPos !== -1) state.items[initialItemPos] = action.payload
-
-                let renderedItemPos = state.items.findIndex(item => item.SKU === action.payload.SKU)
-                if(renderedItemPos !== -1) state.items[renderedItemPos] = action.payload
 
                 let opts = {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({SKU:action.payload.SKU, checkboxStatus:action.payload.checkboxStatus})
                 }
-                fetch("/api/items/update-item", opts)
+                fetch("/api/items/update-item", opts).then(()=>dispatchToast({content:`${sku} updated`}))
             },
         }
     })

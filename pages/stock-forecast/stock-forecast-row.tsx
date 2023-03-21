@@ -99,9 +99,9 @@ function ItemRow({item}: { item: StockForecastItem }) {
     let year = new Date().getFullYear()
     for (let m = currentMonth; m < currentMonth + 24; m++) {
 
-        let band = m < currentMonth + 3
+        let band = m < currentMonth + 6
             ? "#BB1E10"
-            : m < currentMonth + 6
+            : m < currentMonth + 9
                 ? "#F7B500"
                 : "#32A431"
 
@@ -151,11 +151,11 @@ function ItemRow({item}: { item: StockForecastItem }) {
         <div className={styles.details}>
             <div><input
                 type={"checkbox"}
-                checked={hide}
+                defaultChecked={hide}
                 onChange={e => handleCheckChange("hide", item, e.target.checked)}/></div>
             <div><input
                 type={"checkbox"}
-                checked={list}
+                defaultChecked={list}
                 onChange={e => handleCheckChange("list", item, e.target.checked)}/></div>
             <SkuCell item={item}/>
             <StockTotalCell item={item}/>
