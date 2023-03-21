@@ -45,13 +45,6 @@ export default function ItemDatabase() {
                         <ItemDatabaseLandingPage/>
                     </SearchbarSidebarOneColumn>
                 </> : null}
-            {router.query.tab === "rod-locations" ?
-                <>
-                    <SidebarOneColumn>
-                        <Menu><ItemDatabaseTabs/></Menu>
-                        <div></div>
-                    </SidebarOneColumn>
-                </> : null}
             {router.query.tab === "new-items" ?
                 <>
                     <SidebarOneColumn>
