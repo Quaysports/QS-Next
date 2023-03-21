@@ -121,3 +121,34 @@
     max-height: calc(100vh - 215px);
     overflow-y:auto;
 }
+.forecast-popup{
+    display:grid;
+    grid-gap:10px;
+}
+.forecast-popup > div{
+    padding:5px;
+    background: var(--primary-table-cell-background-alt);
+    border-radius: var(--primary-border-radius);
+}
+.consumption-table, .consumption-row{
+    display:grid
+}
+.consumption-table > div:first-child{
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.consumption-row{
+    grid-template-columns: 1fr 1fr;
+    grid-gap:10px;
+}
+.consumption-row > div:first-child{
+    text-align:right;
+}
+.consumption-row > div:nth-child(2){
+    font-weight: bold;
+}
+.consumption-row > div:first-child:after{
+    content: ":";
+}
