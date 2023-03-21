@@ -17,7 +17,10 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 }
 
 const skuList = (data:ShipmentItem[]) => {
-    return data.reduce((str, item) => {
-        return str === '' ? `'${item.sku}'` : str + `,'${item.sku}'`
-    }, "")
+    let uniqueSkus = new Set(data.map(item => item.sku))
+    let str = ""
+    for (let sku of uniqueSkus) {
+        str = str === '' ? `'${sku}'` : str + `,'${sku}'`
+    }
+    return str
 }
