@@ -115,7 +115,6 @@ export const updateShipment = async (data:Shipment) => {
     if (data._id) delete data._id
     await setData("Shipping",  { id: data.id }, data)
     return data
-
 }
 
 export const deleteShipment = async (shipment:Shipment) => {
