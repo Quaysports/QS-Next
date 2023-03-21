@@ -92,7 +92,7 @@ async function getShopData(store: AppStore, context: GetServerSidePropsContext) 
 
     if (!context.query.brand) return
     let brandData = await getItems(
-        {"brand": context.query.brand, tags: {$in: ["domestic"]}, isComposite: false},
+        {"brand": context.query.brand, tags: {$in: ["domestic"]}, isComposite: false,  "stock.minimum":{$gt:0}},
         {SKU: 1, title: 1, EAN: 1, stock: 1, stockTake: 1},
         {SKU: 1})
     if (brandData) store.dispatch(setBrandItems(brandData as BrandItem[]))
