@@ -168,7 +168,7 @@ export const stockReportsSlice = createSlice({
 
 export const {
     setIncorrectStockInitialState, setIncorrectStockChecked, setIncorrectStockSplice, setIncorrectStockQty,
-    setZeroStockInitialState, setZeroStockChecked, setZeroStockSplice, setZeroStockQty, setValidData, setBrandItems,
+    setZeroStockChecked, setZeroStockSplice, setZeroStockQty, setValidData, setBrandItems,
     updateStockTakes, setBrands, setStockTakeInfo, unFlagCommit, setStockLevel
 } = stockReportsSlice.actions;
 

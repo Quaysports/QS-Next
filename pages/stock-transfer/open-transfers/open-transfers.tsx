@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {selectOpenTransfer, setStockIn, saveTransfer,removeSKU} from "../../../store/stock-transfer-slice";
+import {selectOpenTransfer, setTransfer, saveTransfer,removeSKU} from "../../../store/stock-transfer-slice";
 import styles from '../stock-transfer.module.css'
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 
@@ -8,8 +8,8 @@ export default function OpenTransfers() {
     const openTransfer = useSelector(selectOpenTransfer)
     const dispatch = useDispatch()
 
-    function stockInHandler(index:number, amount:string) {
-        dispatch(setStockIn({index:index, amount:parseInt(amount) || 0}))
+    function transferHandler(index:number, amount:string) {
+        dispatch(setTransfer({index:index, amount:parseInt(amount) || 0}))
     }
 
     function saveHandler() {
@@ -31,7 +31,7 @@ export default function OpenTransfers() {
                 <div>Roundswell</div>
                 <div>Minimum</div>
                 <div>Warehouse</div>
-                <div>Stock In</div>
+                <div>Transfer</div>
             </div>
             {openTransfer.items.map((item, index) => {
                 return (
@@ -42,9 +42,9 @@ export default function OpenTransfers() {
                         <span>{item.stock.default}</span>
                         <span>{item.stock.minimum}</span>
                         <span>{item.stock.warehouse}</span>
-                        <input value={item.stockIn}
-                               onBlur={(e) => {saveHandler()}}
-                               onChange={(e) => stockInHandler(index, e.target.value)}
+                        <input value={item.transfer}
+                               onBlur={() => {saveHandler()}}
+                               onChange={(e) => transferHandler(index, e.target.value)}
                         />
                     </div>
                 )
