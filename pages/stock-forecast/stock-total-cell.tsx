@@ -11,47 +11,21 @@ export default function StockTotalCell({item}: Props) {
     if (!item) return null
 
     function createContent(item: StockForecastItem) {
-        let currentMonth = new Date().getMonth()
-        let perDayAverage = 0
-        let lastFourMonthsAverage = 0
-        let lastOneMonthAverage = 0
-        let {historicConsumption, historicOutOfStock, oneMonthOutOfStock, fourMonthOutOfStock} = item.stockConsumption
+        const currentMonth = new Date().getMonth()
+
+        const {historicConsumption, historicOutOfStock, oneMonthOutOfStock, fourMonthOutOfStock} = item.stockConsumption
 
         function toLocalDate(ms: number) {
             return new Date(ms).toLocaleDateString("en-GB")
         }
 
-        if (historicConsumption.length > 0) {
-            perDayAverage = historicConsumption.reduce((acc, val) => acc + val, 0) / historicConsumption.length
-        }
-
-        if (fourMonthOutOfStock > 0) {
-            let months
-            if (currentMonth >= 3) {
-                months = historicConsumption.slice(currentMonth - 4, currentMonth)
-            } else {
-                months = [...historicConsumption.slice(0, currentMonth+1), ...historicConsumption.slice(-(3 - currentMonth))]
-            }
-            lastFourMonthsAverage = months.reduce((acc, val) => acc + val, 0) / months.length
-        }
-
-        if (oneMonthOutOfStock > 0) {
-            let index = currentMonth - 1 > 0 ? currentMonth - 1 : 11
-            lastOneMonthAverage = historicConsumption[index]
-        }
-
         return <>
-            <div>Last Year: {Math.round(perDayAverage)}</div>
             {historicOutOfStock > 0 ?
-                <div>Out of Stock Est: <strong>{toLocalDate(historicOutOfStock)}</strong></div> : null}
-            <div>----------------</div>
-            <div>Past 4 Months: {Math.round(lastFourMonthsAverage)}</div>
+                <div>Historic: <strong>{toLocalDate(historicOutOfStock)}</strong></div> : null}
             {fourMonthOutOfStock > 0 ?
-                <div>Out of Stock Est: <strong>{toLocalDate(fourMonthOutOfStock)}</strong></div> : null}
-            <div>----------------</div>
-            <div>Past One Months:{Math.round(lastOneMonthAverage)}</div>
+                <div>Four Month: <strong>{toLocalDate(fourMonthOutOfStock)}</strong></div> : null}
             {oneMonthOutOfStock > 0 ?
-                <div>Out of Stock Est: <strong>{toLocalDate(oneMonthOutOfStock)}</strong></div> : null}
+                <div>One Month: <strong>{toLocalDate(oneMonthOutOfStock)}</strong></div> : null}
         </>
     }
 
@@ -61,10 +35,19 @@ export default function StockTotalCell({item}: Props) {
             dispatchNotification({
                 type: "tooltip",
                 e: e,
-                title: "Stock consumption (per-day)",
+                title: "Out of Stock Estimates",
                 content: createContent(item)
             })
         }}
         onMouseLeave={() => dispatchNotification()}
     >{item.stock.total}</div>
+}
+
+function consumptionTable(historicConsumption: number[]){
+
+    let elements = [<div key={"title"}><div>Month</div><div>Consumption</div></div>]
+    for(let i = 0; i < historicConsumption.length; i++){
+        elements.push(<div key={i}><div>{i+1}</div><div>{historicConsumption[i]}</div></div>)
+    }
+
 }

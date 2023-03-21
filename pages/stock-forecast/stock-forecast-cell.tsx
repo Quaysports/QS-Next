@@ -25,17 +25,17 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
     }
 
     if (cellFlags.oneMonthOOSDate) {
-        oneMonthBackground = generateTransitionStyle("white", cellFlags.oneMonthOOSDate, true)
+        oneMonthBackground = generateTransitionStyle("#00bfff", cellFlags.oneMonthOOSDate, true)
     }
     if (cellFlags.fourMonthOOSDate) {
-        fourMonthBackground = generateTransitionStyle("lightgray", cellFlags.fourMonthOOSDate, true)
+        fourMonthBackground = generateTransitionStyle("#0099cc", cellFlags.fourMonthOOSDate, true)
     }
 
     if(cellFlags.oneMonthOOSTriggered){
-        oneMonthBackground = {background:"white"}
+        oneMonthBackground = {background:"#00bfff"}
     }
     if(cellFlags.fourMonthOOSTriggered){
-        fourMonthBackground = {background:"lightgray"}
+        fourMonthBackground = {background:"#0099cc"}
     }
 
     for(let order of cellFlags.orders){
@@ -65,11 +65,11 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
 
     return(
         <div className={styles["month-cell"]} style={background}>
-            <div>{stockLevel}</div>
             {firstMonthBackground ? <div style={firstMonthBackground} className={styles["first-month"]}></div> : null}
             {restockBackground ? <div style={restockBackground} className={styles["on-order"]}></div> : null}
             {fourMonthBackground ? <div style={fourMonthBackground} className={styles["four-month"]}></div> : null}
             {oneMonthBackground ? <div style={oneMonthBackground} className={styles["one-month"]}></div> : null}
+            {stockLevel > 0 ? <div className={styles["month-text"]}>{stockLevel}</div> : null}
         </div>
     )
 }
