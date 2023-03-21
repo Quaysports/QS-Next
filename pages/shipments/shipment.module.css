@@ -27,7 +27,7 @@
 .top-bar {
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(13, fit-content(100%));
+    grid-template-columns: repeat(5, fit-content(100%)) 160px repeat(7, fit-content(100%));;
 }
 
 .top-bar > div {
@@ -35,8 +35,11 @@
     align-self: center;
     height: 20px;
     grid-gap: 5px;
+    width:fit-content;
 }
-
+.top-bar > div > input[type="date"] {
+    width:120px
+}
 .top-bar-intId {
     grid-template-columns: 80px 50px;
 }
