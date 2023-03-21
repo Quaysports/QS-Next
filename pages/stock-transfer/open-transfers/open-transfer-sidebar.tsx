@@ -1,21 +1,21 @@
-import SidebarLayout from "../../components/layouts/sidebar-layout";
-import SidebarButton from "../../components/layouts/sidebar-button";
+import SidebarLayout from "../../../components/layouts/sidebar-layout";
+import SidebarButton from "../../../components/layouts/sidebar-button";
 import {useDispatch, useSelector} from "react-redux";
 import {
     selectOpenTransfer,
     deleteTransfer,
     setOpenTransfer,
     addNewItem,
-    LowStockItem, TransferData,
-    completeTransfer
-} from "../../store/stock-transfer-slice";
-import {dispatchNotification} from "../../components/notification/dispatch-notification";
-import LowStockPopup from "./low-stock-popup";
-import {dispatchToast} from "../../components/toast/dispatch-toast";
-import DatabaseSearchBar, {DatabaseSearchItem} from "../../components/database-search-bar/database-search";
-import {TransferObject} from "../../server-modules/stock-transfer/stock-transfer";
+    LowStockItem,
+    completeTransfer, CompletedTransferType
+} from "../../../store/stock-transfer-slice";
+import {dispatchNotification} from "../../../components/notification/dispatch-notification";
+import LowStockPopup from "../low-stock-popup";
+import {dispatchToast} from "../../../components/toast/dispatch-toast";
+import DatabaseSearchBar, {DatabaseSearchItem} from "../../../components/database-search-bar/database-search";
+import {TransferObject} from "../../../server-modules/stock-transfer/stock-transfer";
 
-export default function SideBar() {
+export default function OpenTransferSidebar() {
 
     const dispatch = useDispatch()
     const openTransfer = useSelector(selectOpenTransfer)
@@ -85,7 +85,7 @@ export default function SideBar() {
 
     function deleteTransferHandler() {
         dispatch(deleteTransfer())
-        dispatch(setOpenTransfer({complete: false, date: "", items: [], transferID: "", transferRef: ""}))
+        dispatch(setOpenTransfer({complete: false, completedDate: "", createdDate: "", items: [], transferID: "", transferRef: ""}))
     }
 
     function print(transfer:TransferObject){
@@ -106,7 +106,7 @@ export default function SideBar() {
         dispatchNotification()
         if(res.status === 200) {
             dispatchToast({content: 'Transfer complete'})
-            const data = await res.json() as TransferData
+            const data = await res.json() as CompletedTransferType
             dispatch(completeTransfer(data))
         }
         if(res.status === 400){

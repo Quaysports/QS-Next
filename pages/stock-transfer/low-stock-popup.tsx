@@ -33,16 +33,17 @@ export default function LowStockPopup({items}: Props) {
     }
 
     async function createTransferHandler(items: LowStockItem[]) {
+        const date = Date.now().toString()
         const opts = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(items)
+            body: JSON.stringify({items:items, date:date})
         }
         const res = await fetch('/api/stock-transfer/save-new-open-transfer', opts)
         if (res.status === 200) {
-            dispatch(newOpenTransfer(items))
+            dispatch(newOpenTransfer({items, date}))
             dispatchNotification()
         }
     }
@@ -51,7 +52,7 @@ export default function LowStockPopup({items}: Props) {
     return (
         <>
             {lowStockList(items)}
-            <button onClick={() => createTransferHandler(items)}>Create Transfer</button>
+            <button className={styles['create-button']} onClick={() => createTransferHandler(items)}>Create Transfer</button>
         </>
     )
 }

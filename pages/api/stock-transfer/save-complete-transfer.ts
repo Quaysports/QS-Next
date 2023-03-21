@@ -1,7 +1,7 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {saveOpenTransfer} from "../../../server-modules/stock-transfer/stock-transfer";
+import {saveCompleteTransfer} from "../../../server-modules/stock-transfer/stock-transfer";
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-    const result = await saveOpenTransfer(req.body)
+    const result = await saveCompleteTransfer(req.body)
     res.status(result.code).send({})
 }

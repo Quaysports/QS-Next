@@ -14,7 +14,11 @@ export type LowStockItem = {
         minimum: number,
         default: number
     }
-    stockIn: number
+    transfer: number
+    newStockLevels: {
+        warehouse:number
+        default:number
+    }
 }
 
 export type TransferData = {
@@ -22,13 +26,19 @@ export type TransferData = {
     ReferenceNumber: string
     OrderDate : string
 }
-
+export type CompletedTransferType = {
+    items:LowStockItem[],
+    completedDate:string,
+    transferId:string,
+    transferRef: string
+}
 export interface stockTransferWrapper {
     stockTransfer: stockTransferState
 }
 
 export interface stockTransferState {
     openTransfer: TransferObject
+    completedTransfers: TransferObject[]
 }
 
 const initialState: stockTransferState = {
@@ -37,8 +47,10 @@ const initialState: stockTransferState = {
         transferID: "",
         transferRef:"",
         complete:false,
-        date:""
-    }
+        createdDate:"",
+        completedDate:""
+    },
+    completedTransfers:[]
 }
 
 export const stockTransferStore = createSlice({
@@ -59,12 +71,14 @@ export const stockTransferStore = createSlice({
             setOpenTransfer: (state, action:PayloadAction<TransferObject>) => {
                 state.openTransfer = action.payload
             },
-            newOpenTransfer: (state, action:PayloadAction<LowStockItem[]>) => {
-                state.openTransfer.items = action.payload
+            newOpenTransfer: (state, action:PayloadAction<{items:LowStockItem[], date:string}>) => {
+                const {items, date} = action.payload
+                state.openTransfer.items = items
+                state.openTransfer.createdDate = date
             },
-            setStockIn: (state, action:PayloadAction<{index:number, amount:number}>) => {
+            setTransfer: (state, action:PayloadAction<{index:number, amount:number}>) => {
                 const {index, amount} = action.payload
-                state.openTransfer.items[index].stockIn = amount
+                state.openTransfer.items[index].transfer = amount
             },
             saveTransfer:(state) => {
                 databaseSave(JSON.stringify(state.openTransfer))
@@ -84,20 +98,25 @@ export const stockTransferStore = createSlice({
                 state.openTransfer.items = tempItems
                 databaseSave(JSON.stringify(state.openTransfer))
             },
-            completeTransfer: (state, action:PayloadAction<TransferData>) => {
-                const {PkTransferId, OrderDate, ReferenceNumber} = action.payload
-                state.openTransfer.transferID = PkTransferId
-                state.openTransfer.transferRef = ReferenceNumber
-                state.openTransfer.date = OrderDate
+            completeTransfer: (state, action:PayloadAction<CompletedTransferType>) => {
+                const {items, transferRef, transferId, completedDate} = action.payload
+                state.openTransfer.transferID = transferId
+                state.openTransfer.transferRef = transferRef
+                state.openTransfer.completedDate = completedDate
                 state.openTransfer.complete = true
-                databaseSave(JSON.stringify(state.openTransfer))
+                state.openTransfer.items = items
+                saveCompleteTransfer(JSON.stringify(state.openTransfer))
                 state.openTransfer = {
                     items: [],
                     transferID: "",
                     transferRef:"",
                     complete:false,
-                    date:""
+                    createdDate:"",
+                    completedDate:""
                 }
+            },
+            setCompletedTransfers:(state, action:PayloadAction<TransferObject[]>) => {
+                state.completedTransfers = action.payload
             }
         },
     })
@@ -106,18 +125,22 @@ export const stockTransferStore = createSlice({
 export const {
     setOpenTransfer,
     newOpenTransfer,
-    setStockIn,
+    setTransfer,
     saveTransfer,
     deleteTransfer,
     removeSKU,
     addNewItem,
-    completeTransfer
+    completeTransfer,
+    setCompletedTransfers
 } = stockTransferStore.actions
 
 export const selectOpenTransfer = (state: stockTransferWrapper) => state.stockTransfer.openTransfer
+export const selectTransfer = (index:number) => (state:stockTransferWrapper) => state.stockTransfer.completedTransfers[index]
+export const selectAllCompletedTransfers = (state: stockTransferWrapper) => state.stockTransfer.completedTransfers
 export default stockTransferStore.reducer;
 
 function databaseSave(state:string) {
+    console.log(state)
     const opts = {
         method: 'POST',
         headers: {
@@ -126,6 +149,19 @@ function databaseSave(state:string) {
         body: state
     }
     fetch('/api/stock-transfer/save-open-transfer', opts).then(res => {
+        console.log(res)
+    })
+}
+
+function saveCompleteTransfer(state:string) {
+    const opts = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: state
+    }
+    fetch('/api/stock-transfer/save-complete-transfer', opts).then(res => {
         console.log(res)
     })
 }
