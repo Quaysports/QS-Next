@@ -35,7 +35,7 @@ function TitleRow() {
     for (let m = currentMonth; m < currentMonth + 24; m++) {
         let month = m % 12
         if (month === 0) currentYear++
-        monthsEle.push(<div key={currentYear + "-" + month} className={styles["month-cell"]}>{months[month]}</div>)
+        monthsEle.push(<div style={{borderLeft: month === 0 ? "4px solid var(--primary-background)" : ""}} key={currentYear + "-" + month} className={styles["month-cell"]}>{months[month]}</div>)
     }
     return (
         <div className={`${styles.row} ${styles["title-row"]}`}>
@@ -63,7 +63,7 @@ export interface CellFlags {
     fourMonthOOSDate: Date | undefined,
     fourMonthOOSTriggered: boolean,
     historicOrder: boolean,
-    outOfStockGap: boolean,
+    outOfStockGap: boolean
 }
 
 function ItemRow({item}: { item: StockForecastItem }) {
@@ -125,7 +125,7 @@ function ItemRow({item}: { item: StockForecastItem }) {
         for(let order of item.onOrder){
             let date = new Date(order.due)
             if(date.getMonth() === m && date.getFullYear() === year){
-                if(stock <= 0) {
+                if(stock <= 0 || (stock - order.quantity) <= 0) {
                     outOfStockGap = true
                     cellFlags.outOfStockGap = true
                 }

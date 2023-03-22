@@ -33,7 +33,6 @@ export interface UserTheme {
 
 export interface Permissions {
     [x: string]: any;
-
     webpages?: { auth: boolean };
     stockTakeList?: { auth: boolean };
     stockTransfer?: { auth: boolean };

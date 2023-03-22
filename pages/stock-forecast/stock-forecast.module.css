@@ -54,6 +54,7 @@
     position:relative;
     text-align: center;
     min-width:50px;
+    border-left:1px solid black;
 }
 
 .month-text{
