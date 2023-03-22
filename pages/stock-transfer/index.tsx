@@ -10,7 +10,7 @@ import {checkOpenTransfers, getCompleteTransfers} from "../../server-modules/sto
 import CompletedTransfersSidebar from "./completed-transfers/completed-transfers-sidebar";
 import OpenTransferSidebar from "./open-transfers/open-transfer-sidebar";
 
-export default function stockTransferLandingPage() {
+export default function StockTransferLandingPage() {
     const router = useRouter()
 
     return (
@@ -35,6 +35,7 @@ export default function stockTransferLandingPage() {
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
     if (context.query.tab === undefined || context.query.tab === "open-transfers") {
+        console.log("Transfers")
         const transfer = await checkOpenTransfers()
         if (transfer[0]) {
             store.dispatch(setOpenTransfer(transfer[0]))

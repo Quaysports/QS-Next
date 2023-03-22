@@ -23,6 +23,7 @@ interface Props {
     value: string | number;
     errorMessage: string;
     handler: (result: string) => void
+    role?: string
 }
 
 /**
@@ -35,7 +36,7 @@ const regexDictionary: RegexDictionary = {
     "barcode": "^[0-9]{12,14}$",
     "money": "^[0-9]{1,}\\.[0-9]{2}$",
     "alphanumeric": "^[a-zA-Z0-9-]*$",
-    "decimal": "^\\d+\\.?\\d*$"
+    "decimal": "^\\d+\\.?\\d*$",
 }
 
 /**

@@ -41,7 +41,6 @@ export default function AppsMenu({showAppsMenu, appsMenuHandler}:Props) {
                 {permissions?.shipments?.auth ? <div onClick={appsMenuHandler}><Link href="/shipments">Shipments</Link></div> : null}
                 {permissions?.marginCalculator?.auth ? <div onClick={appsMenuHandler}><Link href="/margin-calculator">Margin Calculator</Link></div> : null}
                 {permissions?.stockTransfer?.auth ? <div onClick={appsMenuHandler}><Link href="/stock-transfer">Stock Transfer</Link></div> : null}
-                {permissions?.stockTakeList?.auth ? <div onClick={appsMenuHandler}><Link href="/stock-take-list">Stock Take List</Link></div> : null}
                 {permissions?.webpages?.auth ? <div onClick={appsMenuHandler}><Link href="/webpages">Webpages</Link></div> : null}
                 <div onClick={async () => logoutHandler()}><a>Logout</a></div>
             </div>
