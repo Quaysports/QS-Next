@@ -45,9 +45,6 @@ export default function PermissionsPopup({index}: PermissionsPopupProps) {
             <div><input type="checkbox" defaultChecked={user?.permissions?.stockTransfer?.auth}
                         onChange={(e) => updatePermissions(index, "stockTransfer", e)}/><label>Stock Transfer</label>
             </div>
-            <div><input type="checkbox" defaultChecked={user?.permissions?.stockTakeList?.auth}
-                        onChange={(e) => updatePermissions(index, "stockTakeList", e)}/><label>Stock Take List</label>
-            </div>
             <div><input type="checkbox" defaultChecked={user?.permissions?.webpages?.auth}
                         onChange={(e) => updatePermissions(index, "webpages", e)}/><label>Webpages</label></div>
         </div>
