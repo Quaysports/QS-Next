@@ -177,11 +177,6 @@ export const deleteImage = async (id:keyof schema.Images, item:schema.Item) => {
     return {status: "Deleted"}
 }
 
-export const archiveSKU = async (data: { [key: string]: string }) => {
-    await mongoI.setData("Archived-SKU", {}, data)
-    return {status: "Archived"}
-}
-
 export const getBrandLabelImages = async () => {
     try {
         return await fs.readdir("../brand-label-images")

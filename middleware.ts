@@ -48,10 +48,6 @@ export async function middleware(request: NextRequest) {
             return user.permissions.marginCalculator?.auth ? null : rootRedirect();
         case '/stock-transfer':
             return user.permissions.stockTransfer?.auth ? null : rootRedirect();
-        case '/stock-take-list':
-            return user.permissions.stockTakeList?.auth ? null : rootRedirect();
-        case '/webpages':
-            return user.permissions.webpages?.auth ? null : rootRedirect();
     }
 
     return NextResponse.next()
@@ -69,8 +65,6 @@ export const config = {
         "/stock-forecast",
         "/shipments",
         "/margin-calculator",
-        "/stock-transfer",
-        "/stock-take-list",
-        "/webpages"
+        "/stock-transfer"
     ],
 };

@@ -9,10 +9,8 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
     let currentDate = new Date()
     let bandColour = cellFlags.band + (cellFlags.outOfStockGap ? "40" :"")
     let background = stockLevel > 0 ? {background: bandColour } : {background: "transparent"}
-    let firstMonthBackground
-    let restockBackground
-    let oneMonthBackground
-    let fourMonthBackground
+
+    let firstMonthBackground, restockBackground, oneMonthBackground, fourMonthBackground
 
     if (cellFlags.date.getFullYear() === currentDate.getFullYear() && cellFlags.date.getMonth() === currentDate.getMonth()){
         firstMonthBackground = generateFirstMonthStyle(currentDate, stockLevel <= 0)
@@ -69,7 +67,10 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
     }
 
     return(
-        <div className={styles["month-cell"]} style={background} onClick={()=>console.log(cellFlags)}>
+        <div className={styles["month-cell"]}
+             style={{...background,  ...{borderLeft: cellFlags.date.getMonth() === 0 ? "4px solid var(--primary-background)" : ""} }}
+             onClick={()=>console.log(cellFlags)}
+        >
             {firstMonthBackground ? <div style={firstMonthBackground} className={styles["first-month"]}></div> : null}
             {restockBackground ? <div style={restockBackground} className={styles["on-order"]}></div> : null}
             {fourMonthBackground ? <div style={fourMonthBackground} className={styles["four-month"]}></div> : null}
