@@ -32,7 +32,7 @@ export default function PrintStockTransfer() {
                 return (
                 <div key={index} className={styles['stock-transfer-grid-row']}>
                     <div style={{textAlign: 'left'}}>{item.SKU}</div>
-                    <div >{item.stockIn}</div>
+                    <div>{item.transfer}</div>
                     <div></div>
                     <div></div>
                 </div>
