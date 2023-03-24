@@ -28,7 +28,6 @@ export const getLinnQuery = async <T>(query: string) => {
 }
 
 export const updateLinnItem = async (path: string, updateData: string) => {
-    console.log(path)
     return await postReq(
         path,
         updateData,
@@ -335,9 +334,10 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
         imageDetails.IsMain = image === "main"
 
         imageDetails.ImageUrl = item.images[imageKey].link
-            ? `https://141.195.190.47/images/${item.images[imageKey].link}/${item.images[imageKey].filename}`
-            : `https://141.195.190.47/images/${item.SKU}/${item.images[imageKey].filename}`
+            ? `http://141.195.190.47/images/${item.images[imageKey].link}/${item.images[imageKey].filename}`
+            : `http://141.195.190.47/images/${item.SKU}/${item.images[imageKey].filename}`
 
+        console.log("Image URL: ", imageDetails)
         let imageRes = await updateItemImage(imageDetails) as {
             code: number,
             data: {
@@ -349,7 +349,6 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
         }
         if (imageRes.data.ImageId) item.images[imageKey].id = imageRes.data.ImageId
         if (imageRes.data.ImageUrl) item.images[imageKey].url = imageRes.data.ImageUrl
-        console.log(imageRes.data)
         results['Update Image'] = imageRes.code
     }
     await setData("New-Items", {SKU: item.SKU}, item)
@@ -397,7 +396,6 @@ export const createNewItems = async (items: { [key: number]: schema.Item }) => {
         `request={"InventoryItems":${encodeURIComponent(JSON.stringify(newItemsBulkUpload))}}`
     ) as NewItemLinnResult
     if(inventoryUploadResult.code >= 400) errors.push("Bulk inventory upload failed")
-    console.log(inventoryUploadResult)
 
     let stockItemIDsResult = await updateLinnItem(
         "/api/Inventory/GetStockItemIdsBySKU",
