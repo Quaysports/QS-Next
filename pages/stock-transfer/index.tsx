@@ -5,8 +5,12 @@ import {useRouter} from "next/router";
 import OpenTransfers from "./open-transfers/open-transfers";
 import CompletedTransfers from "./completed-transfers/completed-transfers";
 import StockTransferTabs from "./tabs";
-import {setCompletedTransfers, setOpenTransfer} from "../../store/stock-transfer-slice";
-import {checkOpenTransfers, getCompleteTransfers} from "../../server-modules/stock-transfer/stock-transfer";
+import {setCompletedTransfers, setOpenTransfer, setWarehouseList} from "../../store/stock-transfer-slice";
+import {
+    checkOpenTransfers,
+    getCompleteTransfers,
+    getWarehouseStock,
+} from "../../server-modules/stock-transfer/stock-transfer";
 import CompletedTransfersSidebar from "./completed-transfers/completed-transfers-sidebar";
 import OpenTransferSidebar from "./open-transfers/open-transfer-sidebar";
 
@@ -35,9 +39,11 @@ export default function StockTransferLandingPage() {
 export const getServerSideProps = appWrapper.getServerSideProps(store => async (context) => {
 
     if (context.query.tab === undefined || context.query.tab === "open-transfers") {
-        console.log("Transfers")
         const transfer = await checkOpenTransfers()
         if (transfer[0]) {
+            const warehouseList = await getWarehouseStock(transfer[0])
+            console.log(warehouseList)
+            store.dispatch(setWarehouseList(warehouseList))
             store.dispatch(setOpenTransfer(transfer[0]))
         }
     }
