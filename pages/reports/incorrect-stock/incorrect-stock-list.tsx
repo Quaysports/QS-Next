@@ -44,9 +44,9 @@ function Row({item,index,brand}:{item: StockError, index: number,brand:string}){
         <div className={styles["stock-lists"]} key={index}>
             <span/>
             <span data-testid={"incorrect-list-SKU"}>{item.SKU}</span>
-            <span data-testid={"incorrect-list-title"}>{item.TITLE}</span>
+            <span data-testid={"incorrect-list-title"}>{item.title}</span>
             <input className={styles["stock-lists-input"]}
-                   defaultValue={item.QTY | 0}
+                   defaultValue={item.quantity | 0}
                    onChange={(e) => {
                        if (e.target.validity.patternMismatch) {
                            e.target.style.borderColor = "var(--secondary-color)"
@@ -69,7 +69,7 @@ function Row({item,index,brand}:{item: StockError, index: number,brand:string}){
             />
             <input
                 type={"checkbox"}
-                checked={item.CHECKED}
+                checked={item.checked}
                 onChange={(e) => dispatch(setIncorrectStockChecked({
                     payload: e.target.checked,
                     brand: brand,

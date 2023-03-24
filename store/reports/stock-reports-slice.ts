@@ -70,39 +70,45 @@ export const stockReportsSlice = createSlice({
                 let incorrectStock: { [key: string]: StockError[] } = {}
                 let zeroStock: { [key: string]: StockError[] } = {}
                 for (let i = 0; i < data.length; i++) {
-                    if (!data[i].BRAND) continue;
-                    if (data[i].PRIORITY) {
-                        incorrectStock[data[i].BRAND!] ??= []
-                        incorrectStock[data[i].BRAND!]!.push(data[i])
+                    if (!data[i].brand) continue;
+                    if (data[i].priority) {
+                        incorrectStock[data[i].brand!] ??= []
+                        incorrectStock[data[i].brand!]!.push(data[i])
                     } else {
-                        zeroStock[data[i].BRAND!] ??= []
-                        zeroStock[data[i].BRAND!]!.push(data[i])
+                        zeroStock[data[i].brand!] ??= []
+                        zeroStock[data[i].brand!]!.push(data[i])
                     }
                 }
                 state.incorrectStockReport = incorrectStock
                 state.zeroStockReport = zeroStock
             },
             setIncorrectStockChecked: (state, action: PayloadAction<{ brand: string, location: number, payload: boolean }>) => {
-                state.incorrectStockReport[action.payload.brand][action.payload.location].CHECKED = action.payload.payload
+                const {brand, location,payload} = action.payload
+                state.incorrectStockReport[brand][location].checked = payload
             },
             setIncorrectStockSplice: (state, action: PayloadAction<{ brand: string, index: number, amount: number }>) => {
-                state.incorrectStockReport[action.payload.brand].splice(action.payload.index, action.payload.amount)
+                const {brand, index,amount} = action.payload
+                state.incorrectStockReport[brand].splice(index, amount)
             },
             setIncorrectStockQty: (state, action: PayloadAction<{ brand: string, location: number, payload: number }>) => {
-                state.incorrectStockReport[action.payload.brand][action.payload.location].QTY = action.payload.payload
+                const {brand, location,payload} = action.payload
+                state.incorrectStockReport[brand][location].quantity = payload
             },
 
             setZeroStockInitialState: (state, action: PayloadAction<{ [key: string]: StockError[] }>) => {
                 state.zeroStockReport = action.payload
             },
             setZeroStockChecked: (state, action: PayloadAction<{ brand: string, location: number, payload: boolean }>) => {
-                state.incorrectStockReport[action.payload.brand][action.payload.location].CHECKED = action.payload.payload
+                const {brand, location,payload} = action.payload
+                state.incorrectStockReport[brand][location].checked = payload
             },
             setZeroStockSplice: (state, action: PayloadAction<{ brand: string, index: number, amount: number }>) => {
-                state.zeroStockReport[action.payload.brand].splice(action.payload.index, action.payload.amount)
+                const {brand, index,amount} = action.payload
+                state.zeroStockReport[brand].splice(index, amount)
             },
             setZeroStockQty: (state, action: PayloadAction<{ brand: string, location: number, payload: number }>) => {
-                state.zeroStockReport[action.payload.brand][action.payload.location].QTY = action.payload.payload
+                const {brand, location,payload} = action.payload
+                state.zeroStockReport[brand][location].quantity = payload
             },
 
             setValidData: (state, action: PayloadAction<boolean>) => {

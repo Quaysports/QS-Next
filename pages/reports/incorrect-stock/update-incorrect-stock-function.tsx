@@ -25,7 +25,7 @@ export default function UpdateIncorrectStock() {
             let tempArray = []
             for (const brand in zeroStockState) {
                 for (let i = 0; i < zeroStockState[brand].length; i++) {
-                    if (zeroStockState[brand][i].CHECKED) {
+                    if (zeroStockState[brand][i].checked) {
                         tempArray.push(zeroStockState[brand][i])
                         dispatch(setZeroStockSplice({brand: brand, index: i, amount: 1}))
                     }
@@ -33,7 +33,7 @@ export default function UpdateIncorrectStock() {
             }
             for (const brand in incorrectStockState) {
                 for (let i = 0; i < incorrectStockState[brand].length; i++) {
-                    if (incorrectStockState[brand][i].CHECKED) {
+                    if (incorrectStockState[brand][i].checked) {
                         tempArray.push(incorrectStockState[brand][i])
                         dispatch(setIncorrectStockSplice({brand: brand, index: i, amount: 1}))
                     }

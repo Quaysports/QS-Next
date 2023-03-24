@@ -43,7 +43,7 @@ function Row({index, item, brand}:{index:number, item:StockError, brand:string})
     return <div className={styles["stock-lists"]} key={index}>
         <span/>
         <span data-testid={"zero-list-SKU"}>{item.SKU}</span>
-        <span data-testid={"zero-list-title"}>{item.TITLE}</span>
+        <span data-testid={"zero-list-title"}>{item.title}</span>
         <input className={`${styles["stock-lists-input"]} ${styles["stock-lists-cells"]}`}
                onChange={(e) => {
                    if (e.target.validity.patternMismatch) {

@@ -15,12 +15,12 @@ import {number, string} from "prop-types";
  * @property {boolean} PRIORITY
  */
 export interface StockError {
-    BRAND?: string
-    TITLE: string
+    brand?: string
+    title: string
     SKU: string
-    CHECKED: boolean
-    QTY: number
-    PRIORITY: boolean
+    checked: boolean
+    quantity: number
+    priority: boolean
 }
 
 export type QuickLinks = {
@@ -186,7 +186,6 @@ export const getSupplierPriceChanges = async (data: { supplier: string, data: st
 }
 //only used in /pages/stock-reports
 export const getIncorrectStock = async () => {
-    console.dir("Get Incorrect Stock")
     const query = [
         {
             '$lookup': {
@@ -202,11 +201,11 @@ export const getIncorrectStock = async () => {
         }, {
             '$project': {
                 'SKU': 1,
-                'CHECKED': 1,
-                'PRIORITY': 1,
-                'QTY': 1,
-                'TITLE': 1,
-                'BRAND': '$Item.brand'
+                'checked': 1,
+                'priority': 1,
+                'quantity': 1,
+                'title': 1,
+                'brand': '$Item.brand'
             }
         }
     ]
