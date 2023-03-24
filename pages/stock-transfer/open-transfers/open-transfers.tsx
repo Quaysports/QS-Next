@@ -2,6 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectOpenTransfer, setTransfer, saveTransfer,removeSKU} from "../../../store/stock-transfer-slice";
 import styles from '../stock-transfer.module.css'
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
+import ColumnLayout from "../../../components/layouts/column-layout";
 
 export default function OpenTransfers() {
 
@@ -23,7 +24,8 @@ export default function OpenTransfers() {
     if (!openTransfer) return null
 
     return (
-        <div className={styles["open-transfer-container"]}>
+        <ColumnLayout scroll={true}>
+            <div className={styles["open-transfer-container"]}>
             <div className={styles["open-transfer-title"]}>
                 <div></div>
                 <div>SKU</div>
@@ -49,6 +51,7 @@ export default function OpenTransfers() {
                     </div>
                 )
             })}
-        </div>
+            </div>
+        </ColumnLayout>
     )
 }
