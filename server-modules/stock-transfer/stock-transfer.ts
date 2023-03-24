@@ -122,7 +122,8 @@ export async function getNewItem(sku: string) {
 export async function getWarehouseStock(transfer: TransferObject) {
     const warehouseList = await find<NewStockItem>("New-Items", {
         'stock.warehouse': {$gt: 0},
-        isComposite: false
+        isComposite: false,
+        tags:{$nin:['filtered']}
     }, {SKU: 1, title: 1, linnId: 1, stock: 1})
     if (!warehouseList) return []
     const filteredWarehouseList:LowStockItem[] = []
@@ -143,6 +144,7 @@ export async function getWarehouseStock(transfer: TransferObject) {
             filteredWarehouseList.push(newItemObject)
         }
     }
+    filteredWarehouseList.sort((a, b) => a.SKU > b.SKU ? 1 : -1)
     return filteredWarehouseList
 }
 

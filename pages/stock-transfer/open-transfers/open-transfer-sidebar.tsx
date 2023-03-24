@@ -51,7 +51,7 @@ export default function OpenTransferSidebar() {
         dispatchNotification({
             type: 'popup',
             title: 'Add SKU to transfer',
-            content: <div><DatabaseSearchBar handler={(x) => fetchNewItem(openTransfer.items, x)}/></div>
+            content: <div><DatabaseSearchBar searchOptions={{isComposite:false, isListingVariation:false}} handler={(x) => fetchNewItem(openTransfer.items, x)}/></div>
         })
     }
 
