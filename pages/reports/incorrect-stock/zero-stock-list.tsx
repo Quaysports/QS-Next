@@ -45,6 +45,7 @@ function Row({index, item, brand}:{index:number, item:StockError, brand:string})
         <span data-testid={"zero-list-SKU"}>{item.SKU}</span>
         <span data-testid={"zero-list-title"}>{item.title}</span>
         <input className={`${styles["stock-lists-input"]} ${styles["stock-lists-cells"]}`}
+               defaultValue={item.quantity | 0}
                onChange={(e) => {
                    if (e.target.validity.patternMismatch) {
                        e.target.style.borderColor = "var(--secondary-color)"
