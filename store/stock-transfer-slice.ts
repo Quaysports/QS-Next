@@ -21,11 +21,6 @@ export type LowStockItem = {
     }
 }
 
-export type TransferData = {
-    PkTransferId:string
-    ReferenceNumber: string
-    OrderDate : string
-}
 export type CompletedTransferType = {
     items:LowStockItem[],
     completedDate:string,
@@ -39,6 +34,7 @@ export interface stockTransferWrapper {
 export interface stockTransferState {
     openTransfer: TransferObject
     completedTransfers: TransferObject[]
+    warehouseList: LowStockItem[]
 }
 
 const initialState: stockTransferState = {
@@ -50,7 +46,8 @@ const initialState: stockTransferState = {
         createdDate:"",
         completedDate:""
     },
-    completedTransfers:[]
+    completedTransfers:[],
+    warehouseList:[]
 }
 
 export const stockTransferStore = createSlice({
@@ -117,6 +114,17 @@ export const stockTransferStore = createSlice({
             },
             setCompletedTransfers:(state, action:PayloadAction<TransferObject[]>) => {
                 state.completedTransfers = action.payload
+            },
+            setWarehouseList:(state, action:PayloadAction<LowStockItem[]>) => {
+                state.warehouseList = action.payload
+            },
+            addItemFromWarehouseList: (state, action:PayloadAction<string>) => {
+                const warehouseListCopy = [...state.warehouseList]
+                const index = warehouseListCopy.findIndex(item => item.SKU === action.payload)
+                state.openTransfer.items = [...state.openTransfer.items, warehouseListCopy[index]]
+                warehouseListCopy.splice(index, 1)
+                state.warehouseList = warehouseListCopy
+                databaseSave(JSON.stringify(state.openTransfer))
             }
         },
     })
@@ -131,12 +139,15 @@ export const {
     removeSKU,
     addNewItem,
     completeTransfer,
-    setCompletedTransfers
+    setCompletedTransfers,
+    setWarehouseList,
+    addItemFromWarehouseList
 } = stockTransferStore.actions
 
 export const selectOpenTransfer = (state: stockTransferWrapper) => state.stockTransfer.openTransfer
 export const selectTransfer = (index:number) => (state:stockTransferWrapper) => state.stockTransfer.completedTransfers[index]
 export const selectAllCompletedTransfers = (state: stockTransferWrapper) => state.stockTransfer.completedTransfers
+export const selectWarehouseItems = (state: stockTransferWrapper) => state.stockTransfer.warehouseList
 export default stockTransferStore.reducer;
 
 function databaseSave(state:string) {

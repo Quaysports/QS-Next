@@ -10,10 +10,11 @@ import {
     completeTransfer, CompletedTransferType
 } from "../../../store/stock-transfer-slice";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
-import LowStockPopup from "../low-stock-popup";
+import LowStockPopup from "./low-stock-popup";
 import {dispatchToast} from "../../../components/toast/dispatch-toast";
 import DatabaseSearchBar, {DatabaseSearchItem} from "../../../components/database-search-bar/database-search";
 import {TransferObject} from "../../../server-modules/stock-transfer/stock-transfer";
+import WarehouseListPopup from "./warehouse-list-popup";
 
 export default function OpenTransferSidebar() {
 
@@ -114,6 +115,10 @@ export default function OpenTransferSidebar() {
         }
     }
 
+    async function warehouseList(){
+        dispatchNotification({type:'popup', title:'Warehouse Stock', content: <WarehouseListPopup/>})
+    }
+
     if (!openTransfer) return null
     return (
         <SidebarLayout>
@@ -127,6 +132,9 @@ export default function OpenTransferSidebar() {
                     <br/>
                     <SidebarButton onClick={() => addSkuHandler()}>
                         Add SKU
+                    </SidebarButton>
+                    <SidebarButton onClick={() => warehouseList()}>
+                        Warehouse List
                     </SidebarButton>
                     <SidebarButton onClick={() => {print(openTransfer)}}>
                         Print Transfer

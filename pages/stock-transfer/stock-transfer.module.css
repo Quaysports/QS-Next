@@ -43,6 +43,31 @@
     width:21px;
     height: 21px;
 }
+.warehouse-popup-container{
+    max-height: 80vh;
+    overflow-y: scroll;
+}
+.warehouse-popup-title{
+    font-weight: bold;
+    text-align: center;
+    background-color: var(--primary-table-title);
+}
+.warehouse-popup-row{
+    background-color: var(--primary-table-cell-background);
+}
+.warehouse-popup-row, .warehouse-popup-title{
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    padding: 2px 10px;
+    border-radius: var(--primary-border-radius);
+    box-shadow: var(--primary-box-shadow);
+    margin: 7px
+}
+.warehouse-popup-row:hover{
+    transform: scale(1.01);
+    background-color: var(--traffic-light-orange);
+    color:black
+}
 
 /*-------------------------Complete Transfers--------------------------*/
 

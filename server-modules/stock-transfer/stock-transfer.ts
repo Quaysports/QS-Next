@@ -6,7 +6,7 @@ import {schema} from "../../types";
 
 
 export type TransferObject = {
-    _id?:string
+    _id?: string
     items: LowStockItem[],
     transferID: string,
     transferRef: string,
@@ -67,7 +67,7 @@ export async function saveOpenTransfer(transfer: TransferObject) {
 }
 
 export async function saveCompleteTransfer(transfer: TransferObject) {
-    if(transfer._id) delete transfer._id
+    if (transfer._id) delete transfer._id
     const res = await setData("Stock-Transfers", {createdDate: transfer.createdDate}, transfer)
     return res ? {code: 200} : {code: 400}
 }
@@ -91,8 +91,8 @@ export async function deleteOpenTransfer() {
 
 type NewStockItem = {
     SKU: string,
-    title:string,
-    linnId:string,
+    title: string,
+    linnId: string,
     stock: {
         default: number,
         warehouse: number,
@@ -119,6 +119,33 @@ export async function getNewItem(sku: string) {
     return null
 }
 
+export async function getWarehouseStock(transfer: TransferObject) {
+    const warehouseList = await find<NewStockItem>("New-Items", {
+        'stock.warehouse': {$gt: 0},
+        isComposite: false
+    }, {SKU: 1, title: 1, linnId: 1, stock: 1})
+    if (!warehouseList) return []
+    const filteredWarehouseList:LowStockItem[] = []
+    for (let i = 0; i < warehouseList.length; i++) {
+        const index = transfer.items.findIndex(transferItem => transferItem.SKU === warehouseList[i].SKU)
+        if (index === -1) {
+            let newItemObject: LowStockItem = {
+                transfer: 0,
+                title: warehouseList[i].title,
+                stock: {...warehouseList[i].stock},
+                linnId: warehouseList[i].linnId,
+                SKU: warehouseList[i].SKU,
+                newStockLevels: {
+                    default: 0,
+                    warehouse: 0
+                }
+            }
+            filteredWarehouseList.push(newItemObject)
+        }
+    }
+    return filteredWarehouseList
+}
+
 type NewTransferResult = {
     code: number,
     data: {
@@ -135,7 +162,7 @@ export async function completeTransfer(transfer: TransferObject) {
     const result = await updateLinnItem('/api/WarehouseTransfer/CreateTransferRequestWithReturn', 'toLocationId=00000000-0000-0000-0000-000000000000&fromLocationId=1a692c39-afc9-4844-9f11-6e6625a9c1f1') as NewTransferResult
     if (result.code >= 400) return result
     for (const item of transfer.items) {
-        if(item.transfer === 0) continue
+        if (item.transfer === 0) continue
         const itemToAdd = `fkTransferId=${result.data.PkTransferId}&pkStockItemId=${item.linnId}`
         const itemToAddResult = await updateLinnItem('/api/WarehouseTransfer/AddItemToTransfer', itemToAdd) as AddedItemResult
         const quantityChange = `pkTransferId=${result.data.PkTransferId}&pkTransferItemId=${itemToAddResult.data.PkTransferItemId}&Quantity=${item.transfer}`
@@ -145,10 +172,10 @@ export async function completeTransfer(transfer: TransferObject) {
     const completeRes = await updateLinnItem('/api/WarehouseTransfer/ChangeTransferStatus', `pkTransferId=${result.data.PkTransferId}&newStatus=7`) as NewTransferResult
     if (completeRes.code >= 400) return completeRes
 
-    type StockRequestLevel = { data: { StockLevel: { StockLevel: number }}}
+    type StockRequestLevel = { data: { StockLevel: { StockLevel: number } } }
 
     for (const item of transfer.items) {
-        if(item.transfer === 0) {
+        if (item.transfer === 0) {
             item.newStockLevels.default = item.stock.default
             item.newStockLevels.warehouse = item.stock.warehouse
             continue
@@ -169,6 +196,6 @@ export async function completeTransfer(transfer: TransferObject) {
 }
 
 export async function getCompleteTransfers() {
-    const res = await find<TransferObject>("Stock-Transfers", {complete:true})
+    const res = await find<TransferObject>("Stock-Transfers", {complete: true})
     return res ? res : []
 }
