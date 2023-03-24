@@ -22,19 +22,19 @@ const mockItems = jest.fn()
 const mockBrands = jest.fn()
 
 let incorrectStock: StockError[] = [{
-    BRAND: "Shimano",
-    TITLE: "Fishing Stuff",
+    brand: "Shimano",
+    title: "Fishing Stuff",
     SKU: "SKU-1",
-    CHECKED: false,
-    QTY: 3,
-    PRIORITY: true
+    checked: false,
+    quantity: 3,
+    priority: true
 }, {
-    BRAND: "Mainline",
-    TITLE: "Fishing Things",
+    brand: "Mainline",
+    title: "Fishing Things",
     SKU: "SKU-2",
-    CHECKED: false,
-    QTY: 3,
-    PRIORITY: false
+    checked: false,
+    quantity: 3,
+    priority: false
 }]
 jest.mock("../../../server-modules/shop/shop", () => ({
     getIncorrectStock: () => {
@@ -209,12 +209,12 @@ describe("Incorrect Stock tab tests", () => {
         await waitFor(() => screen.getByRole('button', {name: "Save"}).click())
         expect(await screen.findByText("1 items updated")).toBeInTheDocument()
         expect(fetchReq).toEqual([{
-            "BRAND": "Shimano",
-            "CHECKED": true,
-            "PRIORITY": true,
-            "QTY": 5,
+            "brand": "Shimano",
+            "checked": true,
+            "priority": true,
+            "quantity": 5,
             "SKU": "SKU-1",
-            "TITLE": "Fishing Stuff"
+            "title": "Fishing Stuff"
         }])
     })
 })
