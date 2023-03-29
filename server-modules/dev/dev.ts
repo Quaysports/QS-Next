@@ -4,6 +4,11 @@ import {Postage} from "../postage/postage";
 import {Packaging} from "../packaging/packaging";
 import {Fees} from "../fees/fees";
 
+//DO NOT ENABLE AND RUN THESE SCRIPTS UNLESS YOU KNOW EXACTLY WHAT THEY DO
+//THEY COULD CAUSE SERIOUS DATABASE PROBLEMS
+
+
+/*
 export async function getCalendars(){
     return await find("Holiday-Calendar", {})
 }
@@ -363,3 +368,4 @@ export async function correctProfitLoss(){
         item.profitWithLoss = Math.round(item.profit - (item.percentageDiscountAmount + item.flatDiscount))
     }
 }
+*/

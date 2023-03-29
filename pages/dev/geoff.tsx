@@ -36,7 +36,7 @@ export default function Geoff() {
                 booked[user] = {type:"holiday", paid:true, duration:50}
             }
         }
-    }*/
+    }
 
     function mapItem(k: any, v: any, merge: any) {
         if (!v) return
@@ -94,5 +94,6 @@ export default function Geoff() {
             <button onClick={() => fetch('/api/dev/report-worker-test').then(res=>res.json().then(json=>console.log(json)))}>Report Worker</button>
             <button disabled onClick={() => fetch('/api/dev/correct-profit-loss')}>Fix Profit Loss</button>
         </div>
-    )
+    )*/
+    return <h1>Hi Geoff!</h1>
 }

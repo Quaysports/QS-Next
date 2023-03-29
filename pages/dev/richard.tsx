@@ -2,7 +2,7 @@ import CSVButton from "../../components/csv-button";
 import {useState} from "react";
 
 export default function Richard() {
-
+/*
     const [brands, setBrands] = useState<{[key:number]:string}[]>([])
     async function handler(){
         const res = await fetch("/api/dev/get-all-brands")
@@ -24,4 +24,7 @@ export default function Richard() {
             <CSVButton objectArray={brands}/>
         </div>
     )
+
+ */
+    return <h1>Hi Richard!</h1>
 }

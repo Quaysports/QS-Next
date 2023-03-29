@@ -5,6 +5,8 @@ import {useSelector} from "react-redux";
 import {selectUser} from "../../store/session-slice";
 import Geoff from "./geoff";
 import Richard from "./richard";
+import Joshua from "./joshua";
+import Craig from "./craig";
 
 export default function DevPage() {
     const user = useSelector(selectUser)
@@ -15,6 +17,8 @@ export default function DevPage() {
             <ColumnLayout>
                 {user?.username === "Geoff" ? <Geoff/> : <></>}
                 {user?.username === "Richard" ? <Richard/> : <></>}
+                {user?.username === "Craig" ? <Craig/> : <></>}
+                {user?.username === "Joshua" ? <Joshua/> : <></>}
             </ColumnLayout>
         </OneColumn>
     )
