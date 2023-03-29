@@ -150,8 +150,8 @@ export async function convertPricesToThousands() {
     for (let item of items) {
         item.prices = {
             amazon: Math.round(item.prices.amazon * 100),
-            ebay: Math.round(item.prices.amazon * 100),
-            magento: Math.round(item.prices.amazon * 100),
+            ebay: Math.round(item.prices.ebay * 100),
+            magento: Math.round(item.prices.magento * 100),
             purchase: item.prices.purchase,
             retail: item.prices.retail,
             shop: item.prices.shop
