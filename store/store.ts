@@ -14,6 +14,7 @@ import {rotaSlice} from "./dashboard/rotas-slice";
 import {pickListSlice} from "./shop-tills/pick-list-slice";
 import {salesSlice} from "./reports/sales-slice";
 import {newItemsSlice} from "./item-database/new-items-slice";
+import {toDoSlice} from "./item-database/to-do-slice";
 import {resetStore} from "./reset-store";
 import {AnyAction} from "redux";
 import {stockTransferStore} from "./stock-transfer-slice";
@@ -41,7 +42,8 @@ export const appReducer = combineReducers({
     [salesSlice.name]: salesSlice.reducer,
     [newItemsSlice.name]: newItemsSlice.reducer,
     [resetStore.name]:resetStore.reducer,
-    [stockTransferStore.name]: stockTransferStore.reducer
+    [stockTransferStore.name]: stockTransferStore.reducer,
+    [toDoSlice.name]: toDoSlice.reducer
 })
 
 export function setupStore(preloadedState?: PreloadedState<RootState>){

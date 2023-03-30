@@ -4,13 +4,6 @@ import {FocusEvent, ChangeEvent, useState, useEffect} from "react";
  * @module Regex-Index
  */
 /**
- * Array of object with {[key:string]: string} acting as regex dictionary.<br />
- * Regex Dictionary: {@link regexDictionary}
- * @property {Object<string,string>[]} DictionaryEntry - Key as id, property as regex
- */
-interface RegexDictionary {
-    [key: string]: string;
-}
 
 /**
  * @param {string} type - Key of {@link RegexDictionary}.
@@ -19,7 +12,7 @@ interface RegexDictionary {
  * @param {handler} handler - Handler function called on validation pass.
  */
 interface Props {
-    type: keyof RegexDictionary;
+    type: keyof typeof regexDictionary;
     value: string | number;
     errorMessage: string;
     handler: (result: string) => void
@@ -30,14 +23,14 @@ interface Props {
  * @property {string} pin - PIN validation exactly four integers
  * @property {string} number - Numeric integers only
  */
-const regexDictionary: RegexDictionary = {
+const regexDictionary = {
     "pin": "^[0-9]{4}$",
     "number": "^\\d+$",
     "barcode": "^[0-9]{12,14}$",
     "money": "^[0-9]{1,}\\.[0-9]{2}$",
     "alphanumeric": "^[a-zA-Z0-9-]*$",
     "decimal": "^\\d+\\.?\\d*$",
-}
+} as const
 
 /**
  * Regex input component to simplify regex validation. Add any new regex searches to the Dictionary and access via their key. <br />

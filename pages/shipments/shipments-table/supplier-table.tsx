@@ -2,7 +2,6 @@ import {Shipment, ShipmentItem} from "../../../server-modules/shipping/shipping"
 import styles from "./shipment-card.module.css";
 
 
-
 export default function SupplierTable({shipment, shipmentItems}:{shipment:Shipment, shipmentItems: ShipmentItem[]}){
 
     if(!shipmentItems || shipmentItems.length === 0) return null

@@ -1,0 +1,44 @@
+.todo-wrapper {
+  box-shadow: var(--primary-box-shadow);
+  border-radius: var(--primary-border-radius);
+}
+
+.todo-title {
+  background: var(--primary-table-title);
+  border-radius: var(--primary-border-radius);
+  display: grid;
+  grid-template-columns: 20rem auto;
+  padding: 5px;
+  margin: 5px;
+  text-align: left;
+}
+
+.todo-row {
+  display: grid;
+  grid-template-columns: 20rem auto 5rem;
+  background-color: var(--primary-table-cell-background);
+  padding: 5px;
+  margin: 5px;
+  border-radius: var(--primary-border-radius);
+}
+
+.todo-row button {
+  height: 1.25rem;
+}
+
+.todo-row > span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.button-container {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-container button {
+  height: 1.25rem;
+  margin: 0.2rem 0 0.2rem 0;
+}
