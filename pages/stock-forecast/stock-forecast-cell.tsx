@@ -7,7 +7,7 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
     if(!item) return null
 
     let currentDate = new Date()
-    let bandColour = cellFlags.band + (cellFlags.outOfStockGap ? "40" :"")
+    let bandColour = cellFlags.band + (cellFlags.outOfStockGap ? "B3" :"")
     let background = stockLevel > 0 ? {background: bandColour } : {background: "transparent"}
 
     let firstMonthBackground, restockBackground, oneMonthBackground, fourMonthBackground
