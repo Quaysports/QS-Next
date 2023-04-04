@@ -145,11 +145,11 @@ export const getServerSideProps = appWrapper.getServerSideProps(
                 }
                     break;
             }
-            const query = {...channelStatus, tags: {$in: ["domestic"]}}
+            const query = {...channelStatus, tags: {$in: ["domestic"]}, "stock.minimum": {$ne: 0}}
             let items = await getItems(query, {
                 SKU: 1,
                 title: 1,
-                checkboxStatus: 1,
+                checkboxStatus: 1
             });
             if (items) {
                 store.dispatch(setToDoItems(items));

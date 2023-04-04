@@ -12,41 +12,36 @@ export interface toDoWrapper {
 export interface toDoState {
     items: Pick<schema.Item, "SKU" | "title" | "checkboxStatus">[],
     threshold: number,
-    channel: string,
-    status: string
 }
 
 const initialState: toDoState = {
     items: [],
     threshold: 30,
-    channel: "",
-    status: ""
 }
 
 export const toDoSlice = createSlice({
-        name: "todo",
-        initialState,
-        extraReducers: (builder) => {
-            builder
-                .addCase(hydrate, (state, action) => {
-                    return {
-                        ...state,
-                        ...action.payload.todo
-                    };
-                })
-                .addDefaultCase(() => {
-                })
+    name: "todo",
+    initialState,
+    extraReducers: (builder) => {
+        builder
+            .addCase(hydrate, (state, action) => {
+                return {
+                    ...state,
+                    ...action.payload.todo
+                };
+            })
+            .addDefaultCase(() => {
+            })
+    },
+    reducers: {
+        setToDoItems: (state, action: PayloadAction<schema.Item[]>) => {
+            state.items = action.payload
         },
-        reducers: {
-            setToDoItems: (state, action: PayloadAction<schema.Item[]>) => {
-                state.items = action.payload
-            },
-            setThreshold: (state, action: PayloadAction<number>) => {
-                state.threshold = action.payload
-            }
-        },
-    })
-;
+        setThreshold: (state, action: PayloadAction<number>) => {
+            state.threshold = action.payload
+        }
+    },
+});
 
 export const {setToDoItems, setThreshold} = toDoSlice.actions
 
