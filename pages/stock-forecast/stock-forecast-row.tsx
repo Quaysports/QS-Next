@@ -125,7 +125,7 @@ function ItemRow({item}: { item: StockForecastItem }) {
         for(let order of item.onOrder){
             let date = new Date(order.due)
             if(date.getMonth() === m && date.getFullYear() === year){
-                if(stock <= 0 || (stock - order.quantity) <= 0) {
+                if(stock <= 0 || (stock - item.stockConsumption.historicConsumption[m]) <= 0) {
                     outOfStockGap = true
                     cellFlags.outOfStockGap = true
                 }
