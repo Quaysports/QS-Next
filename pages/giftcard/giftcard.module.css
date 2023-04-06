@@ -1,0 +1,34 @@
+.totalGiftCards {
+  text-align: center;
+}
+
+.giftCardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.singleGiftCard {
+  flex-basis: calc(100% / 10);
+  padding: 10px;
+  border-radius: 15px;
+  margin: 10px;
+  background: linear-gradient(45deg, #2b2162, #586221);
+  box-shadow: 1.5px 1px #0c0b0b;
+  
+}
+
+.searchGiftCard {
+  text-align: center;
+  padding: 10px;
+  border-radius: 15px;
+  width: 190px;
+  margin: 10px;
+  background: linear-gradient(45deg, black, #586221);
+  box-shadow: 1.5px 1px #0c0b0b;
+}
+
+.searchGiftCardContainer {
+  display: flex;
+  justify-content: center;
+}
