@@ -23,7 +23,6 @@ import { toDoSlice } from "./item-database/to-do-slice";
 import { resetStore } from "./reset-store";
 import { AnyAction } from "redux";
 import { stockTransferStore } from "./stock-transfer-slice";
-import { brandsSlice } from "./dashboard/new-slice";
 import { giftCardSlice } from "./gift-card-slice";
 
 export const rootReducer = (state: CombinedState<any>, action: AnyAction) => {
@@ -34,7 +33,6 @@ export const rootReducer = (state: CombinedState<any>, action: AnyAction) => {
 };
 
 export const appReducer = combineReducers({
-  [brandsSlice.name]: brandsSlice.reducer,
   [shopOrdersSlice.name]: shopOrdersSlice.reducer,
   [stockReportsSlice.name]: stockReportsSlice.reducer,
   [usersSlice.name]: usersSlice.reducer,
