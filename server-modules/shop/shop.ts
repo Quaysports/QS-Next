@@ -368,3 +368,25 @@ export async function getTillTransactionCSVData(dates:{start:number,end:number})
     console.dir(query, {depth: 5})
     return await find<schema.TillOrder>("Till-Transactions", query)
 }
+
+export type GiftCardType = {
+    sort(arg0: (a: any, b: any) => number): any;
+    id: string
+    active:boolean
+    amount:number
+}
+export async function getGiftCards() {
+    let giftCardInfo = await find<GiftCardType>('New-Giftcards')
+    return giftCardInfo ? giftCardInfo : []
+    
+}
+
+export type brandNameType ={
+    brand: ''
+}
+
+export async function brandNameType() {
+    let giftCardInfo = await find<brandNameType>('New-Giftcards')
+    return giftCardInfo ? giftCardInfo : []
+    
+}
