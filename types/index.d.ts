@@ -690,5 +690,4 @@ declare namespace linn {
         fkShippingAPIConfigId: number;
         IntegratedServiceId: string;
     }
-
 }

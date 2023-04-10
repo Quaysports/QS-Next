@@ -1,4 +1,9 @@
-import {selectItems, selectThreshold, setThreshold} from "../../../store/item-database/to-do-slice";
+import {
+    selectItems,
+    selectSearchedTodoItem,
+    selectThreshold,
+    setThreshold
+} from "../../../store/item-database/to-do-slice";
 import {useDispatch, useSelector} from "react-redux";
 import styles from "./todo.module.css";
 import ColumnLayout from "../../../components/layouts/column-layout";
@@ -9,6 +14,7 @@ export default function ToDo() {
     const items = useSelector(selectItems);
     const threshold = useSelector(selectThreshold);
     const dispatch = useDispatch()
+    const searchedTodoItems = useSelector(selectSearchedTodoItem)
 
     if (!items) return null;
 
@@ -17,28 +23,33 @@ export default function ToDo() {
         for (let i = 0; i < threshold; i++) {
             if (i === items.length) break;
             tempItems.push(<TodoRow SKU={items[i].SKU} title={items[i].title}
-                                    checkboxStatus={items[i].checkboxStatus}/>)
+                                    checkboxStatus={items[i].checkboxStatus} key={items[i].SKU}/>)
         }
         return tempItems
     }
 
     return (
         <ColumnLayout scroll={true}>
-            <div>{elements}</div>
-            {renderItemsHandler(items, threshold)}
+            {/*<div>{elements}</div>*/}
+            <div><TitleRow keyName={"title"}/></div>
+            {searchedTodoItems.length !== 0
+                ? searchedTodoItems.map(searchedTodoItem => {
+                    return <TodoRow SKU={searchedTodoItem.SKU} title={searchedTodoItem.title} checkboxStatus={searchedTodoItem.checkboxStatus} key={searchedTodoItem.SKU}/>
+                })
+                : renderItemsHandler(items, threshold)}
             <div className={styles["button-container"]}>
-                {threshold < items.length ?
+                {threshold < items.length && searchedTodoItems.length >= 30 ?
                     <button onClick={() => dispatch(setThreshold((threshold + 30)))}>Load More Items</button> : null}
             </div>
         </ColumnLayout>
     );
 }
 
-const elements = [<TitleRow key={"title"}/>];
+// const elements = [<TitleRow keyName={"title"}/>];
 
-function TitleRow({ key }:{key:string} ) {
+function TitleRow({keyName}: { keyName: string }) {
     return (
-        <div key={key} className={styles["todo-title"]}>
+        <div key={keyName} className={styles["todo-title"]}>
             <div>SKU</div>
             <div>Title</div>
         </div>
