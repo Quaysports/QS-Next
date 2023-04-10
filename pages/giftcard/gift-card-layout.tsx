@@ -4,6 +4,7 @@ import {
   selectActive,
   selectSearchedGiftCard,
   setSearchGiftcards,
+  selectTotal,
 } from "../../store/gift-card-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { SetStateAction, useState } from "react";
@@ -11,17 +12,11 @@ import { GiftCardType } from "../../server-modules/shop/shop";
 
 export default function GiftCardLayOut() {
   const [userInput, setUserInput] = useState<string>("");
-
   const giftCard = useSelector(selectActive);
+  const total = useSelector(selectTotal);
   const searchGiftCards = useSelector(selectSearchedGiftCard);
 
   const dispatch = useDispatch();
-
-  let total: number = 0;
-
-  for (let i of giftCard) {
-    total += i.amount;
-  }
 
   const handleBackButton: () => void = () => {
     setUserInput("");
@@ -38,6 +33,7 @@ export default function GiftCardLayOut() {
     <ColumnLayout scroll={true}>
       <div className={styles["totalGiftCards"]}>
         <input
+          value={userInput}
           minLength={13}
           placeholder="Search for a giftcard.."
           onChange={(e) => handleUserInput(e.target.value)}
@@ -68,14 +64,17 @@ export default function GiftCardLayOut() {
         ) : null}
         {!userInput ? (
           <div className={styles["giftCardContainer"]}>
-            {giftCard.map((single: GiftCardType, i: number) => {
-              return (
-                <div className={styles["singleGiftCard"]} key={i}>
-                  £{single.amount / 100}
-                  <div>{single.id}</div>
-                </div>
-              );
-            })}
+            {giftCard
+              .slice()
+              .sort((a, b) => b.amount - a.amount)
+              .map((single: GiftCardType, i: number) => {
+                return (
+                  <div className={styles["singleGiftCard"]} key={i}>
+                    £{single.amount / 100}
+                    <div>{single.id}</div>
+                  </div>
+                );
+              })}
           </div>
         ) : null}
       </div>
