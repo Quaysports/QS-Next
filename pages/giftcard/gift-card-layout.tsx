@@ -4,7 +4,6 @@ import {
   selectActive,
   selectSearchedGiftCard,
   setSearchGiftcards,
-  selectTotal,
 } from "../../store/gift-card-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { SetStateAction, useState } from "react";
@@ -13,7 +12,7 @@ import { GiftCardType } from "../../server-modules/shop/shop";
 export default function GiftCardLayOut() {
   const [userInput, setUserInput] = useState<string>("");
   const giftCard = useSelector(selectActive);
-  const total = useSelector(selectTotal);
+  // const total = useSelector(selectTotal);
   const searchGiftCards = useSelector(selectSearchedGiftCard);
 
   const dispatch = useDispatch();
@@ -22,6 +21,10 @@ export default function GiftCardLayOut() {
     setUserInput("");
   };
 
+  let total = 0;
+  for (let i of giftCard) {
+    total += i.amount;
+  }
   const handleUserInput = (searchValue: string) => {
     setUserInput(searchValue);
     if (searchValue.length > 2) {
