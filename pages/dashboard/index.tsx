@@ -1,4 +1,3 @@
-import styles from "./dashboard.module.css";
 import { useRouter } from "next/router";
 import UserTab from "./user";
 import HomeTab from "./home";
@@ -33,8 +32,7 @@ import {
   setUserData,
 } from "../../store/dashboard/rotas-slice";
 import RotasTab from "./rotas";
-import Link from "next/link";
-import Image from "next/image";
+import { IconsContainer } from "../../components/menu/iconscontainer";
 
 /**
  * Dashboard landing page
@@ -53,109 +51,7 @@ export default function Dashboard() {
       {router.query.tab === "user" ? <UserTab /> : null}
       {router.query.tab === "rotas" ? <RotasTab /> : null}
       {router.query.tab === "holidays" ? <HolidayTab /> : null}
-      <div className={styles["container"]}>
-        <Link href={"./shop-orders?tab=orders"} className={styles["link"]}>
-          <div className={styles["iconDisplay"]}>
-            <Image
-              src={"/shop-orders.svg"}
-              width={50}
-              height={49}
-              alt={"icon of shopping trolley"}
-            />
-            <p>Shop Orders</p>
-          </div>
-        </Link>
-        <Link href={"./shop-tills?tab=pick-list"} className={styles["link"]}>
-          <div className={styles["iconDisplay"]}>
-            <Image
-              src={"/shop-till.svg"}
-              width={50}
-              height={45}
-              alt={"icon of till"}
-            />
-            <p>Shop Tills</p>
-          </div>
-        </Link>
-        <Link href={"/reports?tab=incorrect-stock"} className={styles["link"]}>
-          <div className={styles["iconDisplay"]}>
-            {" "}
-            <Image
-              src={"/reports.svg"}
-              width={50}
-              height={50}
-              alt={"icon of till"}
-            />
-            <p>Reports</p>
-          </div>
-        </Link>
-        <Link href={"/item-database"} className={styles["link"]}>
-          <div className={styles["iconDisplay"]}>
-            <Image
-              src={"/database.svg"}
-              width={50}
-              height={50}
-              alt={"icon of database"}
-            />
-            <p>Item DB</p>
-          </div>
-        </Link>
-        <Link href={"/stock-forecast"} className={styles["link"]}>
-          <div className={styles["iconDisplay"]}>
-            <Image
-              src={"/stock-forecast.svg"}
-              width={50}
-              height={50}
-              alt={"icon of stock chart"}
-            />
-            <p>Stock Forecast</p>
-          </div>
-        </Link>
-
-        <Link href={"/shipments"} className={styles["link"]}>
-          <div className={styles["iconDisplay"]}>
-            <Image
-              src={"/shipment.svg"}
-              width={50}
-              height={50}
-              alt={"icon of ship"}
-            />
-            <p>Shipments</p>
-          </div>
-        </Link>
-        <Link href={"/margin-calculator"} className={styles["link"]}>
-          <div className={styles["iconDisplay"]}>
-            <Image
-              src={"/calculator.svg"}
-              width={50}
-              height={50}
-              alt={"icon of calculator"}
-            />
-            <p>Margin Calc</p>
-          </div>{" "}
-        </Link>
-        <Link href={"/stock-transfer"} className={styles["link"]}>
-          <div className={styles["iconDisplay"]}>
-            <Image
-              src={"/stock-transfer.svg"}
-              width={50}
-              height={50}
-              alt={"icon of ship"}
-            />
-            <p>Stock Transfer</p>
-          </div>
-        </Link>
-        <Link href={"/giftcard"} className={styles["link"]}>
-          <div className={styles["iconDisplay"]}>
-            <Image
-              src={"/giftcards.svg"}
-              width={50}
-              height={50}
-              alt={"icon of ship"}
-            />
-            <p>Giftcards</p>
-          </div>
-        </Link>
-      </div>
+      <IconsContainer />
     </OneColumn>
   );
 }

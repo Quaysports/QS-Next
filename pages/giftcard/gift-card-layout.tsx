@@ -12,7 +12,6 @@ import { GiftCardType } from "../../server-modules/shop/shop";
 export default function GiftCardLayOut() {
   const [userInput, setUserInput] = useState<string>("");
   const giftCard = useSelector(selectActive);
-  // const total = useSelector(selectTotal);
   const searchGiftCards = useSelector(selectSearchedGiftCard);
 
   const dispatch = useDispatch();
