@@ -84,9 +84,9 @@
   clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0% 50%);
 }
 
-/* .booked-dot-50 {
-  clip-path: inset(0 0 50% 50%);
-} */
+.booked-dot-50 {
+  clip-path: inset(0 0 0 50%);
+}
 
 .booked-dot-25 {
   clip-path: inset(0 0 50% 50%);
