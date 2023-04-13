@@ -62,7 +62,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
       const shipment = await getShipment({id:Number(id)}) as Shipment[] | undefined
       if(shipment && shipment.length === 1) store.dispatch(setShipment(shipment[0]))
     }
-    
 
     return {props: {}}
 })

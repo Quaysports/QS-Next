@@ -11,35 +11,34 @@ export default function ImportItemPopup() {
 
     if(!items) return null
 
-    const handler = (item:Pick<ShipmentItem, "code" | "sku" | "desc">)=> {
+    const handler = (item:ShipmentItem)=> {
         dispatchNotification()
         dispatch(addItemToShipmentData( {
             ...item,
-            billDesc: "",
+            billDesc: item.billDesc,
             dollarTotal: 0,
-            dutyPer: "",
+            dutyPer: item.dutyPer,
             dutyValue: 0,
-            fobDollar: "",
+            fobDollar: item.fobDollar,
             fobPound: 0,
-            height: "",
-            hscode: "",
-            length: "",
+            height: item.height,
+            hscode: item.hscode,
+            length: item.length,
             m3perBox: 0,
             m3total: 0,
             numOfBoxes: 0,
             orderid: "",
             perOfOrder: 0,
             poundTotal: 0,
-            qty: "",
-            qtyPerBox: "",
-            supplier: "",
+            qty: item.qty,
+            qtyPerBox: item.qtyPerBox,
+            supplier: item.supplier,
             totalPerItem: 0,
-            width: ""
-
+            width: item.width
         }))
     }
 
-    const deleteHandler = (item:Pick<ShipmentItem, "code" | "sku" | "desc">)=>{
+    const deleteHandler = (item:ShipmentItem)=>{
         dispatch(deleteItemKey(item))
         dispatchNotification({
             type:"popup",

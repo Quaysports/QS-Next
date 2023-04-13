@@ -86,7 +86,7 @@ export const getShippingCompanies = async () => {
 }
 
 export const getItemKeys = async () => {
-    return await find<Pick<ShipmentItem, "code" | "sku" | "desc">>("Shipping-Items", {}, {code: 1, desc: 1, sku: 1}, {sku: 1})
+    return await find<ShipmentItem>("Shipping-Items", {}, {}, {sku: 1})
 }
 
 export const deleteShippingItem = async (data: ShipmentItem) => {

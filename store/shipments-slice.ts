@@ -15,7 +15,7 @@ export interface shipmentState {
     shipment: Shipment | null
     activeShipmentIndex: string | null
     shippingCompanies: ShippingCompany[]
-    itemKeys: Pick<ShipmentItem, "code" | "sku" | "desc">[]
+    itemKeys: ShipmentItem[]
     skuKeys: string[]
 }
 
@@ -96,7 +96,7 @@ export const shipmentsSlice = createSlice({
             setShippingCompanies: (state, action: PayloadAction<ShippingCompany[]>) => {
                 state.shippingCompanies = action.payload
             },
-            setItemKeys: (state, action: PayloadAction<Pick<ShipmentItem, "code" | "sku" | "desc">[]>) => {
+            setItemKeys: (state, action: PayloadAction<ShipmentItem[]>) => {
                 state.itemKeys = action.payload
             },
             deleteItemKey: (state, action: PayloadAction<Pick<ShipmentItem, "code" | "sku" | "desc">>) => {
