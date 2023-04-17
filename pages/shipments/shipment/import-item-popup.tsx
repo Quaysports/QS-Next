@@ -104,6 +104,7 @@ export default function ImportItemPopup() {
       <div className={styles["input-bar-and-button"]}>
         <input
           value={userInput}
+          style={{ height: "23px" }}
           placeholder="Search product SKU..."
           onChange={(e) => handleUserInput(e.target.value)}
         />
