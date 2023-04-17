@@ -44,6 +44,6 @@ function ItemRow({shipment, item}: { shipment:Shipment, item: ShipmentItem}){
         <div>{item.code}</div>
         <div>{item.qty}</div>
         <div>{item.numOfBoxes}</div>
-        <div>{item.m3total.toFixed(2)}</div>
+        <div>{item.m3total?.toFixed(2)}</div>
     </div>;
 }

@@ -31,7 +31,7 @@ export default function ShipmentCard({shipment}: { shipment: Shipment }) {
 
     const {intId, due, tag, m3total, data} = shipment
 
-    const title = `${(new Date(due)).toLocaleDateString('en-GB')} - ${tag} - ${m3total.toFixed(2)}m3`
+    const title = `${(new Date(due)).toLocaleDateString('en-GB')} - ${tag} - ${m3total?.toFixed(2)}m3`
 
     let supplierItems: SupplierItems = {}
     for (const item of data) {

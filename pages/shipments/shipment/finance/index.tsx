@@ -69,9 +69,9 @@ function ItemRow({shipmentItem, index}: { shipmentItem: ShipmentItem, index: str
             updateShipmentSlice(shipment, update<ShipmentItem>(item, "fobDollar", Number(value)))
         }} errorMessage={"Numbers only"}/></div>
         <div>${item.dollarTotal.toFixed(2)}</div>
-        <div>£{item.fobPound.toFixed(2)}</div>
-        <div>£{item.poundTotal.toFixed(2)}</div>
-        <div>{item.perOfOrder.toFixed(2)}%</div>
-        <div>£{item.totalPerItem.toFixed(2)}</div>
+        <div>£{item.fobPound?.toFixed(2)}</div>
+        <div>£{item.poundTotal?.toFixed(2)}</div>
+        <div>{item.perOfOrder?.toFixed(2)}%</div>
+        <div>£{item.totalPerItem?.toFixed(2)}</div>
     </div>
 }

@@ -71,7 +71,7 @@ function ItemRow({shipmentItem, index}: { shipmentItem: ShipmentItem, index: str
         <div><RegexInput type={"decimal"} value={item.width} handler={(value) => {
             updateShipmentSlice(shipment, update<ShipmentItem>(item, "width", value))
         }} errorMessage={"Numbers only"}/></div>
-        <div>{item.m3perBox.toFixed(2)}</div>
-        <div>{item.m3total.toFixed(2)}</div>
+        <div>{item.m3perBox?.toFixed(2)}</div>
+        <div>{item.m3total?.toFixed(2)}</div>
     </div>
 }
