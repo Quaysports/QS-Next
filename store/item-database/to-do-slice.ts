@@ -17,7 +17,7 @@ export interface toDoState {
 
 const initialState: toDoState = {
     items: [],
-    threshold: 30,
+    threshold: 50,
     searchTodoItem: []
 }
 

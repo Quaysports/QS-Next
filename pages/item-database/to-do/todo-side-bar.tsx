@@ -9,10 +9,11 @@ import {
     selectSearchedTodoItem,
     setSearchTodoItems,
 } from "../../../store/item-database/to-do-slice";
-import {func} from "prop-types";
 
 export default function TodoSideBar() {
     const [userInput, setUserInput] = useState("")
+    const [channelState, setChannelState] = useState("")
+    const [statusState, setStatusState] = useState("")
     const router = useRouter();
     const searchedTodoItems = useSelector(selectSearchedTodoItem)
     const dispatch = useDispatch();
@@ -34,6 +35,8 @@ export default function TodoSideBar() {
     }
 
     const onResetHandler = () => {
+        setStatusState("");
+        setChannelState("");
         dispatchNotification({type: 'loading', content: "Loading, please wait"})
         router.push({
             pathname: router.pathname,
@@ -47,12 +50,15 @@ export default function TodoSideBar() {
             dispatch(setSearchTodoItems(searchTerm))
         }
     }
-
+    console.log(channelState)
     return (
         <SidebarLayout>
             <SidebarSelect
-                onChange={(e) =>
+                value={channelState}
+                onChange={(e) => {
+                    setChannelState(e.target.value)
                     channelHandler(e)
+                }
                 }>
                 <option value={""}>All Channels</option>
                 <option value={"amazon"}>Amazon</option>
@@ -60,8 +66,11 @@ export default function TodoSideBar() {
                 <option value={"magento"}>Magento</option>
             </SidebarSelect>
             <SidebarSelect
-                onChange={(e) =>
+                value={statusState}
+                onChange={(e) => {
+                    setStatusState(e.target.value)
                     statusHandler(e)
+                }
                 }>
                 <option value={""}>All Statuses</option>
                 <option value={"ready"}>Ready</option>
@@ -71,7 +80,7 @@ export default function TodoSideBar() {
             <input
                 placeholder="Search product SKU..."
                 onChange={(e) => handleUserInput(e.target.value)}
-                style={{marginLeft: "20px"}}
+                style={{marginLeft: "18px"}}
             />
             <div className={styles["button-container"]}>
                 <button onClick={() => onResetHandler()}>Reset</button>

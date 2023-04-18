@@ -1,8 +1,8 @@
 import {
     selectItems,
     selectSearchedTodoItem,
-    selectThreshold,
-    setThreshold
+    selectThreshold, setSearchTodoItems,
+    setThreshold, toDoSlice
 } from "../../../store/item-database/to-do-slice";
 import {useDispatch, useSelector} from "react-redux";
 import styles from "./todo.module.css";
@@ -27,7 +27,6 @@ export default function ToDo() {
         }
         return tempItems
     }
-
     return (
         <ColumnLayout scroll={true}>
             {/*<div>{elements}</div>*/}
@@ -37,9 +36,10 @@ export default function ToDo() {
                     return <TodoRow SKU={searchedTodoItem.SKU} title={searchedTodoItem.title} checkboxStatus={searchedTodoItem.checkboxStatus} key={searchedTodoItem.SKU}/>
                 })
                 : renderItemsHandler(items, threshold)}
+
             <div className={styles["button-container"]}>
-                {threshold < items.length && searchedTodoItems.length >= 30 ?
-                    <button onClick={() => dispatch(setThreshold((threshold + 30)))}>Load More Items</button> : null}
+                {threshold < items.length && searchedTodoItems.length === 0 ?
+                    <button onClick={() => dispatch(setThreshold((threshold + 50)))}>Load More Items</button> : null}
             </div>
         </ColumnLayout>
     );
