@@ -48,7 +48,7 @@ export const toDoSlice = createSlice({
             state.searchTodoItem = state.items.filter(item => {
                 return item.SKU.includes(action.payload.toUpperCase())
             })
-            console.log(current(state))
+            // console.log(current(state))
         },
         setSearchTerm: (state, action: PayloadAction<string>) => {
             state.searchTerm = action.payload.toUpperCase()
