@@ -32,6 +32,13 @@
   overflow: hidden;
 }
 
+.no-items-found {
+  display: flex;
+  justify-content: flex-start;
+  margin: 5px;
+  padding: 5px;
+}
+
 .button-container {
   display: grid;
   align-items: center;

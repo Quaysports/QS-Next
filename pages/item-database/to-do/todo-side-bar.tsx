@@ -6,7 +6,7 @@ import styles from "./todo.module.css";
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    selectSearchedTodoItem,
+    selectSearchedTodoItem, setSearchTerm,
     setSearchTodoItems,
 } from "../../../store/item-database/to-do-slice";
 
@@ -45,12 +45,12 @@ export default function TodoSideBar() {
     }
 
     const handleUserInput = (searchTerm: string) => {
-        setUserInput(searchTerm);
+        setUserInput(searchTerm)
+        dispatch(setSearchTerm(searchTerm))
         if (searchTerm.length > 2) {
             dispatch(setSearchTodoItems(searchTerm))
         }
     }
-    console.log(channelState)
     return (
         <SidebarLayout>
             <SidebarSelect
@@ -78,12 +78,16 @@ export default function TodoSideBar() {
             </SidebarSelect>
             <br/>
             <input
-                placeholder="Search product SKU..."
+                value={userInput}
+                placeholder="Search item SKU..."
                 onChange={(e) => handleUserInput(e.target.value)}
                 style={{marginLeft: "18px"}}
             />
             <div className={styles["button-container"]}>
-                <button onClick={() => onResetHandler()}>Reset</button>
+                <button onClick={() => {
+                    setUserInput("")
+                    onResetHandler()
+                }}>Reset</button>
             </div>
         </SidebarLayout>
     )

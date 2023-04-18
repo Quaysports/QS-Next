@@ -13,12 +13,14 @@ export interface toDoState {
     items: Pick<schema.Item, "SKU" | "title" | "checkboxStatus">[],
     threshold: number,
     searchTodoItem: Pick<schema.Item, "SKU" | "title" | "checkboxStatus">[]
+    searchTerm: string
 }
 
 const initialState: toDoState = {
     items: [],
     threshold: 50,
-    searchTodoItem: []
+    searchTodoItem: [],
+    searchTerm: ""
 }
 
 export const toDoSlice = createSlice({
@@ -43,22 +45,25 @@ export const toDoSlice = createSlice({
             state.threshold = action.payload
         },
         setSearchTodoItems: (state, action: PayloadAction<string>) => {
-            const searchedTodoItem: Pick<schema.Item, "SKU" | "title" | "checkboxStatus">[] = []
-            state.items.forEach(item => {
-                if (item.SKU.includes(action.payload.toUpperCase())) {
-                    searchedTodoItem.push(item)
-                }
-            });
-            state.searchTodoItem = searchedTodoItem
+            state.searchTodoItem = state.items.filter(item => {
+                return item.SKU.includes(action.payload.toUpperCase())
+            })
             console.log(current(state))
+        },
+        setSearchTerm: (state, action: PayloadAction<string>) => {
+            state.searchTerm = action.payload.toUpperCase()
         }
     },
 });
 
-export const {setToDoItems, setThreshold, setSearchTodoItems} = toDoSlice.actions
+export const {
+    setToDoItems, setThreshold, setSearchTodoItems,
+    setSearchTerm
+} = toDoSlice.actions
 
 export const selectItems = (state: toDoWrapper) => state.todo.items
 
 export const selectThreshold = (state: toDoWrapper) => state.todo.threshold
 
 export const selectSearchedTodoItem = (state: toDoWrapper) => state.todo.searchTodoItem
+export const selectSearchTerm = (state: toDoWrapper) => state.todo.searchTerm

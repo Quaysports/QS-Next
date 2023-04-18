@@ -1,6 +1,6 @@
 import {
     selectItems,
-    selectSearchedTodoItem,
+    selectSearchedTodoItem, selectSearchTerm,
     selectThreshold, setSearchTodoItems,
     setThreshold, toDoSlice
 } from "../../../store/item-database/to-do-slice";
@@ -13,6 +13,7 @@ import {useRouter} from "next/router";
 export default function ToDo() {
     const items = useSelector(selectItems);
     const threshold = useSelector(selectThreshold);
+    const searchTerm = useSelector(selectSearchTerm);
     const dispatch = useDispatch()
     const searchedTodoItems = useSelector(selectSearchedTodoItem)
 
@@ -31,14 +32,16 @@ export default function ToDo() {
         <ColumnLayout scroll={true}>
             {/*<div>{elements}</div>*/}
             <div><TitleRow keyName={"title"}/></div>
-            {searchedTodoItems.length !== 0
+            {searchTerm?.length > 2
                 ? searchedTodoItems.map(searchedTodoItem => {
                     return <TodoRow SKU={searchedTodoItem.SKU} title={searchedTodoItem.title} checkboxStatus={searchedTodoItem.checkboxStatus} key={searchedTodoItem.SKU}/>
                 })
                 : renderItemsHandler(items, threshold)}
-
+            {searchTerm.length > 2 && searchedTodoItems.length === 0
+                ? <span className={styles["no-items-found"]}>No items found with the SKU: {searchTerm} </span> : null
+            }
             <div className={styles["button-container"]}>
-                {threshold < items.length && searchedTodoItems.length === 0 ?
+                {threshold < items.length && searchedTodoItems.length === 0 && searchTerm.length < 3 ?
                     <button onClick={() => dispatch(setThreshold((threshold + 50)))}>Load More Items</button> : null}
             </div>
         </ColumnLayout>
