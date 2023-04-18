@@ -136,16 +136,32 @@
 }
 
 .shipping-item-row {
-  grid-template-columns: repeat(7, 80px);
+  grid-template-columns: repeat(8, 80px);
 }
 
 .summary-item-row {
   grid-template-columns: 260px repeat(4, 80px);
 }
 
+.input-bar-and-button {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  position: sticky;
+  top: 0;
+}
+
+.input-bar-and-button input:focus-within {
+  border-style: solid;
+  border-width: 2px 2px 2px 2px;
+  border-color: var(--primary-color);
+}
+
 .import-popup-wrapper {
   max-width: calc(100vw - 200px);
   max-height: calc(100vh - 200px);
+  min-width: calc(100vw - 200px);
+  min-height: calc(100vh - 200px);
   overflow-y: auto;
   border-radius: var(--primary-border-radius);
 }
@@ -166,12 +182,4 @@
 
 .import-popup-row:nth-child(odd) {
   background: var(--primary-table-cell-background);
-}
-
-.input-bar-and-button {
-  display: flex;
-  justify-content: center;
-  margin: 10px;
-  position: sticky;
-  top: 0;
 }
