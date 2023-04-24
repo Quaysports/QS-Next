@@ -38,7 +38,7 @@ function TitleRow() {
       <div>Width</div>
       <div>Box m³</div>
       <div>Total m³</div>
-      <div>Container total (m³)</div>
+      <div>Container total m³</div>
     </div>
   );
 }
@@ -55,12 +55,6 @@ function ItemRow({
   const activeIndex = useSelector(selectActiveShipmentIndex);
   const shipment = useSelector(selectShipment);
   useEffect(() => setItem(shipmentItem), [shipmentItem, shipment]);
-
-  let total = 0;
-  if (!shipment) return null;
-  for (let i of shipment.data) {
-    total += i.m3total;
-  }
 
   function update<T>(obj: T, key: keyof T, value: T[keyof T]) {
     let update = structuredClone(obj);
@@ -139,7 +133,7 @@ function ItemRow({
         </div>
         <div>{item.m3perBox?.toFixed(2)}</div>
         <div>{item.m3total?.toFixed(2)}</div>
-        <div>{total?.toFixed(2)}</div>
+        <div>{shipment.m3total?.toFixed(2)}</div>
       </div>
     </>
   );
