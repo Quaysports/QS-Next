@@ -45,12 +45,11 @@ export default function Dashboard() {
       <Menu>
         <DashboardTabs />
       </Menu>
-      {router.query.tab === undefined || router.query.tab === "home" ? (
-        <HomeTab />
-      ) : null}
-      {router.query.tab === "user" ? <UserTab /> : null}
-      {router.query.tab === "rotas" ? <RotasTab /> : null}
-      {router.query.tab === "holidays" ? <HolidayTab /> : null}
+      {router.query.tab === undefined ||
+        (router.query.tab === "home" && <HomeTab />)}
+      {router.query.tab === "user" && <UserTab />}
+      {router.query.tab === "rotas" && <RotasTab />}
+      {router.query.tab === "holidays" && <HolidayTab />}
       <IconsContainer />
     </OneColumn>
   );
