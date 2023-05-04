@@ -117,11 +117,11 @@ function LocalLoginForm({pinHandler, reset}: Props) {
         <div className={styles["login-type"]}>
             {tab === "password" ?
                 <Link href={"/login?tab=pin"} legacyBehavior>
-                    <label className={pinActive()} onClick={() => reset(undefined)}>Switch to Pin</label>
+                    <button className={pinActive()} onClick={() => reset(undefined)}>Pin</button>
                 </Link> : null}
             {tab === "pin" || tab === undefined ?
                 <Link href={"/login?tab=password"} legacyBehavior>
-                    <label className={passwordActive()} onClick={() => reset(undefined)}>Switch to Password</label>
+                    <button className={passwordActive()} onClick={() => reset(undefined)}>Password</button>
                 </Link> : null}
         </div>
         {tab === "pin" || tab === undefined
