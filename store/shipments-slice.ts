@@ -3,6 +3,7 @@ import {HYDRATE} from "next-redux-wrapper";
 import {Shipment, ShipmentItem, ShippingCompany} from "../server-modules/shipping/shipping";
 import {RootState} from "./store";
 import {dispatchToast} from "../components/toast/dispatch-toast";
+import {WritableDraft} from "immer/dist/types/types-external";
 
 export const hydrate = createAction<RootState>(HYDRATE);
 
@@ -16,7 +17,8 @@ export interface shipmentState {
     activeShipmentIndex: string | null
     shippingCompanies: ShippingCompany[]
     itemKeys: ShipmentItem[]
-    skuKeys: string[]
+    skuKeys: string[],
+    isHidden: Boolean
 }
 
 const initialState: shipmentState = {
@@ -25,7 +27,8 @@ const initialState: shipmentState = {
     activeShipmentIndex: null,
     shippingCompanies: [],
     itemKeys: [],
-    skuKeys: []
+    skuKeys: [],
+    isHidden: true
 }
 
 export const shipmentsSlice = createSlice({
@@ -62,7 +65,9 @@ export const shipmentsSlice = createSlice({
                     },
                     body: JSON.stringify(action.payload)
                 }
-                fetch("/api/shipments/delete",opts).then(()=>{dispatchToast({content: `Shipment ${tag} Deleted`})})
+                fetch("/api/shipments/delete", opts).then(() => {
+                    dispatchToast({content: `Shipment ${tag} Deleted`})
+                })
             },
             setShipment: (state, action: PayloadAction<Shipment>) => {
                 state.shipment = processShipment(action.payload)
@@ -80,8 +85,11 @@ export const shipmentsSlice = createSlice({
             addItemToShipmentData: (state, action: PayloadAction<ShipmentItem>) => {
                 if (state.shipment) {
                     state.shipment.data.push(action.payload)
+                    console.log("shipment no. of boxes", state.shipment.data[0].numOfBoxes)
+                    // state.shipment.data[0].qty = ""
+                    // console.log("shipment quantity", state.shipment.data[0].qty)
                     processShipment(state.shipment)
-                    saveShipment(state.shipment)
+                    saveShipment(state.shipment);
                 }
             },
             deleteShipmentData: (state, action: PayloadAction<number>) => {
@@ -158,7 +166,7 @@ function shipmentTemplate(): Shipment {
     }
 }
 
-function itemTemplate():ShipmentItem {
+function itemTemplate(): ShipmentItem {
     return {
         code: "",
         desc: "",
@@ -193,7 +201,13 @@ function processShipment(shipment: Shipment) {
     shipment.m3total = 0
     for (let i in shipment.data) {
         shipment.data[i] = {...itemTemplate(), ...shipment.data[i]}
-        shipment.data[i].dollarTotal = +shipment.data[i].qty * +shipment.data[i].fobDollar
+        console.log(shipment.data[i])
+        console.log("isHidden", initialState.isHidden)
+        // if (initialState.isHidden) {
+        //     console.log("initialState is true")
+        //     shipment.data[i].qty = ""
+        // }
+        shipment.data[i].dollarTotal = +shipment.data[i].qty * +shipment.data[i].fobDollar;
         shipment.subTotal += shipment.data[i].dollarTotal
 
         console.log("duty per: ", shipment.data[i].dutyPer)
@@ -207,17 +221,17 @@ function processShipment(shipment: Shipment) {
             shipment.data[i].dutyValue = 0
         }
 
-        if(+shipment.data[i].fobDollar !== 0 && shipment.exchangeRate !== 0) {
+        if (+shipment.data[i].fobDollar !== 0 && shipment.exchangeRate !== 0) {
             shipment.data[i].fobPound = +shipment.data[i].fobDollar / shipment.exchangeRate
             shipment.data[i].poundTotal = +shipment.data[i].qty * shipment.data[i].fobPound
         }
 
-        if(+shipment.data[i].qty !== 0 && +shipment.data[i].qtyPerBox !== 0) {
+        if (+shipment.data[i].qty !== 0 && +shipment.data[i].qtyPerBox !== 0) {
             shipment.data[i].numOfBoxes = +shipment.data[i].qty / +shipment.data[i].qtyPerBox
             shipment.totalCartons += shipment.data[i].numOfBoxes
         }
 
-        if(+shipment.data[i].length !== 0 && +shipment.data[i].width !== 0 && +shipment.data[i].height !== 0) {
+        if (+shipment.data[i].length !== 0 && +shipment.data[i].width !== 0 && +shipment.data[i].height !== 0) {
             shipment.data[i].m3perBox = +shipment.data[i].length * +shipment.data[i].width * +shipment.data[i].height / 1000000
             shipment.data[i].m3total = shipment.data[i].numOfBoxes * shipment.data[i].m3perBox
             shipment.m3total += shipment.data[i].m3total
@@ -227,9 +241,9 @@ function processShipment(shipment: Shipment) {
     console.log("shipment data:", shipment.data)
     //second pass for sum calculations
 
-    if(shipment.exchangeRate !== 0 && shipment.duty !== 0) {
+    if (shipment.exchangeRate !== 0 && shipment.duty !== 0) {
         shipment.total = shipment.subTotal - shipment.credit
-        if(shipment.total !== 0) {
+        if (shipment.total !== 0) {
             shipment.totalPound = shipment.total / shipment.exchangeRate
             shipment.depReq = shipment.total / 100 * 30
             shipment.outstanding = shipment.subTotal - shipment.depReq
@@ -241,7 +255,7 @@ function processShipment(shipment: Shipment) {
     }
 
     for (let item of shipment.data) {
-        if(item.dollarTotal === 0){
+        if (item.dollarTotal === 0) {
             item.perOfOrder = 0
             item.totalPerItem = 0
             continue
@@ -254,7 +268,8 @@ function processShipment(shipment: Shipment) {
     return shipment
 }
 
-function saveShipment(shipment:Shipment) {
+function saveShipment(shipment: Shipment) {
+    console.log("saveShipment", shipment)
     const tag = shipment.tag
     const opts = {
         method: "POST",
@@ -269,7 +284,18 @@ function saveShipment(shipment:Shipment) {
 }
 
 export const {
-    setShipments, createShipment, deleteShipment, updateShipment, setShipment, setActiveShipmentIndex, addItemToShipmentData, deleteShipmentData, setShippingCompanies, setItemKeys, deleteItemKey, setSkuKeys
+    setShipments,
+    createShipment,
+    deleteShipment,
+    updateShipment,
+    setShipment,
+    setActiveShipmentIndex,
+    addItemToShipmentData,
+    deleteShipmentData,
+    setShippingCompanies,
+    setItemKeys,
+    deleteItemKey,
+    setSkuKeys
 } = shipmentsSlice.actions
 
 export const selectShipments = (state: shipmentWrapper) => state.shipments.shipments
