@@ -242,7 +242,7 @@ export const getStockValueCSVData = async (domestic: boolean) => {
             {isListingVariation: false},
             {isComposite: false},
             {"stock.value": {$gt: 0}},
-            {tags: {$nin: ['filtered', 'domestic', 'bait']}}
+            {tags: {$nin: ['filtered', 'domestic', 'bait']}},
         ]
     }
 
@@ -252,7 +252,7 @@ export const getStockValueCSVData = async (domestic: boolean) => {
             {isComposite: false},
             {"stock.value": {$gt: 0}},
             {tags: {$nin: ['filtered', 'bait']}},
-            {tags: {$in: 'domestic'}},
+            {tags: {$in: ['domestic']}},
         ]
     }
 
@@ -264,7 +264,7 @@ export const getStockValueCSVData = async (domestic: boolean) => {
                 'SKU': 1,
                 'price': '$prices.purchasePrice',
                 'quantity': '$stock.total',
-                'value': {$multiply: ['$prices.purchasePrice', '$stock.total']}
+                'value': {$divide: [{$multiply: ['$prices.purchase', '$stock.total']}, 100]}
             }
         }
     ]
