@@ -147,8 +147,11 @@ export const stockReportsSlice = createSlice({
                 fetch("/api/items/update-item", opts)
             },
 
-            unFlagCommit: (state, action: PayloadAction<number>) => {
-                state.brandItems[action.payload].stockTake = {...state.brandItems[action.payload].stockTake, ...{date: null}}
+            unFlagCommit: (state, action: PayloadAction<string>) => {
+                const index = state.brandItems.findIndex(item => {
+                    return item.SKU === action.payload
+                })
+                state.brandItems[index].stockTake = {...state.brandItems[index].stockTake, ...{date: null}}
             },
 
             setStockLevel: (state, action: PayloadAction<linn.ItemStock[]>) => {

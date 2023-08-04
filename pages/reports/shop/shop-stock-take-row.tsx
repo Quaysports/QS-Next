@@ -64,7 +64,7 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                             readOnly={true}/>}
                     </div>
                     <div>
-                        <button onClick={()=>dispatch(unFlagCommit(Number(index)))}>&#9100;</button>
+                        <button onClick={()=>dispatch(unFlagCommit(item.SKU))}>&#9100;</button>
                     </div>
                 </div>}
         </>
