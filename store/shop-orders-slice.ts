@@ -318,7 +318,7 @@ export const shopOrdersSlice = createSlice({
                     if (item.newProduct) item.submitted = true
                 }
                 for (const item of action.payload.res) {
-                    let posNew = openOrder.arrived.map(order => order.SKU).indexOf(item.SKU)
+                    let posNew = openOrder.arrived.map(order => order.SKU).lastIndexOf(item.SKU)
                     if (Number(openOrder.arrived[posNew].quantity) <= Number(item["StockLevel"])) {
                         openOrder.arrived[posNew].submitted = true
                     }
