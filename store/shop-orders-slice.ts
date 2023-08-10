@@ -318,10 +318,17 @@ export const shopOrdersSlice = createSlice({
                     if (item.newProduct) item.submitted = true
                 }
                 for (const item of action.payload.res) {
-                    let posNew = openOrder.arrived.map(order => order.SKU).lastIndexOf(item.SKU)
-                    if (Number(openOrder.arrived[posNew].quantity) <= Number(item["StockLevel"])) {
-                        openOrder.arrived[posNew].submitted = true
-                    }
+                    const indexes = openOrder.arrived.map((order, index) => {
+                        if (order.SKU === item.SKU && order.submitted === false) {
+                            return index
+                        }
+                        return -1
+                    }).filter(index => index > -1)
+                    indexes.forEach(index => {
+                        if (Number(openOrder.arrived[index].quantity) <= Number(item["StockLevel"])) {
+                            openOrder.arrived[index].submitted = true
+                        }
+                    })
                 }
                 const opts = {
                     method: 'POST',
