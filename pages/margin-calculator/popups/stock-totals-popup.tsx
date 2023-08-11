@@ -30,6 +30,6 @@ export default function StockTotalsPopup(){
     return <div className={styles["stock-value"]}>
         <div>{tag} Stock Value</div>
         <div>{toCurrency(stockValue)}</div>
-        <CSVButton objectArray={stockValueCSVData} fileName={"stock-value"}/>
+        <CSVButton objectArray={stockValueCSVData} fileName={`${tag}-stock-value`}/>
     </div>
 }
