@@ -1,4 +1,4 @@
-import {selectCompletedOrders, setOrderContents} from "../../../store/shop-orders-slice";
+import {selectCompletedOrders, setOrderContents, selectOrderContents} from "../../../store/shop-orders-slice";
 import styles from "../shop-orders.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {useRouter} from "next/router";
@@ -23,7 +23,7 @@ export default function CompletedOrdersList() {
 
     return (
         <div className={styles["shop-orders-table-containers"]}>
-            Completed Order: <select onChange={(e) => dispatch(setOrderContents({index: router.query.index! as string, id:e.target.value}))}>{tempArray}</select>
+            Completed Order: <select onChange={(e) => dispatch(setOrderContents({index: router.query.index! as string, id:`${e.target.selectedIndex} ${e.target.value}`}))}>{tempArray}</select>
         </div>
     )
 }

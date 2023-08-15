@@ -28,6 +28,7 @@ export interface OpenOrdersObject {
     price: number | null
     order: orderObject[]
     supplier: string | null
+    completedBy: string | null
 }
 
 /**
@@ -96,7 +97,8 @@ const initialState: ShopOrdersState = {
         id: null,
         price: null,
         order: [],
-        supplier: null
+        supplier: null,
+        completedBy: null
     },
     totalPrice: 0,
     supplierItems: [],
@@ -279,7 +281,8 @@ export const shopOrdersSlice = createSlice({
             setOrderContents: (state, action: PayloadAction<{ index: string, id: string }>) => {
                 Object.values(state.completedOrders![Number(action.payload.index)]).forEach((value) => {
                     for (let i = 0; i < value.length; i++) {
-                        if (value[i].id === action.payload.id) state.orderContents = value[i]
+                        // added index - without index any duplicate dates would only show last element matching the id
+                        if (`${i + 1} ${value[i].id}` === action.payload.id) state.orderContents = value[i]
                     }
                 })
             },
@@ -293,7 +296,8 @@ export const shopOrdersSlice = createSlice({
                     id: null,
                     price: null,
                     order: [],
-                    supplier: null
+                    supplier: null,
+                    completedBy: null
                 }
             },
             setCompleteOrder: (state, action: PayloadAction<{ index: string, user: string }>) => {

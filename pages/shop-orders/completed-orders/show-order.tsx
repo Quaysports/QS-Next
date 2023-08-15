@@ -21,6 +21,7 @@ export default function ShowOrder() {
         )
         return (
             <div className={styles["shop-orders-table-containers"]}>
+                {orderContents.completedBy !== "unknown" && <div className={styles["shop-orders-table-completed-by"]}>{`Completed by: ${orderContents.completedBy}`}</div>}
                 <div className={`${styles["shop-orders-table"]} ${styles["completed-orders-list-grid"]}`}>
                     <span className={"center-align"}>Amount</span>
                     <span>SKU</span>

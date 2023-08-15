@@ -75,6 +75,11 @@
     min-width: 22px;
 }
 
+.shop-orders-table-completed-by {
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
 .dead-stock-image-parent{
     display: grid;
     justify-items: center;

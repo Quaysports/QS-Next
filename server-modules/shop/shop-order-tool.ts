@@ -10,7 +10,7 @@ export interface shopOrder {
     price: number
     order: orderObject[]
     supplier: string
-    completedBy?:string
+    completedBy:string
 }
 export interface orderObject {
     brand:string
