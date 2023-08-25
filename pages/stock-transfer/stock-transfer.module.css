@@ -10,6 +10,17 @@
 .title-row {
     font-weight: bold;
 }
+.open-transfer-buttons-container {
+    display: flex;
+    margin-bottom: 1%;
+    flex-direction: row;
+    justify-content: center;
+}
+.open-transfer-buttons-container button {
+    margin: 0 2px 0 2px;
+    font-size: medium;
+    padding: 3px;
+}
 .open-transfer-container {
     display: grid;
     grid-row-gap: 7px;

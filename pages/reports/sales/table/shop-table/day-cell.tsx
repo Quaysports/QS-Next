@@ -45,5 +45,9 @@ function DayContent({data}: { data: ShopDayTotal | undefined }) {
             <div>Net Profit:</div>
             <div>{toCurrency(data.totalProfitWithLoss)}</div>
         </div>
+        <div className={styles["day-row"]}>
+            <div>Returns:</div>
+            <div>{toCurrency(data.returnsTotal)}</div>
+        </div>
     </div>
 }

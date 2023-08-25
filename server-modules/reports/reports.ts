@@ -289,6 +289,7 @@ interface ShopDayQueryResult {
     till: string
     discountReason: string
     processedBy: string
+    returns: number
 }
 
 export interface ShopDayTotal {
@@ -311,7 +312,8 @@ export interface ShopDayTotal {
         percentageDiscount: number,
         percentageDiscountAmount: number,
         discountReason: string
-    }[]
+    }[],
+    returnsTotal: number
 }
 
 export async function getShopMonthDayByDayDataForYear(year: number, month: number) {
@@ -366,7 +368,16 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                 'cash': '$transaction.cash',
                 'change': '$transaction.change',
                 'till': 1,
-                'processedBy': 1
+                'processedBy': 1,
+                'returns': {
+                    '$sum': {
+                      '$map': {
+                        'input': '$returns',
+                        'as': 'returnItem',
+                        'in': '$$returnItem.transaction.amount'
+                        }
+                    }
+                }
             }
         }
     ]
@@ -390,7 +401,8 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                 totalChange: 0,
                 totalCard: 0,
                 till: [],
-                discounts: []
+                discounts: [],
+                returnsTotal: 0
             }
             data.push(day)
         }
@@ -398,11 +410,12 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
         day.totalDiscount += order.flatDiscount + order.percentageDiscountAmount
         day.totalGiftCardDiscount += order.giftCardDiscount
         day.totalProfit += order.profit
-        day.totalProfitWithLoss += order.profitWithLoss
+        day.totalProfitWithLoss += (order.profitWithLoss - order.returns)
         day.totalGrandTotal += order.grandTotal
         day.totalCash += order.type === "CASH" ? order.amount : 0
         day.totalChange += order.change
         day.totalCard += order.type !== "CASH" && order.type !== "FULLDISCOUNT" ? order.amount : 0
+        day.returnsTotal += order.returns
 
         if (order.type === "CASH") {
             let till = day.till.find(t => t.id === order.till)
@@ -429,6 +442,10 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
             }
         }
     }
+    // console.log(data[22].orders[0].returnsTotal);
+    // data.forEach(item => item.orders.forEach(order => console.log(order.returnsTotal)));
+    data.forEach(item => item.orders.filter(elem => elem.returns > 0 ? console.log(elem.returns) : null
+    ))
     return data
 }
 

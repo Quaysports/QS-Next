@@ -42,6 +42,8 @@ export default function OpenTransferSidebar() {
         }
         if (res.status === 200) {
             const items = await res.json()
+            console.log(items);
+            
             if(items.items.length === 0) dispatchNotification({type:'alert', content:"No low stock items"})
             if(items.items.length > 0)dispatchNotification({type: 'popup', title: "Stock Check", content: <LowStockPopup items={items.items}/>})
         }
@@ -125,13 +127,13 @@ export default function OpenTransferSidebar() {
             <SidebarButton onClick={() => getLowStockHandler()}>
                 Get Low Stock
             </SidebarButton>
+            <SidebarButton onClick={() => addSkuHandler()}>
+                Add SKU
+            </SidebarButton>
             {openTransfer.items.length > 0 ? <>
+                    <br/>
                     <SidebarButton onClick={() => completeTransferHandler(openTransfer)}>
                         Complete Transfer
-                    </SidebarButton>
-                    <br/>
-                    <SidebarButton onClick={() => addSkuHandler()}>
-                        Add SKU
                     </SidebarButton>
                     <SidebarButton onClick={() => warehouseList()}>
                         Warehouse List
@@ -149,8 +151,7 @@ export default function OpenTransferSidebar() {
                         })}>
                         Delete Transfer
                     </SidebarButton>
-                </>
-                : null
+                </> : null
             }
         </SidebarLayout>
     )

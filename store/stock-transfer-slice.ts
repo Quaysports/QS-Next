@@ -125,6 +125,9 @@ export const stockTransferStore = createSlice({
                 warehouseListCopy.splice(index, 1)
                 state.warehouseList = warehouseListCopy
                 databaseSave(JSON.stringify(state.openTransfer))
+            },
+            updateOpenTransfer: (state, action: PayloadAction<LowStockItem[]>) => {
+                state.openTransfer.items = action.payload
             }
         },
     })
@@ -141,7 +144,8 @@ export const {
     completeTransfer,
     setCompletedTransfers,
     setWarehouseList,
-    addItemFromWarehouseList
+    addItemFromWarehouseList,
+    updateOpenTransfer
 } = stockTransferStore.actions
 
 export const selectOpenTransfer = (state: stockTransferWrapper) => state.stockTransfer.openTransfer

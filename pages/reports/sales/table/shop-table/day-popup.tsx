@@ -5,7 +5,8 @@ import {toCurrency} from "../../../../../components/utils/utils";
 export default function DayPopup({data}: { data: ShopDayTotal }) {
 
     if(!data) return null
-
+    console.log(data);
+    
     let tillTakings = []
     if (data.till && data.till.length > 0) {
         for (let till of data.till) {
@@ -45,6 +46,10 @@ export default function DayPopup({data}: { data: ShopDayTotal }) {
             <div className={styles["day-row"]}>
                 <div>Gift Card:</div>
                 <div>{toCurrency(data.totalGiftCardDiscount)}</div>
+            </div>
+            <div className={styles["day-row"]}>
+                <div>Returns:</div>
+                <div>{toCurrency(data.returnsTotal)}</div>
             </div>
             <div className={styles["day-row"]}>
                 <div>Net Profit:</div>
