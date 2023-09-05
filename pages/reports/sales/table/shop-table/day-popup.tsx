@@ -88,6 +88,7 @@ function DiscountsTable({
       let discountTotal =
         (discount.flatDiscount || 0) + (discount.percentageDiscountAmount || 0);
       discountRows.push(
+        <section>
         <div key={discount.id} className={styles["discount-row"]}>
           <div>{discount.id}</div>
           <div>{discount.name}</div>
@@ -101,6 +102,85 @@ function DiscountsTable({
           <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
           <div>{toCurrency(discount.grandTotal)}</div>
         </div>
+        <div key={discount.id} className={styles["discount-row"]}>
+          <div>{discount.id}</div>
+          <div>{discount.name}</div>
+          <div>{discount.discountReason}</div>
+          <div>{toCurrency(discount.flatDiscount)}</div>
+          <div>
+            {toCurrency(discount.percentageDiscountAmount)} [
+            {discount.percentageDiscount}%]
+          </div>
+          <div>{toCurrency(discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal)}</div>
+        </div>
+        <div key={discount.id} className={styles["discount-row"]}>
+          <div>{discount.id}</div>
+          <div>{discount.name}</div>
+          <div>{discount.discountReason}</div>
+          <div>{toCurrency(discount.flatDiscount)}</div>
+          <div>
+            {toCurrency(discount.percentageDiscountAmount)} [
+            {discount.percentageDiscount}%]
+          </div>
+          <div>{toCurrency(discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal)}</div>
+        </div>
+        <div key={discount.id} className={styles["discount-row"]}>
+          <div>{discount.id}</div>
+          <div>{discount.name}</div>
+          <div>{discount.discountReason}</div>
+          <div>{toCurrency(discount.flatDiscount)}</div>
+          <div>
+            {toCurrency(discount.percentageDiscountAmount)} [
+            {discount.percentageDiscount}%]
+          </div>
+          <div>{toCurrency(discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal)}</div>
+        </div>
+        <div key={discount.id} className={styles["discount-row"]}>
+          <div>{discount.id}</div>
+          <div>{discount.name}</div>
+          <div>{discount.discountReason}</div>
+          <div>{toCurrency(discount.flatDiscount)}</div>
+          <div>
+            {toCurrency(discount.percentageDiscountAmount)} [
+            {discount.percentageDiscount}%]
+          </div>
+          <div>{toCurrency(discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal)}</div>
+        </div>
+        <div key={discount.id} className={styles["discount-row"]}>
+          <div>{discount.id}</div>
+          <div>{discount.name}</div>
+          <div>{discount.discountReason}</div>
+          <div>{toCurrency(discount.flatDiscount)}</div>
+          <div>
+            {toCurrency(discount.percentageDiscountAmount)} [
+            {discount.percentageDiscount}%]
+          </div>
+          <div>{toCurrency(discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal)}</div>
+        </div>
+        <div key={discount.id} className={styles["discount-row"]}>
+          <div>{discount.id}</div>
+          <div>{discount.name}</div>
+          <div>{discount.discountReason}</div>
+          <div>{toCurrency(discount.flatDiscount)}</div>
+          <div>
+            {toCurrency(discount.percentageDiscountAmount)} [
+            {discount.percentageDiscount}%]
+          </div>
+          <div>{toCurrency(discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
+          <div>{toCurrency(discount.grandTotal)}</div>
+        </div>
+        </section>
       );
     }
   }
