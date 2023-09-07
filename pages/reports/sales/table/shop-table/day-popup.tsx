@@ -49,19 +49,17 @@ export default function DayPopup({ data }: { data: ShopDayTotal }) {
           <div>{toCurrency(data.totalGiftCardDiscount)}</div>
         </div>
         <div className={styles["day-row"]}>
-          <div>Cash Returns:</div>
-          <div>{toCurrency(data.cashReturns)}</div>
-        </div>
-        <div className={styles["day-row"]}>
-          <div>Card Returns:</div>
-          <div>{toCurrency(data.cardReturns)}</div>
+          <div>Returns:</div>
+          <div>{toCurrency(data.returnsTotal)}</div>
         </div>
         <div className={styles["day-row"]}>
           <div>Net Profit:</div>
           <div>{toCurrency(data.totalProfitWithLoss)}</div>
         </div>
       </div>
-      <DiscountsTable discounts={data.discounts} />
+        <DiscountsTable discounts={data.discounts} />
+        <br />
+        <ReturnsTable returns={data.returns}/>
     </div>
   );
 }
@@ -88,7 +86,6 @@ function DiscountsTable({
       let discountTotal =
         (discount.flatDiscount || 0) + (discount.percentageDiscountAmount || 0);
       discountRows.push(
-        <section>
         <div key={discount.id} className={styles["discount-row"]}>
           <div>{discount.id}</div>
           <div>{discount.name}</div>
@@ -102,88 +99,43 @@ function DiscountsTable({
           <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
           <div>{toCurrency(discount.grandTotal)}</div>
         </div>
-        <div key={discount.id} className={styles["discount-row"]}>
-          <div>{discount.id}</div>
-          <div>{discount.name}</div>
-          <div>{discount.discountReason}</div>
-          <div>{toCurrency(discount.flatDiscount)}</div>
-          <div>
-            {toCurrency(discount.percentageDiscountAmount)} [
-            {discount.percentageDiscount}%]
-          </div>
-          <div>{toCurrency(discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal)}</div>
-        </div>
-        <div key={discount.id} className={styles["discount-row"]}>
-          <div>{discount.id}</div>
-          <div>{discount.name}</div>
-          <div>{discount.discountReason}</div>
-          <div>{toCurrency(discount.flatDiscount)}</div>
-          <div>
-            {toCurrency(discount.percentageDiscountAmount)} [
-            {discount.percentageDiscount}%]
-          </div>
-          <div>{toCurrency(discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal)}</div>
-        </div>
-        <div key={discount.id} className={styles["discount-row"]}>
-          <div>{discount.id}</div>
-          <div>{discount.name}</div>
-          <div>{discount.discountReason}</div>
-          <div>{toCurrency(discount.flatDiscount)}</div>
-          <div>
-            {toCurrency(discount.percentageDiscountAmount)} [
-            {discount.percentageDiscount}%]
-          </div>
-          <div>{toCurrency(discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal)}</div>
-        </div>
-        <div key={discount.id} className={styles["discount-row"]}>
-          <div>{discount.id}</div>
-          <div>{discount.name}</div>
-          <div>{discount.discountReason}</div>
-          <div>{toCurrency(discount.flatDiscount)}</div>
-          <div>
-            {toCurrency(discount.percentageDiscountAmount)} [
-            {discount.percentageDiscount}%]
-          </div>
-          <div>{toCurrency(discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal)}</div>
-        </div>
-        <div key={discount.id} className={styles["discount-row"]}>
-          <div>{discount.id}</div>
-          <div>{discount.name}</div>
-          <div>{discount.discountReason}</div>
-          <div>{toCurrency(discount.flatDiscount)}</div>
-          <div>
-            {toCurrency(discount.percentageDiscountAmount)} [
-            {discount.percentageDiscount}%]
-          </div>
-          <div>{toCurrency(discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal)}</div>
-        </div>
-        <div key={discount.id} className={styles["discount-row"]}>
-          <div>{discount.id}</div>
-          <div>{discount.name}</div>
-          <div>{discount.discountReason}</div>
-          <div>{toCurrency(discount.flatDiscount)}</div>
-          <div>
-            {toCurrency(discount.percentageDiscountAmount)} [
-            {discount.percentageDiscount}%]
-          </div>
-          <div>{toCurrency(discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal + discountTotal)}</div>
-          <div>{toCurrency(discount.grandTotal)}</div>
-        </div>
-        </section>
       );
     }
   }
 
   return <div className={styles["day-discounts"]}>{discountRows}</div>;
+}
+
+function ReturnsTable({
+  returns
+}: {
+  returns: ShopDayTotal["returns"];
+}) {
+  let discountRows = [
+    <div className={styles["returns-row"]}>
+      <div>Order id</div>
+      <div>By</div>
+      <div>Reason</div>
+      <div>Type</div>
+      <div>Quantity</div>
+      <div>Total Refunded</div>
+      <div>SKU</div>
+    </div>,
+  ];
+  if (returns && returns.length > 0) {
+    for (let itemReturn of returns) {
+      discountRows.push(
+        <div key={itemReturn.id} className={styles["returns-row"]}>
+          <div>{itemReturn.id}</div>
+          <div>{itemReturn.user}</div>
+          <div>{itemReturn.returnReason}</div>
+          <div>{itemReturn.transactionType}</div>
+          <div>{itemReturn.returnQuantity}</div>
+          <div>{toCurrency(itemReturn.transactionTotal)}</div>
+          <div>{itemReturn.itemSku.join().trim().split(",")}</div>
+        </div>
+      );
+    }
+  }
+  return <div className={styles["day-returns"]}>{discountRows}</div>;
 }

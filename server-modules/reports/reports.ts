@@ -99,7 +99,7 @@ export async function getShopYearData(year: number, to: number | undefined = und
         }
     ]
     let result = await findAggregate<ShopYearTotals>("Till-Transactions", query)
-    console.log(result);
+    // console.log(result);
     
     if (!result || result.length === 0) return null
     result[0].year = year
@@ -291,9 +291,22 @@ interface ShopDayQueryResult {
     till: string
     discountReason: string
     processedBy: string
-    returns: number
+    returnsTotal: number
     cashReturns: number
     cardReturns: number
+    returns: {
+        reason: string;
+        user: string;
+        transaction: {
+            type: string;
+            amount: number;
+        };
+        items: {
+            SKU: string;
+            title: string;
+            quantity: number;
+        }[];
+    }[];
 }
 
 export interface ShopDayTotal {
@@ -316,10 +329,19 @@ export interface ShopDayTotal {
         percentageDiscount: number,
         percentageDiscountAmount: number,
         discountReason: string
-    }[],
+    }[]
     returnsTotal: number
     cashReturns: number
     cardReturns: number
+    returns: {
+        id: string,
+        itemSku: string[],
+        user: string,
+        transactionTotal: number,
+        returnReason: string,
+        transactionType: string,
+        returnQuantity: number
+    }[]
 }
 
 export async function getShopMonthDayByDayDataForYear(year: number, month: number) {
@@ -375,7 +397,7 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                 'change': '$transaction.change',
                 'till': 1,
                 'processedBy': 1,
-                'returns': {
+                'returnsTotal': {
                     '$sum': {
                       '$map': {
                         'input': '$returns',
@@ -420,7 +442,8 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                             }
                         }
                     }
-                }
+                },
+                'returns': 1
             }
         }
     ]
@@ -430,7 +453,8 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
 
     let data: ShopDayTotal[] = []
     for (let order of result) {
-        order.date === "2023-08-07" ? console.log(order) : null
+        // order.date !== "2023-08-07" ? null : order.returns.length > 0 ? console.log(order.returns[0].user) : null
+        
         
         let day = data.find(d => d.date === order.date)
         if (!day) {
@@ -449,7 +473,8 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                 discounts: [],
                 returnsTotal: 0,
                 cashReturns: 0,
-                cardReturns: 0
+                cardReturns: 0,
+                returns: []
             }
             data.push(day)
         }
@@ -460,10 +485,10 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
             day.totalProfit += order.profit
             day.totalProfitWithLoss += order.profitWithLoss
         }
-        day.totalGrandTotal += (order.grandTotal - (order.cardReturns + order.cashReturns))
-        day.totalCash += order.type === "CASH" ? (order.amount - order.cashReturns) : 0
+        day.totalGrandTotal += (order.grandTotal)
+        day.totalCash += order.type === "CASH" ? order.amount : 0
         day.totalChange += order.change
-        day.totalCard += order.type !== "CASH" && order.type !== "FULLDISCOUNT" ? (order.amount - order.cardReturns) : 0
+        day.totalCard += order.type !== "CASH" && order.type !== "FULLDISCOUNT" ? order.amount : 0
 
         if (order.type === "CASH") {
             let till = day.till.find(t => t.id === order.till)
@@ -489,9 +514,26 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                 day.discounts.push(discount)
             }
         }
-        day.returnsTotal += order.returns
+        day.returnsTotal += order.returnsTotal
         day.cashReturns += order.cashReturns
         day.cardReturns += order.cardReturns
+        if (order.returns.length > 0) {
+            order.returns.forEach(item => {
+                if (item.transaction.type !== "Canceled") {
+                    day?.returns.push(
+                        {
+                            id: order.id,
+                            itemSku: item.items.map(item => `${item.SKU} `),
+                            user: item.user,
+                            transactionTotal: item.transaction.amount | 0,
+                            returnReason: item.reason,
+                            transactionType: item.transaction.type !== "CASH" ? "Card" : "Cash",
+                            returnQuantity: item.items.reduce((acc, item) => acc + item.quantity, 0)
+                        }
+                    )
+                }
+            })
+        }
     }
     // console.log(data[22].orders[0].returnsTotal);
     // data.forEach(item => item.orders.forEach(order => console.log(order.returnsAmount)));

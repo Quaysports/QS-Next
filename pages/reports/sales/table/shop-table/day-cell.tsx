@@ -64,12 +64,8 @@ function DayContent({ data }: { data: ShopDayTotal | undefined }) {
         <div>{toCurrency(data.totalProfitWithLoss)}</div>
       </div>
       <div className={styles["day-row"]}>
-        <div>Card Returns:</div>
-        <div>{toCurrency(data.cardReturns)}</div>
-      </div>
-      <div className={styles["day-row"]}>
-        <div>Cash Returns:</div>
-        <div>{toCurrency(data.cashReturns)}</div>
+        <div>Returns:</div>
+        <div>{toCurrency(data.returnsTotal)}</div>
       </div>
     </div>
   );

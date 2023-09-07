@@ -258,14 +258,23 @@
     grid-gap: 10px;
     align-items: center;
 }
-.discount-row > div{
+.returns-row {
+    display:grid;
+    grid-template-columns: 150px 70px 150px 100px 100px 150px 150px;
+    grid-gap: 10px;
+    align-items: center;
+}
+.discount-row > div,
+.returns-row > div{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .day-popup-container{
     display:grid;
-    grid-template: 'takings totals' 'discounts discounts';
+    grid-template: 'takings totals' 'discounts discounts' 'returns returns';
+    overflow-y: auto;
+    max-height: 80vh;
 }
 .day-takings{
     display:grid;
@@ -279,5 +288,9 @@
 }
 .day-discounts{
     padding:10px;
-    grid-area:discounts
+    grid-area:discounts;
+}
+.day-returns{
+    padding:10px;
+    grid-area:returns;
 }
