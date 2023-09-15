@@ -153,7 +153,7 @@ function UserRow({index, user}: { index: string; user: User }) {
                 dispatch(setUserData({index: Number(index), user: update}));
             }}
         >
-          {selectOptions(["online", "shop"])}s
+          {selectOptions(["online", "shop", "both"])}s
         </select>
       </span>
 

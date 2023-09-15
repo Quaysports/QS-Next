@@ -44,7 +44,7 @@ export function UserOptions() {
     if (!calendar) return null
 
     let options = [<option key={"placeholder"}>Select user...</option>]
-    for (const [id, user] of Object.entries(users[calendar.location as "shop" | "online"])) {
+    for (const [id, user] of Object.entries(users[calendar.location as "shop" | "online" | "both"])) {
         options.push(<option key={id} value={user.username}>{user.username}</option>)
     }
     return <>{options}</>
