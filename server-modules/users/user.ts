@@ -156,6 +156,9 @@ export const getAllExistingCalendars = async (req: { location: string; }) => {
 }
 
 export const getHolidayCalendar = async (req: { year: number; location: string; }) => {
+    if (req.location === "both") {
+        return await mongoI.find("Holiday-Calendar", { $and: [{ year: {$eq: req.year} }, { location: { $in: ['online', 'shop'] } }] })
+    }
     return await mongoI.findOne<any>("Holiday-Calendar", {$and: [{year: {$eq: req.year}}, {location: {$eq: req.location}}]})
 }
 

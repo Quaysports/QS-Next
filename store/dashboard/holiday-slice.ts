@@ -25,6 +25,7 @@ export interface holidaysState {
 export interface LocationUsers {
     shop: User[]
     online: User[]
+    both: User[]
 }
 
 export interface NewBooking {
@@ -39,7 +40,8 @@ const initialState: holidaysState = {
     years: [],
     users: {
         "shop": [],
-        "online": []
+        "online": [],
+        "both": []
     },
     bookedDays: {},
     paidSickDays: {},
@@ -184,16 +186,33 @@ function calculateBookedDays(calendar: schema.HolidayCalendar) {
         unpaidSickDays: { [key: string]: number }
     } = {bookedDays: {}, paidSickDays: {}, unpaidSickDays: {}}
 
-    for (const month of calendar.template) {
-        for (const day of month.days) {
-            if (!day.booked) continue
-            for (const [k, v] of Object.entries(day.booked)) {
-                totals.bookedDays[k] ??= 0
-                totals.paidSickDays[k] ??= 0
-                totals.unpaidSickDays[k] ??= 0
-                if (v.type === "holiday" && v.duration) totals.bookedDays[k] += v.duration / 100
-                if (v.type === "sick" && v.paid) totals.paidSickDays[k] += v.duration / 100
-                if (v.type === "sick" && !v.paid) totals.unpaidSickDays[k] += v.duration / 100
+    // for (const month of calendar.template) {
+    //     for (const day of month.days) {
+    //         if (!day.booked) continue
+    //         for (const [k, v] of Object.entries(day.booked)) {
+    //             totals.bookedDays[k] ??= 0
+    //             totals.paidSickDays[k] ??= 0
+    //             totals.unpaidSickDays[k] ??= 0
+    //             if (v.type === "holiday" && v.duration) totals.bookedDays[k] += v.duration / 100
+    //             if (v.type === "sick" && v.paid) totals.paidSickDays[k] += v.duration / 100
+    //             if (v.type === "sick" && !v.paid) totals.unpaidSickDays[k] += v.duration / 100
+    //         }
+    //     }
+    // }
+    // return totals
+
+    if (calendar.template) {
+        for (const month of calendar.template) {
+            for (const day of month.days) {
+                if (!day.booked) continue
+                for (const [k, v] of Object.entries(day.booked)) {
+                    totals.bookedDays[k] ??= 0
+                    totals.paidSickDays[k] ??= 0
+                    totals.unpaidSickDays[k] ??= 0
+                    if (v.type === "holiday" && v.duration) totals.bookedDays[k] += v.duration / 100
+                    if (v.type === "sick" && v.paid) totals.paidSickDays[k] += v.duration / 100
+                    if (v.type === "sick" && !v.paid) totals.unpaidSickDays[k] += v.duration / 100
+                }
             }
         }
     }
