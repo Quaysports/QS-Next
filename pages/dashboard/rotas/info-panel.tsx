@@ -13,10 +13,6 @@ export default function InfoPanel({rota}:{rota:Rota}) {
         return acc
     },{})
 
-    console.log('====================================');
-    console.log(rota);
-    console.log('====================================');
-
     let userHours = [<div key={"info"} className={styles["info-panel-row"]}>
         <div className={styles["info-panel-title"]}>Total Hours</div></div>]
     for(let [k,v] of Object.entries(hours)) {

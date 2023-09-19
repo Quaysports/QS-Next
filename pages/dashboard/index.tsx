@@ -58,6 +58,7 @@ export default function Dashboard() {
 
 export const getServerSideProps = appWrapper.getServerSideProps(
   (store) => async (context) => {
+    console.log("getServerSideProps context", context.query)
     const session = await getSession(context);
     const user = await getUserSettings(session?.user.username);
     if (user?.settings) store.dispatch(updateSettings(user!.settings));
@@ -113,7 +114,9 @@ export const getServerSideProps = appWrapper.getServerSideProps(
       store.dispatch(setAvailableCalendarsYears(years));
 
       const data = await getHolidayCalendar({ year: year, location: location })
+  
       if (data) {
+        // if data is both 'online' and 'shop' 
         if (Array.isArray(data)) {
           store.dispatch(setMergedHolidayCalendar(data));
         } else {
