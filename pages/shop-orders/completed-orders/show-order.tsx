@@ -22,6 +22,7 @@ export default function ShowOrder() {
           className={`${styles['shop-orders-table']} ${styles['shop-orders-table-cells']} ${styles['completed-orders-list-grid']}`}
         >
           <span className={'center-align'}>{item.quantity * (item.tradePack ? item.tradePack : 1)}</span>
+          <span>{item.quantity}</span>
           <span>{item.tradePack === null || item.tradePack === undefined || item.tradePack === 1 ? 'N/a' : item.tradePack}</span>
           <span>{item.SKU}</span>
           <span>{item.title}</span>
@@ -36,6 +37,7 @@ export default function ShowOrder() {
         )}
         <div className={`${styles['shop-orders-table']} ${styles['completed-orders-list-grid']}`}>
           <span className={'center-align'}>Amount</span>
+          <span>Arrived</span>
           <span>T/P</span>
           <span>SKU</span>
           <span>Title</span>

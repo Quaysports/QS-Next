@@ -100,7 +100,7 @@
     grid-template-columns: 20px 200px 1fr 40px;
 }
 .completed-orders-list-grid{
-    grid-template-columns: 70px 40px 1fr 680px
+    grid-template-columns: 50px 50px 40px 220px 500px 
 }
 
 /*------------------------------Sidebar---------------------------------------*/
