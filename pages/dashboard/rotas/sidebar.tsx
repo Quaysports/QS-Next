@@ -14,7 +14,6 @@ export default function Sidebar() {
 
     const dispatch = useDispatch()
     const router = useRouter()
-    console.log(router.query)
     const templates = useSelector(selectTemplatesNames)
 
     function createNewRota() {

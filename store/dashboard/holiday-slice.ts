@@ -94,9 +94,9 @@ export const holidaysSlice = createSlice({
                   booked: {
                     ...shopDay.booked,
                     ...onlineTemplates[index].days[dayIndex].booked,
-                  },
+                    },
                 })),
-              }));
+            }));
             
             const mergedBooked = {
             ...onlineBooked
@@ -223,16 +223,18 @@ function calculateBookedDays(calendar: schema.HolidayCalendar) {
         unpaidSickDays: { [key: string]: number }
     } = {bookedDays: {}, paidSickDays: {}, unpaidSickDays: {}}
 
-    for (const month of calendar.template) {
-        for (const day of month.days) {
-            if (!day.booked) continue
-            for (const [k, v] of Object.entries(day.booked)) {
-                totals.bookedDays[k] ??= 0
-                totals.paidSickDays[k] ??= 0
-                totals.unpaidSickDays[k] ??= 0
-                if (v.type === "holiday" && v.duration) totals.bookedDays[k] += v.duration / 100
-                if (v.type === "sick" && v.paid) totals.paidSickDays[k] += v.duration / 100
-                if (v.type === "sick" && !v.paid) totals.unpaidSickDays[k] += v.duration / 100
+    if(calendar.template) {
+        for (const month of calendar.template) {
+            for (const day of month.days) {
+                if (!day.booked) continue
+                for (const [k, v] of Object.entries(day.booked)) {
+                    totals.bookedDays[k] ??= 0
+                    totals.paidSickDays[k] ??= 0
+                    totals.unpaidSickDays[k] ??= 0
+                    if (v.type === "holiday" && v.duration) totals.bookedDays[k] += v.duration / 100
+                    if (v.type === "sick" && v.paid) totals.paidSickDays[k] += v.duration / 100
+                    if (v.type === "sick" && !v.paid) totals.unpaidSickDays[k] += v.duration / 100
+                }
             }
         }
     }

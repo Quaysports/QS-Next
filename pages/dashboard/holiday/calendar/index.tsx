@@ -13,9 +13,9 @@ export default function Calendar() {
   let elements = [<TitleRow key={"title-row"} maxDays={maxDays} year={calendar.year}/>]
 
   for (const month of calendar.template) {
-      elements.push(<MonthRow key={month.text}
-                              month={month}
-                              maxDays={maxDays}/>)
+    elements.push(<MonthRow key={month.text}
+                            month={month}
+                            maxDays={maxDays}/>)
   }
 
   return <div className={styles.calendar}>{elements}</div>
