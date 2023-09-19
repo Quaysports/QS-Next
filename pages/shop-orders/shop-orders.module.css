@@ -3,7 +3,7 @@
 .shop-orders-table-containers{
     box-shadow: var(--primary-box-shadow);
     margin: 10px;
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
     background: var(--primary-table-background);
 }
@@ -38,15 +38,15 @@
 .shop-orders-table {
     /*grid template sizes controlled in ----Table grid sizes----*/
     display: grid;
-    grid-column-gap: 10px;
+    grid-column-gap: 40px;
     padding:2px;
-    margin: 3px;
+    margin: 5px;
 }
 
 .shop-orders-table-cells{
     background-color: var(--primary-table-cell-background);
-    border-radius: 5px;
-    height: 26px;
+    border-radius: 10px;
+    height: 25px;
 }
 
 .shop-orders-table-cells *{
@@ -57,7 +57,7 @@
 }
 
 .shop-orders-table-cells *:hover{
-    align-self: center;
+    align-self: normal;
     overflow: visible;
 }
 
@@ -100,7 +100,7 @@
     grid-template-columns: 20px 200px 1fr 40px;
 }
 .completed-orders-list-grid{
-    grid-template-columns: 70px 200px 1fr;
+    grid-template-columns: 70px 40px 1fr 680px
 }
 
 /*------------------------------Sidebar---------------------------------------*/
