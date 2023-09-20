@@ -58,7 +58,7 @@ export interface UserHours {
 }
 
 export const getRotaNames = async (query: string) => {
-    if (query === "shared") {
+    if (query === "both") {
         return await mongoI.find<{ username: string, colour: string }>("Users", {rota: {$in: ["shop", "online"]}, sharedRota: {$eq: "yes"}}, {
             username: 1,
             colour: 1
