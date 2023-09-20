@@ -10,6 +10,7 @@ export interface User {
     password: string;
     role: string;
     rota: string;
+    sharedRota: string;
     colour: string;
     permissions: Permissions;
     settings: Settings;

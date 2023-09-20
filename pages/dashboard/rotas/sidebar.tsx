@@ -14,6 +14,7 @@ export default function Sidebar() {
 
     const dispatch = useDispatch()
     const router = useRouter()
+    console.log(router.query)
     const templates = useSelector(selectTemplatesNames)
 
     function createNewRota() {
@@ -39,7 +40,7 @@ export default function Sidebar() {
             )} value={router.query.location as string | undefined}>
                 <option value={"online"}>Online</option>
                 <option value={"shop"}>Shop</option>
-                <option value={"both"}>Both</option>
+                <option value={"shared"}>Shared</option>
             </SidebarSelect>
             <SidebarButton onClick={createNewRota}>Create Template</SidebarButton>
             <SidebarBreak>Templates</SidebarBreak>
