@@ -58,7 +58,6 @@ export default function Dashboard() {
 
 export const getServerSideProps = appWrapper.getServerSideProps(
   (store) => async (context) => {
-    console.log("getServerSideProps context", context.query)
     const session = await getSession(context);
     const user = await getUserSettings(session?.user.username);
     if (user?.settings) store.dispatch(updateSettings(user!.settings));

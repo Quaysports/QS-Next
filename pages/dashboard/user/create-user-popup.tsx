@@ -13,6 +13,7 @@ export default function CreateUser(){
         "pin": "",
         "role": "user",
         "rota": "online",
+        "sharedRota": "no",
         "holiday": [],
         "sick":{
             "paid":[],
