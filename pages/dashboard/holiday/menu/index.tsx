@@ -45,6 +45,7 @@ export default function HolidayMenu(){
                 }}>
             <option value={"shop"}>Shop</option>
             <option value={"online"}>Online</option>
+            <option value={"both"}>Both</option>
         </select>
         <select value={year} onChange={async (e)=>{
             setYear(Number(e.target.value))

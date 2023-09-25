@@ -17,6 +17,7 @@ import HolidayTab from "./holiday";
 import {
   setAvailableCalendarsYears,
   setHolidayCalendar,
+  setMergedHolidayCalendar,
   setHolidayUsers,
 } from "../../store/dashboard/holiday-slice";
 import { updateSettings } from "../../store/session-slice";
@@ -81,7 +82,13 @@ export const getServerSideProps = appWrapper.getServerSideProps(
         year: currentYear,
         location: location,
       });
-      if (data) store.dispatch(setHolidayCalendar(data));
+      if (data) {
+        if (Array.isArray(data)) {
+          store.dispatch(setMergedHolidayCalendar(data));
+        } else {
+          store.dispatch(setHolidayCalendar(data));
+        }
+      }
 
       let oneWeekAgo = new Date(new Date().getTime() - 604800000).toISOString();
 
@@ -105,8 +112,16 @@ export const getServerSideProps = appWrapper.getServerSideProps(
         : years[0];
       store.dispatch(setAvailableCalendarsYears(years));
 
-      const data = await getHolidayCalendar({ year: year, location: location });
-      if (data) store.dispatch(setHolidayCalendar(data));
+      const data = await getHolidayCalendar({ year: year, location: location })
+  
+      if (data) {
+        // if data is both 'online' and 'shop' 
+        if (Array.isArray(data)) {
+          store.dispatch(setMergedHolidayCalendar(data));
+        } else {
+          store.dispatch(setHolidayCalendar(data));
+        }
+      }
 
       const users = await getUsersHoliday();
       console.dir(users);

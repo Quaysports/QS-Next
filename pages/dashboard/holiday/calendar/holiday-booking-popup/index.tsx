@@ -40,7 +40,6 @@ export default function HolidayBookingPopup({dateString}: { dateString: schema.H
 export function UserOptions() {
     const users = useSelector(selectUsers)
     const calendar = useSelector(selectCalendar)
-
     if (!calendar) return null
 
     let options = [<option key={"placeholder"}>Select user...</option>]

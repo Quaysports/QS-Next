@@ -39,6 +39,7 @@ export default function Sidebar() {
             )} value={router.query.location as string | undefined}>
                 <option value={"online"}>Online</option>
                 <option value={"shop"}>Shop</option>
+                <option value={"both"}>Shared</option>
             </SidebarSelect>
             <SidebarButton onClick={createNewRota}>Create Template</SidebarButton>
             <SidebarBreak>Templates</SidebarBreak>
