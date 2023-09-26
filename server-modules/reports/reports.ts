@@ -535,14 +535,6 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
             })
         }
     }
-    // console.log(data[22].orders[0].returnsTotal);
-    // data.forEach(item => item.orders.forEach(order => console.log(order.returnsAmount)));
-    // data.forEach(item => item.orders.filter(elem => elem.returns > 0 ? console.log(elem.returns) : null
-    // ))
-    // const test = data.map(item => item.orders.filter(elem => elem.date === "2023-08-05"))
-    // console.log(test);
-    // data.forEach(item => console.log(item))
-    
     return data
 }
 

@@ -58,8 +58,7 @@ export default function DayPopup({ data }: { data: ShopDayTotal }) {
         </div>
       </div>
         <DiscountsTable discounts={data.discounts} />
-        <br />
-        <ReturnsTable returns={data.returns}/>
+        {data.returns.length > 0 && <ReturnsTable returns={data.returns}/>}
     </div>
   );
 }
@@ -70,16 +69,21 @@ function DiscountsTable({
   discounts: ShopDayTotal["discounts"];
 }) {
   let discountRows = [
-    <div className={styles["discount-row"]}>
-      <div>Order id</div>
-      <div>By</div>
-      <div>Reason</div>
-      <div>Flat</div>
-      <div>Percentage</div>
-      <div>Total</div>
-      <div>Gross Total</div>
-      <div>Net Total</div>
-    </div>,
+    <div>
+      <div id={styles["title"]}>
+        <h3>Discounts</h3>
+      </div>
+      <div className={styles["discount-row"]}>
+        <div>Order id</div>
+        <div>By</div>
+        <div>Reason</div>
+        <div>Flat</div>
+        <div>Percentage</div>
+        <div>Total</div>
+        <div>Gross Total</div>
+        <div>Net Total</div>
+      </div>
+    </div>
   ];
   if (discounts && discounts.length > 0) {
     for (let discount of discounts) {
@@ -111,20 +115,25 @@ function ReturnsTable({
 }: {
   returns: ShopDayTotal["returns"];
 }) {
-  let discountRows = [
-    <div className={styles["returns-row"]}>
-      <div>Order id</div>
-      <div>By</div>
-      <div>Reason</div>
-      <div>Type</div>
-      <div>Quantity</div>
-      <div>Total Refunded</div>
-      <div>SKU</div>
-    </div>,
+  let returnsRows = [
+    <div>
+      <div id={styles["title"]}>
+        <h3>Returns</h3>
+      </div>
+      <div className={styles["returns-row"]}>
+        <div>Order id</div>
+        <div>By</div>
+        <div>Reason</div>
+        <div>Type</div>
+        <div>Quantity</div>
+        <div>Total Refunded</div>
+        <div>SKU</div>
+      </div>
+    </div>
   ];
   if (returns && returns.length > 0) {
     for (let itemReturn of returns) {
-      discountRows.push(
+      returnsRows.push(
         <div key={itemReturn.id} className={styles["returns-row"]}>
           <div>{itemReturn.id}</div>
           <div>{itemReturn.user}</div>
@@ -137,5 +146,5 @@ function ReturnsTable({
       );
     }
   }
-  return <div className={styles["day-returns"]}>{discountRows}</div>;
+  return <div className={styles["day-returns"]}>{returnsRows}</div>;
 }

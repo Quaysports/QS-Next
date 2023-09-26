@@ -32,7 +32,7 @@
 
 .sidebar{
     display:grid;
-    /*height:calc(100vh - 70px);*/
+    /* height:calc(100vh - 70px); */
     grid-template-rows: auto auto 1fr;
     grid-gap: 10px;
 }
@@ -247,6 +247,7 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     align-items: center;
+    margin-left: 5px;
 }
 .day-row > div:first-child{
     font-weight:bold;
@@ -293,4 +294,10 @@
 .day-returns{
     padding:10px;
     grid-area:returns;
+}
+#title {
+    text-align: center;
+}
+#title h3{
+    margin: 0 0 5px 0;
 }
