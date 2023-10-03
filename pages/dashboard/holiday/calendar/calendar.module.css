@@ -66,6 +66,8 @@
 .month-cell-dots {
   display: flex;
   justify-content: center;
+  font-size: small;
+  font-weight: bold;
 }
 
 .booked-dot-100,

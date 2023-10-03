@@ -40,11 +40,18 @@ export default function HolidayBookingPopup({dateString}: { dateString: schema.H
 export function UserOptions() {
     const users = useSelector(selectUsers)
     const calendar = useSelector(selectCalendar)
+    const combinedUsers = [...users["shop"], ...users["online"]]
     if (!calendar) return null
 
     let options = [<option key={"placeholder"}>Select user...</option>]
-    for (const [id, user] of Object.entries(users[calendar.location as "shop" | "online"])) {
-        options.push(<option key={id} value={user.username}>{user.username}</option>)
+    if (calendar.location === "both") {
+        for (const [id, user] of Object.entries(combinedUsers)) {
+            options.push(<option key={id} value={user.username}>{user.username}</option>)
+        }
+    } else {
+        for (const [id, user] of Object.entries(users[calendar.location as "shop" | "online"])) {
+            options.push(<option key={id} value={user.username}>{user.username}</option>)
+        }
     }
     return <>{options}</>
 }

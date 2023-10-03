@@ -57,9 +57,16 @@ export default function CreateCalendarSubmitButton({location, year, bankHolidays
             for (let holiday of bankHolidays) {
                 let date = new Date(holiday.date)
                 calendar.template[date.getMonth()].days[date.getDate() - 1].bankHol = true
-                for (let v of users.online) {
+                let usersList = users.online
+                if (holidayCalendar.location === "shop") {
+                    usersList = users.shop
+                } 
+                for (let v of usersList) {
                     calendar.template[date.getMonth()].days[date.getDate() - 1].booked ??= {}
-                    calendar.template[date.getMonth()].days[date.getDate() - 1].booked![v.username] = {type: "holiday", paid: true, duration: 100}
+                    // only book holidays for Christmas & Boxing day
+                    if (date.getMonth() === 11) {
+                        calendar.template[date.getMonth()].days[date.getDate() - 1].booked![v.username] = {type: "holiday", paid: true, duration: 100}
+                    }
                 }
             }
 
@@ -68,7 +75,7 @@ export default function CreateCalendarSubmitButton({location, year, bankHolidays
             }
         }
 
-        if(holidayCalendar.location === "online") bookBankHolidays(holidayCalendar)
+        bookBankHolidays(holidayCalendar)
 
         let options = {
             method: "POST",
