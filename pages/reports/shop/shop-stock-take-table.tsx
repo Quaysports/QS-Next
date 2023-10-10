@@ -1,7 +1,7 @@
 import {
     BrandItem,
     selectBrandItems, setStockLevel,
-    setStockTakeInfo, updateStockTakes
+    setStockTakeInfo, unFlagCommit, updateStockTakes
 } from "../../../store/reports/stock-reports-slice";
 import {useDispatch, useSelector} from "react-redux";
 import ShopStockTakeRow from "./shop-stock-take-row";
@@ -68,12 +68,21 @@ export default function ShopStockTakeTable() {
         })
     }
 
+    const undoAll = () => {
+        brandItems.forEach(brandItem => {
+            dispatch(unFlagCommit(brandItem.SKU))
+        })
+    }
+
     const csvObject: { SKU: string, TITLE: string, Stock: number, Actual: string }[] = []
 
     let elements = [
         <div data-testid={"table-top-row"} key={"top-bar"} className={styles["top-bar"]}>
             <SearchBar resultHandler={handler} searchableArray={brandItems} EAN={true}/>
             <div><CSVButton objectArray={csvObject}/></div>
+            <div>
+                <button onClick={() => undoAll()}>Undo All</button>
+            </div>
             <div>
                 <button onClick={checkAll}>Check All</button>
             </div>
