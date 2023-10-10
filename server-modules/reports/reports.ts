@@ -99,7 +99,6 @@ export async function getShopYearData(year: number, to: number | undefined = und
         }
     ]
     let result = await findAggregate<ShopYearTotals>("Till-Transactions", query)
-    // console.log(result);
     
     if (!result || result.length === 0) return null
     result[0].year = year
@@ -452,9 +451,7 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
     if (!result) return null
 
     let data: ShopDayTotal[] = []
-    for (let order of result) {
-        // order.date !== "2023-08-07" ? null : order.returns.length > 0 ? console.log(order.returns[0].user) : null
-        
+    for (let order of result) {  
         
         let day = data.find(d => d.date === order.date)
         if (!day) {

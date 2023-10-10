@@ -4,7 +4,6 @@ import { toCurrency } from "../../../../../components/utils/utils";
 
 export default function DayPopup({ data }: { data: ShopDayTotal }) {
   if (!data) return null;
-  console.log(data);
 
   let tillTakings = [];
   if (data.till && data.till.length > 0) {
@@ -141,7 +140,7 @@ function ReturnsTable({
           <div>{itemReturn.transactionType}</div>
           <div>{itemReturn.returnQuantity}</div>
           <div>{toCurrency(itemReturn.transactionTotal)}</div>
-          <div>{itemReturn.itemSku.join().trim().split(",")}</div>
+          <div>{itemReturn.itemSku.join(", ")}</div>
         </div>
       );
     }

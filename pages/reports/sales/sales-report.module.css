@@ -268,8 +268,8 @@
 .discount-row > div,
 .returns-row > div{
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: auto;
+  /* text-overflow: ellipsis; */
 }
 .day-popup-container{
     display:grid;
