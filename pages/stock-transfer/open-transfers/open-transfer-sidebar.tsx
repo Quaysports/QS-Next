@@ -42,7 +42,6 @@ export default function OpenTransferSidebar() {
         }
         if (res.status === 200) {
             const items = await res.json()
-            console.log(items);
             
             if(items.items.length === 0) dispatchNotification({type:'alert', content:"No low stock items"})
             if(items.items.length > 0)dispatchNotification({type: 'popup', title: "Stock Check", content: <LowStockPopup items={items.items}/>})

@@ -520,7 +520,7 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                     day?.returns.push(
                         {
                             id: order.id,
-                            itemSku: item.items.map(item => `${item.SKU} `),
+                            itemSku: item.items.map(item => `${item.SKU}`),
                             user: item.user,
                             transactionTotal: item.transaction.amount | 0,
                             returnReason: item.reason,

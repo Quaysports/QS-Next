@@ -15,10 +15,10 @@ export default function OpenTransfers() {
   const openTransfer = useSelector(selectOpenTransfer);
   const dispatch = useDispatch();
 
-  const [sortBy, setSortBy] = useState("asc");
-  const [orderBy, setOrderBy] = useState("SKU");
+  const [sortBy, setSortBy] = useState("sort by");
+  const [orderBy, setOrderBy] = useState("order by");
 
-  function sortByPropertyAndDirection<T>(
+  function orderByPropertyAndDirection<T>(
     a: T,
     b: T,
     property: keyof T | string,
@@ -48,7 +48,7 @@ export default function OpenTransfers() {
   const handleSortButtonClick = (property: any) => {
     const sortedItems = openTransfer.items
       .slice()
-      .sort((a, b) => sortByPropertyAndDirection(a, b, property, sortBy));
+      .sort((a, b) => orderByPropertyAndDirection(a, b, property, orderBy));
     dispatch(updateOpenTransfer(sortedItems));
   };
 
@@ -70,7 +70,6 @@ export default function OpenTransfers() {
   }
 
   if (!openTransfer) return null;
-  console.log(openTransfer.items);
 
   const OrderByAndSortByDropdowns = () => {
     if (openTransfer.items.length === 0) {
@@ -78,14 +77,14 @@ export default function OpenTransfers() {
     } else {
       return (
         <div className={styles["open-transfer-buttons-container"]}>
-          <label htmlFor="order">
-            Order by:
+          <label htmlFor="sort">
             <select
-              name="order"
-              id="order"
-              value={orderBy}
-              onChange={(e) => setOrderBy(e.target.value)}
+              name="sort"
+              id="sort"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
             >
+              <option value="sort by">Sort by...</option>
               <option value="SKU">SKU</option>
               <option value="title">Title</option>
               <option value="stock.default">Roundswell</option>
@@ -95,18 +94,18 @@ export default function OpenTransfers() {
             </select>
           </label>
           <label htmlFor="order">
-            Sort by:
             <select
-              name="sort"
-              id="sort"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              name="order"
+              id="order"
+              value={orderBy}
+              onChange={(e) => setOrderBy(e.target.value)}
             >
-              <option value="asc">Ascending 🔺</option>
-              <option value="desc">Descending 🔻</option>
+              <option value="order by">Order by...</option>
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
             </select>
           </label>
-          <button onClick={() => handleSortButtonClick(orderBy)}>Submit</button>
+          <button onClick={() => handleSortButtonClick(sortBy)}>Sort</button>
         </div>
       );
     }

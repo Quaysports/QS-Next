@@ -125,7 +125,7 @@ function ReturnsTable({
         <div>Reason</div>
         <div>Type</div>
         <div>Quantity</div>
-        <div>Total Refunded</div>
+        <div>Refunded</div>
         <div>SKU</div>
       </div>
     </div>
