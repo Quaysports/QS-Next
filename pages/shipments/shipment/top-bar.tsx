@@ -12,8 +12,8 @@ import {useEffect, useState} from "react";
 
 export default function TopBar() {
   const shipment = useSelector(selectShipment)
-  useEffect(()=>setLocalShipment(structuredClone(shipment)),[shipment])
-  const [localShipment, setLocalShipment] = useState<Shipment | null>(structuredClone(shipment))
+  useEffect(()=>setLocalShipment({...shipment} as Shipment),[shipment])
+  const [localShipment, setLocalShipment] = useState<Shipment | null>({...shipment} as Shipment)
   const shippingCompanies = useSelector(selectShippingCompanies)
   const dispatch = useDispatch()
 
@@ -25,7 +25,7 @@ export default function TopBar() {
   }
 
   function update<T>(obj:T, key: keyof T, value: T[keyof T]){
-    let update = structuredClone(obj)
+    let update = {...obj}
     update[key] = value
     return update
   }

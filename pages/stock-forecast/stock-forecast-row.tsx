@@ -90,6 +90,8 @@ function ItemRow({item}: { item: StockForecastItem }) {
     let fourMonthOOSTriggered = false
     let outOfStockGap = false
 
+    let year = new Date().getFullYear()
+
     for(let order of item.onOrder){
         const due = new Date(order.due)
         if(due < currentDate) {
@@ -98,9 +100,7 @@ function ItemRow({item}: { item: StockForecastItem }) {
         }
     }
 
-    let year = new Date().getFullYear()
     for (let m = currentMonth; m < currentMonth + 24; m++) {
-
         if(m % 12 === 0) year++
         let band = m < currentMonth + 6
             ? "#BB1E10"
@@ -125,6 +125,22 @@ function ItemRow({item}: { item: StockForecastItem }) {
         for(let order of item.onOrder){
             let date = new Date(order.due)
             if(date.getMonth() === m && date.getFullYear() === year){
+                if(stock <= 0 || (stock - item.stockConsumption.historicConsumption[m]) <= 0) {
+                    outOfStockGap = true
+                    cellFlags.outOfStockGap = true
+                }
+                stock += order.quantity
+                cellFlags.orders.push(date)
+            } // shipment due date is into the next year
+            else if (date.getMonth() + 12 === m && date.getFullYear() === year) {
+                if(stock <= 0 || (stock - item.stockConsumption.historicConsumption[m]) <= 0) {
+                    outOfStockGap = true
+                    cellFlags.outOfStockGap = true
+                }
+                stock += order.quantity
+                cellFlags.orders.push(date)
+            } // shipment due date is 2 years ahead
+            else if (date.getMonth() + 24 === m && date.getFullYear() === year) {
                 if(stock <= 0 || (stock - item.stockConsumption.historicConsumption[m]) <= 0) {
                     outOfStockGap = true
                     cellFlags.outOfStockGap = true
