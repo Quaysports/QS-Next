@@ -200,13 +200,10 @@ function processShipment(shipment: Shipment) {
     shipment.duty = 0
     shipment.m3total = 0
     for (let i in shipment.data) {
-        shipment.data[i] = {...itemTemplate(), ...shipment.data[i]}
-        console.log(shipment.data[i])
-        console.log("isHidden", initialState.isHidden)
-        // if (initialState.isHidden) {
-        //     console.log("initialState is true")
-        //     shipment.data[i].qty = ""
-        // }
+        shipment.data = shipment.data.map((item) => ({
+            ...itemTemplate(),
+            ...item,
+          }));
         shipment.data[i].dollarTotal = +shipment.data[i].qty * +shipment.data[i].fobDollar;
         shipment.subTotal += shipment.data[i].dollarTotal
 
