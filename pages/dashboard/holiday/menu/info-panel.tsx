@@ -16,11 +16,7 @@ export default function InfoPanel(){
     if(!calendar) return null
 
     let elements = [<TitleRow key={"title-row"}/>]
-    // for(const user of users[calendar.location as "shop" | "online"]){
-    //     elements.push(<UserRow key={user.username} user={user}/>)
-    // }
-
-      // Check if calendar.location is "both" and if so, include all users
+    // Check if calendar.location is "both" and if so, include all users
   if (calendar.location === "both") {
     for (const user of users.shop.concat(users.online)) {
       elements.push(<UserRow key={user.username} user={user} />);
