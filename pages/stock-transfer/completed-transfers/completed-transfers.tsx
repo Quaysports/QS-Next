@@ -9,8 +9,6 @@ export default function CompletedTransfers() {
     const router = useRouter()
     const completeTransfer = useSelector(selectTransfer(parseInt(router.query.index as string)))
 
-    if (!completeTransfer) return null
-
     return (
         <ColumnLayout scroll={true}>
             <div className={styles['complete-transfer-container']}>
@@ -23,7 +21,7 @@ export default function CompletedTransfers() {
                     <span>New Default</span>
                     <span>New Warehouse</span>
                 </div>
-                {completeTransfer.items.map((item) => {
+                {completeTransfer?.items.map((item) => {
                     return (
                         <div className={styles['complete-transfer-row']}>
                             <div>{item.SKU}</div>

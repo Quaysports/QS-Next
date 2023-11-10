@@ -8,14 +8,15 @@ import { User } from "../../../../server-modules/users/user";
 import styles from "../holiday.module.css";
 import calendarStyles from "../calendar/calendar.module.css";
 
-export default function InfoPanel() {
-  const calendar = useSelector(selectCalendar);
-  const users = useSelector(selectUsers);
+export default function InfoPanel(){
 
-  if (!calendar) return null;
+    const calendar = useSelector(selectCalendar)
+    const users = useSelector(selectUsers)
 
-  let elements = [<TitleRow key={"title-row"} />];
-  // Check if calendar.location is "both" and if so, include all users
+    if(!calendar) return null
+
+    let elements = [<TitleRow key={"title-row"}/>]
+    // Check if calendar.location is "both" and if so, include all users
   if (calendar.location === "both") {
     for (const user of users.shop.concat(users.online)) {
       elements.push(<UserRow key={user.username} user={user} />);

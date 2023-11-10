@@ -1,102 +1,117 @@
 .low-stock-popup {
-    display: grid;
-    grid-template-columns: 200px repeat(3, 100px);
+  display: grid;
+  grid-template-columns: 200px repeat(3, 100px);
 }
-.create-button{
-    float:right;
-    margin: 5px 0 0 0 ;
-    padding: 2px 5px
+.create-button {
+  float: right;
+  margin: 5px 0 0 0;
+  padding: 2px 5px;
 }
 .title-row {
-    font-weight: bold;
+  font-weight: bold;
+}
+.open-transfer-buttons-container {
+  display: flex;
+  margin-bottom: 1%;
+  flex-direction: row;
+  justify-content: center;
+}
+.open-transfer-buttons-container button,
+.open-transfer-buttons-container label,
+.open-transfer-buttons-container select {
+  margin: 0 2px 0 2px;
+  font-size: medium;
 }
 .open-transfer-container {
-    display: grid;
-    grid-row-gap: 7px;
+  display: grid;
+  grid-row-gap: 7px;
 }
 .open-transfer-title {
-    font-weight: bold;
-    text-align: center;
-    background-color: var(--primary-table-title);
+  font-weight: bold;
+  text-align: center;
+  background-color: var(--primary-table-title);
 }
-.open-transfer-row, .open-transfer-title {
-    display: grid;
-    grid-template-columns: 40px 200px 1fr 100px 100px 100px 75px;
-    padding: 2px 10px;
-    border-radius: var(--primary-border-radius);
-    box-shadow: var(--primary-box-shadow);
+.open-transfer-row,
+.open-transfer-title {
+  display: grid;
+  grid-template-columns: 40px 200px 1fr 100px 100px 100px 75px;
+  padding: 2px 10px;
+  border-radius: var(--primary-border-radius);
+  box-shadow: var(--primary-box-shadow);
 }
 .open-transfer-row {
-    background-color: var(--primary-table-cell-background);
+  background-color: var(--primary-table-cell-background);
 }
 .open-transfer-row > div {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    line-height:22px
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 22px;
 }
 .open-transfer-row > span {
-    text-align: center;
-    line-height:22px
+  text-align: center;
+  line-height: 22px;
 }
-.delete-button{
-    width:21px;
-    height: 21px;
+.delete-button {
+  width: 21px;
+  height: 21px;
 }
-.warehouse-popup-container{
-    max-height: 80vh;
-    overflow-y: scroll;
+.warehouse-popup-container {
+  max-height: 80vh;
+  overflow-y: scroll;
 }
-.warehouse-popup-title{
-    font-weight: bold;
-    text-align: center;
-    background-color: var(--primary-table-title);
+.warehouse-popup-title {
+  font-weight: bold;
+  text-align: center;
+  background-color: var(--primary-table-title);
 }
-.warehouse-popup-row{
-    background-color: var(--primary-table-cell-background);
+.warehouse-popup-row {
+  background-color: var(--primary-table-cell-background);
 }
-.warehouse-popup-row, .warehouse-popup-title{
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    padding: 2px 10px;
-    border-radius: var(--primary-border-radius);
-    box-shadow: var(--primary-box-shadow);
-    margin: 7px
+.warehouse-popup-row,
+.warehouse-popup-title {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  padding: 2px 10px;
+  border-radius: var(--primary-border-radius);
+  box-shadow: var(--primary-box-shadow);
+  margin: 7px;
 }
-.warehouse-popup-row:hover{
-    transform: scale(1.01);
-    background-color: var(--traffic-light-orange);
-    color:black
+.warehouse-popup-row:hover {
+  transform: scale(1.01);
+  background-color: var(--traffic-light-orange);
+  color: black;
 }
 
 /*-------------------------Complete Transfers--------------------------*/
 
-.complete-transfer-container{
-    display: grid;
-    grid-row-gap: 7px;
+.complete-transfer-container {
+  display: grid;
+  grid-row-gap: 7px;
 }
 .complete-transfer-title {
-    font-weight: bold;
-    text-align: center;
-    background-color: var(--primary-table-title);
+  font-weight: bold;
+  text-align: center;
+  background-color: var(--primary-table-title);
 }
-.complete-transfer-row, .complete-transfer-title{
-    display:grid;
-    grid-template-columns: 150px 1fr 120px 120px 100px 120px 130px;
-    border-radius: var(--primary-border-radius);
-    box-shadow: var(--primary-box-shadow);
-    padding: 2px 10px;
+.complete-transfer-row,
+.complete-transfer-title {
+  display: grid;
+  grid-template-columns: 150px 1fr 120px 120px 100px 120px 130px;
+  border-radius: var(--primary-border-radius);
+  box-shadow: var(--primary-box-shadow);
+  padding: 2px 10px;
 }
-.complete-transfer-row{
-    background-color: var(--primary-table-cell-background);
+.complete-transfer-row {
+  background-color: var(--primary-table-cell-background);
 }
 .complete-transfer-row > div {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    line-height:22px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 22px;
 }
 .complete-transfer-row > span {
-    text-align: center;
-    line-height:22px;
+  text-align: center;
+  line-height: 22px;
 }

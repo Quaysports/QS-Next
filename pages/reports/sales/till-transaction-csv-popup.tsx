@@ -5,7 +5,6 @@ import {toCurrencyInput} from "../../../components/utils/utils";
 export default function TillTransactionCSVPopup() {
 
     const currentDate = new Date().toISOString().slice(0, 7)
-    console.log()
 
     const [from, setFrom] = useState(currentDate)
     const [to, setTo] = useState(currentDate)
