@@ -32,7 +32,7 @@
 
 .sidebar{
     display:grid;
-    /*height:calc(100vh - 70px);*/
+    /* height:calc(100vh - 70px); */
     grid-template-rows: auto auto 1fr;
     grid-gap: 10px;
 }
@@ -247,6 +247,7 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     align-items: center;
+    margin-left: 5px;
 }
 .day-row > div:first-child{
     font-weight:bold;
@@ -258,14 +259,22 @@
     grid-gap: 10px;
     align-items: center;
 }
-.discount-row > div{
+.returns-row {
+    display:grid;
+    grid-template-columns: 150px 70px 150px 100px 100px 100px 200px;
+    grid-gap: 10px;
+    align-items: center;
+}
+.discount-row > div,
+.returns-row > div{
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: auto;
 }
 .day-popup-container{
     display:grid;
-    grid-template: 'takings totals' 'discounts discounts';
+    grid-template: 'takings totals' 'discounts discounts' 'returns returns';
+    overflow-y: auto;
+    max-height: 80vh;
 }
 .day-takings{
     display:grid;
@@ -279,5 +288,15 @@
 }
 .day-discounts{
     padding:10px;
-    grid-area:discounts
+    grid-area:discounts;
+}
+.day-returns{
+    padding:10px;
+    grid-area:returns;
+}
+#title {
+    text-align: center;
+}
+#title h3{
+    margin: 0 0 5px 0;
 }

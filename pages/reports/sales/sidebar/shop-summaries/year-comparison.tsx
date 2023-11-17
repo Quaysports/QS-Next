@@ -17,7 +17,7 @@ export default function ShopYearComparison() {
     if(!comparison || !yearTotals) return null
 
     let data = yearTotals.find((year: ShopYearTotals) => year.year === selectedYear)
-
+    
     if (!data) return null
 
     const totalComparison = (data.grandTotal - comparison.grandTotal)
