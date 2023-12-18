@@ -4,7 +4,7 @@ import {CellFlags} from "./stock-forecast-row";
 
 export default function StockForecastCell({item, cellFlags, stockLevel}:{item:StockForecastItem, cellFlags:CellFlags, stockLevel:number}) {
 
-    
+    if(!item) return null
 
     let currentDate = new Date()
     let bandColour = cellFlags.band + (cellFlags.outOfStockGap ? "B3" :"")
