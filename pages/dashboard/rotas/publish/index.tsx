@@ -4,7 +4,7 @@ import {
     selectTemplate,
     selectWeekData,
     setHolidayData,
-    setWeekData
+    setWeekData,
 } from "../../../../store/dashboard/rotas-slice";
 import RotaWeek from "../rota";
 import PublishSidebar from "./publish-sidebar";
@@ -25,13 +25,11 @@ export default function PublishRota() {
     const [date, setDate] = useState(weekData?.monday ? new Date(weekData.monday) : new Date())
 
     useEffect(() => {
-        console.log(date)
         dispatch(setWeekData(getWeek(date)))
     }, [date])
 
     useEffect(() => {
-        let currentYear = new Date().getFullYear().toString()
-        if (!weekData || !weekData.monday.includes(currentYear)){
+        if (!weekData){
             dispatch(setHolidayData(null))
             return
         }

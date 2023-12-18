@@ -9,12 +9,26 @@ import SidebarSelect from "../../../components/layouts/sidebar-select";
 import SplitSidebarButton from "./split-sidebar-button";
 import SidebarBreak from "../../../components/layouts/sidebar-break";
 import PublishRota from "./publish";
+import { useState } from "react";
 
 export default function Sidebar() {
 
     const dispatch = useDispatch()
     const router = useRouter()
     const templates = useSelector(selectTemplatesNames)
+
+    const [isChecked, setChecked] = useState(false);
+
+    const handleCheckboxChange = async () => {
+        setChecked(!isChecked);
+        await router.push(
+            !isChecked ? {
+                pathname: router.pathname, query: {...router.query, year: new Date().getFullYear() + 1}
+            } : {
+                pathname: router.pathname, query: {...router.query, year: new Date().getFullYear()}
+            }
+        )
+    }
 
     function createNewRota() {
         dispatch(createTemplate())
@@ -42,6 +56,11 @@ export default function Sidebar() {
                 <option value={"both"}>Shared</option>
             </SidebarSelect>
             <SidebarButton onClick={createNewRota}>Create Template</SidebarButton>
+            <SidebarButton
+                onClick={handleCheckboxChange}
+            >
+                Toggle Holiday Year: {!router.query.year ? new Date().getFullYear() : router.query.year}
+            </SidebarButton>
             <SidebarBreak>Templates</SidebarBreak>
             <SidebarButton onClick={publishBlankRota}>Blank</SidebarButton>
             {templateButtons}

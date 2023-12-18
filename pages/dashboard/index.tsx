@@ -77,9 +77,12 @@ export const getServerSideProps = appWrapper.getServerSideProps(
       if (locationTemplates)
         store.dispatch(setTemplatesNames(locationTemplates));
 
-      let currentYear = new Date().getFullYear();
+      const year = context.query.year
+      ? Number(context.query.year)
+      : new Date().getFullYear()
+      
       const data = await getHolidayCalendar({
-        year: currentYear,
+        year: year,
         location: location,
       });
       if (data) {
