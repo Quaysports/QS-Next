@@ -360,61 +360,60 @@ export async function getPickList(date:number){
     return orders
 }
 
-export async function getTillTransactionCSVData(dates:{start:number,end:number}, isBait: boolean, baitList: string[]){
+export async function getTillTransactionCSVData(dates: { start: number, end: number }, isBait: boolean, baitList: string[]) {
+    const baseQuery = {
+      $and: [
+        { paid: true },
+        { 'transaction.date': { $gt: dates.start.toString(), $lt: dates.end.toString() } },
+      ],
+    };
+  
+    const baitListSpacesRemoved: string[] = baitList ? baitList.filter(Boolean).map(bait => bait.trim()) : [];
+    const orConditionsForBait: object[] = baitListSpacesRemoved.map(bait => ({ $eq: ['$$item.SKU', bait] }));
 
-  const baseQuery = {
-    $and: [
-      { paid: true },
-      {
-        'transaction.date': dates.start > dates.end
-          ? { $gt: dates.start.toString() }
-          : { $gt: dates.start.toString(), $lt: dates.end.toString() },
-      },
-    ],
-  };
-
-  let baitListSpacesRemoved: string[] = []
-  let orConditionsForBait: object[] = []
-  if (baitList) {
-    baitListSpacesRemoved = baitList.filter(bait => bait !== "").map((bait) => bait.trim());
-    orConditionsForBait = baitList.map((bait) => ({ $eq: ['$$item.SKU', bait] }));
-  }
-
-  const query = isBait ? { $and: [baseQuery, { 'items.SKU': { $in: baitListSpacesRemoved } }] } : baseQuery;
-
-  const baitProjection = {
-    grandTotal: 1,
-    transaction: 1,
-    paid: 1,
-    id: 1,
-    items: {
-      $map: {
-        input: {
-          $filter: {
-            input: '$items',
-            as: 'item',
-            cond: {
-              $or: orConditionsForBait,
-            },
-          },
+    let baitQuery = [
+        {
+            '$match': {
+                'transaction.date': { $gt: dates.start.toString(), $lt: dates.end.toString() },
+                paid: true,
+                'items.SKU': { $in: baitListSpacesRemoved }
+            }
         },
-        as: 'filteredItem',
-        in: {
-          total: '$$filteredItem.total',
-          SKU: '$$filteredItem.SKU',
-          Title: '$$filteredItem.Title',
-        },
-      },
-    },
-  };
-
-  const finalQuery = isBait ? query : baseQuery;
-  const finalProjection = isBait ? baitProjection : {};
-
-  console.dir(finalQuery, { depth: 5 });
-
-  return await find<schema.TillOrder>('Till-Transactions', finalQuery, finalProjection);
-}
+        {
+            '$project': {
+                grandTotal: 1,
+                transaction: 1,
+                paid: 1,
+                id: 1,
+                items: {
+                    $map: {
+                    input: {
+                        $filter: {
+                        input: '$items',
+                        as: 'item',
+                        cond: { $or: orConditionsForBait },
+                        },
+                    },
+                    as: 'filteredItem',
+                    in: {
+                        total: '$$filteredItem.total',
+                        SKU: '$$filteredItem.SKU',
+                        Title: '$$filteredItem.Title',
+                    },
+                    },
+                },
+            }
+        }
+    ]
+    const databaseCollection = "Till-Transactions"
+    if (isBait) {
+        console.dir(baitQuery, { depth: 5 });
+        return await findAggregate<schema.TillOrder>(databaseCollection, baitQuery)
+    } else {
+        console.dir(baseQuery, { depth: 5 });
+        return await find<schema.TillOrder>(databaseCollection, baseQuery);
+    }
+  }  
 
 export type GiftCardType = {
     sort(arg0: (a: any, b: any) => number): any;
