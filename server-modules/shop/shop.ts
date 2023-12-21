@@ -360,13 +360,60 @@ export async function getPickList(date:number){
     return orders
 }
 
-export async function getTillTransactionCSVData(dates:{start:number,end:number}){
+export async function getTillTransactionCSVData(dates:{start:number,end:number}, isBait: boolean, baitList: string[]){
 
-    let query = dates.start > dates.end
-        ? {$and:[{paid: true},{"transaction.date": {"$gt": dates.start.toString()}}]}
-        : {$and:[{paid: true},{"transaction.date": {"$gt": dates.start.toString()}},{"transaction.date": {"$lt": dates.end.toString()}}]}
-    console.dir(query, {depth: 5})
-    return await find<schema.TillOrder>("Till-Transactions", query)
+  const baseQuery = {
+    $and: [
+      { paid: true },
+      {
+        'transaction.date': dates.start > dates.end
+          ? { $gt: dates.start.toString() }
+          : { $gt: dates.start.toString(), $lt: dates.end.toString() },
+      },
+    ],
+  };
+
+  let baitListSpacesRemoved: string[] = []
+  let orConditionsForBait: object[] = []
+  if (baitList) {
+    baitListSpacesRemoved = baitList.filter(bait => bait !== "").map((bait) => bait.trim());
+    orConditionsForBait = baitList.map((bait) => ({ $eq: ['$$item.SKU', bait] }));
+  }
+
+  const query = isBait ? { $and: [baseQuery, { 'items.SKU': { $in: baitListSpacesRemoved } }] } : baseQuery;
+
+  const baitProjection = {
+    grandTotal: 1,
+    transaction: 1,
+    paid: 1,
+    id: 1,
+    items: {
+      $map: {
+        input: {
+          $filter: {
+            input: '$items',
+            as: 'item',
+            cond: {
+              $or: orConditionsForBait,
+            },
+          },
+        },
+        as: 'filteredItem',
+        in: {
+          total: '$$filteredItem.total',
+          SKU: '$$filteredItem.SKU',
+          Title: '$$filteredItem.Title',
+        },
+      },
+    },
+  };
+
+  const finalQuery = isBait ? query : baseQuery;
+  const finalProjection = isBait ? baitProjection : {};
+
+  console.dir(finalQuery, { depth: 5 });
+
+  return await find<schema.TillOrder>('Till-Transactions', finalQuery, finalProjection);
 }
 
 export type GiftCardType = {
