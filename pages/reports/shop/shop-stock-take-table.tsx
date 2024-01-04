@@ -11,12 +11,14 @@ import styles from './shop-stock-take.module.css'
 import CSVButton from "../../../components/csv-button";
 import StockTake = schema.StockTake;
 import {schema} from "../../../types";
+import { selectUser } from "../../../store/session-slice";
 
 export default function ShopStockTakeTable() {
 
     const dispatch = useDispatch()
     const brandItems = useSelector(selectBrandItems)
     const [activeItems, setActiveItems] = useState<BrandItem[]>(brandItems)
+    const user = useSelector(selectUser)
 
     useEffect(() => {
         setActiveItems(brandItems)
@@ -60,7 +62,7 @@ export default function ShopStockTakeTable() {
         let opts = {
             method:"POST",
             headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({id:"Stock Take Update", data:linnUpdate})}
+            body:JSON.stringify({id:`Stock Take Update by ${user.username} - `, data:linnUpdate})}
 
         fetch("/api/linnworks/update-stock-levels", opts).then(async res => {
             let json = await res.json()

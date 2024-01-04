@@ -26,47 +26,64 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
     }
 
     return (
-        <>
-            {!item ?
-                <div className={styles.title}>
-                    <div>SKU</div>
-                    <div>EAN</div>
-                    <div>Title</div>
-                    <div>Stock</div>
-                    <div className={styles.center}>Update</div>
-                    <div className={styles.center}>Checked</div>
-                    <div></div>
-                </div>
-                : <div className={styles.row} data-testid={item.SKU}>
-                    <div>{item.SKU}</div>
-                    <div>{item.EAN}</div>
-                    <div>{item.title}</div>
-                    <div>{item.stock.total}</div>
-                    <div>{!item.stockTake?.date
-                        ? <RegexInput
-                            type={"number"}
-                            value={item.stockTake?.quantity ? item.stockTake.quantity : 0}
-                            handler={validationHandler}
-                            errorMessage={"Numbers Only"}/>
-                        : item.stockTake?.quantity}
-                    </div>
-                    <div>{!item.stockTake?.date
-                        ? <input
-                            type={"checkbox"}
-                            checked={item.stockTake?.checked ? item.stockTake?.checked : false}
-                            onChange={e => {
-                                loadedStockTake.checked = e.target.checked
-                                updateSlice(index!, loadedStockTake)
-                            }}/>
-                        : <input
-                            type={"checkbox"}
-                            checked={item.stockTake?.checked ? item.stockTake?.checked : false}
-                            readOnly={true}/>}
-                    </div>
-                    <div>
-                        <button onClick={()=>dispatch(unFlagCommit(item.SKU))}>&#9100;</button>
-                    </div>
-                </div>}
-        </>
-    )
+        <table className={styles.table} data-testid={item?.SKU}>
+          {!item ? (
+            <thead>
+              <tr className={styles.title}>
+                <th>SKU</th>
+                <th>EAN</th>
+                <th>Title</th>
+                <th className={styles.center}>Stock</th>
+                <th className={styles.center}>Update</th>
+                <th className={styles.center}>Checked</th>
+                <th className={styles.center}>Date Checked</th>
+                <th></th>
+              </tr>
+            </thead>
+          ) : (
+            <tbody>
+              <tr className={styles.row}>
+                <td>{item.SKU}</td>
+                <td>{item.EAN}</td>
+                <td>{item.title}</td>
+                <td className={styles.center}>{item.stock.total}</td>
+                <td className={styles.center}>
+                  {!item.stockTake?.date ? (
+                    <RegexInput
+                      type={'number'}
+                      value={item.stockTake?.quantity ? item.stockTake.quantity : 0}
+                      handler={validationHandler}
+                      errorMessage={'Numbers Only'}
+                    />
+                  ) : (
+                    item.stockTake?.quantity
+                  )}
+                </td>
+                <td>
+                  {!item.stockTake?.date ? (
+                    <input
+                      type={'checkbox'}
+                      checked={item.stockTake?.checked ? item.stockTake?.checked : false}
+                      onChange={(e) => {
+                        loadedStockTake.checked = e.target.checked;
+                        updateSlice(index!, loadedStockTake);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type={'checkbox'}
+                      checked={item.stockTake?.checked ? item.stockTake?.checked : false}
+                      readOnly={true}
+                    />
+                  )}
+                </td>
+                <td className={styles.center}>{item.stockTake?.date ? item.stockTake?.date?.slice(4, 16) : 'N/A'}</td>
+                <td>
+                  <button onClick={() => dispatch(unFlagCommit(item.SKU))}>&#9100;</button>
+                </td>
+              </tr>
+            </tbody>
+          )}
+        </table>
+      );
 }
