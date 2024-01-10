@@ -29,15 +29,15 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
         <table className={styles.table} data-testid={item?.SKU}>
           {!item ? (
             <thead>
-              <tr className={styles.title}>
+              <tr>
                 <th>SKU</th>
                 <th>EAN</th>
                 <th>Title</th>
-                <th className={styles.center}>Stock</th>
-                <th className={styles.center}>Update</th>
-                <th className={styles.center}>Checked</th>
-                <th className={styles.center}>Date Checked</th>
-                <th></th>
+                <th>Stock</th>
+                <th>Update</th>
+                <th>Checked</th>
+                <th>Date Checked</th>
+                <th>Undo</th>
               </tr>
             </thead>
           ) : (
@@ -46,8 +46,8 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                 <td>{item.SKU}</td>
                 <td>{item.EAN}</td>
                 <td>{item.title}</td>
-                <td className={styles.center}>{item.stock.total}</td>
-                <td className={styles.center}>
+                <td>{item.stock.total}</td>
+                <td>
                   {!item.stockTake?.date ? (
                     <RegexInput
                       type={'number'}
@@ -77,7 +77,7 @@ export default function ShopStockTakeRow({index = null, item = null}: props) {
                     />
                   )}
                 </td>
-                <td className={styles.center}>{item.stockTake?.date ? item.stockTake?.date?.slice(4, 16) : 'N/A'}</td>
+                <td>{item.stockTake?.date ? item.stockTake?.date?.slice(4, 16) : 'N/A'}</td>
                 <td>
                   <button onClick={() => dispatch(unFlagCommit(item.SKU))}>&#9100;</button>
                 </td>

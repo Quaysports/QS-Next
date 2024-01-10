@@ -76,7 +76,7 @@ export default function ShopStockTakeTable() {
         })
     }
 
-    const csvObject: { SKU: string, TITLE: string, Stock: number, Actual: string }[] = []
+    const csvObject: { SKU: string, Title: string, Stock: number, Actual: string }[] = []
 
     let elements = [
         <div data-testid={"table-top-row"} key={"top-bar"} className={styles["top-bar"]}>
@@ -102,7 +102,7 @@ export default function ShopStockTakeTable() {
 
         csvObject.push({
             SKU: activeItems[index].SKU,
-            TITLE: activeItems[index].title,
+            Title: activeItems[index].title,
             Stock: activeItems[index].stock.total,
             Actual: ""
         })

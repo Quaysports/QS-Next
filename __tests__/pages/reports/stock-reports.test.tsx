@@ -1,10 +1,11 @@
 import {GetServerSidePropsContext} from "next";
 import StockReports, {getServerSideProps} from "../../../pages/reports";
-import {renderWithProviders, screen, waitFor} from "../../../__mocks__/mock-store-wrapper";
+import {render, renderWithProviders, screen, waitFor, within} from "../../../__mocks__/mock-store-wrapper";
 import '@testing-library/jest-dom'
 import {StockError} from "../../../server-modules/shop/shop";
 import userEvent from "@testing-library/user-event";
 import {schema} from "../../../types";
+import ShopStockTakeRow from "../../../pages/reports/shop/shop-stock-take-row";
 
 let query = {}
 const mockRouter = jest.fn()
@@ -261,11 +262,11 @@ describe("Stock Take tab tests", () => {
 
         expect(screen.getByTestId("AKA-AFLC13")).toBeInTheDocument()
         expect(screen.getByTestId("AKA-AFLC13").childNodes[0]).toHaveTextContent("AKA-AFLC13")
-        expect(screen.getByTestId("AKA-AFLC13").childNodes[1]).toHaveTextContent("8032895083969")
-        expect(screen.getByTestId("AKA-AFLC13").childNodes[2]).toHaveTextContent("AKASHI Fluorocarbon 13.2lb Line 100m")
-        expect(screen.getByTestId("AKA-AFLC13").childNodes[3]).toHaveTextContent("9")
-        expect(screen.getByTestId("AKA-AFLC13").childNodes[4]).toHaveTextContent("10")
-        expect(screen.getByTestId("AKA-AFLC13").childNodes[5].childNodes[0]).toHaveAttribute("type", "checkbox")
+        expect(screen.getByTestId("AKA-AFLC13").querySelector(':nth-child(2)')).toHaveTextContent("8032895083969");
+        expect(screen.getByTestId("AKA-AFLC13").querySelector(':nth-child(3)')).toHaveTextContent("AKASHI Fluorocarbon 13.2lb Line 100m");
+        expect(screen.getByTestId("AKA-AFLC13").querySelector(':nth-child(4)')).toHaveTextContent("9");
+        expect(screen.getByTestId("AKA-AFLC13").querySelector(':nth-child(5)')).toHaveTextContent("10");
+        expect(screen.getByTestId("AKA-AFLC13").querySelector('input[type="checkbox"]')).toHaveAttribute("type", "checkbox");
     })
 
     test("Loaded brand items correctly hide input if stockTake.date is not null", async () => {
@@ -276,9 +277,10 @@ describe("Stock Take tab tests", () => {
             const context = {query: query} as unknown as GetServerSidePropsContext
             await getServerSideProps(context)
         })
-
-        expect(screen.getByTestId("AKA-AFLC13").childNodes[4].childNodes.length === 0)
-        expect(screen.getByTestId("AKA-AFLC8").childNodes[4].childNodes[0]).toHaveAttribute("pattern")
+        const tdForAKAAFLC8 = screen.getByTestId("AKA-AFLC8");
+        const inputInTD = within(tdForAKAAFLC8).getByRole("textbox", { name: "" });
+        expect(inputInTD).toHaveAttribute("pattern", "^\\d+$");
+        expect(inputInTD).not.toBeNull();
     })
 
     test("Check all button calculates and checks inputs correctly.", async () => {
@@ -290,8 +292,8 @@ describe("Stock Take tab tests", () => {
             await getServerSideProps(context)
         })
 
-        let checkBox1 = screen.getByTestId("AKA-AFLC13").childNodes[5].childNodes[0] as HTMLInputElement
-        let checkBox2 = screen.getByTestId("AKA-AFLC8").childNodes[5].childNodes[0] as HTMLInputElement
+        const checkBox1 = screen.getByTestId("AKA-AFLC13").querySelector('input[type="checkbox"]') as HTMLInputElement;
+        const checkBox2 = screen.getByTestId("AKA-AFLC8").querySelector('input[type="checkbox"]') as HTMLInputElement;
 
         await waitFor(() => screen.getByRole("button", {name: "Check All"}).click())
         await waitFor(() => expect(checkBox2).toBeChecked())
@@ -313,8 +315,8 @@ describe("Stock Take tab tests", () => {
         const context = {query: query} as unknown as GetServerSidePropsContext
         await waitFor(async () => getServerSideProps(context))
 
-        let input = screen.getByTestId("AKA-AFLC8").childNodes[4].childNodes[0] as HTMLInputElement
-        let checkBox = (await screen.findByTestId("AKA-AFLC8")).childNodes[5].childNodes[0] as HTMLInputElement
+        const input = screen.getByTestId("AKA-AFLC8").querySelector('input') as HTMLInputElement;
+        const checkBox = (await screen.findByTestId("AKA-AFLC8")).querySelector('input[type="checkbox"]') as HTMLInputElement;
 
         await waitFor(async () => {
             checkBox.click()
@@ -324,7 +326,7 @@ describe("Stock Take tab tests", () => {
         await waitFor(async () => {
             screen.getByRole("button", {name: "Commit"}).click()
             expect(input).not.toBeInTheDocument()
-            expect(screen.getByTestId("AKA-AFLC8").childNodes[3].childNodes[0]).toHaveTextContent("0")
+            expect(screen.getByTestId("AKA-AFLC8").querySelector('td:nth-child(4)')).toHaveTextContent("0");
         })
     })
 })

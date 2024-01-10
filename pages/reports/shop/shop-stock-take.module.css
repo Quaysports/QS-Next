@@ -15,45 +15,39 @@
     border-collapse: collapse;
     table-layout: fixed;
     text-align: center;
-    margin-bottom: 0.2rem;
-  }
-  .row {
-    background: var(--table-cell-background-color);
-    border-radius:var(--table-cell-border-radius);
-  }
-  .center {
-    text-align: center;
-  }
-  .table th {
-    padding: 8px;
-  }
-  .table td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    white-space: wrap;
-    word-wrap: break-word;
-    
-  }
-  .table th:nth-child(1), .table td:nth-child(1),
-  .table th:nth-child(2), .table td:nth-child(2) {
-    max-width: 10rem;
-  }
-  .table th:nth-child(4), .table td:nth-child(4), 
-  .table th:nth-child(5), .table td:nth-child(5), 
-  .table th:nth-child(6), .table td:nth-child(6),
-  .table th:nth-child(7), .table td:nth-child(7),
-  .table th:nth-child(8), .table td:nth-child(8) {
-    width: 5rem
-  }
-  .table tbody tr:hover {
-    background-color: var(--primary-color);
-  }
-  .table button {
-    border: none;
-    padding: 8px;
-    cursor: pointer;
-  } 
-  .row input {
-    width:75%;
-    cursor: pointer;
+    margin-bottom: 0.1rem;
+}
+.row {
+  background: var(--table-cell-background-color);
+  border-radius:var(--table-cell-border-radius);
+}
+.table th {
+  padding: 8px;
+}
+.table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  white-space: wrap;
+  word-wrap: break-word;
+}
+.table th:nth-child(n-2), .table td:nth-child(n-2){
+  width: 20%;
+}
+.table th:nth-child(3), .table td:nth-child(3) {
+  width: 30%;
+}
+.table th:nth-child(n+4), .table td:nth-child(n+4) {
+  width: 5rem;
+}
+.table tbody tr:hover {
+  background-color: var(--primary-color);
+}
+.table button {
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+} 
+.row input {
+  width:75%;
+  cursor: pointer;
 }
