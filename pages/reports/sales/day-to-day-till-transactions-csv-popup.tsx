@@ -178,18 +178,17 @@ export default function DayToDayTillTransactionCSVPopup({ isBait }: Props) {
         }
 
         for (let [k, v] of map) {
-          csvData += `\r\n${k}, £${toCurrencyInput(v.grandTotal)}, ${
+          csvData += `\r\n${k}, ${formatCurrency(v.grandTotal)}, ${
             v.transactionType
-          }, £${toCurrencyInput(v.transactionAmount)}, £${toCurrencyInput(
+          }, ${formatCurrency(v.transactionAmount)}, ${formatCurrency(
             v.transactionCash
-          )}, £${toCurrencyInput(v.transactionChange)}, £${toCurrencyInput(
+          )}, ${formatCurrency(v.transactionChange)}, ${formatCurrency(
             v.transactionFlatDiscount
-          )}, £${toCurrencyInput(v.transactionGiftCard)}, ${
+          )}, ${formatCurrency(v.transactionGiftCard)}, ${
             v.transactionDate
           }, `;
-
           v.itemTotals.forEach((itemTotal: string) => {
-            csvData += `£${toCurrencyInput(+itemTotal)}, `;
+            csvData += `${formatCurrency(+itemTotal)}, `;
           });
 
           let skuArray = v.sku.split(" ");
@@ -227,6 +226,14 @@ export default function DayToDayTillTransactionCSVPopup({ isBait }: Props) {
       : new Date(Number(year), Number(month), 1).getTime();
   }
 
+  function formatCurrency(amount: number) {
+    if (amount !== 0) {
+      return `£${toCurrencyInput(amount)}`
+    } else {
+      return "£-"
+    }
+  }
+  
   return (
     <form className={styles["csv-popup-table"]} onSubmit={handler}>
       <div className={styles["csv-popup-row"]}>
