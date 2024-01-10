@@ -3,7 +3,7 @@ export function toCurrency(value?:number){
 }
 
 export function toCurrencyInput(value?:number){
-    return value ? (value / 100).toFixed(2) : "-"
+    return value ? (value / 100).toFixed(2) : 0
 }
 
 export function currencyToLong(value?:number | string | undefined){
