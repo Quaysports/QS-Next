@@ -15,9 +15,10 @@ export default function ItemLocation() {
     function prefixOptions(){
         return [<Fragment key={"prefix-fragment"}>
             <option key={"prefix" + 0}/>
-            <option key={"prefix" + 1}>S</option>
-            <option key={"prefix" + 2}>D</option>
-            <option key={"prefix" + 3}>U</option>
+            <option key={"prefix" + 1}>R</option>
+            <option key={"prefix" + 2}>S</option>
+            <option key={"prefix" + 3}>D</option>
+            <option key={"prefix" + 4}>U</option>
         </Fragment>]
     }
 
