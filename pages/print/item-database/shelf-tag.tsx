@@ -17,22 +17,23 @@ export default function ShelfTag() {
     }, [item])
 
     if (!item) return null
+    let {prefix, letter, number} = item.shelfLocation
 
     return (
-        <>
+        <div className={styles["container"]}>
             <style>{`
                     @page {
-    size: 1.5in 1in;
-    color: black;
-    margin:5px;
-}
-`}</style>
-            <div className={styles["container"]}>
+                    size: 1.5in 1in;
+                    color: black;
+                    margin:5px;
+                }
+            `}</style>
+            <div className={styles["details"]}>
                 <div className={styles["sku"]}>{item.SKU}</div>
-                <div
-                    className={styles["price"]}>{item.prices.shop ? toCurrency(item.prices.shop) : toCurrency(item.prices.magento)}</div>
+                <div className={styles["price"]}>{item.prices.shop ? toCurrency(item.prices.shop) : toCurrency(item.prices.magento)}</div>
+                {prefix || letter || number ? (<div className={styles["loc"]}>{prefix}-{letter}-{number}</div>) : null}
+                <div className={styles["title"]}>{item.title}</div>
             </div>
-            <div className={styles["title"]}>{item.title}</div>
-        </>
+        </div>
     )
 }
