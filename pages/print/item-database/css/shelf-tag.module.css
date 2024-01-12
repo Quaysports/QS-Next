@@ -1,44 +1,28 @@
-.container {
-    background-color: white;
+
+.container,
+.title {
+    display: inline-block;
+    width: 100%;
     color: black;
-    display: grid;
-    align-content: center;
-    font-size: 0.8em;
-    margin: 0;
-    height: 1in;
-    width: 0.9in;
-    padding: 2px 0;
+    padding: 1mm;
 }
 
-.details {
-    display: grid;
-    grid-template-rows: auto;
-    overflow: hidden;
-    height: 100%;
+.container {
+    height: 25px;
 }
 
-.title, .sku {
-    font-size: 9px;
+.title {
+    font-size: 10px;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
     white-space: normal;
-    text-align: center;
     text-overflow: ellipsis;
-    padding-left: 0.5px;
-    padding-right: 0.5px;
 }
 
 .price {
-    font-size: 1.2em;
-    text-align: center;
+    font-size: 1.3em;
 }
 
-.loc {
-    white-space: normal; 
-    font-size: 75%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: center;
+.sku {
+    font-size: 10px;
+    height: 10px;
 }
