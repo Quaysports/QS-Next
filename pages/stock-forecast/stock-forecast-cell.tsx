@@ -10,11 +10,11 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
     let bandColour = cellFlags.band + (cellFlags.outOfStockGap ? "B3" :"")
     let background = stockLevel > 0 ? {background: bandColour } : {background: "transparent"}
 
-    let firstMonthBackground, restockBackground, oneMonthBackground, fourMonthBackground
+    let firstMonthBackground, restockBackground, oneMonthBackground, fourMonthBackground, historicOrderBackground
 
     if (cellFlags.date.getFullYear() === currentDate.getFullYear() && cellFlags.date.getMonth() === currentDate.getMonth()){
         firstMonthBackground = generateFirstMonthStyle(currentDate, stockLevel <= 0)
-        if(cellFlags.historicOrder) restockBackground = {background:`linear-gradient(to right, #005ce6 3px, transparent 3px)`}
+        if(cellFlags.historicOrder) historicOrderBackground = {background:`linear-gradient(to right, #000000 3px, transparent 3px)`}
     }
 
     if(stockLevel > 0) {
@@ -73,6 +73,7 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
         >
             {firstMonthBackground ? <div style={firstMonthBackground} className={styles["first-month"]}></div> : null}
             {restockBackground ? <div style={restockBackground} className={styles["on-order"]}></div> : null}
+            {historicOrderBackground ? <div style={historicOrderBackground} className={styles["on-order"]}></div> : null}
             {fourMonthBackground ? <div style={fourMonthBackground} className={styles["four-month"]}></div> : null}
             {oneMonthBackground ? <div style={oneMonthBackground} className={styles["one-month"]}></div> : null}
             {stockLevel > 0 ? <div className={styles["month-text"]}>{stockLevel}</div> : null}

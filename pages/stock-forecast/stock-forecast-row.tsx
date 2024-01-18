@@ -91,17 +91,19 @@ function ItemRow({item}: { item: StockForecastItem }) {
     let outOfStockGap = false
 
     let year = new Date().getFullYear()
-
+    
+    // handles historic orders i.e. overdue orders yet to arrive
     for(let order of item.onOrder){
-        const due = new Date(order.due)
-        if(due < currentDate) {
+        const orderDueDate = new Date(order.due)
+        const currentDate = new Date()
+        if(orderDueDate < currentDate && (orderDueDate.getFullYear() === year - 1 && orderDueDate.getMonth() > currentDate.getMonth() || orderDueDate.getFullYear() === year && orderDueDate.getMonth() < currentDate.getMonth())) {
             stock += order.quantity
             historicOrder = true
         }
     }
 
     for (let m = currentMonth; m < currentMonth + 24; m++) {
-        if(m % 12 === 0) year++
+        if(m % 12 === 0 && m !== 0) year++
         let band = m < currentMonth + 6
             ? "#BB1E10"
             : m < currentMonth + 9
@@ -122,19 +124,20 @@ function ItemRow({item}: { item: StockForecastItem }) {
             outOfStockGap: outOfStockGap
         }
 
+        // handles orders due to arrrive 
         for(let order of item.onOrder){
-            let date = new Date(order.due)
-            const isDueThisYear = date.getMonth() === m && date.getFullYear() === year
-            const isDueNextYear = date.getMonth() + 12 === m && date.getFullYear() === year
-            const isDueInTwoYears = date.getMonth() + 24 === m && date.getFullYear() === year
+            let orderDueDate = new Date(order.due)
+            const isDueThisYear = orderDueDate.getMonth() === m && orderDueDate.getFullYear() === year
+            const isDueNextYear = orderDueDate.getMonth() + 12 === m && orderDueDate.getFullYear() === year
+            const isDueInTwoYears = orderDueDate.getMonth() + 24 === m && orderDueDate.getFullYear() === year 
             if(isDueThisYear || isDueNextYear || isDueInTwoYears){
-                if(stock <= 0 || (stock - item.stockConsumption.historicConsumption[m]) <= 0) {
+                if(stock <= 0 || (stock - order.quantity) <= 0) {
                     outOfStockGap = true
                     cellFlags.outOfStockGap = true
                 }
                 stock += order.quantity
-                cellFlags.orders.push(date)
-            }
+                cellFlags.orders.push(orderDueDate)
+            } 
         }
 
         if(oneMonthOOSTriggered) cellFlags.oneMonthOOSTriggered = true
