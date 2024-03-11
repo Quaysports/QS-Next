@@ -144,12 +144,18 @@ export const bulkUpdateAny = async (collection: string, arr: mongoDB.Document[],
 //   }
 // }
 
+// new find function implementation to allow for extended properties filter in projection
 export const find = async <T>(collection: string, filter = {}, projection = {}, sort = {}, limit = 20000) => {
   const client = await connect();
   try {
       const db = client.db(process.env.DB_NAME);
-      const data = await db.collection(collection).find(filter).toArray() as T[];
-      
+      const cursor = db.collection(collection).find(filter).project(projection).limit(limit);
+
+      // Apply sorting
+      cursor.sort(sort);
+
+      const data = await cursor.toArray() as T[];
+
       // Filter and transform the documents based on the projection
       const transformedData = data.map((doc: any) => {
           // Check if the document has the extendedProperties field
@@ -170,7 +176,6 @@ export const find = async <T>(collection: string, filter = {}, projection = {}, 
       await client.close();
   }
 }
-
 
 export const findAggregate = async <T extends mongoDB.Document>(collection: string, aggregate: object[]) => {
   const client = await connect()
