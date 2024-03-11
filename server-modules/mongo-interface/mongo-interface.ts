@@ -131,18 +131,46 @@ export const bulkUpdateAny = async (collection: string, arr: mongoDB.Document[],
   return { status: `BulkUpdated ${updatedItems} items` };
 }
 
+// export const find = async <T>(collection: string, filter = {}, projection = {}, sort = {}, limit = 20000) => {
+//   const client = await connect()
+//   try {
+//     const db = client.db(process.env.DB_NAME);
+//     const data = await db.collection(collection).find(filter, {serializeFunctions:true}).project(projection).limit(limit).sort(sort).toArray() as T[]
+//     return convertBSONIDsToString<T[]>(data)
+//   } catch (e) {
+//     console.error(e)
+//   } finally {
+//     await client.close()
+//   }
+// }
+
 export const find = async <T>(collection: string, filter = {}, projection = {}, sort = {}, limit = 20000) => {
-  const client = await connect()
+  const client = await connect();
   try {
-    const db = client.db(process.env.DB_NAME);
-    const data = await db.collection(collection).find(filter, {serializeFunctions:true}).project(projection).limit(limit).sort(sort).toArray() as T[]
-    return convertBSONIDsToString<T[]>(data)
+      const db = client.db(process.env.DB_NAME);
+      const data = await db.collection(collection).find(filter).toArray() as T[];
+      
+      // Filter and transform the documents based on the projection
+      const transformedData = data.map((doc: any) => {
+          // Check if the document has the extendedProperties field
+          if (doc.extendedProperties) {
+              // Filter the extendedProperties array to include only elements with epName equal to "Special Price"
+              const specialPriceProps = doc.extendedProperties.filter((prop: any) => prop.epName === "Special Price");
+              // Assign the filtered array back to the extendedProperties field
+              doc.extendedProperties = specialPriceProps;
+          }
+          return doc;
+      });
+
+      return convertBSONIDsToString<T[]>(transformedData);
   } catch (e) {
-    console.error(e)
+      console.error(e);
+      throw e; // Re-throw the error to handle it elsewhere
   } finally {
-    await client.close()
+      await client.close();
   }
 }
+
 
 export const findAggregate = async <T extends mongoDB.Document>(collection: string, aggregate: object[]) => {
   const client = await connect()

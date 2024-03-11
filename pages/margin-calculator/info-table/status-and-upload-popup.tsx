@@ -54,6 +54,61 @@ function TableTitleRow() {
     </div>
 }
 
+// function TableRow({channel, item}: { channel: "ebay" | "amazon" | "magento" | "magentoSpecial", item: MarginItem}) {
+
+//     const dispatch = useDispatch()
+//     const marginOverrideKey = `${channel}Override` as "ebayOverride" | "amazonOverride" | "magentoOverride"
+
+//     let channelPrice 
+//     if (channel !== "magentoSpecial") {
+//         channelPrice = item.channelPrices[channel].price
+//     } else { // special price for Linnworks is checked via extendedProperties
+//         let specialPriceIndex = item.extendedProperties.findIndex(prop => prop.epName === "Special Price")
+//         if (specialPriceIndex !== -1) {
+//             channelPrice = +item.extendedProperties[specialPriceIndex].epValue * 100
+//         } else channelPrice = 0.00
+//     }
+//     let marginPrice = item.prices[channel]
+//     let status
+//     if (channel !== "magentoSpecial") {
+//         status = item.channelPrices[channel].status
+//     } 
+//     let flag = item.checkboxStatus.marginCalculator[marginOverrideKey]
+//     let difference = Number(channelPrice) - Number(marginPrice)
+//     function generateStatusText(status?: number) {
+//         switch (status) {
+//             case 3 || 5:
+//                 return "Confirmed"
+//             case 1 || 2:
+//                 return "Pending"
+//             case 99:
+//                 return "Error"
+//             default:
+//                 return ""
+//         }
+//     }
+
+//     let statusText = generateStatusText(status)
+
+//     if (!item) return null
+//     return <div className={styles.row}>
+//         <div>{channel !== "magentoSpecial" ? channel : "special"}</div>
+//         <div>{toCurrency(Number(channelPrice))}</div>
+//         <div>{toCurrency(Number(marginPrice))}</div>
+//         <div className={difference !== 0 ? styles["red-text"] : styles["green-text"]}>
+//             {toCurrency(difference)}
+//         </div>
+//         <div className={styles[statusText]}>{statusText}</div>
+//         <div>
+//             {channel !== "magentoSpecial" ? <input type={"checkbox"}
+//                 defaultChecked={flag}
+//                 onChange={async (e) => {
+//                     dispatch(updateMCOverrides({item: item, key: marginOverrideKey, value: e.target.checked}))
+//                 }}/> : null}
+//         </div>
+//         </div>
+// }
+
 function TableRow({channel, item}: { channel: "ebay" | "amazon" | "magento" | "magentoSpecial", item: MarginItem}) {
 
     const dispatch = useDispatch()
@@ -63,8 +118,8 @@ function TableRow({channel, item}: { channel: "ebay" | "amazon" | "magento" | "m
     if (channel !== "magentoSpecial") {
         channelPrice = item.channelPrices[channel].price
     } else { // special price for Linnworks is checked via extendedProperties
-        let specialPriceIndex = item.extendedProperties.findIndex(prop => prop.epName === "Special Price")
-        if (specialPriceIndex !== -1) {
+        let specialPriceIndex = item.extendedProperties?.findIndex(prop => prop.epName === "Special Price")
+        if (specialPriceIndex !== -1 && item.extendedProperties) {
             channelPrice = +item.extendedProperties[specialPriceIndex].epValue * 100
         } else channelPrice = 0.00
     }
