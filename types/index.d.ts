@@ -89,6 +89,7 @@ declare namespace schema {
         magento: number
         //used to be SHOPPRICEINCVAT
         shop: number
+        magentoSpecial: number
     }
 
     interface ShelfLocation {
@@ -510,6 +511,7 @@ export namespace till {
             ebay: number
             magento: number
             shop: number
+            magentoSpecial: number
         },
         discounts: {
             shop: number

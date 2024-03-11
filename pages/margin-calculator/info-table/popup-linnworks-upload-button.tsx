@@ -3,13 +3,13 @@ import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margin
 import {dispatchNotification} from "../../../components/notification/dispatch-notification";
 import {useDispatch} from "react-redux";
 
+// export default function LinnworksUploadButton({item, index}:{item:MarginItem, index:string}){
 export default function LinnworksUploadButton({item, index}:{item:MarginItem, index:string}){
 
     const dispatch = useDispatch()
     const updateItem = useUpdateItemAndCalculateMargins()
 
-    return <button onClick={()=>{
-
+    return <button onClick={async()=>{
         const opts = {
             method: 'POST',
             headers: {

@@ -109,7 +109,11 @@ export const newItemsSlice = createSlice({
         },
         resetSlice: (state) => {
             state.items = []
-        }
+        },
+        setNewItemSpecialPrice: (state, action: PayloadAction<{ index: number, specialPrice: number }>) => {
+            const {index, specialPrice} = action.payload
+            state.items[index].prices.magentoSpecial = +specialPrice.toFixed(2)
+        },
     },
 });
 
@@ -131,7 +135,8 @@ export const {
     copyItem,
     resetSlice,
     addNewBrandToList,
-    addNewSupplierToList
+    addNewSupplierToList,
+    setNewItemSpecialPrice
 } = newItemsSlice.actions
 
 export const selectSuppliers = (state: NewItemsWrapper) => state.newItems.suppliers

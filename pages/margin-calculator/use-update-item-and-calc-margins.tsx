@@ -18,12 +18,10 @@ const useUpdateItemAndCalculateMargins = ():(item:MarginItem, key?:keyof MarginI
 
         await fetch('/api/items/update-item', opt)
         let result = await fetch('/api/margin/update', opt)
-
         let marginUpdate = {
             ...itemClone,
             ...await result.json()
         }
-
         dispatch(updateMarginData(marginUpdate))
     }
 

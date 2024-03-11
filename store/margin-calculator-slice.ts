@@ -24,7 +24,8 @@ export type MarginItem = Pick<schema.Item,
     "channelData" |
     "discounts" |
     "mappedExtendedProperties" |
-    "tags"
+    "tags" | 
+    "extendedProperties"
 >
 
 export interface marginCalculatorWrapper {

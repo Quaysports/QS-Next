@@ -123,6 +123,13 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
         brand:1,
         discounts:1,
         mappedExtendedProperties:1,
+        extendedProperties: {
+            $filter: {
+                input: "$extendedProperties",
+                as: "ep",
+                cond: { $eq: ["$$ep.epName", "Special Price"] }
+            }
+        }
     }
 
     const items = await getItems(query, projection, {SKU: 1}) as MarginItem[]
