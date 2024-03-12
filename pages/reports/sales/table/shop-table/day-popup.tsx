@@ -68,7 +68,7 @@ function DiscountsTable({
   discounts: ShopDayTotal["discounts"];
 }) {
   let discountRows = [
-    <div>
+    <div key={0}>
       <div id={styles["title"]}>
         <h3>Discounts</h3>
       </div>
@@ -115,7 +115,7 @@ function ReturnsTable({
   returns: ShopDayTotal["returns"];
 }) {
   let returnsRows = [
-    <div>
+    <div key={0}>
       <div id={styles["title"]}>
         <h3>Returns</h3>
       </div>
