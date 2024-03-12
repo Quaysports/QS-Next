@@ -296,6 +296,7 @@ interface ShopDayQueryResult {
     returns: {
         reason: string;
         user: string;
+        total: number
         transaction: {
             type: string;
             amount: number;
@@ -401,7 +402,7 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                       '$map': {
                         'input': '$returns',
                         'as': 'returnItem',
-                        'in': '$$returnItem.transaction.amount'
+                        'in': '$$returnItem.total'
                         }
                     }
                 },
@@ -413,7 +414,7 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                             'in': {
                                 '$cond': [
                                     { '$eq': ['$$returnItem.transaction.type', 'CASH'] },
-                                    '$$returnItem.transaction.amount',
+                                    '$$returnItem.total',
                                     0
                                 ]
                             }
@@ -435,7 +436,7 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                                             { '$ne': ['$$returnItem.transaction.type', null] }
                                         ]
                                     },
-                                    '$$returnItem.transaction.amount',
+                                    '$$returnItem.total',
                                     0
                                 ]
                             }
@@ -511,7 +512,12 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                 day.discounts.push(discount)
             }
         }
-        day.returnsTotal += order.returnsTotal
+        for (let itemReturn of order.returns) {
+            if (itemReturn.transaction.type !== "Canceled") {
+                day.returnsTotal += itemReturn.total
+                day.totalProfitWithLoss -= itemReturn.total
+            }
+        }
         day.cashReturns += order.cashReturns
         day.cardReturns += order.cardReturns
         if (order.returns.length > 0) {
@@ -522,7 +528,7 @@ export async function getShopMonthDayByDayDataForYear(year: number, month: numbe
                             id: order.id,
                             itemSku: item.items.map(item => `${item.SKU}`),
                             user: item.user,
-                            transactionTotal: item.transaction.amount | 0,
+                            transactionTotal: item.transaction.type === "Canceled" ? 0 : item.total,
                             returnReason: item.reason,
                             transactionType: item.transaction.type !== "CASH" ? "Card" : "Cash",
                             returnQuantity: item.items.reduce((acc, item) => acc + item.quantity, 0)
