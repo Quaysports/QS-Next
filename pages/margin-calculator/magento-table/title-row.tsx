@@ -13,8 +13,9 @@ export default function TitleRow(){
     const dispatch = useDispatch()
 
     return <div className={`${styles.title} ${styles.row} ${domestic ? styles["magento-grid-discount"] : styles["magento-grid"]}`}>
-        {domestic ? <div>Reset</div> : null}
+        {domestic ? <div>Reset to RRP</div> : null}
         <div>Price</div>
+        {domestic ? <div>Update Special</div> : null}
         {domestic ? <div>Discount %</div> : null}
         {domestic ? <div>Discount</div> : null}
         {domestic ? <div>Special Price</div> : null}

@@ -10,12 +10,15 @@ import {selectMarginSettings} from "../../../store/session-slice";
 import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margins";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { roundToNearest } from "../../../components/utils/utils";
 
 
 export default function MagentoTable() {
 
     const [resetPrices, setResetPrices] = useState(false)
     const [numberOfPricesToReset, setNumberOfPricesToReset] = useState(0)
+    const [updateSpecialPrices, setUpdateSpecialPrices] = useState(false)
+    const [numberOfSpecialPricesToUpdate, setNumberOfSpecialPricesToUpdate] = useState(0)
     const items = useSelector(selectRenderedItems)
     const itemsForCSV = useSelector(selectSearchData)
     const settings = useSelector(selectMarginSettings)
@@ -33,6 +36,16 @@ export default function MagentoTable() {
         setNumberOfPricesToReset(pricesToReset)
     },[items])
 
+    useEffect(() => {
+        let specialPricesToUpdate = 0
+        for (let item of items) {
+            if ((item.prices.magentoSpecial) !== roundToNearest(item.prices.retail * (1 - (item.discounts.magento / 100)))) {
+                specialPricesToUpdate++
+            }
+        }
+        setNumberOfSpecialPricesToUpdate(specialPricesToUpdate)
+    }, [items])
+
     const handleMagentoPricesReset = async () => {
         setResetPrices(true)
         for (let item of items) {
@@ -45,6 +58,19 @@ export default function MagentoTable() {
             }
         }
         setResetPrices(false)
+    }
+
+    const handleMagentoSpecialPricesUpdates = async () => {
+        setUpdateSpecialPrices(true)
+        for (let item of items) {
+            if ((item.prices.magentoSpecial) !== roundToNearest(item.prices.retail * (1 - (item.discounts.magento / 100)))) {
+                await updateItem(item, "discounts", {
+                    ...item.discounts,
+                    magento: Math.round(Number(item.discounts.magento.toString())),
+                  });
+            }
+        }
+        setUpdateSpecialPrices(false)
     }
 
     function CSVData(){
@@ -77,6 +103,10 @@ export default function MagentoTable() {
                     disabled={resetPrices || numberOfPricesToReset <= 0}
                     onClick={handleMagentoPricesReset}
                 >{!resetPrices ? "Reset Prices to RRP" : "Resetting Prices"}</button> : null}
+                {domestic ? <button
+                    disabled={updateSpecialPrices || numberOfSpecialPricesToUpdate <= 0}
+                    onClick={handleMagentoSpecialPricesUpdates}
+                >{!updateSpecialPrices ? "Update Special Prices" : "Updating Special Prices"}</button> : null}
                 </div>
             </div>,
             <TitleRow key={"title-row"}/>
