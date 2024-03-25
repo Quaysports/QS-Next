@@ -1,6 +1,6 @@
 import styles from "../margin-calculator.module.css";
-import {useSelector} from "react-redux";
-import {selectRenderedItems, selectSearchData} from "../../../store/margin-calculator-slice";
+import {useDispatch, useSelector} from "react-redux";
+import {selectRenderedItems, selectSearchData, updateUploadedIndexes} from "../../../store/margin-calculator-slice";
 import TitleRow from "./title-row";
 import ItemRow from "./item-row";
 import TitleLink from "../title-link";
@@ -11,6 +11,7 @@ import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margin
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { roundToNearest } from "../../../components/utils/utils";
+import { dispatchNotification } from "../../../components/notification/dispatch-notification";
 
 
 export default function MagentoTable() {
@@ -25,6 +26,7 @@ export default function MagentoTable() {
     const router = useRouter();
     const domestic = router.query.domestic === "true";
     const updateItem = useUpdateItemAndCalculateMargins();
+    const dispatch = useDispatch()
 
     useEffect(() => {
         let pricesToReset = 0
@@ -73,6 +75,26 @@ export default function MagentoTable() {
         setUpdateSpecialPrices(false)
     }
 
+    const handleUploadAllItemsToLinnworks = async () => {
+        for (let index in items) {
+            const item = items[index]
+            const opts = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({items:[item]})
+            }
+    
+            fetch("/api/linnworks/update-channel-prices", opts).then(async()=>{
+                dispatchNotification({type: "loading", title: "Uploading prices to Linnworks"})
+                await updateItem(item)
+                dispatch(updateUploadedIndexes(index))
+                dispatchNotification()
+            })
+        }
+    }
+
     function CSVData(){
         return itemsForCSV.reduce((arr:any[], item)=>{
             arr.push({
@@ -107,6 +129,10 @@ export default function MagentoTable() {
                     disabled={updateSpecialPrices || numberOfSpecialPricesToUpdate <= 0}
                     onClick={handleMagentoSpecialPricesUpdates}
                 >{!updateSpecialPrices ? "Update Special Prices" : "Updating Special Prices"}</button> : null}
+                <button
+                onClick={handleUploadAllItemsToLinnworks} >
+                    Upload all to Linnworks
+                </button>
                 </div>
             </div>,
             <TitleRow key={"title-row"}/>
@@ -115,7 +141,7 @@ export default function MagentoTable() {
         for (let index in items) elements.push(<ItemRow key={items[index].SKU}
                                                         item={items[index]}
                                                         index={index}/>)
-
+        
         return elements
     }
 

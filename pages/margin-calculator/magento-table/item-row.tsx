@@ -91,13 +91,6 @@ export default function ItemRow({
     });
   }
 
-  async function updateSpecialPrice(value: string) {
-    await updateItem(item, "mappedExtendedProperties", {
-      ...item.mappedExtendedProperties,
-      specialPrice: value.toString(),
-    });
-  }
-
   if (!item) return null;
 
   return (
