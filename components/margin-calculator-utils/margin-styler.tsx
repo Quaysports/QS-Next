@@ -14,6 +14,11 @@ export function inputStatusColour(item: MarginItem, channel: "amazon" | "ebay" |
 
     if (!channelPrices.price || channelPrices.price !== item.prices[channel]) return "price-mismatch"
 
+    let index = -1
+    if (item.extendedProperties) index = item.extendedProperties.findIndex(prop => prop.epName === "Special Price")
+    if(!item.prices.magentoSpecial || (+item.extendedProperties[index].epValue * 100).toFixed(0) !== item.prices.magentoSpecial.toString()) return "price-mismatch"
+    console.log("(+item.extendedProperties[index].epValue * 100).toFixed(0)", (+item.extendedProperties[index].epValue * 100).toFixed(0))
+
     if (channelPrices.status === 99) {
         return "listing-error"
     }
