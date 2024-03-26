@@ -23,7 +23,7 @@ export default function StatusAndUploadPopup({item, index}: { item: MarginItem, 
         }
         let specialPriceIndex = -1
         if (item.extendedProperties) specialPriceIndex = item.extendedProperties.findIndex(prop => prop.epName === "Special Price")
-        if(!item.prices.magentoSpecial || (+item.extendedProperties[specialPriceIndex].epValue * 100).toFixed(0) !== item.prices.magentoSpecial.toString()) mismatch = true
+        if(!item.prices.magentoSpecial || specialPriceIndex !== -1 && (+item.extendedProperties[specialPriceIndex].epValue * 100).toFixed(0) !== item.prices.magentoSpecial.toString()) mismatch = true
         return mismatch ? styles["upload-button-mismatch"] : styles["upload-button"]
     }
 
