@@ -87,6 +87,13 @@ export const holidaysSlice = createSlice({
             const shopBooked = action.payload[0].booked;
             const onlineBooked = action.payload[1].booked;
 
+            // Populate Info Panel Booked Days data for 'Both'
+            const onlineDays = calculateBookedDays(action.payload[0])
+            const shopDays = calculateBookedDays(action.payload[1])
+            state.bookedDays = mergeBookedDays(onlineDays, shopDays, 'bookedDays');
+            state.paidSickDays = mergeBookedDays(onlineDays, shopDays, 'paidSickDays');
+            state.unpaidSickDays = mergeBookedDays(onlineDays, shopDays, 'unpaidSickDays')
+
             const mergedTemplate = shopTemplates.map((shopMonth: schema.HolidayMonth, index: number) => ({
                 ...shopMonth,
                 days: shopMonth.days.map((shopDay, dayIndex) => ({
@@ -144,6 +151,7 @@ export const holidaysSlice = createSlice({
         setHolidayUsers: (state, action: PayloadAction<User[]>) => {
             state.users.shop = action.payload.filter(user => user.rota === "shop")
             state.users.online = action.payload.filter(user => user.rota === "online")
+            // state.users.both = [...state.users.shop, ...state.users.online]
             for (const [_, v] of Object.entries(action.payload)) {
                 state.colors[v.username] = v.colour ? v.colour : '#ffffff'
             }
@@ -239,6 +247,18 @@ function calculateBookedDays(calendar: schema.HolidayCalendar) {
         }
     }
     return totals
+}
+
+function mergeBookedDays(onlineDays: any, shopDays: any, dayType: keyof typeof onlineDays) {
+    let mergedDays = { ...onlineDays[dayType] };
+    for (let key of Object.keys(shopDays[dayType])) {
+        if (mergedDays[key]) {
+            mergedDays[key] += shopDays[dayType][key];
+        } else {
+            mergedDays[key] = shopDays[dayType][key];
+        }
+    }
+    return mergedDays;
 }
 
 export const {
