@@ -21,7 +21,7 @@ export default function EssentialsRibbon(){
     function tagHandler(tags:string[]){
         dispatch(setItemTags(tags))
     }
-
+    const quaySportsPrice = item.prices.magentoSpecial && item.prices.magentoSpecial !== 0 ? toCurrency(item.prices.magentoSpecial) : toCurrency(item.prices.magento)
     return(
         <div className={styles["item-details-essentials"]}>
             <div className={styles["essentials-titles-1"]}>
@@ -58,7 +58,7 @@ export default function EssentialsRibbon(){
                 <div/>
                 <div>{toCurrency(item.prices.ebay)}</div>
                 <div>{toCurrency(item.prices.amazon)}</div>
-                <div>{toCurrency(item.prices.magento)}</div>
+                <div>{quaySportsPrice}</div>
                 <div>{toCurrency(item.prices.shop)}</div>
                 <div/>
                 <div className={`${styles["tags-button"]} button`} onClick={() => {
