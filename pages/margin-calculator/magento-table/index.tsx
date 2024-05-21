@@ -121,18 +121,18 @@ export default function MagentoTable() {
                     <CSVButton fileName={`Magento CSV - ${Date.now()}`}
                                objectArray={CSVData()}
                                label={"CSV"}/>
-                    {domestic ? <button
+                    {domestic && <button
                     disabled={resetPrices || numberOfPricesToReset <= 0}
                     onClick={handleMagentoPricesReset}
-                >{!resetPrices ? "Reset Prices to RRP" : "Resetting Prices"}</button> : null}
-                {domestic ? <button
+                >{!resetPrices ? "Reset Prices to RRP" : "Resetting Prices"}</button>}
+                {domestic && <button
                     disabled={updateSpecialPrices || numberOfSpecialPricesToUpdate <= 0}
                     onClick={handleMagentoSpecialPricesUpdates}
-                >{!updateSpecialPrices ? "Update Special Prices" : "Updating Special Prices"}</button> : null}
-                <button
+                >{!updateSpecialPrices ? "Update Special Prices" : "Updating Special Prices"}</button> }
+                {domestic && <button
                 onClick={handleUploadAllItemsToLinnworks} >
                     Upload all to Linnworks
-                </button>
+                </button>}
                 </div>
             </div>,
             <TitleRow key={"title-row"}/>
