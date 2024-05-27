@@ -5,6 +5,16 @@ import {jariloHtml} from "../../components/jarilo-template";
 import {findOne, setData} from "../mongo-interface/mongo-interface";
 import {linn, schema} from "../../types";
 
+function fixedEncodeURIComponent(str: string | number) {
+    return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+        return '%' + c.charCodeAt(0).toString(16);
+    })
+}
+
+function formatAndEncodeDescription(desc: string) {
+    return encodeURIComponent(desc.replace(/"/g, "'"))
+}
+
 export const getLinnChannelPrices = async (id: string) => {
     return await postReq(
         '/api/Inventory/GetInventoryItemPrices',
@@ -128,16 +138,36 @@ export const bulkGetImages = async (skus: string[]) => {
     ) as linn.BulkGetImagesResult
 }
 
-function fixedEncodeURIComponent(str: string | number) {
-    return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-        return '%' + c.charCodeAt(0).toString(16);
-    })
-}
-
 export const bulkUpdateLinnItem = async (item: schema.Item) => {
 
-    function formatAndEncodeDescription(desc: string) {
-        return encodeURIComponent(desc.replace(/"/g, "'"))
+    function createListingDescriptionOrTitle(type: "Description" | "Title", source: string, subSource: string) {
+        const baseObject = {
+            "pkRowId": guid(),
+            "Source": source,
+            "SubSource": subSource,
+            "StockItemId": item.linnId
+        }
+    
+        if (type === "Description") {
+            if (source === "EBAY") {
+                return {
+                    ...baseObject,
+                    "Description": formatAndEncodeDescription(jariloHtml(item.SKU, item.webTitle, item.description))
+                }
+            } else {
+                return {
+                    ...baseObject,
+                    "Description": formatAndEncodeDescription(item.description)
+                }
+            }
+        } else if (type === "Title") {
+            return {
+                ...baseObject,
+                "Title": fixedEncodeURIComponent(item.webTitle)
+            }
+        }
+    
+        throw new Error(`unsupported type: ${type}`)
     }
 
     let results = {
@@ -265,54 +295,20 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
         }
     }
 
-    let amazonTitle = {
-        "pkRowId": guid(),
-        "Source": "AMAZON",
-        "SubSource": "Silver Bullet Trading Ltd",
-        "Title": fixedEncodeURIComponent(item.webTitle),
-        "StockItemId": item.linnId
-    }
-    let websiteTitle = {
-        "pkRowId": guid(),
-        "Source": "MAGENTO",
-        "SubSource": fixedEncodeURIComponent('http://quaysports.com'),
-        "Title": fixedEncodeURIComponent(item.webTitle),
-        "StockItemId": item.linnId
-    }
-    let ebayTitle = {
-        "pkRowId": guid(),
-        "Source": "EBAY",
-        "SubSource": "EBAY1",
-        "Title": fixedEncodeURIComponent(item.webTitle),
-        "StockItemId": item.linnId
-    }
-    let websitesTitleString = 'inventoryItemTitles=' + JSON.stringify([amazonTitle, websiteTitle, ebayTitle]);
+    const platforms = [
+        { Source: "Amazon", SubSource: "Silver Bullet Trading Ltd" },
+        { Source: "MAGENTO", SubSource: fixedEncodeURIComponent('http://quaysports.com') },
+        { Source: "EBAY", SubSource: "EBAY1" },
+        { Source: "OnBuy v2", SubSource: "onbuy" }
+    ]
+
+    let titlesByChannel = platforms.map(platform => createListingDescriptionOrTitle("Title", platform.Source, platform.SubSource))
+    let websitesTitleString = 'inventoryItemTitles=' + JSON.stringify(titlesByChannel);
     let webTitleRes = await updateLinnItem('//api/Inventory/UpdateInventoryItemTitles', websitesTitleString) as { code: number }
     results['Web Title'] = webTitleRes.code
 
-
-    let amazonDesc = {
-        "pkRowId": guid(),
-        "Source": "AMAZON",
-        "SubSource": "Silver Bullet Trading Ltd",
-        "Description": formatAndEncodeDescription(item.description),
-        "StockItemId": item.linnId
-    }
-    let websiteDesc = {
-        "pkRowId": guid(),
-        "Source": "MAGENTO",
-        "SubSource": fixedEncodeURIComponent('http://quaysports.com'),
-        "Description": formatAndEncodeDescription(item.description),
-        "StockItemId": item.linnId
-    }
-    let ebayDesc = {
-        "pkRowId": guid(),
-        "Source": "EBAY",
-        "SubSource": "EBAY1",
-        "Description": formatAndEncodeDescription(jariloHtml(item.SKU, item.webTitle, item.description)),
-        "StockItemId": item.linnId
-    }
-    let descString = 'inventoryItemDescriptions=' + JSON.stringify([amazonDesc, websiteDesc, ebayDesc]);
+    let descriptionsByChannel = platforms.map(platform => createListingDescriptionOrTitle("Description", platform.Source, platform.SubSource))
+    let descString = 'inventoryItemDescriptions=' + JSON.stringify(descriptionsByChannel);
     let descriptionResult = await updateLinnItem('//api/Inventory/UpdateInventoryItemDescriptions', descString) as { code: number }
     results['Long Description'] = descriptionResult.code
 
