@@ -22,6 +22,10 @@ export default function itemTemplate(): schema.Item {
                 channelReference: "", channelSKU: "", id: "", price: 0,
                 status: 0, subSource: "", updateRequired: false, updated: ""
             },
+            "onbuy v2": {
+                channelReference: "", channelSKU: "", id: "", price: 0,
+                status: 0, subSource: "", updateRequired: false, updated: ""
+            },
             shop: {
                 price: 0, status: 0
             }
@@ -104,6 +108,7 @@ export default function itemTemplate(): schema.Item {
             amazon: {fees: 0, primePostage: 0, primeProfit: 0, profit: 0, profitLastYear: 0, salesVAT: 0},
             ebay: {fees: 0, profit: 0, profitLastYear: 0, salesVAT: 0},
             magento: {fees: 0, profit: 0, profitLastYear: 0, salesVAT: 0},
+            "onbuy v2": {fees: 0, profit: 0, profitLastYear: 0, salesVAT: 0},
             packaging: 0,
             postage: 0,
             shop: {fees: 0, profit: 0, profitLastYear: 0, salesVAT: 0},
@@ -114,7 +119,7 @@ export default function itemTemplate(): schema.Item {
         onOrder: [],
         packaging: {editable: false, group: "", items: [], lock: false},
         postage: {id: "", modifier: "", price: 0},
-        prices: {amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0, shop: 0, magentoSpecial: 0},
+        prices: {amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0, shop: 0, magentoSpecial: 0, "onbuy v2": 0},
         shelfLocation: {letter: "", number: "", prefix: ""},
         shortDescription: "",
         stock: {default: 0, minimum: 0, total: 0, value: 0, warehouse: 0, tradePack: null},

@@ -11,7 +11,8 @@ export default function CopyFromShopButton({item}: { item: MarginItem }) {
             ...item.prices,
             ebay: item.prices.shop,
             amazon: item.prices.shop,
-            magento: item.prices.shop
+            magento: item.prices.shop,
+            onbuy: item.prices.shop
         }
         await updateItem(item, "prices", update)
         dispatchNotification()

@@ -449,7 +449,6 @@ const bulkUploadFormat = (item: schema.Item) => ({
 
 function updateItemFormat(item: schema.Item) {
     const tags = item.tags.reduce((string, tag) => string === "" ? tag : `${string}, ${tag}`, "")
-    console.log("tags:", tags)
     const formattedItemProperties = [
         {
             fkStockItemId: item.linnId,

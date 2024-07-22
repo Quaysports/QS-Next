@@ -88,8 +88,9 @@ declare namespace schema {
         //used to be QSPRICEINCVAT
         magento: number
         //used to be SHOPPRICEINCVAT
-        shop: number
         magentoSpecial: number
+        "onbuy v2": number
+        shop: number
     }
 
     interface ShelfLocation {
@@ -107,6 +108,7 @@ declare namespace schema {
         amazon: LinnChannelPriceData
         ebay: LinnChannelPriceData
         magento: LinnChannelPriceData
+        "onbuy v2": LinnChannelPriceData
         shop: BaseChannelPriceData
     }
 
@@ -163,6 +165,7 @@ declare namespace schema {
         ebay: ChannelMarginData
         magento: ChannelMarginData
         shop: ChannelMarginData
+        "onbuy v2": ChannelMarginData
         packaging: number
         postage: number
         totalProfitLastYear: number
@@ -511,7 +514,8 @@ export namespace till {
             ebay: number
             magento: number
             shop: number
-            magentoSpecial: number
+            magentoSpecial: number,
+            onbuy: number
         },
         discounts: {
             shop: number

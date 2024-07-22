@@ -17,9 +17,9 @@ export default function StatusAndUploadPopup({item, index}: { item: MarginItem, 
     function checkPriceMismatch() {
         if(uploadedIndexes.includes(index)) return styles["upload-button-uploaded"]
         let mismatch = false
-        let channels = ["ebay", "amazon", "magento"] as const
+        let channels = ["ebay", "amazon", "magento", "onbuy v2"] as const
         for (let channel of channels) {
-            if (item.prices[channel] !== item.channelPrices[channel].price) mismatch = true
+            if (item?.prices[channel] !== item.channelPrices[channel]?.price) mismatch = true
         }
         let specialPriceIndex = -1
         if (item.extendedProperties) specialPriceIndex = item.extendedProperties.findIndex(prop => prop.epName === "Special Price")
