@@ -131,7 +131,7 @@ function ItemRow({item}: { item: StockForecastItem }) {
             const isDueNextYear = orderDueDate.getMonth() + 12 === m && orderDueDate.getFullYear() === year
             const isDueInTwoYears = orderDueDate.getMonth() + 24 === m && orderDueDate.getFullYear() === year 
             if(isDueThisYear || isDueNextYear || isDueInTwoYears){
-                if(stock <= 0 || (stock - order.quantity) <= 0) {
+                if(stock <= 0) {
                     outOfStockGap = true
                     cellFlags.outOfStockGap = true
                 }

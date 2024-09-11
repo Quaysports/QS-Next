@@ -14,28 +14,28 @@ export default function StockForecastCell({item, cellFlags, stockLevel}:{item:St
 
     if (cellFlags.date.getFullYear() === currentDate.getFullYear() && cellFlags.date.getMonth() === currentDate.getMonth()){
         firstMonthBackground = generateFirstMonthStyle(currentDate, stockLevel <= 0)
-        if(cellFlags.historicOrder) historicOrderBackground = {background:`linear-gradient(to right, #000000 3px, transparent 3px)`}
+        if(cellFlags.historicOrder) historicOrderBackground = {background:`linear-gradient(to right, #ffffff 3px, transparent 3px)`}
     }
 
-    if(stockLevel > 0) {
-        if (cellFlags.historicOOSDate) {
-            background = generateTransitionStyle(bandColour, cellFlags.historicOOSDate)
-        }
-    }
+    // if(stockLevel > 0) {
+    //     if (cellFlags.historicOOSDate) {
+    //         background = generateTransitionStyle(bandColour, cellFlags.historicOOSDate)
+    //     }
+    // }
 
-    if (cellFlags.oneMonthOOSDate) {
-        oneMonthBackground = generateTransitionStyle("#00bfff", cellFlags.oneMonthOOSDate, true)
-    }
-    if (cellFlags.fourMonthOOSDate) {
-        fourMonthBackground = generateTransitionStyle("#0099cc", cellFlags.fourMonthOOSDate, true)
-    }
+    // if (cellFlags.oneMonthOOSDate) {
+    //     oneMonthBackground = generateTransitionStyle("#00bfff", cellFlags.oneMonthOOSDate, true)
+    // }
+    // if (cellFlags.fourMonthOOSDate) {
+    //     fourMonthBackground = generateTransitionStyle("#0099cc", cellFlags.fourMonthOOSDate, true)
+    // }
 
-    if(cellFlags.oneMonthOOSTriggered){
-        oneMonthBackground = {background:"#00bfff"}
-    }
-    if(cellFlags.fourMonthOOSTriggered){
-        fourMonthBackground = {background:"#0099cc"}
-    }
+    // if(cellFlags.oneMonthOOSTriggered){
+    //     oneMonthBackground = {background:"#00bfff"}
+    // }
+    // if(cellFlags.fourMonthOOSTriggered){
+    //     fourMonthBackground = {background:"#0099cc"}
+    // }
 
     for(let order of cellFlags.orders){
         if(cellFlags.date.getMonth === order.getMonth && cellFlags.date.getFullYear === order.getFullYear){

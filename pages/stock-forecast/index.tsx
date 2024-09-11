@@ -89,8 +89,6 @@ export const getServerSideProps = appWrapper.getServerSideProps(
             suppliers ? store.dispatch(setSuppliers(suppliers)) : store.dispatch(setSuppliers([]))
 
             if(items){
-                // console.log("onOrder", items[0].onOrder[0].confirmed)
-                // items[0].onOrder.forEach(item => console.log(item))
                 store.dispatch(setItems(items))
             }
 
