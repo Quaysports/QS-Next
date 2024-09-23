@@ -12,7 +12,7 @@ export default function PricesTable({item, handler}: UpdateHandler) {
             <div>Ebay</div>
             <div>Amazon</div>
             <div>Quaysports</div>
-            <div>Shop</div>
+            <div>Onbuy</div>
         </div>
         <div className={styles["prices-row"]}>
             <div className={styles["input-pound"]}>
@@ -28,7 +28,7 @@ export default function PricesTable({item, handler}: UpdateHandler) {
                 <input type={"number"}
                        step={0.01}
                        min={0}
-                       defaultValue={item.prices.ebay}
+                       defaultValue={item.prices.ebay / 100}
                        onBlur={(e) => {
                            const update = {...item.prices, ebay: currencyToLong(e.target.value)}
                            handler("prices", update)
@@ -39,7 +39,7 @@ export default function PricesTable({item, handler}: UpdateHandler) {
                 <input type={"number"}
                        step={0.01}
                        min={0}
-                       defaultValue={item.prices.amazon}
+                       defaultValue={item.prices.amazon / 100}
                        onBlur={(e) => {
                            const update = {...item.prices, amazon: currencyToLong(e.target.value)}
                            handler("prices", update)
@@ -50,7 +50,7 @@ export default function PricesTable({item, handler}: UpdateHandler) {
                 <input type={"number"}
                        step={0.01}
                        min={0}
-                       defaultValue={item.prices.magento}
+                       defaultValue={item.prices.magento / 100}
                        onBlur={(e) => {
                            const update = {...item.prices, magento: currencyToLong(e.target.value)}
                            handler("prices", update)
@@ -61,9 +61,9 @@ export default function PricesTable({item, handler}: UpdateHandler) {
                 <input type={"number"}
                        step={0.01}
                        min={0}
-                       defaultValue={item.prices.retail}
+                       defaultValue={item.prices["onbuy v2"] / 100}
                        onBlur={(e) => {
-                           const update = {...item.prices, retail: currencyToLong(e.target.value)}
+                           const update = {...item.prices, "onbuy v2": currencyToLong(e.target.value)}
                            handler("prices", update)
                        }}/>
             </div>

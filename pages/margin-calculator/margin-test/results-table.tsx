@@ -28,7 +28,7 @@ function TitleRow(){
 
 interface ItemRowProps{
     item:MarginTestTemplate
-    channel: "amazon" | "ebay" | "magento" | "shop" | "onbuy v2"
+    channel: "amazon" | "ebay" | "magento" | "onbuy v2"
 }
 function ItemRow({item, channel}:ItemRowProps){
 
@@ -58,6 +58,6 @@ function ItemRow({item, channel}:ItemRowProps){
     </div>
 }
 
-function selectProfitAndPrice(item:MarginTestTemplate, channel:"amazon" | "ebay" | "magento" | "shop" | "onbuy v2"):{price:number, profit?:number}{
+function selectProfitAndPrice(item:MarginTestTemplate, channel:"amazon" | "ebay" | "magento" | "onbuy v2"):{price:number, profit?:number}{
     return {price:item.prices[channel], profit:item.marginData[channel].profit}
 }
