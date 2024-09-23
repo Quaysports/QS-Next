@@ -2,7 +2,7 @@ import {MarginItem} from "../../../store/margin-calculator-slice";
 import {useEffect, useState} from "react";
 import styles from "../margin-calculator.module.css";
 import {generateMarginText, textColourStyler} from "../../../components/margin-calculator-utils/margin-styler";
-export function PrimeMarginCell({item}:{item:MarginItem}){
+function PrimeMarginCell({item}:{item:MarginItem}){
 
   if(!item) return null
 
@@ -15,3 +15,5 @@ export function PrimeMarginCell({item}:{item:MarginItem}){
       : ""
   }</span>
 }
+
+export default PrimeMarginCell

@@ -7,7 +7,7 @@ import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margin
 import styles from "../margin-calculator.module.css";
 import { inputStatusColour } from "../../../components/margin-calculator-utils/margin-styler";
 import MarginTestResults from "./margin-test-results";
-import { PrimeMarginCell } from "./prime-margin-cell";
+import PrimeMarginCell  from "./prime-margin-cell";
 import MarginCell from "../../../components/margin-calculator/margin-cell";
 import { useSelector } from "react-redux";
 import {
