@@ -13,7 +13,7 @@ export default function ResultsTable({item}:{item:MarginTestTemplate}){
         <ItemRow item={item} channel={"ebay"} />
         <ItemRow item={item} channel={"amazon"} />
         <ItemRow item={item} channel={"magento"} />
-        <ItemRow item={item} channel={"shop"} />
+        <ItemRow item={item} channel={"onbuy v2"} />
     </div>
 }
 
@@ -28,7 +28,7 @@ function TitleRow(){
 
 interface ItemRowProps{
     item:MarginTestTemplate
-    channel: "amazon" | "ebay" | "magento" | "shop"
+    channel: "amazon" | "ebay" | "magento" | "shop" | "onbuy v2"
 }
 function ItemRow({item, channel}:ItemRowProps){
 
@@ -58,6 +58,6 @@ function ItemRow({item, channel}:ItemRowProps){
     </div>
 }
 
-function selectProfitAndPrice(item:MarginTestTemplate, channel:"amazon" | "ebay" | "magento" | "shop"):{price:number, profit?:number}{
+function selectProfitAndPrice(item:MarginTestTemplate, channel:"amazon" | "ebay" | "magento" | "shop" | "onbuy v2"):{price:number, profit?:number}{
     return {price:item.prices[channel], profit:item.marginData[channel].profit}
 }
