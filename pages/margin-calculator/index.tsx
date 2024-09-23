@@ -7,8 +7,8 @@ import CostsTable from "./costs-table";
 import EbayTable from "./ebay-table";
 import AmazonTable from "./amazon-table";
 import MagentoTable from "./magento-table";
-import ShopTable from "./shop-table";
 import MiscTable from "./misc-table";
+import OnBuyTable from "./onbuy-table";
 import {appWrapper} from "../../store/store";
 import {getBrands, getItems, getStockValues} from "../../server-modules/items/items";
 import * as Fees from "../../server-modules/fees/fees"
@@ -63,7 +63,7 @@ export default function marginCalculatorLandingPage({loaded = false}) {
                             <EbayTable/>
                             <AmazonTable/>
                             <MagentoTable/>
-                            <ShopTable/>
+                            <OnBuyTable/>
                             <MiscTable/>
                         </div>
                     </InfiniteScroll>
@@ -123,6 +123,7 @@ export const getServerSideProps = appWrapper.getServerSideProps(store => async (
         brand:1,
         discounts:1,
         mappedExtendedProperties:1,
+        // extendedProperties: 1
         extendedProperties: {
             $filter: {
                 input: "$extendedProperties",

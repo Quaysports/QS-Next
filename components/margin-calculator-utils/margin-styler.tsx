@@ -5,7 +5,7 @@ export function textColourStyler(value: number | undefined): string {
     return value > 0 ? "green-text" : value < 0 ? "red-text" : "gray-text"
 }
 
-export function inputStatusColour(item: MarginItem, channel: "amazon" | "ebay" | "magento" | "shop",): string {
+export function inputStatusColour(item: MarginItem, channel: "amazon" | "ebay" | "magento" | "shop" | "onbuy v2",): string {
     let channelPrices = item.channelPrices[channel]
 
     let flag = item.checkboxStatus.marginCalculator[`${channel}Override` as keyof MarginItem["checkboxStatus"]["marginCalculator"]]

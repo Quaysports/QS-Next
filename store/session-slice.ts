@@ -41,6 +41,7 @@ const initialState: sessionState = {
                     MagentoTable: true,
                     ShopTable: true,
                     MiscTable: true,
+                    OnBuyTable: true
                 },
                 displayTitles: false,
                 displayRetail: true,

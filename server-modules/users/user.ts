@@ -81,6 +81,7 @@ export interface MarginCalcTables{
     MagentoTable: boolean
     ShopTable: boolean
     MiscTable: boolean
+    OnBuyTable: boolean
 }
 
 export interface DashboardSettings {

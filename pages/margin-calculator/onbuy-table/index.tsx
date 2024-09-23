@@ -1,52 +1,58 @@
 import styles from "../margin-calculator.module.css";
 import {useSelector} from "react-redux";
 import {selectRenderedItems, selectSearchData} from "../../../store/margin-calculator-slice";
+import {useState} from "react";
 import ItemRow from "./item-row";
 import TitleRow from "./title-row";
 import TitleLink from "../title-link";
-import {generateMarginText} from "../../../components/margin-calculator-utils/margin-styler";
 import CSVButton from "../../../components/csv-button";
+import {generateMarginText} from "../../../components/margin-calculator-utils/margin-styler";
 import {selectMarginSettings} from "../../../store/session-slice";
 
-export default function ShopTable() {
+export default function OnBuyTable() {
 
     const items = useSelector(selectRenderedItems)
     const itemsForCSV = useSelector(selectSearchData)
     const settings = useSelector(selectMarginSettings)
+    const [toggleMarginTest, setToggleTest] = useState<boolean>(false)
 
     function CSVData(){
         return itemsForCSV.reduce((arr:any[], item)=>{
             arr.push({
                 SKU:item.SKU,
                 TITLE:item.title,
-                PRICE:item.prices.shop,
-                DISCOUNT:item.discounts.shop,
-                MARGIN:generateMarginText(item.prices.shop, item.marginData.shop.profit),
+                PRICE:item.prices["onbuy v2"],
+                MARGIN:generateMarginText(item.prices.purchase, item.marginData["onbuy v2"].profit ),
                 NOTE:item.marginNote})
             return arr
         },[])
     }
 
     if(!items || items.length === 0) return null
+    if (!settings?.tables.OnBuyTable) return null
 
-    if(!settings?.tables.ShopTable) return null
-
-    function createTable(){
+    function createTable() {
         const elements = [
             <div key={"header"} className={styles.header}>
-                <TitleLink type={"Shop"}/>
                 <div>
-                    <CSVButton fileName={`Shop CSV - ${Date.now()}`}
-                               objectArray={CSVData()}
-                               label={"CSV"}/>
+                    <TitleLink type={"OnBuy"}/>
+                </div>
+                <div className={styles["header-buttons"]}>
+                    <CSVButton fileName={`OnBuy CSV - ${Date.now()}`}
+                               label={"CSV"}
+                               objectArray={CSVData()}/>
+                    <button onClick={() => setToggleTest(!toggleMarginTest)}>Margin Tests</button>
                 </div>
             </div>,
-            <TitleRow key={"title-row"}/>
+            <TitleRow key={"title-row"} test={toggleMarginTest}/>
         ]
 
-        for(let index in items) elements.push(<ItemRow key={items[index].SKU}
-                                                       item={items[index]}
-                                                       index={index}/>)
+        for(let index in items) elements.push(
+            <ItemRow key={items[index].SKU}
+                     item={items[index]}
+                     displayTest={toggleMarginTest}
+                     index={index}/>
+        )
 
         return elements
     }

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import useUpdateItemAndCalculateMargins from "../use-update-item-and-calc-margins";
 import styles from "../margin-calculator.module.css";
 import { inputStatusColour } from "../../../components/margin-calculator-utils/margin-styler";
-import MarginCell from "./margin-cell";
+import MarginCell from "../../../components/margin-calculator/margin-cell";
 import { useRouter } from "next/router";
 import {
   currencyToLong,
@@ -29,23 +29,31 @@ export default function ItemRow({
   const specialPriceInputRef = useRef<HTMLInputElement>(null);
   const magentoPriceInputRef = useRef<HTMLInputElement>(null);
   const updateItem = useUpdateItemAndCalculateMargins();
-  const [specialPriceMatchesDiscount, setSpecialPriceMatchesDiscount] = useState(false)
+  const [specialPriceMatchesDiscount, setSpecialPriceMatchesDiscount] =
+    useState(false);
 
   const [inputClass, setInputClass] = useState("");
 
   useEffect(() => {
-    (item.prices.magentoSpecial) === roundToNearest(item.prices.retail * (1 - (item.discounts.magento / 100))) ? setSpecialPriceMatchesDiscount(true) : setSpecialPriceMatchesDiscount(false)
-  }, [item])
+    item.prices.magentoSpecial ===
+    roundToNearest(item.prices.retail * (1 - item.discounts.magento / 100))
+      ? setSpecialPriceMatchesDiscount(true)
+      : setSpecialPriceMatchesDiscount(false);
+  }, [item]);
 
   useEffect(() => {
-    if (!magentoPriceInputRef.current) return
-    magentoPriceInputRef.current.value = String(toCurrencyInput(item.prices.magento))
-    setInputClass(styles[inputStatusColour(item, "magento",)])
-}, [item])
+    if (!magentoPriceInputRef.current) return;
+    magentoPriceInputRef.current.value = String(
+      toCurrencyInput(item.prices.magento)
+    );
+    setInputClass(styles[inputStatusColour(item, "magento")]);
+  }, [item]);
 
   useEffect(() => {
     if (!specialPriceInputRef.current) return;
-    specialPriceInputRef.current.value = String(toCurrencyInput(item.prices.magentoSpecial));
+    specialPriceInputRef.current.value = String(
+      toCurrencyInput(item.prices.magentoSpecial)
+    );
     setInputClass(styles[inputStatusColour(item, "magento")]);
   }, [item]);
 
@@ -55,17 +63,20 @@ export default function ItemRow({
   useEffect(() => {
     setClasses(cssClasses());
     if (!specialPriceInputRef.current) return;
-    specialPriceInputRef.current.value = String(toCurrencyInput(item.prices.magentoSpecial));
+    specialPriceInputRef.current.value = String(
+      toCurrencyInput(item.prices.magentoSpecial)
+    );
     setInputClass(styles[inputStatusColour(item, "magento")]);
   }, [activeIndex, domestic]);
 
   useEffect(() => {
     setClasses(cssClasses());
     if (!magentoPriceInputRef.current) return;
-    magentoPriceInputRef.current.value = String(toCurrencyInput(item.prices.magento));
+    magentoPriceInputRef.current.value = String(
+      toCurrencyInput(item.prices.magento)
+    );
     setInputClass(styles[inputStatusColour(item, "magento")]);
   }, [activeIndex, domestic]);
-
 
   function cssClasses() {
     let classes = styles.row;
@@ -95,12 +106,16 @@ export default function ItemRow({
 
   return (
     <div key={item.SKU} className={classes}>
-      {domestic ? <div>
-      <button
-      disabled={item.prices.magento === item.prices.retail}
-        onClick={resetPriceToRRP}
-      >{'\u238C'}</button>
-      </div> : null}
+      {domestic ? (
+        <div>
+          <button
+            disabled={item.prices.magento === item.prices.retail}
+            onClick={resetPriceToRRP}
+          >
+            {"\u238C"}
+          </button>
+        </div>
+      ) : null}
       <div>
         <input
           ref={magentoPriceInputRef}
@@ -115,12 +130,18 @@ export default function ItemRow({
           }}
         />
       </div>
-      {domestic ? <div>
-      <button
-      disabled={specialPriceMatchesDiscount}
-        onClick={async () => {discountHandler(item.discounts.magento.toString())}}
-      >{'\u{1F5D8}'}</button>
-      </div> : null}
+      {domestic ? (
+        <div>
+          <button
+            disabled={specialPriceMatchesDiscount}
+            onClick={async () => {
+              discountHandler(item.discounts.magento.toString());
+            }}
+          >
+            {"\u{1F5D8}"}
+          </button>
+        </div>
+      ) : null}
       {domestic ? (
         <div>
           <RegexInput
@@ -134,22 +155,32 @@ export default function ItemRow({
       {domestic ? (
         <span>
           {toCurrency(
-            Number(item.prices.magentoSpecial) -
-              Number(item.prices.magento)
+            Number(item.prices.magentoSpecial) - Number(item.prices.magento)
           )}
         </span>
       ) : null}
-        {domestic ? <div>
-        <input ref={specialPriceInputRef}
+      {domestic ? (
+        <div>
+          <input
+            ref={specialPriceInputRef}
             className={inputClass}
             defaultValue={toCurrencyInput(item.prices.magentoSpecial)}
             readOnly={domestic}
             onBlur={async (e) => {
-                    const update = {...item.prices, magentoSpecial: currencyToLong(e.target.value)}
-                    await updateItem(item, "prices", update)
-            }}/>
-        </div> : null}
-        <MarginCell item={item} />
+              const update = {
+                ...item.prices,
+                magentoSpecial: currencyToLong(e.target.value),
+              };
+              await updateItem(item, "prices", update);
+            }}
+          />
+        </div>
+      ) : null}
+      <MarginCell
+        item={item}
+        platform="magento"
+        tooltipTitle="Magento Margin Breakdown"
+      />
     </div>
   );
 }

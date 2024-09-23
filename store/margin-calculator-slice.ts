@@ -39,9 +39,10 @@ export interface marginCalculatorState {
     fees: Fees | null
     postage: { [key: string]: Postage } | null
     packaging: { [key: string]: Packaging } | null
-    marginUpdateRequired: boolean,
+    marginUpdateRequired: boolean
     amazonMarginTest: number | null
     ebayMarginTest: number | null
+    onbuyMarginTest: number | null
     tables: MarginTables
     searchItems: MarginItem[]
     renderedItems: MarginItem[]
@@ -67,6 +68,7 @@ const initialState: marginCalculatorState = {
     marginUpdateRequired: false,
     amazonMarginTest: null,
     ebayMarginTest: null,
+    onbuyMarginTest: null,
     tables: {
         InfoTable: true,
         PricesTable: true,
@@ -166,7 +168,7 @@ export const marginCalculatorSlice = createSlice({
                 state.activeIndex = null
                 state.renderedItems = state.searchItems.slice(0, state.maxThreshold)
             },
-            sortMarginData: (state, action: PayloadAction<{ channel: "amazon" | "ebay" | "magento" | "shop", key: keyof ChannelMarginData, ascending?: boolean }>) => {
+            sortMarginData: (state, action: PayloadAction<{ channel: "amazon" | "ebay" | "magento" | "shop" | "onbuy v2", key: keyof ChannelMarginData, ascending?: boolean }>) => {
                 const {channel, key} = action.payload
                 state.currentSort = `${channel}-${key}`
                 const asc = action.payload.ascending === undefined ? true : action.payload.ascending
@@ -239,6 +241,10 @@ export const marginCalculatorSlice = createSlice({
                         state.ebayMarginTest = action.payload.value;
                         break;
                     }
+                    case "onbuy v2": {
+                        state.onbuyMarginTest = action.payload.value;
+                        break;
+                    }
                 }
             }
         },
@@ -279,5 +285,6 @@ export const selectRenderedItems = (state: marginCalculatorWrapper) => state.mar
 export const selectCurrentSort = (state: marginCalculatorWrapper) => state.marginCalculator.currentSort
 export const selectAmazonMarginTest = (state: marginCalculatorWrapper) => state.marginCalculator.amazonMarginTest
 export const selectEbayMarginTest = (state: marginCalculatorWrapper) => state.marginCalculator.ebayMarginTest
+export const selectOnbuyMarginTest = (state: marginCalculatorWrapper) => state.marginCalculator.onbuyMarginTest
 
 export default marginCalculatorSlice.reducer;

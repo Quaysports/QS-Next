@@ -19,11 +19,10 @@ export default function StatusAndUploadPopup({item, index}: { item: MarginItem, 
         let mismatch = false
         let channels = ["ebay", "amazon", "magento", "onbuy v2"] as const
         for (let channel of channels) {
-            if (item?.prices[channel] !== item.channelPrices[channel]?.price) mismatch = true
+            if (item?.prices[channel] !== item.channelPrices[channel]?.price) {
+                mismatch = true
+            }
         }
-        let specialPriceIndex = -1
-        if (item.extendedProperties) specialPriceIndex = item.extendedProperties.findIndex(prop => prop.epName === "Special Price")
-        if(!item.prices.magentoSpecial || specialPriceIndex !== -1 && (+item.extendedProperties[specialPriceIndex].epValue * 100).toFixed(0) !== item.prices.magentoSpecial.toString()) mismatch = true
         return mismatch ? styles["upload-button-mismatch"] : styles["upload-button"]
     }
 
@@ -33,6 +32,7 @@ export default function StatusAndUploadPopup({item, index}: { item: MarginItem, 
             <TableRow channel={"ebay"} item={item}/>
             <TableRow channel={"amazon"} item={item}/>
             <TableRow channel={"magento"} item={item}/>
+            <TableRow channel={"onbuy v2"} item={item}/>
             {domestic ? <TableRow channel={"magentoSpecial"} item={item}/> : null}
         </div>
         <LinnworksUploadButton item={item} index={index}/>
@@ -57,7 +57,7 @@ function TableTitleRow() {
     </div>
 }
 
-function TableRow({channel, item}: { channel: "ebay" | "amazon" | "magento" | "magentoSpecial", item: MarginItem}) {
+function TableRow({channel, item}: { channel: "ebay" | "amazon" | "magento" | "magentoSpecial" | "onbuy v2", item: MarginItem}) {
 
     const dispatch = useDispatch()
     const marginOverrideKey = `${channel}Override` as "ebayOverride" | "amazonOverride" | "magentoOverride"

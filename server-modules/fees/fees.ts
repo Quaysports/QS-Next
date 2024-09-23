@@ -15,7 +15,8 @@ export interface Channels {
     shop: number;
     magento: number;
     ebay: number;
-    amazon: number
+    amazon: number;
+    onbuy: number;
 }
 
 export interface VatApplicable {
