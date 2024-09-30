@@ -5,12 +5,8 @@ import {toCurrency} from "../../../components/utils/utils";
 import {useDispatch, useSelector} from "react-redux";
 import CopyFromShopButton from "./popup-copy-price-button";
 import LinnworksUploadButton from "./popup-linnworks-upload-button";
-import { useRouter } from "next/router";
 
 export default function StatusAndUploadPopup({item, index}: { item: MarginItem, index: string }) {
-
-    const router = useRouter()
-    const domestic = router.query.domestic === "true";
 
     const uploadedIndexes = useSelector(selectUploadedIndexes)
     if(!item) return null
@@ -33,7 +29,6 @@ export default function StatusAndUploadPopup({item, index}: { item: MarginItem, 
             <TableRow channel={"amazon"} item={item}/>
             <TableRow channel={"magento"} item={item}/>
             <TableRow channel={"onbuy v2"} item={item}/>
-            {domestic ? <TableRow channel={"magentoSpecial"} item={item}/> : null}
         </div>
         <LinnworksUploadButton item={item} index={index}/>
         <CopyFromShopButton item={item}/>
@@ -57,25 +52,19 @@ function TableTitleRow() {
     </div>
 }
 
-function TableRow({channel, item}: { channel: "ebay" | "amazon" | "magento" | "magentoSpecial" | "onbuy v2", item: MarginItem}) {
+function TableRow({channel, item}: { channel: "ebay" | "amazon" | "magento" | "onbuy v2", item: MarginItem}) {
 
     const dispatch = useDispatch()
-    const marginOverrideKey = `${channel}Override` as "ebayOverride" | "amazonOverride" | "magentoOverride"
+    const marginOverrideKey = channel === "onbuy v2" ? "onbuyOverride" : `${channel}Override` as "ebayOverride" | "amazonOverride" | "magentoOverride" 
 
     let channelPrice 
-    if (channel !== "magentoSpecial") {
-        channelPrice = item.channelPrices[channel].price
-    } else { // special price for Linnworks is checked via extendedProperties
-        let specialPriceIndex = item.extendedProperties?.findIndex(prop => prop.epName === "Special Price")
-        if (specialPriceIndex !== -1 && item.extendedProperties) {
-            channelPrice = +item.extendedProperties[specialPriceIndex].epValue * 100
-        } else channelPrice = 0.00
-    }
+    channelPrice = item.channelPrices[channel].price
+
     let marginPrice = item.prices[channel]
+    
     let status
-    if (channel !== "magentoSpecial") {
-        status = item.channelPrices[channel].status
-    } 
+    status = item.channelPrices[channel].status
+    
     let flag = item.checkboxStatus.marginCalculator[marginOverrideKey]
     let difference = Number(channelPrice) - Number(marginPrice)
     function generateStatusText(status?: number) {
@@ -95,7 +84,7 @@ function TableRow({channel, item}: { channel: "ebay" | "amazon" | "magento" | "m
 
     if (!item) return null
     return <div className={styles.row}>
-        <div>{channel !== "magentoSpecial" ? channel : "special"}</div>
+        <div>{channel}</div>
         <div>{toCurrency(Number(channelPrice))}</div>
         <div>{toCurrency(Number(marginPrice))}</div>
         <div className={difference !== 0 ? styles["red-text"] : styles["green-text"]}>
@@ -103,11 +92,11 @@ function TableRow({channel, item}: { channel: "ebay" | "amazon" | "magento" | "m
         </div>
         <div className={styles[statusText]}>{statusText}</div>
         <div>
-            {channel !== "magentoSpecial" ? <input type={"checkbox"}
+            {<input type={"checkbox"}
                 defaultChecked={flag}
                 onChange={async (e) => {
                     dispatch(updateMCOverrides({item: item, key: marginOverrideKey, value: e.target.checked}))
-                }}/> : null}
+                }}/>}
         </div>
         </div>
 }

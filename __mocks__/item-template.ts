@@ -38,7 +38,7 @@ export const itemTemplate = ():schema.Item => ({
             photos: false,
             zenTackle: false
         },
-        marginCalculator: {amazonOverride: false, ebayOverride: false, hide: false, magentoOverride: false},
+        marginCalculator: {amazonOverride: false, ebayOverride: false, hide: false, magentoOverride: false, onbuyOverride: false},
         notApplicable: {amazon: false, amazonStore: false, ebay: false, magento: false, zenTackle: false},
         prime: false,
         ready: {amazon: false, amazonStore: false, ebay: false, magento: false, zenTackle: false},
@@ -110,7 +110,7 @@ export const itemTemplate = ():schema.Item => ({
     onOrder: [],
     packaging: {editable: false, group: "", items: [], lock: false},
     postage: {id: "", modifier: "", price: 0},
-    prices: {amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0, shop: 0, "onbuy v2": 0, magentoSpecial: 0},
+    prices: {amazon: 0, ebay: 0, magento: 0, purchase: 0, retail: 0, shop: 0, "onbuy v2": 0},
     shelfLocation: {letter: "", number: "", prefix: ""},
     shortDescription: "",
     stock: {default: 0, minimum: 0, total: 0, value: 0, warehouse: 0, tradePack: null},

@@ -5,7 +5,7 @@ export function textColourStyler(value: number | undefined): string {
     return value > 0 ? "green-text" : value < 0 ? "red-text" : "gray-text"
 }
 
-export function inputStatusColour(item: MarginItem, channel: "amazon" | "ebay" | "magento" | "shop" | "onbuy v2",): string {
+export function inputStatusColour(item: MarginItem, channel: "amazon" | "ebay" | "magento" | "onbuy v2",): string {
     let channelPrices = item.channelPrices[channel]
 
     let flag = item.checkboxStatus.marginCalculator[`${channel}Override` as keyof MarginItem["checkboxStatus"]["marginCalculator"]]
@@ -13,10 +13,6 @@ export function inputStatusColour(item: MarginItem, channel: "amazon" | "ebay" |
     if (!channelPrices || !channelPrices.price) return ""
 
     if (!channelPrices.price || channelPrices.price !== item.prices[channel]) return "price-mismatch"
-
-    let index = -1
-    if (item.extendedProperties) index = item.extendedProperties.findIndex(prop => prop.epName === "Special Price")
-    if(!item.prices.magentoSpecial || index !== -1 && (+item.extendedProperties[index].epValue * 100).toFixed(0) !== item.prices.magentoSpecial.toString()) return "price-mismatch"
 
     if (channelPrices.status === 99) {
         return "listing-error"

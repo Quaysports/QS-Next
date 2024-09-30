@@ -17,7 +17,7 @@ export default function NewQuickLinkMenuPopup(){
             <button onClick={()=>{
                 let itemsArray = Array.from({length:25}, ()=>{return ""})
                 let dataArray = Array.from({length:25}, ()=>(
-                    {SKU:"",title:"",prices:{amazon:0, ebay:0, magento:0, shop:0, purchase:0,retail:0, magentoSpecial:0, "onbuy v2": 0},till:{color:""}})
+                    {SKU:"",title:"",prices:{amazon:0, ebay:0, magento:0, shop:0, purchase:0,retail:0, "onbuy v2": 0},till:{color:""}})
                 )
                 dispatch(addNewQuickLinkMenu({id:inputRef.current!.value,links:itemsArray, data: dataArray}))
                 dispatchNotification()

@@ -88,7 +88,6 @@ declare namespace schema {
         //used to be QSPRICEINCVAT
         magento: number
         //used to be SHOPPRICEINCVAT
-        magentoSpecial: number
         "onbuy v2": number
         shop: number
     }
@@ -224,6 +223,7 @@ declare namespace schema {
         amazonOverride: boolean
         ebayOverride: boolean
         magentoOverride: boolean
+        onbuyOverride: boolean
     }
 
     interface Postage {
@@ -514,7 +514,6 @@ export namespace till {
             ebay: number
             magento: number
             shop: number
-            magentoSpecial: number,
             onbuy: number
         },
         discounts: {

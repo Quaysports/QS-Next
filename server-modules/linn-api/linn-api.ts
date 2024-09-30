@@ -449,7 +449,7 @@ const bulkUploadFormat = (item: schema.Item) => ({
 
 function updateItemFormat(item: schema.Item) {
     const tags = item.tags.reduce((string, tag) => string === "" ? tag : `${string}, ${tag}`, "")
-    const formattedItemProperties = [
+    return [
         {
             fkStockItemId: item.linnId,
             SKU: item.SKU,
@@ -460,36 +460,16 @@ function updateItemFormat(item: schema.Item) {
             fkStockItemId: item.linnId,
             SKU: item.SKU,
             PropertyType: "Attribute",
+            PropertyValue: fixedEncodeURIComponent(tags),
+            ProperyName: 'Tags'
+        }, {
+            fkStockItemId: item.linnId,
+            SKU: item.SKU,
+            PropertyType: "Attribute",
             PropertyValue: fixedEncodeURIComponent(item.brand),
             ProperyName: 'Brand'
         }
     ]
-
-    if (tags !== "") {
-        formattedItemProperties.push(
-            {
-                fkStockItemId: item.linnId,
-                SKU: item.SKU,
-                PropertyType: "Attribute",
-                PropertyValue: fixedEncodeURIComponent(tags),
-                ProperyName: 'Tags'
-            }
-        )
-    }
-
-    if (tags.split(" ").includes("domestic")) {
-        formattedItemProperties.push(
-            {
-                fkStockItemId: item.linnId,
-                SKU: item.SKU,
-                PropertyType: "Attribute",
-                PropertyValue: item.prices.magentoSpecial.toFixed(2),
-                ProperyName: 'Special Price'
-            }
-        )
-    }
-
-    return formattedItemProperties
 }
 
 export async function addNewSupplier(newSupplier:string) {
