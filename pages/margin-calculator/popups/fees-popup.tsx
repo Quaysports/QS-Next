@@ -18,7 +18,7 @@ export default function FeesMenu({menuState}: { menuState: MenuState }) {
         <ItemRow fees={fees} menuState={menuState} channel={"amazon"} />
         <ItemRow fees={fees} menuState={menuState} channel={"ebay"} />
         <ItemRow fees={fees} menuState={menuState} channel={"magento"} />
-        <ItemRow fees={fees} menuState={menuState} channel={"shop"} />
+        <ItemRow fees={fees} menuState={menuState} channel={"onbuy"} />
         <div className={styles["fees-row"]}>
             <div>VAT</div>
             <div><input type={"number"} step={"0.01"} min={0} defaultValue={toCurrencyInput(fees?.VAT)} onChange={(e) => {
@@ -44,7 +44,7 @@ function TitleRow() {
 interface ItemRowProps {
     fees: Fees
     menuState: MenuState
-    channel: "amazon" | "ebay" | "magento" | "shop"
+    channel: "amazon" | "ebay" | "magento" | "onbuy"
     checkbox?:boolean
 }
 
@@ -53,7 +53,7 @@ function ItemRow({fees, menuState, channel}: ItemRowProps) {
     const dispatch = useDispatch()
     const updateHandler = (e:ChangeEvent<HTMLInputElement>,
                            id:"listing" | "flat" | "subscription" | "vatApplicable" ,
-                           channel:"amazon" | "ebay" | "magento" | "shop",
+                           channel:"amazon" | "ebay" | "magento" | "onbuy",
                            checkbox = false)=>{
         let newFees = structuredClone(fees)
         checkbox
