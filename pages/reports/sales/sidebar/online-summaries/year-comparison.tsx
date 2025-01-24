@@ -23,7 +23,7 @@ export default function OnlineYearComparison() {
 
     if (!yearData) return null
 
-    const comparisonElements = [<div className={styles["online-summary"]}>
+    const comparisonElements = [<div key="summary-header" className={styles["online-summary"]}>
         <div className={styles["online-summary-row"]}>
             <div>Total</div>
             <div>Profit</div>

@@ -24,9 +24,9 @@ export default function OnlineDay({month, date}: { month: number, date: Date }) 
 function DayContent({data}: { data: OnlineDayTotal | undefined }) {
     if (!data) return null
 
-    const {amazon, ebay, magento} = data
-    const total = (amazon?.grandTotal || 0) + (ebay?.grandTotal || 0) + (magento?.grandTotal || 0)
-    const profit = (amazon?.profit || 0) + (ebay?.profit || 0) + (magento?.profit || 0)
+    const {amazon, ebay, magento, onbuy} = data
+    const total = (amazon?.grandTotal || 0) + (ebay?.grandTotal || 0) + (magento?.grandTotal || 0) + (onbuy?.grandTotal || 0)
+    const profit = (amazon?.profit || 0) + (ebay?.profit || 0) + (magento?.profit || 0) + (onbuy?.grandTotal || 0)
 
     return <div className={styles["day-container"]}>
         <div className={styles["day-row"]}>
@@ -40,6 +40,10 @@ function DayContent({data}: { data: OnlineDayTotal | undefined }) {
         <div className={styles["day-row"]}>
             <div>Magento:</div>
             <div>{toCurrency(magento?.grandTotal)}</div>
+        </div>
+        <div className={styles["day-row"]}>
+            <div>Onbuy:</div>
+            <div>{toCurrency(onbuy?.grandTotal)}</div>
         </div>
         <div className={styles["day-row"]}>
             <div>Total:</div>

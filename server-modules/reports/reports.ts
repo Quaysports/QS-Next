@@ -553,6 +553,7 @@ export interface OnlineDayTotal {
     amazon: OnlineDayQueryResult | null
     ebay: OnlineDayQueryResult | null
     magento: OnlineDayQueryResult | null
+    onbuy: OnlineDayQueryResult | null
 }
 
 export async function getOnlineMonthDayByDayDataForYear(year: number, month: number) {
@@ -630,7 +631,8 @@ export async function getOnlineMonthDayByDayDataForYear(year: number, month: num
                 date: order.date,
                 amazon: null,
                 ebay: null,
-                magento: null
+                magento: null,
+                onbuy: null
             }
             data.push(day)
         }
@@ -640,6 +642,8 @@ export async function getOnlineMonthDayByDayDataForYear(year: number, month: num
             day.ebay = order
         } else if (order.source === "magento") {
             day.magento = order
+        } else if (order.source === "onbuy v2") {
+            day.onbuy = order
         }
     }
     sortData("date", data)
