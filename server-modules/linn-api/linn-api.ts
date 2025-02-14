@@ -330,8 +330,8 @@ export const bulkUpdateLinnItem = async (item: schema.Item) => {
         imageDetails.IsMain = image === "main"
 
         imageDetails.ImageUrl = item.images[imageKey].link
-            ? `http://141.195.190.47/images/${item.images[imageKey].link}/${item.images[imageKey].filename}`
-            : `http://141.195.190.47/images/${item.SKU}/${item.images[imageKey].filename}`
+            ? `http://quaysports.duckdns.org/images/${item.images[imageKey].link}/${item.images[imageKey].filename}`
+            : `http://quaysports.duckdns.org/images/${item.SKU}/${item.images[imageKey].filename}`
 
         console.log("Image URL: ", imageDetails)
         let imageRes = await updateItemImage(imageDetails) as {
