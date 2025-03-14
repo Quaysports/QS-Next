@@ -23,7 +23,6 @@ const initialState: sessionState = {
         password: "",
         pin: "",
         rota: "",
-        sharedRota: "",
         sick: {paid: [], unpaid: []},
         username: "",
         role: "",
