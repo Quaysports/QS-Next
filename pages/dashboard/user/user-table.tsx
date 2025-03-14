@@ -40,7 +40,6 @@ export default function UserTable() {
             <span>Username</span>
             <span>Role</span>
             <span>Rota</span>
-            <span>Shared Rota</span>
             <span>{cy} Holiday</span>
             <span>{ny} Holiday</span>
             <span>Password</span>
@@ -155,18 +154,6 @@ function UserRow({index, user}: { index: string; user: User }) {
             }}
         >
           {selectOptions(["online", "shop"])}s
-        </select>
-      </span>
-
-      <span>
-        <select
-            defaultValue={user.sharedRota}
-            onChange={(e) => {
-                const update = {...user, sharedRota: e.target.value};
-                dispatch(setUserData({index: Number(index), user: update}));
-            }}
-        >
-          {selectOptions(["no", "yes"])}s
         </select>
       </span>
 

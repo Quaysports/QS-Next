@@ -10,7 +10,6 @@ export interface User {
     password: string;
     role: string;
     rota: string;
-    sharedRota: string;
     colour: string;
     permissions: Permissions;
     settings: Settings;
@@ -158,31 +157,17 @@ export const getAllExistingCalendars = async (req: { location: string; }) => {
 }
 
 export const getHolidayCalendar = async (req: { year: number; location: string; }) => {
-    if (req.location === "both") {
-        return await mongoI.find("Holiday-Calendar", { $and: [{ year: {$eq: req.year} }, { location: { $in: ['online', 'shop'] } }] })
-    } else {
-        return await mongoI.findOne<any>("Holiday-Calendar", {$and: [{year: {$eq: req.year}}, {location: {$eq: req.location}}]})
-    }
+    return await mongoI.findOne<any>("Holiday-Calendar", {$and: [{year: {$eq: req.year}}, {location: {$eq: req.location}}]})
 }
 
 export const getHolidayYearsForLocation = async (location: string) => {
-    if (location === "both") {
-        let years = await mongoI.findDistinct("Holiday-Calendar", "year", { $and : [{location: {$in: ["online", "both"]}}]})
-        return years ? years : [];
-    } else {
-        let years = await mongoI.findDistinct("Holiday-Calendar", "year", {location:location})
-        return years ? years : [];
-    }
+    let years = await mongoI.findDistinct("Holiday-Calendar", "year", {location:location})
+    return years ? years : [];
 }
 
 export const getListOfHolidayYears = async (location:string) => {
-    if (location === "both") {
-        let years = await mongoI.findDistinct("Holiday-Calendar", "year", { $and : [{location: {$in: ["online", "both"]}}]})
-        return years ? years : [];
-    } else {
-        let years = await mongoI.findDistinct("Holiday-Calendar", "year", {location:location})
-        return years ? years : [];
-    }
+    let years = await mongoI.findDistinct("Holiday-Calendar", "year", {location:location})
+    return years ? years : [];
 }
 
 export const updateHolidayCalendar = async (data: schema.HolidayCalendar) => {

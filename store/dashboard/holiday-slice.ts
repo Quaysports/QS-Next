@@ -25,7 +25,6 @@ export interface holidaysState {
 export interface LocationUsers {
     shop: User[]
     online: User[]
-    both: User[]
 }
 
 export interface NewBooking {
@@ -41,7 +40,6 @@ const initialState: holidaysState = {
     users: {
         "shop": [],
         "online": [],
-        "both": []
     },
     bookedDays: {},
     paidSickDays: {},
@@ -80,50 +78,6 @@ export const holidaysSlice = createSlice({
             state.bookedDays = bookedDays
             state.paidSickDays = paidSickDays
             state.unpaidSickDays = unpaidSickDays
-        },
-        setMergedHolidayCalendar: (state, action: PayloadAction<schema.HolidayCalendar[]>) => {
-            const shopTemplates = action.payload[0].template
-            const onlineTemplates  = action.payload[1].template
-            const shopBooked = action.payload[0].booked;
-            const onlineBooked = action.payload[1].booked;
-
-            // Populate Info Panel Booked Days data for 'Both'
-            const onlineDays = calculateBookedDays(action.payload[0])
-            const shopDays = calculateBookedDays(action.payload[1])
-            state.bookedDays = mergeBookedDays(onlineDays, shopDays, 'bookedDays');
-            state.paidSickDays = mergeBookedDays(onlineDays, shopDays, 'paidSickDays');
-            state.unpaidSickDays = mergeBookedDays(onlineDays, shopDays, 'unpaidSickDays')
-
-            const mergedTemplate = shopTemplates.map((shopMonth: schema.HolidayMonth, index: number) => ({
-                ...shopMonth,
-                days: shopMonth.days.map((shopDay, dayIndex) => ({
-                  ...shopDay,
-                  booked: {
-                    ...shopDay.booked,
-                    ...onlineTemplates[index].days[dayIndex].booked,
-                    },
-                })),
-            }));
-            
-            const mergedBooked = {
-            ...onlineBooked
-            }
-            for (const person of Object.keys(shopBooked)) {
-                if (mergedBooked[person]) {
-                    mergedBooked[person] += shopBooked[person]
-                } else {
-                    mergedBooked[person] = shopBooked[person]
-                }
-            }
-
-            const mergedCalendarData: schema.HolidayCalendar = {
-                ...action.payload[0],
-                booked: mergedBooked,
-                template: mergedTemplate,
-                location: "both"
-              };
-
-            state.calendar = mergedCalendarData
         },
         updateHolidayCalendar: (state, action: PayloadAction<schema.HolidayCalendar>) => {
 
@@ -231,39 +185,25 @@ function calculateBookedDays(calendar: schema.HolidayCalendar) {
         unpaidSickDays: { [key: string]: number }
     } = {bookedDays: {}, paidSickDays: {}, unpaidSickDays: {}}
 
-    if(calendar.template) {
-        for (const month of calendar.template) {
-            for (const day of month.days) {
-                if (!day.booked) continue
-                for (const [k, v] of Object.entries(day.booked)) {
-                    totals.bookedDays[k] ??= 0
-                    totals.paidSickDays[k] ??= 0
-                    totals.unpaidSickDays[k] ??= 0
-                    if (v.type === "holiday" && v.duration) totals.bookedDays[k] += v.duration / 100
-                    if (v.type === "sick" && v.paid) totals.paidSickDays[k] += v.duration / 100
-                    if (v.type === "sick" && !v.paid) totals.unpaidSickDays[k] += v.duration / 100
-                }
+    for (const month of calendar.template) {
+        for (const day of month.days) {
+            if (!day.booked) continue
+            for (const [k, v] of Object.entries(day.booked)) {
+                totals.bookedDays[k] ??= 0
+                totals.paidSickDays[k] ??= 0
+                totals.unpaidSickDays[k] ??= 0
+                if (v.type === "holiday" && v.duration) totals.bookedDays[k] += v.duration / 100
+                if (v.type === "sick" && v.paid) totals.paidSickDays[k] += v.duration / 100
+                if (v.type === "sick" && !v.paid) totals.unpaidSickDays[k] += v.duration / 100
             }
         }
     }
     return totals
 }
 
-function mergeBookedDays(onlineDays: any, shopDays: any, dayType: keyof typeof onlineDays) {
-    let mergedDays = { ...onlineDays[dayType] };
-    for (let key of Object.keys(shopDays[dayType])) {
-        if (mergedDays[key]) {
-            mergedDays[key] += shopDays[dayType][key];
-        } else {
-            mergedDays[key] = shopDays[dayType][key];
-        }
-    }
-    return mergedDays;
-}
-
 export const {
     setHolidayCalendar, updateHolidayCalendar, setAvailableCalendarsYears,
-    setHolidayUsers, setNewBooking, submitNewBooking, setMergedHolidayCalendar
+    setHolidayUsers, setNewBooking, submitNewBooking
 } = holidaysSlice.actions
 export const selectCalendar = (state: holidaysWrapper) => state.holidays.calendar
 export const selectYears = (state: holidaysWrapper) => state.holidays.years

@@ -16,19 +16,9 @@ export default function InfoPanel(){
     if(!calendar) return null
 
     let elements = [<TitleRow key={"title-row"}/>]
-    // Check if calendar.location is "both" and if so, include all users
-  if (calendar.location === "both") {
-    for (const user of users.shop.concat(users.online)) {
-      elements.push(<UserRow key={user.username} user={user} />);
+    for(const user of users[calendar.location as "shop" | "online"]) {
+        elements.push(<UserRow key={user.username} user={user}/>)
     }
-  } else {
-    // Otherwise, filter users based on the location
-    const locationUsers = users[calendar.location as "shop" | "online"];
-    for (const user of locationUsers) {
-      elements.push(<UserRow key={user.username} user={user} />);
-    }
-  }
-
     return <div className={styles["info-table"]}>{elements}</div>
 }
 

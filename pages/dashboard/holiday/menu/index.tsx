@@ -45,7 +45,6 @@ export default function HolidayMenu(){
                 }}>
             <option value={"shop"}>Shop</option>
             <option value={"online"}>Online</option>
-            <option value={"both"}>Both</option>
         </select>
         <select value={year} onChange={async (e)=>{
             setYear(Number(e.target.value))
@@ -55,7 +54,6 @@ export default function HolidayMenu(){
                 onChange={(e)=>router.push({pathname:router.pathname, query:{...router.query, type:e.target.value}})}>
             <option value={"holiday"}>Holiday</option>
             <option value={"sick"}>Sick</option>
-            <option value={"both"}>Both</option>
         </select>
         <div className={styles["dot-key"]}>
             <div className={styles["dot-key-label"]}>Holiday: <UserDot user={"example"} booked={{duration: 100, paid: true, type:"holiday"}}/></div>
