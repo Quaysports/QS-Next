@@ -50,7 +50,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         name: id_ed25519
         known_hosts: ${{secrets.SSH_KNOWN_HOSTS}}
-        config: ${{ secrets.SSH_CONFIG_DUCKDNS }}
+        config: ${{ secrets.SSH_CONFIG_YARNSCOMBE }}
     - name: Rsync .dist files
       run: rsync -r ./ sbt:QS-Next/
     - name: Build Project

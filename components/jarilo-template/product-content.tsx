@@ -15,7 +15,7 @@ export default function ProductContent({IMAGE,DESC, TITLE}: Props){
                                     <div className="slideable-grip">
                                         <div className="slideable-item">
                                             <input type="radio" name="slideable" id="slide1"/>
-                                            <img src={'https://quaysports.duckdns.org/images/' + IMAGE} alt="item-image"/>
+                                            <img src={'https://92.207.0.213/images/' + IMAGE} alt="item-image"/>
                                         </div>
                                     </div>
                                 </div>
