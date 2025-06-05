@@ -7,7 +7,8 @@ export default function JariloTemplatePopup() {
 
     const item = useSelector(selectItem)
     async function copyJariloTemplate(item:schema.Item){
-        let template = jariloHtml(item.description, `${item.SKU}/${item.images.main.filename}`, item.webTitle)
+        // let template = jariloHtml(item.description, `${item.SKU}/${item.images.main.filename}`, item.webTitle)
+        let template = jariloHtml(item.description, `${item.SKU}.jpg`, item.webTitle)
         let textInput = document.createElement('textarea')
         textInput.value = template
         document.body.appendChild(textInput)
@@ -21,7 +22,8 @@ export default function JariloTemplatePopup() {
         <div>
             <div>
                 <iframe width={"1200"} height={"600"} sandbox={'allow-same-origin'}
-                        srcDoc={jariloHtml(item.description, `${item.SKU}/${item.images.main.filename}`, item.webTitle)}/>
+                        // srcDoc={jariloHtml(item.description, `${item.SKU}/${item.images.main.filename}`, item.webTitle)}/>
+                        srcDoc={jariloHtml(item.description, `${item.SKU}.jpg`, item.webTitle)}/>
             </div>
             <button onClick={() => copyJariloTemplate(item)}>Copy Jarilo HTML</button>
         </div>
