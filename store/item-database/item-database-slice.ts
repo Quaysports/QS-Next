@@ -229,11 +229,12 @@ export const itemDatabaseSlice = createSlice({
                 }
                 databaseSave(state.item)
             },
-            setItemImages: (state, action: PayloadAction<{ index: keyof schema.Images, filename: string }>) => {
-                let {index, filename} = action.payload
+            setItemImages: (state, action: PayloadAction<{ index: keyof schema.Images, filename: string, publicFilename?: string }>) => {
+                let {index, filename, publicFilename} = action.payload
                 state.item.images[index] = {
                     ...state.item.images[index],
-                    ...{filename: filename}
+                    ...{filename: filename},
+                    ...(publicFilename && {publicFilename: publicFilename})
                 }
             },
             setTags: (state, action: PayloadAction<string[]>) => {

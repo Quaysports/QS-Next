@@ -4,6 +4,7 @@ declare namespace schema {
         url: string;
         filename: string;
         link: string;
+        publicFilename?: string;
     }
 
     interface ChannelData {

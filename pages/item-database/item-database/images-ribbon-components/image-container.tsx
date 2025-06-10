@@ -43,12 +43,16 @@ export default function ImageContainer({imageTag}: Props) {
             const fileReader = new FileReader()
             fileReader.onload = (event) => {
                 let filename = `${index === "main" ? "0" : index}.${imageExtension}`
+                const publicFilename = `${image.name.split(".")[0]}.${imageExtension}`
+                console.log("image: ", image)
+                console.log("publicFilename: ", publicFilename)
                 let body = {
                     _id: item._id,
                     SKU: item.SKU,
                     id: index === "main" ? "main" : index,
                     filename: filename,
-                    image: event.target!.result!.toString()
+                    image: event.target!.result!.toString(),
+                    publicFilename: publicFilename || ""
                 }
                 const opts = {
                     headers: {
@@ -61,7 +65,8 @@ export default function ImageContainer({imageTag}: Props) {
                     if (res.ok) {
                         dispatch(setItemImages({
                             index: index,
-                            filename: filename
+                            filename: filename,
+                            publicFilename: publicFilename
                         }))
                     } else {
                         throw new Error(`Status: ${res.status}, ${res.statusText}`)
