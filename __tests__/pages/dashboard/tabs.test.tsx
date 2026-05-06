@@ -54,7 +54,7 @@ describe("Dashboard tabs tests", ()=>{
         [0,"Home","/dashboard?tab=home"],
         [1,"Users","/dashboard?tab=user"],
         [2,"Rotas","/dashboard?tab=rotas&location=online"],
-        [3,"Holidays","/dashboard?tab=holidays&type=holiday"]
+        [3,"Holidays","/dashboard?tab=holidays&type=all"]
     ] as const
 
     test.each(cases)("All tabs are rendered with links", async(index,text,link) => {
