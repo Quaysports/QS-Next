@@ -101,6 +101,10 @@
   border: 2px solid var(--traffic-light-red);
 }
 
+.toil-border {
+  border-radius: 0;
+}
+
 /*--------------------- booking popup ---------------------*/
 .booking-table {
   display: grid;
@@ -144,8 +148,7 @@
 
 /*--------------------- booking popup tabs ---------------------*/
 .tabs-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   grid-gap: 4px;
 }
 
@@ -157,8 +160,12 @@
   background: var(--primary-table-cell-background);
 }
 
+.toil {
+  background: var(--secondary-table-cell-background);
+}
+
 .booking-tab {
-  padding: 2px 5px;
+  padding: 3px 10px;
   text-align: center;
   border-radius: 5px 5px 0 0;
 }

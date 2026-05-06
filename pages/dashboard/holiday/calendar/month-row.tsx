@@ -55,7 +55,7 @@ function MonthCell({ index, month }: { index: number, month:schema.HolidayMonth 
         let booked = month.days[index - offset]?.booked
         if(booked){
             for(const [user, value] of Object.entries(booked)){
-                if(router.query.type === "both" || router.query.type === value.type)
+                if(router.query.type === "all" || router.query.type === value.type)
                 dots.push(<UserDot key={user} booked={value} user={user}/>)
             }
         }

@@ -30,7 +30,7 @@ export default function DashboardTabs() {
       )}
       {user.permissions?.holidays?.auth && (
         <span className={activeTab("holidays")}>
-          <Link href="/dashboard?tab=holidays&type=holiday">Holidays</Link>
+          <Link href="/dashboard?tab=holidays&type=all">Holidays</Link>
         </span>
       )}
     </>

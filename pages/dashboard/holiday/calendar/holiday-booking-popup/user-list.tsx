@@ -31,7 +31,7 @@ export default function UserList({dateString}:{dateString:schema.HolidayDay["dat
 
     let elements = []
     for(const user in booked){
-        if(type === booked[user].type || type === "both") {
+        if(type === booked[user].type || type === "all") {
             elements.push(<div key={user}
                                className={styles["booked-user-row"]}>
                 <UserDot booked={booked[user]} user={user}/>

@@ -11,6 +11,7 @@ export default function UserDot({user, booked}: { user: string, booked: schema.H
     let classString = `${styles["booked-dot-"+booked.duration]}`
     if(booked.type === "sick" && booked.paid) classString += ` ${styles["sick-paid-border"]}`
     if(booked.type === "sick" && !booked.paid) classString += ` ${styles["sick-unpaid-border"]}`
+    if(booked.type === "toil") classString += ` ${styles["toil-border"]}`
 
     return <div
         id={user + booked.duration}

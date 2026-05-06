@@ -52,11 +52,14 @@ export default function HolidayMenu(){
         }}>{yearOptions}</select>
         <select value={router.query.type}
                 onChange={(e)=>router.push({pathname:router.pathname, query:{...router.query, type:e.target.value}})}>
+            <option value={"all"}>All</option>
             <option value={"holiday"}>Holiday</option>
+            <option value={"toil"}>TOIL</option>
             <option value={"sick"}>Sick</option>
         </select>
         <div className={styles["dot-key"]}>
             <div className={styles["dot-key-label"]}>Holiday: <UserDot user={"example"} booked={{duration: 100, paid: true, type:"holiday"}}/></div>
+            <div className={styles["dot-key-label"]}>TOIL: <UserDot user={"example"} booked={{duration: 100, paid: true, type:"toil"}}/></div>
             <div className={styles["dot-key-label"]}>Paid Sick: <UserDot user={"example"} booked={{duration: 100, paid: true, type:"sick"}}/></div>
             <div className={styles["dot-key-label"]}>Un-paid Sick: <UserDot user={"example"} booked={{duration: 100, paid: false, type:"sick"}}/></div>
         </div>

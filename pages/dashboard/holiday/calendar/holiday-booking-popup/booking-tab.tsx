@@ -8,7 +8,7 @@ import {schema} from "../../../../../types";
 
 interface Props {
     dateString: schema.HolidayDay["date"]
-    type: "sick" | "holiday"
+    type: "sick" | "holiday" | "toil"
 }
 
 export default function BookingTab({dateString, type}: Props) {

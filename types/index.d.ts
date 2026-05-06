@@ -324,7 +324,7 @@ declare namespace schema {
     }
 
     interface HolidayOrSickBooking {
-        type: "holiday" | "sick",
+        type: "holiday" | "sick" | "toil",
         paid: boolean,
         duration: 100 | 75 | 50 | 25
     }
