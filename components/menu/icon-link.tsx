@@ -20,7 +20,7 @@ export const iconsData = [
     height: 45,
   },
   {
-    href: "/reports?tab=incorrect-stock",
+    href: "/reports?tab=sales&location=online",
     imgSrc: "/reports.svg",
     imgAlt: "icon of reports",
     title: "Reports",
