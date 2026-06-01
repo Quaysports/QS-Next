@@ -17,7 +17,7 @@ export default function AboutUs() {
                 <p>Customer satisfaction is very important to us, and we strive to ensure you receive
                     your
                     items quickly and trouble free.</p>
-                <p>We have been trading on eBay for over ${openingDate} years and have a 100% feedback
+                <p>We have been trading on eBay for over {openingDate} years and have a 100% feedback
                     record due to our
                     exceptional customer care.</p>
                 <p>You can be confident in your purchase from Quay Sports.</p>
