@@ -14,7 +14,6 @@ export default function AboutUs() {
                     You
                     can find great value fishing rods, reels and seat boxes along with many more fishing
                     tackle items.</p>
-                <p>Our website has a wider selection should you wish to visit it.</p>
                 <p>Customer satisfaction is very important to us, and we strive to ensure you receive
                     your
                     items quickly and trouble free.</p>
