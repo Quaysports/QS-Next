@@ -106,7 +106,7 @@ function ItemRow({item}: { item: StockForecastItem }) {
         if(m % 12 === 0 && m !== 0) year++
         let band = m < currentMonth + 6
             ? "#BB1E10"
-            : m < currentMonth + 9
+            : m < currentMonth + 10
                 ? "#F7B500"
                 : "#32A431"
 
